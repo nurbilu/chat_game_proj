@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - tensorflow
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    environment:
+      - API_URL=http://backend:8000
+# not sure if this is needed
+  tensorflow:
+    build: ./tensorflow
+    container_name: tensorflow
+    volumes:
+      - ./tensorflow:/app
+    command: python train_model.py
+
+networks:
+  default:
+    driver: bridge

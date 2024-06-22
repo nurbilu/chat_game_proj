@@ -1,0 +1,9 @@
+{
+    "github.copilot.advanced": {
+
+    },
+    "github.copilot.chat.localeOverride": "auto",
+    "github.copilot.chat.scopeSelection": true,
+    "github.copilot.chat.terminalChatLocation": "chatView",
+    "github.copilot.editor.enableCodeActions": true
+}

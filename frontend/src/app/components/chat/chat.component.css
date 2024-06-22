@@ -1,0 +1,44 @@
+.chat-container {
+  width: 300px;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-container h2 {
+  text-align: center;
+}
+
+.chat-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-container form div {
+  margin-bottom: 1rem;
+}
+
+.chat-container form label {
+  margin-bottom: 0.5rem;
+}
+
+.chat-container form input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.chat-container form button {
+  padding: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.chat-container form button:hover {
+  background-color: #0056b3;
+}

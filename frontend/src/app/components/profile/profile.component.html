@@ -1,0 +1,26 @@
+<div class="profile-container">
+    <h2>Profile</h2>
+    <div *ngIf="isSuperuser">
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Birthdate</th>
+            </tr>
+            <tr *ngFor="let user of userProfiles">
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.birthdate | date }}</td>
+            </tr>
+        </table>
+    </div>
+    <div *ngIf="!isSuperuser">
+        <p><strong>Username:</strong> {{ userProfile?.username }}</p>
+        <p><strong>Email:</strong> {{ userProfile?.email }}</p>
+        <p><strong>Address:</strong> {{ userProfile?.address }}</p>
+        <p><strong>Birthdate:</strong> {{ userProfile?.birthdate | date }}</p>
+    </div>
+    <button (click)="logout()">Logout</button>
+</div>

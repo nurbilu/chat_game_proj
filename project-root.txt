@@ -1,0 +1,14 @@
+
+recommendetion by chtGPT :
+
+/project-root
+  ├── backend
+  │   ├── Dockerfile
+  │   └── (other backend files and folders)
+  ├── frontend
+  │   ├── Dockerfile
+  │   └── (other frontend files and folders)
+  ├── tensorflow
+  │   ├── Dockerfile
+  │   └── (TensorFlow scripts and model files)
+  └── docker-compose.yml
