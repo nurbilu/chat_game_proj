@@ -15,7 +15,7 @@ load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('the_secret_key')
 
 # MongoDB connection setup
-uri = "mongodb+srv://nurb111:MongoBILU1996@cluster0.luomlfx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+uri = os.getenv('MONGO_URI')
 client = MongoClient(uri, server_api=ServerApi('1'))
 
 # Test MongoDB connection
@@ -39,7 +39,7 @@ def chat():
     return jsonify(response)
 
 def get_gemini_response(prompt):
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key"
+    url = os.getenv('GEMINI_URL')
     headers = {
         'Authorization': f'Bearer {os.getenv("GEMINI_API_KEY")}',
         'Content-Type': 'application/json',
