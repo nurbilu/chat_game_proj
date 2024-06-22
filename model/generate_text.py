@@ -6,17 +6,19 @@ import random
 import threading
 import logging
 from dotenv import load_dotenv
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
+from cnnct_mngoDB import get_mongo_client, get_database
 
 app = Flask(__name__)
 CORS(app)
 load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('the_secret_key')
 
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+
 # MongoDB connection setup
-uri = os.getenv('MONGO_URI')
-client = MongoClient(uri, server_api=ServerApi('1'))
+client = get_mongo_client()
+db = get_database(client)
 
 # Test MongoDB connection
 try:
@@ -24,13 +26,6 @@ try:
     print("Pinged your deployment. You successfully connected to MongoDB!")
 except Exception as e:
     print(e)
-
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
-
-# Initialize MongoDB Client
-mongo_client = MongoClient(os.getenv('MONGO_URI'))
-db = mongo_client['DnD_AI_DB']
 
 @app.route('/chat/', methods=['GET'])
 def chat():
