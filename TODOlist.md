@@ -1,4 +1,5 @@
 # to do list : 
+a one a check a two
 ###### notice that if more changes or steps needed should be wrttin here :: 
 
 1. go on the notes that eyal dictate for us for the project and for the general instructions for the project {there is no check box because these are instructions and not an actual step in the process}
