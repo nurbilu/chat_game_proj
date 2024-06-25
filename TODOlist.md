@@ -5,7 +5,7 @@
 link for the instructions: 
 https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isInboxExpanded/true/selectedFolder/inbox/selectedId/bb108327-b16f-49f9-b306-6f1661278239/$/echoPlayer/params/channelId=b287fb37-468c-4f55-9734-d2f73f7ebbbe&clk=vKuInfU1/page/11e5cd79-a99c-40ef-9c71-4e96850f0de9
  
-2. implement the profile include frontend ( ) :
+2. implement the profile include frontend ( X ) :
 
 3. implement the chat as basic as it can be ( ) : 
 

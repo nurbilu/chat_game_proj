@@ -61,7 +61,7 @@ env = environ.Env()
 environ.Env.read_env()
 
 SECRET_KEY = env("SECRET_KEY")
-GEMINI_API_KEY = env("GEMINI_API_KEY")
+# GEMINI_API_KEY = env("GEMINI_API_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!

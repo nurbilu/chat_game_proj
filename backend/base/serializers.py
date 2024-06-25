@@ -8,8 +8,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+        # Convert date to string in ISO format
         token['username'] = user.username
         token['email'] = user.email
+        token['address'] = user.address
+        token['birthdate'] = user.birthdate.isoformat() if user.birthdate else None
         return token
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -33,4 +36,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'address', 'birthdate']
-

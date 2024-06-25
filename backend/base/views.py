@@ -62,9 +62,9 @@ class RegisterView(APIView):
             return Response({"message": "User registered successfully"}, status=201)
         return Response(serializer.errors, status=400)
 
-def chat_response(request):
-    prompt = request.GET.get('prompt')
-    response = get_gemini_response(prompt)
-    if 'error' in response:
-        return JsonResponse({'error': response['error'], 'details': response.get('details')}, status=500)
-    return JsonResponse(response)
+# def chat_response(request):
+#     prompt = request.GET.get('prompt')
+#     response = get_gemini_response(prompt)
+#     if 'error' in response:
+#         return JsonResponse({'error': response['error'], 'details': response.get('details')}, status=500)
+#     return JsonResponse(response)

@@ -1,33 +1,19 @@
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import os
-import random
-import threading
 import logging
 from dotenv import load_dotenv
-from cnnct_mngoDB import get_mongo_client, get_database
 
 app = Flask(__name__)
 CORS(app)
-load_dotenv()
+load_dotenv()  # Ensure this is called to load environment variables
 app.config['SECRET_KEY'] = os.getenv('the_secret_key')
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
-# MongoDB connection setup
-client = get_mongo_client()
-db = get_database(client)
-
-# Test MongoDB connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
-
-@app.route('/chat/', methods=['GET'])
+@app.route('/chat/', methods=['GET','POST'])
 def chat():
     prompt = request.args.get('prompt')
     response = get_gemini_response(prompt)
@@ -35,72 +21,20 @@ def chat():
 
 def get_gemini_response(prompt):
     url = os.getenv('GEMINI_URL')
+    api_key = os.getenv("GEMINI_API_KEY")  # Ensure the API key is being loaded correctly
     headers = {
-        'Authorization': f'Bearer {os.getenv("GEMINI_API_KEY")}',
+        'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json',
     }
     data = {'prompt': prompt}
     try:
-        response = requests.post(url, headers=headers, json=data)
+        # Correctly format the URL to use the Pro model
+        full_url = f"{url}/v1beta/models/gemini-1.5-pro-latest:generateContent?key={api_key}"
+        response = requests.post(full_url, headers=headers, json=data)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
         return {'error': 'Failed to connect to Gemini API', 'details': str(e)}
-
-@app.route('/roll-dice/', methods=['GET'])
-def roll_dice():
-    dice_type = request.args.get('type', 20)
-    result = random.randint(1, int(dice_type))
-    return jsonify({'result': result})
-
-@app.route('/start-session/', methods=['POST'])
-def start_session():
-    session['players'] = request.json.get('players', [])
-    session['game_state'] = 'active'
-    return jsonify({'message': 'Session started', 'players': session['players']})
-
-@app.route('/create-character/', methods=['POST'])
-def create_character():
-    character_data = request.json
-    db.characters.insert_one(character_data)
-    return jsonify({'message': 'Character created', 'character': character_data})
-
-@app.route('/update-character/', methods=['POST'])
-def update_character():
-    character_updates = request.json
-    db.characters.update_one({'name': character_updates['name']}, {'$set': character_updates})
-    return jsonify({'message': 'Character updated', 'character': character_updates})
-
-@app.route('/chat-command/', methods=['GET'])
-def chat_command():
-    command = request.args.get('command')
-    if command == "roll_dice":
-        dice_type = request.args.get('type', 20)
-        result = random.randint(1, int(dice_type))
-        return jsonify({'result': result})
-    elif command == "start_game":
-        session['game_state'] = 'active'
-        return jsonify({'message': 'Game started'})
-    # Add more commands as needed
-    return jsonify({'error': 'Command not recognized'})
-
-@app.route('/join-session/', methods=['POST'])
-def join_session():
-    player_name = request.json.get('name')
-    db.sessions.update_one({'session_id': 'current_session'}, {'$addToSet': {'players': player_name}}, upsert=True)
-    return jsonify({'message': f'{player_name} joined the session'})
-
-def end_turn():
-    session['current_turn'] = None
-    print("Turn ended due to time limit")
-
-@app.route('/start-turn/', methods=['POST'])
-def start_turn():
-    turn_duration = 180  # 3 minutes
-    session['current_turn'] = request.json.get('player_name')
-    timer = threading.Timer(turn_duration, end_turn)
-    timer.start()
-    return jsonify({'message': f"Turn started for {session['current_turn']}"})
 
 @app.errorhandler(Exception)
 def handle_exception(e):
