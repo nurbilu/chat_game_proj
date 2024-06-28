@@ -9,8 +9,9 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   userProfiles: any[] = [];
-  userProfile: any = null;  // Ensure it's initialized to null
+  userProfile: any = {};  // Initialize userProfile to an empty object
   isSuperuser: boolean = false;
+  editMode: boolean = false;  // Add this line
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -19,19 +20,29 @@ export class ProfileComponent implements OnInit {
   }
 
   loadProfiles(): void {
-    this.authService.getUserProfiles().subscribe(
+    this.authService.getUserProfile().subscribe(
       data => {
-        if (Array.isArray(data)) {
-          this.userProfiles = data;
-          this.isSuperuser = true;
-        } else {
-          this.userProfile = data;
-          this.isSuperuser = false;
-        }
+        this.userProfile = data;
       },
       error => {
-        console.error('There was an error!', error);
-        this.userProfile = {};  // Initialize with an empty object to avoid null access
+        console.error('Failed to load user profile', error);
+      }
+    );
+  }
+
+  toggleEditMode(): void {
+    this.editMode = !this.editMode;  // Toggle edit mode
+  }
+
+  updateProfile(): void {
+    this.authService.updateUserProfile(this.userProfile).subscribe(
+      data => {
+        console.log('Profile updated successfully');
+        this.userProfile = data;
+        this.toggleEditMode();  // Turn off edit mode after update
+      },
+      error => {
+        console.error('Error updating profile', error);
       }
     );
   }

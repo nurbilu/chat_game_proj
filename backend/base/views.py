@@ -40,6 +40,13 @@ class UserProfileView(APIView):
                 logging.error(f"Error retrieving user profile: {str(e)}")
                 return Response({"error": "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def put(self, request):
+        serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -61,10 +68,3 @@ class RegisterView(APIView):
             serializer.save()
             return Response({"message": "User registered successfully"}, status=201)
         return Response(serializer.errors, status=400)
-
-# def chat_response(request):
-#     prompt = request.GET.get('prompt')
-#     response = get_gemini_response(prompt)
-#     if 'error' in response:
-#         return JsonResponse({'error': response['error'], 'details': response.get('details')}, status=500)
-#     return JsonResponse(response)

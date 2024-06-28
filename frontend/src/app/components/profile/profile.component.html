@@ -17,10 +17,21 @@
         </table>
     </div>
     <div *ngIf="!isSuperuser">
-        <p><strong>Username:</strong> {{ userProfile?.username }}</p>
-        <p><strong>Email:</strong> {{ userProfile?.email }}</p>
-        <p><strong>Address:</strong> {{ userProfile?.address }}</p>
-        <p><strong>Birthdate:</strong> {{ userProfile?.birthdate | date }}</p>
+        <div *ngIf="!editMode">
+            <p>Username: {{ userProfile?.username }}</p>
+            <p>Email: {{ userProfile?.email }}</p>
+            <p>Address: {{ userProfile?.address }}</p>
+            <p>Birthdate: {{ userProfile?.birthdate | date }}</p>
+            <button (click)="toggleEditMode()">Edit Profile</button>
+        </div>
+        <form *ngIf="editMode" (ngSubmit)="updateProfile()">
+            <label>Username:<input type="text" [(ngModel)]="userProfile.username" name="username"></label>
+            <label>Email:<input type="email" [(ngModel)]="userProfile.email" name="email"></label>
+            <label>Address:<input type="text" [(ngModel)]="userProfile.address" name="address"></label>
+            <label>Birthdate:<input type="date" [(ngModel)]="userProfile.birthdate" name="birthdate"></label>
+            <button type="submit">Update Profile</button>
+            <button type="button" (click)="toggleEditMode()">Cancel</button>
+        </form>
     </div>
     <button (click)="logout()">Logout</button>
 </div>

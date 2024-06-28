@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ChatService {
-  private apiUrl = 'http://127.0.0.1:5000/'; // Flask typically runs on port 5000
+  private apiUrl = 'http://127.0.0.1:5000/generate_text'; // Updated URL
 
   constructor(private http: HttpClient) {}
 
   sendMessage(prompt: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}chat/`, {params: {prompt}});
+    return this.http.post<any>(this.apiUrl, {text: prompt}); // Changed to POST request
   }
 
   rollDice(diceType: number = 20): Observable<any> {

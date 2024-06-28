@@ -1,0 +1,24 @@
+{
+  "type": "Compass Connections",
+  "version": {
+    "$numberInt": "1"
+  },
+  "connections": [
+    {
+      "id": "6e3cd623-1fa8-48c1-87e5-6a1eeb175157",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1719041488154"
+        }
+      },
+      "favorite": {
+        "name": "DnD_AI_DB"
+      },
+      "savedConnectionType": "favorite",
+      "connectionOptions": {
+        "connectionString": "mongodb://localhost:27017/DnD_AI_DB'",
+        "oidc": {}
+      }
+    }
+  ]
+}
