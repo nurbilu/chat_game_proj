@@ -8,7 +8,7 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
  
 2. implement the profile include frontend ( X ) :
 
-3. implement the chat as basic as it can be ( ) : 
+3. implement the chat as basic as it can be ( x ) : 
 
 4. decide if game gonna be just one main and only hero or keep as ai chat bot for dnd ( ) :
 
@@ -20,4 +20,4 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 8. implemnt and finish the dockers ( ) :
 
-9. finish design part two , make it responsive as it can be ( ) :  
+9. finish design part two/second edition or more , make it responsive as it can be ( ) :  

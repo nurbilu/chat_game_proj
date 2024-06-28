@@ -42,3 +42,13 @@
 .chat-container form button:hover {
   background-color: #0056b3;
 }
+
+.user-message {
+    text-align: right;
+    color: blue;
+}
+
+.bot-response {
+    text-align: left;
+    color: green;
+}

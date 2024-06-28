@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ProfileComponent } from './components/profile/profile.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
     LoginComponent,
     RegisterComponent,
     ChatComponent,
-    ProfileComponent
+    ProfileComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

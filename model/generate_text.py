@@ -29,7 +29,7 @@ def get_gemini_response(prompt):
     data = {'prompt': prompt}
     try:
         # Correctly format the URL to use the Pro model
-        full_url = f"{url}/v1beta/models/gemini-1.5-pro-latest:generateContent?key={api_key}"
+        full_url = f"{url}{api_key}"
         response = requests.post(full_url, headers=headers, json=data)
         response.raise_for_status()
         return response.json()

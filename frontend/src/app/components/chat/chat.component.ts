@@ -17,11 +17,15 @@ export class ChatComponent {
     }
 
     sendMessage(): void {
+        // Add user's message to responses array
+        this.responses.push({text: this.message, from: 'user'});
+
         this.chatService.sendMessage(this.message).subscribe(response => {
-            this.responses.push(response);
+            // Add API response to responses array
+            this.responses.push({text: response.text, from: 'bot'});
             this.message = ''; // Clear the message input after sending
         }, error => {
-            this.responses.push({text: 'Error: Could not send message'});
+            this.responses.push({text: 'Error: Could not send message', from: 'bot'});
         });
     }
 }
