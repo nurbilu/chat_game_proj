@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,10 @@ export class ChatService {
   constructor(private http: HttpClient) {}
 
   sendMessage(prompt: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, {text: prompt}); // Changed to POST request
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(this.apiUrl, {text: prompt}, {headers}); // Changed to POST request
   }
 
   rollDice(diceType: number = 20): Observable<any> {
@@ -19,6 +22,9 @@ export class ChatService {
   }
 
   startSession(players: string[]): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}start-session/`, {players});
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(`${this.apiUrl}start-session/`, {players}, {headers});
   }
 }
