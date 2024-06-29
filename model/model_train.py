@@ -17,7 +17,7 @@ equipment_df = pd.DataFrame(list(db.equipment.find()))
 monsters_df = pd.DataFrame(list(db.monsters.find()))
 races_df = pd.DataFrame(list(db.races.find()))
 spells_df = pd.DataFrame(list(db.spells.find()))
-prompts_df = pd.DataFrame(list(db.prompts.find()))  # New collection
+greet_user_prompts_df = pd.DataFrame(list(db.greet_user_prompts.find()))  # New collection
 user_inputs_df = pd.DataFrame(list(db.user_inputs.find()))  # New collection
 
 # Preprocess data
@@ -40,7 +40,7 @@ equipment_df = preprocess_data(equipment_df)
 monsters_df = preprocess_data(monsters_df)
 races_df = preprocess_data(races_df)
 spells_df = preprocess_data(spells_df)
-prompts_df = preprocess_data(prompts_df)  # Preprocess new collection
+greet_user_prompts_df = preprocess_data(greet_user_prompts_df)  # Preprocess new collection
 user_inputs_df = preprocess_data(user_inputs_df)  # Preprocess new collection
 
 # Feature Engineering
@@ -70,19 +70,21 @@ def create_game_styles():
 game_styles = create_game_styles()
 print(game_styles)
 
-# Serialization
-def serialize_data(data, filename):
-    with open(filename, 'w') as file:
-        json.dump(data, file)
+# Save game styles to MongoDB
+game_styles_collection = db.game_styles
+game_styles_collection.delete_many({})  # Clear the collection
+game_styles_collection.insert_many([{"style": style, "classes": classes} for style, classes in game_styles.items()])
 
-# Deserialization
-def deserialize_data(filename):
-    with open(filename, 'r') as file:
-        return json.load(file)
+# Save other dataframes to MongoDB
+def save_to_mongo(collection, df):
+    if not df.empty:
+        collection.delete_many({})  # Clear the collection
+        collection.insert_many(df.to_dict(orient='records'))
 
-# Serialize game styles to a JSON file
-serialize_data(game_styles, 'game_styles.json')
-
-# Deserialize game styles from the JSON file
-loaded_game_styles = deserialize_data('game_styles.json')
-print(loaded_game_styles)
+save_to_mongo(db.classes, classes_df)
+save_to_mongo(db.equipment, equipment_df)
+save_to_mongo(db.monsters, monsters_df)
+save_to_mongo(db.races, races_df)
+save_to_mongo(db.spells, spells_df)
+save_to_mongo(db.greet_user_prompts, greet_user_prompts_df)
+save_to_mongo(db.user_inputs, user_inputs_df)

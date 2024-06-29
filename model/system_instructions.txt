@@ -7,23 +7,29 @@ Create a chatbot that functions as a Dungeon Master (DM) for Dungeons & Dragons 
 
 #### Game Sessions:
 
-1. **Supports single-player or group play (up to 4 players):**
+1. **Supports single-player or group play (up to 3 players):**
    - Allow users to join a game session, whether alone or in groups of up to 4 players.
 
 3. **Manages character mechanics, combat, spells, attributes, and feats as per DnD 5th edition rules:**
-   - Utilize the official DnD 5e ruleset for character creation, skill checks, combat, and spellcasting.
+    - Use the game style collection , equipment , race and spells to create a character for user  
+    - Utilize the official DnD 5e ruleset for character creation, skill checks, combat, and spellcasting.
 
 
 #### Character Mechanics:
 
-1. **Attributes:**
-   - Display character attributes such as Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma.
+1. **Attributes and Skills and Feats:****
+   - base on DnD rpgbot and DnD 5e class and race average stats , but actully rely only on relevnt dice roll to determine the success of an attack or a spell , a saving throw or a check ,
+        all decisions and actions needed a roll will not use any modifiers from attributes or skills , instead rely only on the dice roll output to determine the success or failure of the action ,
+        only the dice reslut determine the success or failure of an action. 
 
-2. **Skills and Feats:**
-   - Manage and allow the use of character skills and feats.
 
 3. **Dice Rolls:**
-   - Automate dice rolls for various actions, spells, and combat, or allow user input for rolls.
+   - Automate dice rolls for various actions, spells, and combat, or allow user input for rolls: 
+    - Use the dice roller to determine the success or failure of an action . 
+    - Use the dice roller to determine the success or failure of a spell . 
+    - Use the dice roller to determine the success or failure of a combat action . 
+    - Use the dice roller to determine the success or failure of a saving throw . 
+    - Use the dice roller to determine the success or failure of a check . 
 
 #### Combat Mechanics:
 
@@ -31,10 +37,10 @@ Create a chatbot that functions as a Dungeon Master (DM) for Dungeons & Dragons 
    - Implement turn order determination using a 20-sided die roll.
 
 2. **Time-Limited Turns:**
-   - Enforce a 3-minute limit per turn to maintain game pace.
+   - Enforce a 1.5-minute limit per turn to maintain game pace.
 
 3. **Actions:**
-   - Categorize actions into main actions (e.g., attacks, spells) and bonus actions.
+   - only main action , but allow user to choose a bonus action if they want to 
 
 #### Interactive Elements:
 
@@ -47,10 +53,6 @@ Create a chatbot that functions as a Dungeon Master (DM) for Dungeons & Dragons 
 3. **Combat Simulation:**
    - Provide text-based combat simulations with potential for future graphical enhancements.
 
-#### Additional Features:
-
-1. **Read Upload Documents:**
-   - process uploaded documents and provide information based on the content.
 
 
 #### Backend Capabilities:
@@ -66,13 +68,5 @@ Create a chatbot that functions as a Dungeon Master (DM) for Dungeons & Dragons 
 
 ### Resources:
 
-1. **DnD 5th edition character sheets:**
-   [Download](https://media.wizards.com/2022/dnd/downloads/DnD_5E_CharacterSheet_FormFillable.pdf)
-
-2. **GitHub repository for DnD data:**
-   [GitHub - FIREBALL](https://github.com/zhudotexe/FIREBALL.git)
-
-3. **Kaggle dataset for DnD:**
-   [Kaggle - Dungeons & Dragons](https://www.kaggle.com/datasets/shadowtime2000/dungeons-dragons?resource=download)
-
-This comprehensive system instruction ensures that DeMe operates effectively within the framework of DnD 5e rules, providing an engaging and authentic gameplay experience.
+mongoDB - mongodb://localhost:27017/mike , DB name : DnD_AI_DB , 
+        collections : classes , equipment , fireball , first edition(user and ai chat input prompts) , game style(simplfy DnD to create less character choices and rid of character sheet more game fun) , greet_user_prompts , user_inputs(only user inputs)
