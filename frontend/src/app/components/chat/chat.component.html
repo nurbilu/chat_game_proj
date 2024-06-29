@@ -1,12 +1,21 @@
 <div class="chat-container">
-  <h2>Chat</h2>
-  <div class="chat-window">
-    <div *ngFor="let response of responses" [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
-      <p>{{ response.text }}</p>
+  <h2>D&D Adventure Chat</h2>
+  <div *ngIf="!token">
+    <p>Please log in to start your adventure.</p>
+  </div>
+  <div *ngIf="token">
+    <div class="chat-window">
+      <div *ngFor="let response of responses" [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
+        <p>{{ response.text }}</p>
+      </div>
+    </div>
+    <div class="input-container">
+      <span *ngIf="username">{{ username }}: </span>
+      <input type="text" [(ngModel)]="message" placeholder="Type your message here" required>
+      <button (click)="sendMessage()">Send</button>
+    </div>
+    <div *ngIf="gameStarted">
+      <p>Game has started! Enjoy your adventure, {{username}}!</p>
     </div>
   </div>
-  <form (ngSubmit)="sendMessage()">
-    <input type="text" [(ngModel)]="message" name="message" placeholder="Type your message here" required>
-    <button type="submit">Send</button>
-  </form>
 </div>

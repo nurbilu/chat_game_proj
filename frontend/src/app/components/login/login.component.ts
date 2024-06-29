@@ -17,11 +17,7 @@ export class LoginComponent {
         this.authService.login(this.username, this.password).subscribe(
             data => {
                 localStorage.setItem('token', data.access);  // Assuming JWT returns an 'access' token
-                if (data.isSuperuser) {
-                    this.router.navigate(['/profile']);  // Navigate to profile route if superuser
-                } else {
-                    this.router.navigate(['/profile']);  // Navigate to the same profile route for simplicity
-                }
+                this.router.navigate(['/chat']);  // Navigate to chat route after login
             },
             error => {
                 console.error('Login failed', error);

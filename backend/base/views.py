@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
 from django.http import JsonResponse
 from .utils import get_gemini_response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -56,7 +57,12 @@ class UserLoginView(APIView):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            return Response({'message': 'User logged in successfully'}, status=status.HTTP_200_OK)
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'message': 'User logged in successfully'
+            }, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 class RegisterView(APIView):
@@ -65,6 +71,11 @@ class RegisterView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "User registered successfully"}, status=201)
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'message': 'User registered successfully'
+            }, status=201)
         return Response(serializer.errors, status=400)

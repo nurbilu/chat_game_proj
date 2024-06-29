@@ -6,25 +6,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ChatService {
-  private apiUrl = 'http://127.0.0.1:5000/generate_text'; // Updated URL
+  private apiUrl = 'http://127.0.0.1:5000/generate_text';
+  private loginUrl = 'http://127.0.0.1:8000/login/';
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(prompt: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    return this.http.post<any>(this.apiUrl, {text: prompt}, {headers}); // Changed to POST request
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>(this.loginUrl, { username, password });
   }
 
-  rollDice(diceType: number = 20): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}roll-dice/`, {params: {type: diceType}});
-  }
-
-  startSession(players: string[]): Observable<any> {
+  sendMessage(message: string, username: string, token: string): Observable<any> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     });
-    return this.http.post<any>(`${this.apiUrl}start-session/`, {players}, {headers});
+    return this.http.post<any>(this.apiUrl, { message, username }, { headers });
   }
 }
