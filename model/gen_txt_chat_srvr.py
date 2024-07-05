@@ -12,7 +12,6 @@ app = Flask(__name__)
 CORS(app, resources={r"/generate_text": {"origins": "http://localhost:4200"}})
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200")  # Ensure SocketIO also respects CORS
 
-
 # Create a custom logger
 app_logger = logging.getLogger('app_logger')
 app_logger.setLevel(logging.DEBUG)  # Set the logging level
@@ -78,16 +77,16 @@ def generate_text():
         session_data = {"username": player_name, "history": [], "use_gemini_api": False}
         db.sessions.insert_one(session_data)  # Ensure the session is saved back to the database
 
-    # Handle game style setting and starting game
+    # Improved game style setting and starting game logic
     if 'game_style' not in session_data or session_data['game_style'] == 'pending':
         if not user_input.isdigit() or int(user_input) not in [1, 2, 3]:
             return jsonify({'text': "Please choose a valid game style number (1, 2, or 3).", 'username': player_name}), 200
         else:
             session_data['game_style'] = user_input
             db.sessions.update_one({"username": player_name}, {"$set": session_data})
-            return jsonify({'text': "Game style set. Confirm to start the game with 'start'.", 'username': player_name}), 200
+            return jsonify({'text': game_style_responses[user_input] + " Confirm to start the game with 'start'.", 'username': player_name}), 200
 
-    # Generate response and update session history
+    # Improved response generation and session update logic
     chatbot = ChatbotModel(session_data)
     response_text = chatbot.generate_response(user_input, player_name)
     session_data['history'].append({"user": user_input, "bot": response_text})

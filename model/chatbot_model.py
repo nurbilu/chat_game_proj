@@ -59,7 +59,7 @@ class ChatbotModel:
         if user_input in ['1', '2', '3'] and self.session_history.get('game_style', 'pending') == 'pending':
             self.session_history['game_style'] = user_input
             self.save_session(self.user_name, self.session_history)
-            return game_style_responses[user_input]
+            return game_style_responses[user_input] + " Confirm to start the game with 'start'."
         elif self.session_history.get('game_style') != 'pending':
             return "Game style already chosen. Continuing adventure..."
         else:
@@ -72,23 +72,18 @@ class ChatbotModel:
         return last_prompt
 
     def generate_response(self, user_input, player_name):
-        # Implementation of response generation
-        if not self.character_created:
-            # Handle initial character creation and game style choice
-            if user_input in ['1', '2', '3']:
-                response = game_style_responses[user_input]
-                return f"{response}\n\nAre you ready to start your adventure, {player_name}? (Press Enter or type any form of 'yes' to begin)"
-            else:
-                return "Please choose a valid character style (1, 2, or 3)."
+        # Check if character creation is complete and start game
+        if self.session_history.get('game_style') != 'pending' and user_input.lower() in ['start', 'start session', '1']:
+            self.use_gemini_api = True  # Enable Gemini API usage
+            return "Game started. What's your first move?"
+        elif self.session_history.get('game_style') == 'pending':
+            return self.update_game_style(user_input)
         else:
             # Normal response generation
-            try:
-                response = self.chat_session.send_message(user_input)
-                logging.debug(f"Generated response: {response.text}")
-                return response.text
-            except Exception as e:
-                logging.error(f"Error generating response: {e}")
-                return "An error occurred while generating the response."
+            if self.use_gemini_api:
+                return self.generate_response_gemini(user_input, player_name)
+            else:
+                return "Please confirm to start the game by typing 'start'."
 
     def generate_response_gemini(self, user_input, player_name):
         """Generate response using Gemini API."""
