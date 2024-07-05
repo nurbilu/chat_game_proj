@@ -8,47 +8,52 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  userProfile: any;
   userProfiles: any[] = [];
-  userProfile: any = {};  // Initialize userProfile to an empty object
-  isSuperuser: boolean = false;
-  editMode: boolean = false;  // Add this line
+  isSuperuser: boolean = false; // Assuming there's a way to determine if the user is a superuser
+  editMode: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadProfiles();
+    this.checkSuperuser();
+    this.loadUserProfile();
   }
 
-  loadProfiles(): void {
-    this.authService.getUserProfile().subscribe(
-      data => {
-        this.userProfile = data;
-      },
-      error => {
-        console.error('Failed to load user profile', error);
-      }
-    );
+  loadUserProfile(): void {
+    const tokenPayload = this.authService.decodeToken();
+    this.userProfile = {
+      username: tokenPayload.username,
+      email: tokenPayload.email,
+      address: tokenPayload.address,
+      birthdate: new Date(tokenPayload.birthdate)
+    };
+  }
+
+  checkSuperuser(): void {
+    // Implement logic to check if the user is a superuser
+    // This might involve checking a role from the user's profile or token
+    this.isSuperuser = true; // Placeholder: set based on actual logic
   }
 
   toggleEditMode(): void {
-    this.editMode = !this.editMode;  // Toggle edit mode
+    this.editMode = !this.editMode;
   }
 
   updateProfile(): void {
     this.authService.updateUserProfile(this.userProfile).subscribe(
-      data => {
+      response => {
         console.log('Profile updated successfully');
-        this.userProfile = data;
-        this.toggleEditMode();  // Turn off edit mode after update
+        this.toggleEditMode();
       },
       error => {
-        console.error('Error updating profile', error);
+        console.error('Error updating profile:', error);
       }
     );
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 }

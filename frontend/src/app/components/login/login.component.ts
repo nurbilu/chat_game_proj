@@ -14,19 +14,19 @@ export class LoginComponent {
     constructor(private authService: AuthService, private router: Router) { }
 
     login() {
-        this.authService.login(this.username, this.password).subscribe(
-            data => {
-                localStorage.setItem('token', data.access);  // Assuming JWT returns an 'access' token
-                this.router.navigate(['/chat']);  // Navigate to chat route after login
+        this.authService.login(this.username, this.password).subscribe({
+            next: (response) => {
+                this.router.navigate(['/chat']); 
+                console.log('Login successful');
             },
-            error => {
-                console.error('Login failed', error);
+            error: (error) => {
+                console.error('Login failed');
             }
-        );
+        });
     }
 
     logout(): void {
-        localStorage.removeItem('token');
+        localStorage.clear();
         this.router.navigate(['/login']);
     }
 }

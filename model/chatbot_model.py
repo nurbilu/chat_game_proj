@@ -22,31 +22,79 @@ fireball_collection = db.fireball
 fireball_prompts = list(fireball_collection.find())
 
 # Load initial response text from file
+# only once per user
 with open('initial_response_text.txt', 'r') as file:
     initial_response_text = file.read()
 
+# Game style choice responses
+game_style_responses = {
+    '1': "You've chosen the path of the brave warrior, wielding a mighty sword/axe/mace and shield or a mighty great weapon to your choosing.",
+    '2': "You've chosen the path of the cunning rogue, with stealth and agility as your allies.",
+    '3': "You've chosen the path of the wise wizard, harnessing the power of magic to bend reality."
+}
+
 class ChatbotModel:
-    def __init__(self):
+    def __init__(self, session_data):
+        self.session_history = session_data
+        self.user_name = session_data.get('username', 'Anonymous')
+        self.use_gemini_api = session_data.get('use_gemini_api', False)
+        self.client = MongoClient("mongodb://localhost:27017/mike")
+        self.db = self.client["DnD_AI_DB"]
+        self.prompts_collection = self.db["prompts"]
         self.model = genai.GenerativeModel(model_name="gemini-1.5-pro")
         self.chat_session = self.model.start_chat(
             history=[{
                 "role": "user",
-                "parts": [{"text": "You are a DnD Dungeon Master."}]
+                "parts": [{"text": initial_response_text}]
             }]
         )
-        self.user_name = None  # Store user's name
+        self.character_created = False  # Track if character creation is complete
 
     def set_user_name(self, name):
         self.user_name = name
+        if not self.character_created:  # Only reset if character hasn't been created yet
+            self.character_created = True  # Mark character as created
 
-    def generate_response(self, user_input):
-        try:
-            response = self.chat_session.send_message(user_input)
-            logging.debug(f"Generated response: {response.text}")
-            return response.text
-        except Exception as e:
-            logging.error(f"Error generating response: {e}")
-            return "An error occurred while generating the response."
+    def update_game_style(self, user_input):
+        if user_input in ['1', '2', '3'] and self.session_history.get('game_style', 'pending') == 'pending':
+            self.session_history['game_style'] = user_input
+            self.save_session(self.user_name, self.session_history)
+            return game_style_responses[user_input]
+        elif self.session_history.get('game_style') != 'pending':
+            return "Game style already chosen. Continuing adventure..."
+        else:
+            return "Please choose a valid character style (1, 2, or 3)."
+
+    def logout_user(self):
+        # This function is called when the user logs out
+        last_prompt = self.session_history['last_prompt']
+        self.save_session(self.user_name, self.session_history)
+        return last_prompt
+
+    def generate_response(self, user_input, player_name):
+        # Implementation of response generation
+        if not self.character_created:
+            # Handle initial character creation and game style choice
+            if user_input in ['1', '2', '3']:
+                response = game_style_responses[user_input]
+                return f"{response}\n\nAre you ready to start your adventure, {player_name}? (Press Enter or type any form of 'yes' to begin)"
+            else:
+                return "Please choose a valid character style (1, 2, or 3)."
+        else:
+            # Normal response generation
+            try:
+                response = self.chat_session.send_message(user_input)
+                logging.debug(f"Generated response: {response.text}")
+                return response.text
+            except Exception as e:
+                logging.error(f"Error generating response: {e}")
+                return "An error occurred while generating the response."
+
+    def generate_response_gemini(self, user_input, player_name):
+        """Generate response using Gemini API."""
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(user_input)
+        return response.text
 
     def roll_dice(self, sides=20):
         """Simulate rolling a dice with a given number of sides."""
@@ -86,9 +134,27 @@ class ChatbotModel:
         for prompt in fireball_prompts:
             self.model.train(prompt['input'], prompt['output'])
 
+    def save_session(self, username, session_data):
+        """Save session data to the database."""
+        db.sessions.update_one({"username": username}, {"$set": {"history": session_data}}, upsert=True)
+
+    def retrieve_session(self, username):
+        """Retrieve session data from the database."""
+        session = db.sessions.find_one({"username": username})
+        return session['history'] if session else []
+
+    def logout_user(self):
+        """Retrieve only the last chatbot prompt on logout."""
+        session = self.retrieve_session(self.user_name)
+        if session:
+            last_prompt = session[-1]['bot'] if 'bot' in session[-1] else "No chatbot response found."
+            return last_prompt
+        return "No session data available."
+
 # Example usage
 if __name__ == "__main__":
-    chatbot = ChatbotModel()
+    dummy_session_data = {'username': 'default_username', 'use_gemini_api': False}
+    chatbot = ChatbotModel(dummy_session_data)
     user_input = "I'm ready to start my adventure!"
-    response = chatbot.generate_response(user_input)
+    response = chatbot.generate_response(user_input, dummy_session_data['username'])
     print(response)

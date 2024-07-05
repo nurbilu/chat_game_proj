@@ -59,8 +59,11 @@ class UserLoginView(APIView):
             login(request, user)
             refresh = RefreshToken.for_user(user)
             return Response({
-                'refresh': str(refresh),
                 'access': str(refresh.access_token),
+                'username': user.username,  
+                'email': user.email,
+                'address': user.address,
+                'birthdate': user.birthdate.isoformat() if user.birthdate else None,
                 'message': 'User logged in successfully'
             }, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)

@@ -28,7 +28,9 @@ export class RegisterComponent {
     }
 
     logout(): void {
-        localStorage.removeItem('token');
+        // localStorage.removeItem('token');
+        localStorage.clear();
         this.router.navigate(['/login']);
     }
 }
+

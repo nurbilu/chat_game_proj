@@ -15,11 +15,12 @@ export class ChatService {
     return this.http.post<any>(this.loginUrl, { username, password });
   }
 
-  sendMessage(message: string, username: string, token: string): Observable<any> {
+  sendMessage(message: string, username?: string): Observable<any> {
+    username = username || localStorage.getItem('username')!;
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Content-Type': 'application/json'
     });
-    return this.http.post<any>(this.apiUrl, { message, username }, { headers });
+    return this.http.post<any>(this.apiUrl, { text: message, username }, { headers });
   }
 }
+

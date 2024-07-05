@@ -19,8 +19,11 @@ from logging.handlers import RotatingFileHandler
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Assuming your Angular build outputs to 'frontend/dist/my-angular-app'
+ANGULAR_DIST_DIR = BASE_DIR / 'frontend/src/app'
+
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    ANGULAR_DIST_DIR,
 ]
 AUTH_USER_MODEL = 'base.User'
 # Logging configuration
@@ -235,12 +238,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-
-MEDIA_ROOT = BASE_DIR / 'static/images'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# Ensure STATIC_ROOT and MEDIA_ROOT are set to different directories
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Django collects static files here
+MEDIA_ROOT = BASE_DIR / 'media'  # For uploaded media files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

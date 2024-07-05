@@ -10,10 +10,17 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 3. implement the chat as basic as it can be ( x ) : 
 
-4. decide if game gonna be just one main and only hero or keep as ai chat bot for dnd ( ) :
+4. decide if game gonna be just one main and only hero or keep as ai chat bot for dnd ( x ) :
+    more simple chatbot , only three game style 
 
-5. focus and specify the chat ( ) :
-
+5. focus and specify the chat and web site ( ) : 
+    - fix profile page
+    - fix superuser profile 
+    - fix access to chat and profile page when not log in
+    - fix chat initial prompt and characterization of player not in loop when proccess is correct by model 
+    - fix full gemini integration ai with the initial prompt and player characterization
+    - fix login/logout 
+    
 6. create unit tests for all API calls ( ) :
 
 7. design the website first edition ( ) :

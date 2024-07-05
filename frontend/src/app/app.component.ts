@@ -12,7 +12,7 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   logout(): void {
-    localStorage.removeItem('token');
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 }
