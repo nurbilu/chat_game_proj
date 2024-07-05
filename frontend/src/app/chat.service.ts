@@ -18,9 +18,9 @@ export class ChatService {
   sendMessage(message: string, username?: string): Observable<any> {
     username = username || localStorage.getItem('username')!;
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'  // Ensure CORS is handled
     });
     return this.http.post<any>(this.apiUrl, { text: message, username }, { headers });
   }
 }
-

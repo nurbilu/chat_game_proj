@@ -1,23 +1,22 @@
-.about-container {
+.homepage-container {
     position: relative;
-    max-width: 800px;
-    min-height: 500px;
-    margin: 20px auto;
-    padding: 30px;
+    max-width: 900px;
+    min-height: 600px;
+    padding: 40px;
     border: 2px solid #d3c29d;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     color: white;
     overflow: hidden;
 }
 
-.about-container::before {
+.homepage-container::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('/assets/imgs/mage.jpg') no-repeat center center;
+    background: url('/assets/imgs/magical_valley.jpg') no-repeat center center;
     background-size: cover;
     filter: brightness(0.7);
     z-index: -1;

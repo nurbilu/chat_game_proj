@@ -60,7 +60,7 @@ class UserLoginView(APIView):
             refresh = RefreshToken.for_user(user)
             return Response({
                 'access': str(refresh.access_token),
-                'username': user.username,  
+                'username': user.username, 
                 'email': user.email,
                 'address': user.address,
                 'birthdate': user.birthdate.isoformat() if user.birthdate else None,

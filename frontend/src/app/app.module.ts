@@ -8,10 +8,12 @@ import { RegisterComponent } from './components/register/register.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { AuthService } from './auth.service';
 import { ChatService } from './chat.service';
-import { FormsModule } from '@angular/forms'; // Added FormsModule import
+import { FormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AboutComponent } from './components/about/about.component';
+import { HomepageComponent } from './components/homepage/homepage.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component'; // Import HomepageComponent
 
 @NgModule({
   declarations: [
@@ -20,20 +22,21 @@ import { AboutComponent } from './components/about/about.component';
     RegisterComponent,
     ChatComponent,
     ProfileComponent,
-    AboutComponent
+    AboutComponent,
+    HomepageComponent,
+    ChangePasswordComponent // Add HomepageComponent to declarations
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // HttpClientModule, // Remove or comment out if you are replacing all HttpClient usages with provideHttpClient
-    FormsModule // Added FormsModule to imports
+    FormsModule
   ],
   providers: [
     AuthService,
     ChatService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    provideHttpClient(withFetch()) // Add this line to enable fetch
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

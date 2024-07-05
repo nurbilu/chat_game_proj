@@ -1,0 +1,24 @@
+button {
+  background-color: #329e23; /* Bootstrap secondary color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Garamond', serif;
+}
+
+button:hover {
+  background-color: #5a6268; /* Darker shade for hover */
+}
+
+.login-container {
+    max-width: 1400px; /* Matched width */ 
+    max-height: 350px;
+    padding: 350px; /* Increased padding */
+    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/mage.jpg') no-repeat center center;
+    background-size: cover;
+    border: 2px solid #d3c29d; /* Old paper style border */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: white; /* Ensure text is readable on potentially dark background */
+  }

@@ -1,10 +1,34 @@
 .chat-container {
-  width: 300px;
-  margin: 0 auto;
-  padding: 1rem;
+  max-width: 1850px; /* Matched width */ 
+  padding: 160px ; /* Increased padding */
+  background: rgba(255, 255, 255, 0.8) url('/assets/imgs/magical_valley.jpg') no-repeat center center;
+  background-size: cover;
+  border: 2px solid #d3c29d; /* Old paper style border */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  color: white; /* Ensure text is readable on potentially dark background */
+}
+
+.chat-window {
+  height: 400px; /* Increased height */
+  overflow-y: scroll; /* Enables scrolling inside the chat window */
+  background-color: #fff;
   border: 1px solid #ccc;
+  padding: 15px; /* Increased padding */
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Cardo', serif; /* More thematic font */
+}
+
+.input-container {
+  display: flex;
+  margin-top: 10px;
+}
+
+.input-container input {
+  flex-grow: 1;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
 }
 
 .chat-container h2 {

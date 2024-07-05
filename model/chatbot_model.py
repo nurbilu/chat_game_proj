@@ -21,10 +21,12 @@ fireball_collection = db.fireball
 # Fetch fireball prompts
 fireball_prompts = list(fireball_collection.find())
 
-# Load initial response text from file
-# only once per user
+# Load initial and confirmation texts
 with open('initial_response_text.txt', 'r') as file:
     initial_response_text = file.read()
+
+with open('confirmation_start.txt', 'r') as file:
+    confirmation_start_text = file.read()
 
 # Game style choice responses
 game_style_responses = {
@@ -34,7 +36,7 @@ game_style_responses = {
 }
 
 class ChatbotModel:
-    def __init__(self, session_data):
+    def __init__(self, session_data={}):
         self.session_history = session_data
         self.user_name = session_data.get('username', 'Anonymous')
         self.use_gemini_api = session_data.get('use_gemini_api', False)
@@ -42,13 +44,14 @@ class ChatbotModel:
         self.db = self.client["DnD_AI_DB"]
         self.prompts_collection = self.db["prompts"]
         self.model = genai.GenerativeModel(model_name="gemini-1.5-pro")
-        self.chat_session = self.model.start_chat(
-            history=[{
-                "role": "user",
-                "parts": [{"text": initial_response_text}]
-            }]
-        )
-        self.character_created = False  # Track if character creation is complete
+        self.chat_session = None  # Initialize chat session as None
+
+        # Load initial and confirmation texts
+        with open('initial_response_text.txt', 'r') as file:
+            self.initial_response_text = file.read()
+
+        with open('confirmation_start.txt', 'r') as file:
+            self.confirmation_start_text = file.read()
 
     def set_user_name(self, name):
         self.user_name = name
@@ -59,7 +62,7 @@ class ChatbotModel:
         if user_input in ['1', '2', '3'] and self.session_history.get('game_style', 'pending') == 'pending':
             self.session_history['game_style'] = user_input
             self.save_session(self.user_name, self.session_history)
-            return game_style_responses[user_input] + " Confirm to start the game with 'start'."
+            return game_style_responses[user_input] + " " + self.confirmation_start_text
         elif self.session_history.get('game_style') != 'pending':
             return "Game style already chosen. Continuing adventure..."
         else:
@@ -74,7 +77,7 @@ class ChatbotModel:
     def generate_response(self, user_input, player_name):
         # Check if character creation is complete and start game
         if self.session_history.get('game_style') != 'pending' and user_input.lower() in ['start', 'start session', '1']:
-            self.use_gemini_api = True  # Enable Gemini API usage
+            self.start_game_session(player_name, game_style_responses[self.session_history['game_style']])
             return "Game started. What's your first move?"
         elif self.session_history.get('game_style') == 'pending':
             return self.update_game_style(user_input)
@@ -85,10 +88,19 @@ class ChatbotModel:
             else:
                 return "Please confirm to start the game by typing 'start'."
 
+    def start_game_session(self, player_name, game_style):
+        """Start a new game session with the selected game style."""
+        self.chat_session = self.model.start_chat(
+            history=[{
+                "role": "system",
+                "parts": [{"text": f"Starting game as a {game_style}."}]
+            }]
+        )
+        self.use_gemini_api = True  # Enable Gemini API usage
+
     def generate_response_gemini(self, user_input, player_name):
         """Generate response using Gemini API."""
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(user_input)
+        response = self.model.generate_content(user_input, context=self.chat_session)
         return response.text
 
     def roll_dice(self, sides=20):

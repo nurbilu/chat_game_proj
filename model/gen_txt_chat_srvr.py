@@ -9,7 +9,7 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 # Configure CORS properly to ensure only one header is sent
-CORS(app, resources={r"/generate_text": {"origins": "http://localhost:4200"}})
+CORS(app, support_credentials=True, resources={r"/generate_text": {"origins": "http://localhost:4200"}})
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200")  # Ensure SocketIO also respects CORS
 
 # Create a custom logger
@@ -114,35 +114,36 @@ def handle_message(data):
     chatbot = ChatbotModel()
     session_history = chatbot.retrieve_session(player_name)
 
-    # Check if the user needs to choose a game style or confirm to start
-    if 'game_style' not in session_history or session_history['game_style'] == 'pending':
-        while True:
-            if not user_input.isdigit() or int(user_input) not in [1, 2, 3]:
-                emit('response', {'text': "Please choose a valid game style number (1, 2, or 3).", 'username': player_name})
-                return  # Exit the function to wait for new input
-            else:
-                session_history['game_style'] = user_input
-                chatbot.save_session(player_name, session_history)
-                emit('response', {'text': "Game style set. Confirm to start the game with 'start'.", 'username': player_name})
-                return
-
-    # Check if user confirms to start the game
-    if user_input.lower() == 'start':
-        chatbot.use_gemini_api = True  # Enable Gemini API usage
-        emit('response', {'text': "Game started using Gemini API.", 'username': player_name})
+    # Initial greeting and game style choice
+    if 'game_style' not in session_history:
+        emit('response', {'text': chatbot.initial_response_text, 'username': player_name})
         return
 
-    # Generate response using the appropriate method
-    if chatbot.use_gemini_api:
-        response_text = chatbot.generate_response_gemini(user_input, player_name)
-    else:
-        response_text = chatbot.generate_response(user_input, player_name)
+    # Handle game style selection
+    if session_history.get('game_style') == 'pending':
+        if not user_input.isdigit() or int(user_input) not in [1, 2, 3]:
+            emit('response', {'text': "Please choose a valid game style number (1, 2, or 3).", 'username': player_name})
+            return
+        else:
+            session_history['game_style'] = user_input
+            chatbot.save_session(player_name, session_history)
+            emit('response', {'text': chatbot.game_style_responses[user_input] + " " + chatbot.confirmation_start_text, 'username': player_name})
+            return
 
-    # Save the updated session history
-    updated_history = session_history + [{"user": user_input, "bot": response_text}]
-    chatbot.save_session(player_name, updated_history)
+    # Confirm to start the game
+    if user_input.lower() == 'start':
+        if not chatbot.use_gemini_api:
+            chatbot.use_gemini_api = True
+            chatbot.start_game_session(player_name, session_history['game_style'])
+            emit('response', {'text': "Game started. What's your first move?", 'username': player_name})
+            return
+        else:
+            response_text = chatbot.generate_response_gemini(user_input, player_name)
+            emit('response', {'text': response_text, 'username': player_name})
+            return
 
-    emit('response', {'text': response_text, 'username': player_name})
+    # Default to asking for start confirmation if game is not started
+    emit('response', {'text': "Please confirm to start the game by typing 'start'.", 'username': player_name})
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

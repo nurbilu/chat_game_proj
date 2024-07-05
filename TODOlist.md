@@ -15,11 +15,13 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 5. focus and specify the chat and web site ( ) : 
     - fix profile page
+        fix profile page to be able to edit all the fields except password - done 
+        make change password in a different component + add link in login for change password component for "forgot your password? click here"   
     - fix superuser profile 
-    - fix access to chat and profile page when not log in
-    - fix chat initial prompt and characterization of player not in loop when proccess is correct by model 
+    - fix chat initial prompt and characterization of player not in loop when proccess is correct by model - almost : 
+        make each confirmation_start.txt to each game style 
     - fix full gemini integration ai with the initial prompt and player characterization
-    - fix login/logout 
+
     
 6. create unit tests for all API calls ( ) :
 

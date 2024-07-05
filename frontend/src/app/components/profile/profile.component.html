@@ -1,31 +1,8 @@
 <div class="profile-container">
     <h2>Profile</h2>
     <div *ngIf="isSuperuser">
-        <table>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Birthdate</th>
-            </tr>
-            <tr *ngFor="let user of userProfiles">
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.address }}</td>
-                <td>{{ user.birthdate | date }}</td>
-            </tr>
-        </table>
-    </div>
-    <div *ngIf="!isSuperuser">
-        <div *ngIf="!editMode">
-            <p>Username: {{ userProfile?.username }}</p>
-            <p>Email: {{ userProfile?.email }}</p>
-            <p>Address: {{ userProfile?.address }}</p>
-            <p>Birthdate: {{ userProfile?.birthdate | date }}</p>
-            <button (click)="toggleEditMode()">Edit Profile</button>
-        </div>
-        <form *ngIf="editMode" (ngSubmit)="updateProfile()">
-            <label>Username:<input type="text" [(ngModel)]="userProfile.username" name="username"></label>
+        <form (ngSubmit)="updateProfile()">
+            <label>Username:<input type="username" [(ngModel)]="userProfile.username" name="username"></label>
             <label>Email:<input type="email" [(ngModel)]="userProfile.email" name="email"></label>
             <label>Address:<input type="text" [(ngModel)]="userProfile.address" name="address"></label>
             <label>Birthdate:<input type="date" [(ngModel)]="userProfile.birthdate" name="birthdate"></label>

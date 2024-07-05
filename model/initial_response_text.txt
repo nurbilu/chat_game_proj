@@ -1,4 +1,4 @@
-"Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat style do you desire? There are 3 Game Styles to choose from:
+Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat style do you desire? There are 3 Game Styles to choose from:
 
 1. **Warrior Fighter**: Choose this if you prefer a bold and direct approach in combat. This style includes classes like Fighter, Barbarian, and Paladin. They excel in martial prowess, wielding weapons and armor with great skill and endurance.
 
@@ -6,5 +6,5 @@
 
 3. **Mage Sorcerer**: Select this if you fancy wielding arcane powers and unleashing potent spells. Classes like Wizard, Sorcerer, and Warlock belong to this style. They command the forces of magic, casting spells of devastating power and mysterious origins.
 
-Please choose 1 for Warrior Fighter, 2 for Rogue Druid, or 3 for Mage Sorcerer to begin your adventure!"
+Please choose 1 for Warrior Fighter, 2 for Rogue Druid, or 3 for Mage Sorcerer to begin your adventure!
 

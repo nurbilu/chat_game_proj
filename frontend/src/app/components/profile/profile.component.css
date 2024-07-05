@@ -1,4 +1,28 @@
-input, button {
-    margin: 5px;
-    padding: 8px;
+.profile-container {
+    max-width: 1250px; /* Matched width */ 
+    max-height: 370px;
+    padding: 370px; /* Increased padding */
+    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/knight.jpg') no-repeat center center;
+    background-size: cover;
+    border: 2px solid #d3c29d; /* Old paper style border */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: white; /* Ensure text is readable on potentially dark background */
+  }
+
+.profile-container form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.profile-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.profile-container input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

@@ -1,8 +1,49 @@
+nav {
+  background-color: #333740; /* Darker shade for a more subtle look */
+  padding: 10px 20px;
+  border-bottom: 2px solid #c9a66b; /* Gold color accent */
+}
+
 nav ul {
   list-style-type: none;
+  display: flex;
+  justify-content: space-around;
   padding: 0;
 }
+
 nav ul li {
-  display: inline;
-  margin-right: 10px;
+  margin: 0 10px;
+}
+
+nav a {
+  color: #f4eee8; /* Parchment white */
+  font-size: 18px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: #c9a66b; /* Gold color */
+  text-decoration: underline;
+}
+
+button {
+  background-color: #007bff; /* Primary blue */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Garamond', serif;
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue for hover */
+}
+
+.logout-button {
+  background-color: #dc3545; /* Bootstrap 'danger' color */
+}
+
+.logout-button:hover {
+  background-color: #c82333; /* Darker red for hover */
 }

@@ -1,1 +1,49 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles */
+body {
+  font-family: 'Garamond', serif;
+  background-color: #f4eee8;
+  color: #333;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Cardo', serif;
+}
+
+a {
+  color: #4b2e83;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #795548;
+}
+
+.button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Garamond', serif;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue for hover */
+  }
+  
+  .logout-button {
+    background-color: #dc3545; /* Bootstrap 'danger' color */
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333; /* Darker red for hover */
+  }
+.input {
+    width: 100%; /* Full width */
+    padding: 12px 20px; /* Increased padding */
+    border: 1px solid #ccc; /* Standard border */
+    border-radius: 4px; /* Rounded borders */
+    box-sizing: border-box; /* Border and padding included in width */
+  }
+  

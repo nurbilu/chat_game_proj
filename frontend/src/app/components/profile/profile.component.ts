@@ -21,7 +21,16 @@ export class ProfileComponent implements OnInit {
   }
 
   loadUserProfile(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
     const tokenPayload = this.authService.decodeToken();
+    if (!tokenPayload || !tokenPayload.username) {
+      console.error('Token payload invalid:', tokenPayload);
+      return;
+    }
     this.userProfile = {
       username: tokenPayload.username,
       email: tokenPayload.email,
