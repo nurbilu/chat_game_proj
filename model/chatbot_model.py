@@ -1,10 +1,10 @@
 import os
 import json
 from dotenv import load_dotenv
-import google.generativeai as genai
 from pymongo import MongoClient
 import random
 import logging
+from GEM_cnnction import GeminiConnection
 
 # Load environment variables
 load_dotenv()
@@ -14,13 +14,12 @@ API_KEY = os.getenv('GEMINI_API_KEY')
 if not API_KEY:
     raise ValueError("API Key for Gemini is not loaded. Check your .env file.")
 
-# Configure Google Generative AI
-genai.configure(api_key=API_KEY)
-
 # MongoDB setup
 client = MongoClient('mongodb://localhost:27017/mike')
 db = client.DnD_AI_DB
 fireball_collection = db.fireball
+game_styles_collection = db.game_styles
+sessions_collection = db.sessions
 
 # Fetch fireball prompts
 fireball_prompts = list(fireball_collection.find())
@@ -40,14 +39,14 @@ game_style_responses = {
 }
 
 class ChatbotModel:
-    def __init__(self, session_data={}):
-        self.session_history = session_data
+    def __init__(self, session_data):
+        self.session_data = session_data
         self.user_name = session_data.get('username', 'Anonymous')
         self.use_gemini_api = session_data.get('use_gemini_api', False)
         self.client = MongoClient("mongodb://localhost:27017/mike")
         self.db = self.client["DnD_AI_DB"]
         self.prompts_collection = self.db["prompts"]
-        self.model = genai.GenerativeModel(model_name="gemini-1.5-pro")
+        self.gemini_connection = GeminiConnection(API_KEY)
         self.chat_session = None  # Initialize chat session as None
 
         # Load initial and confirmation texts
@@ -63,27 +62,27 @@ class ChatbotModel:
             self.character_created = True  # Mark character as created
 
     def update_game_style(self, user_input):
-        if user_input in [1, 2, 3] and self.session_history.get('game_style', 'pending') == 'pending':
-            self.session_history['game_style'] = user_input
-            self.save_session(self.user_name, self.session_history)
+        if user_input in [1, 2, 3] and self.session_data.get('game_style', 'pending') == 'pending':
+            self.session_data['game_style'] = user_input
+            self.save_session(self.user_name, self.session_data)
             return game_style_responses[user_input] + " " + self.confirmation_start_text
-        elif self.session_history.get('game_style') != 'pending':
+        elif self.session_data.get('game_style') != 'pending':
             return "Game style already chosen. Continuing adventure..."
         else:
             return "Please choose a valid character style (1, 2, or 3)."
 
     def logout_user(self):
         # This function is called when the user logs out
-        last_prompt = self.session_history['last_prompt']
-        self.save_session(self.user_name, self.session_history)
+        last_prompt = self.session_data['last_prompt']
+        self.save_session(self.user_name, self.session_data)
         return last_prompt
 
     def generate_response(self, user_input, player_name):
         # Check if the user is confirming to start the game after choosing a style
         if user_input.lower() == 'start':
-            if 'game_style' in self.session_history and self.session_history['game_style'] in ['1', '2', '3']:
+            if 'game_style' in self.session_data and self.session_data['game_style'] in ['1', '2', '3']:
                 # Fetch game style data and start the game
-                game_style_data = self.fetch_game_style_data(self.session_history['game_style'])
+                game_style_data = self.fetch_game_style_data(self.session_data['game_style'])
                 # Start the game session or generate the game start response
                 return self.start_game_session(player_name, game_style_data)
             else:
@@ -91,7 +90,7 @@ class ChatbotModel:
 
         # Handle game style selection
         if user_input in ['1', '2', '3']:
-            self.session_history['game_style'] = user_input  # Save the game style
+            self.session_data['game_style'] = user_input  # Save the game style
             response = game_style_responses[user_input]
             response += "\n\n" + self.confirmation_start_text  # Add confirmation text to prompt user to start
             return response
@@ -114,7 +113,7 @@ class ChatbotModel:
 
     def start_game_session(self, player_name, game_style):
         """Start a new game session with the selected game style."""
-        self.chat_session = self.model.start_chat(
+        self.chat_session = self.gemini_connection.model.start_chat(
             history=[{
                 "role": "system",
                 "parts": [{"text": f"Starting game as a {game_style}."}]
@@ -126,9 +125,12 @@ class ChatbotModel:
     def generate_response_gemini(self, user_input, player_name):
         """Generate response using Gemini API."""
         try:
-            # Assuming the model expects a single string or a structured input without a 'context' keyword
-            response = self.model.generate_content(user_input)
-            return response.text
+            # Fetch game style and session context
+            game_style = self.db.game_styles.find_one({"style_id": self.session_data.get('game_style')})
+            context = game_style['description'] if game_style else "Default game style."
+            
+            # Generate response using the Gemini model
+            return self.gemini_connection.generate_response(user_input, context)
         except Exception as e:
             logging.error(f"Failed to generate response from Gemini API: {str(e)}")
             return "Failed to connect to Gemini API. Please try again later."
@@ -136,7 +138,6 @@ class ChatbotModel:
     def roll_dice(self, sides=20):
         """Simulate rolling a dice with a given number of sides."""
         return random.randint(1, sides)
-
 
     def handle_multiplayer_session(self, session_id, user_input):
         # Retrieve session data from MongoDB

@@ -1,1 +1,12 @@
 1
+2024-07-11 23:54:41,659 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-11 23:54:42,740 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-11 23:56:14,968 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-11 23:56:16,012 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-12 00:12:16,695 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-12 00:12:17,626 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-12 00:40:16,859 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-12 00:40:17,755 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-12 01:05:00,308 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-12 01:05:31,141 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}
+2024-07-12 01:06:13,128 - app_logger - DEBUG - Calling run with args: (<Flask 'gen_txt_chat_srvr'>,), kwargs: {'debug': True}

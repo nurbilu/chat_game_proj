@@ -41,26 +41,13 @@ def logger(func):
             raise  
     return wrapper
 
-
-# Game style responses
-game_style_responses = {
-    "1": "You've chosen the Warrior Fighter style. Prepare for close combat and heroic feats!",
-    "2": "You've selected the Rogue Druid style. Get ready for stealth and nature magic!",
-    "3": "You've picked the Mage Sorcerer style. Arcane power is at your fingertips!"
-}
-
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/mike')
 db = client['DnD_AI_DB']
 
-# At the top of the file, add a dictionary to track user sessions
-user_sessions = {}
-
-@app.route('/generate_text', methods=['POST', 'OPTIONS'])
+@app.route('/generate_text', methods=['POST', 'OPTIONS'])  # Apply the logging decorator
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def generate_text():
-    print("Request received")
-    print("Request JSON:", request.json)
     user_input = request.json.get('text')
     player_name = request.json.get('username')
 
@@ -71,7 +58,13 @@ def generate_text():
         db.sessions.insert_one(session_data)
 
     chatbot = ChatbotModel(session_data)
-    response_text = chatbot.generate_response(user_input, player_name)
+    if session_data.get('use_gemini_api', False):
+        response_text = chatbot.generate_response_gemini(user_input, player_name)
+    else:
+        response_text = chatbot.generate_response(user_input, player_name)
+        if "Starting game as a" in response_text:
+            session_data['use_gemini_api'] = True  # Enable Gemini API after starting the game
+
     if "Failed to connect to Gemini API" in response_text:
         return jsonify({'error': 'API Error', 'message': 'Failed to connect to Gemini API'}), 503
 
@@ -100,9 +93,16 @@ def handle_message(data):
     chatbot = ChatbotModel()
     session_history = chatbot.retrieve_session(player_name)
 
-    response_text = chatbot.generate_response(user_input, player_name)
+    if session_history.get('use_gemini_api', False):
+        response_text = chatbot.generate_response_gemini(user_input, player_name)
+    else:
+        response_text = chatbot.generate_response(user_input, player_name)
+        if "Starting game as a" in response_text:
+            session_history['use_gemini_api'] = True  # Enable Gemini API after starting the game
+
     emit('response', {'text': response_text, 'username': player_name})
     chatbot.save_session(player_name, session_history)  # Ensure session is saved after handling
 
 if __name__ == '__main__':
+    socketio.run = logger(socketio.run)
     socketio.run(app, debug=True)
