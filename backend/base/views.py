@@ -3,7 +3,7 @@ from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, UserProfileSerializer
+from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, UserProfileSerializer, ChangePasswordSerializer
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
@@ -82,3 +82,15 @@ class RegisterView(APIView):
                 'message': 'User registered successfully'
             }, status=201)
         return Response(serializer.errors, status=400)
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        serializer = ChangePasswordSerializer(data=request.data, context={'user': user})
+        if serializer.is_valid():
+            user.set_password(serializer.validated_data['new_password'])
+            user.save()
+            return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
