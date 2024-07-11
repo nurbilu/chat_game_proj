@@ -1,8 +1,8 @@
 .homepage-container {
     position: relative;
-    max-width: 900px;
-    min-height: 600px;
-    padding: 40px;
+    max-width: 100%; /* Adjust to fit the web browser width */
+    min-height: 400px; /* Adjust the minimum height */
+    padding: 305px; /* Decrease padding for a more compact look */
     border: 2px solid #d3c29d;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     color: white;
@@ -18,6 +18,12 @@
     bottom: 0;
     background: url('/assets/imgs/magical_valley.jpg') no-repeat center center;
     background-size: cover;
-    filter: brightness(0.7);
+    filter: brightness(0.5); /* Adjust brightness for better readability */
     z-index: -1;
 }
+
+/* Update to organize text content in a container */
+.text-container {
+    padding: 20px;
+}
+

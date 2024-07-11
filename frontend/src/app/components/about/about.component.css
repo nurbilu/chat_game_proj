@@ -1,12 +1,15 @@
 .about-container {
     position: relative;
-    max-width: 800px;
-    min-height: 500px;
-    margin: 20px auto;
-    padding: 30px;
-    border: 2px solid #d3c29d;
+    max-width: 2200px;
+    min-height: 200px;
+    padding: 200px;
+    border-width: 400px; /* Set left and right border to maximum webpage limit */
+    border-color: #ac7549; /* Keep the border color */
+    border-style: solid; /* Ensure solid border style */
+    border-top-width: 0; /* Set top border to 0 */
+    border-bottom-width: 0; /* Set bottom border to 0 */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: white;
+    color: rgb(245, 244, 248);
     overflow: hidden;
 }
 
@@ -17,8 +20,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('/assets/imgs/mage.jpg') no-repeat center center;
+    background: url('/assets/imgs/desert-castle.jpg') no-repeat center center;
     background-size: cover;
     filter: brightness(0.7);
     z-index: -1;
+}
+
+.text-container {
+    z-index: 1; /* Ensure text is above the background image */
+    font-size: 18px;
 }

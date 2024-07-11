@@ -1,8 +1,8 @@
 .register-container {
-    max-width: 1200x; /* Matched width */
-    max-height: 250px;
-    padding: 365px;
-    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/rouges-druids.jpg') no-repeat center center;
+    max-width: 1300px; /* Matched width */
+    max-height: 950px;
+    padding: 380px;
+    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/frost-battle.png') no-repeat center center;
     background-size: cover;
     border: 2px solid #d3c29d; /* Old paper style border */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);

@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 export class ProfileComponent implements OnInit {
   userProfile: any;
   userProfiles: any[] = [];
-  isSuperuser: boolean = false; // Assuming there's a way to determine if the user is a superuser
-  editMode: boolean = false;
+  isSuperuser: boolean = false; // Assuming isSuperuser is set based on user role
+  showUpdateForm: boolean = false;
+  showUserData: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -46,19 +47,19 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleEditMode(): void {
-    this.editMode = !this.editMode;
+    this.showUpdateForm = !this.showUpdateForm;
+    this.showUserData = false; // Hide user data when in edit mode
   }
 
-  updateProfile(): void {
-    this.authService.updateUserProfile(this.userProfile).subscribe(
-      response => {
-        console.log('Profile updated successfully');
-        this.toggleEditMode();
-      },
-      error => {
-        console.error('Error updating profile:', error);
-      }
-    );
+  toggleUserDataDisplay(): void {
+    this.showUserData = !this.showUserData;
+    this.showUpdateForm = false;
+  }
+
+  confirmUpdate(): void {
+    // Perform update logic here
+    this.showUpdateForm = false; // Hide the form after update
+    this.showUserData = true; // Show user data after update
   }
 
   logout(): void {

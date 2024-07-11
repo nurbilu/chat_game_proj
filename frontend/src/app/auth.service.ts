@@ -77,5 +77,10 @@ export class AuthService {
             return null;
         }
     }
-}
 
+    changePassword(data: any): Observable<any> {
+        return this.http.post(`${this.baseUrl}change-password/`, data).pipe(
+            catchError(error => throwError(() => new Error('Error changing password: ' + error.message)))
+        );
+    }
+}

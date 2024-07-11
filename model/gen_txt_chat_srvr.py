@@ -6,6 +6,7 @@ from flask_cors import CORS, cross_origin  # Import the CORS extension
 from chatbot_model import ChatbotModel  # Import the ChatbotModel
 from flask_socketio import SocketIO, emit
 from pymongo import MongoClient
+from datetime import datetime
 
 app = Flask(__name__)
 # Configure CORS properly to ensure only one header is sent
@@ -40,9 +41,6 @@ def logger(func):
             raise  
     return wrapper
 
-# Load initial response text
-with open('initial_response_text.txt', 'r') as file:
-    initial_response_text = file.read()
 
 # Game style responses
 game_style_responses = {
@@ -59,37 +57,26 @@ db = client['DnD_AI_DB']
 user_sessions = {}
 
 @app.route('/generate_text', methods=['POST', 'OPTIONS'])
-@logger  # Apply the logging decorator
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def generate_text():
     print("Request received")
-    print("Request JSON:", request.json)  # Log the incoming JSON data
-    if not request.json or 'text' not in request.json or 'username' not in request.json:
-        return jsonify({'error': 'Bad request', 'message': 'Missing "text" or "username" field'}), 400
+    print("Request JSON:", request.json)
+    user_input = request.json.get('text')
+    player_name = request.json.get('username')
 
-    user_input = request.json['text']
-    player_name = request.json['username']
-    session_data = db.sessions.find_one({"username": player_name})  # Retrieve session data from the database
-
+    # Retrieve or initialize session data
+    session_data = db.sessions.find_one({"username": player_name})
     if not session_data:
-        print("Session data not found for user:", player_name)
-        # Initialize default session data if not found
         session_data = {"username": player_name, "history": [], "use_gemini_api": False}
-        db.sessions.insert_one(session_data)  # Ensure the session is saved back to the database
+        db.sessions.insert_one(session_data)
 
-    # Improved game style setting and starting game logic
-    if 'game_style' not in session_data or session_data['game_style'] == 'pending':
-        if not user_input.isdigit() or int(user_input) not in [1, 2, 3]:
-            return jsonify({'text': "Please choose a valid game style number (1, 2, or 3).", 'username': player_name}), 200
-        else:
-            session_data['game_style'] = user_input
-            db.sessions.update_one({"username": player_name}, {"$set": session_data})
-            return jsonify({'text': game_style_responses[user_input] + " Confirm to start the game with 'start'.", 'username': player_name}), 200
-
-    # Improved response generation and session update logic
     chatbot = ChatbotModel(session_data)
     response_text = chatbot.generate_response(user_input, player_name)
-    session_data['history'].append({"user": user_input, "bot": response_text})
+    if "Failed to connect to Gemini API" in response_text:
+        return jsonify({'error': 'API Error', 'message': 'Failed to connect to Gemini API'}), 503
+
+    # Update session history and save
+    session_data['history'].append({"user": user_input, "bot": response_text, "timestamp": datetime.now()})
     db.sessions.update_one({"username": player_name}, {"$set": session_data})
     return jsonify({'text': response_text, 'username': player_name}), 200
 
@@ -107,43 +94,15 @@ def handle_connect():
 
 @socketio.on('send_message')
 def handle_message(data):
-    user_input = data.get('text', '').strip()
     player_name = data.get('username', 'Anonymous')
+    user_input = data.get('text', '').strip()
 
-    # Retrieve session history from the database
     chatbot = ChatbotModel()
     session_history = chatbot.retrieve_session(player_name)
 
-    # Initial greeting and game style choice
-    if 'game_style' not in session_history:
-        emit('response', {'text': chatbot.initial_response_text, 'username': player_name})
-        return
-
-    # Handle game style selection
-    if session_history.get('game_style') == 'pending':
-        if not user_input.isdigit() or int(user_input) not in [1, 2, 3]:
-            emit('response', {'text': "Please choose a valid game style number (1, 2, or 3).", 'username': player_name})
-            return
-        else:
-            session_history['game_style'] = user_input
-            chatbot.save_session(player_name, session_history)
-            emit('response', {'text': chatbot.game_style_responses[user_input] + " " + chatbot.confirmation_start_text, 'username': player_name})
-            return
-
-    # Confirm to start the game
-    if user_input.lower() == 'start':
-        if not chatbot.use_gemini_api:
-            chatbot.use_gemini_api = True
-            chatbot.start_game_session(player_name, session_history['game_style'])
-            emit('response', {'text': "Game started. What's your first move?", 'username': player_name})
-            return
-        else:
-            response_text = chatbot.generate_response_gemini(user_input, player_name)
-            emit('response', {'text': response_text, 'username': player_name})
-            return
-
-    # Default to asking for start confirmation if game is not started
-    emit('response', {'text': "Please confirm to start the game by typing 'start'.", 'username': player_name})
+    response_text = chatbot.generate_response(user_input, player_name)
+    emit('response', {'text': response_text, 'username': player_name})
+    chatbot.save_session(player_name, session_history)  # Ensure session is saved after handling
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

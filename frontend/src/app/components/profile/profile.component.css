@@ -1,28 +1,19 @@
+/* profile.component.css */
 .profile-container {
-    max-width: 1250px; /* Matched width */ 
+    max-width: 2200px; 
     max-height: 370px;
-    padding: 370px; /* Increased padding */
-    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/knight.jpg') no-repeat center center;
+    padding: 470px; 
+    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/golden-kingdom.png') no-repeat center center;
     background-size: cover;
-    border: 2px solid #d3c29d; /* Old paper style border */
+    border: 2px solid #d3c29d;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: white; /* Ensure text is readable on potentially dark background */
-  }
-
-.profile-container form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+    color: white;
 }
 
-.profile-container label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.profile-container input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.custom-btn {
+    background-color: #d3c29d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
 }

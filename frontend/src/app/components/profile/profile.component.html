@@ -1,14 +1,40 @@
-<div class="profile-container">
+<!-- profile.component.html -->
+<div class="profile-container container">
     <h2>Profile</h2>
     <div *ngIf="isSuperuser">
-        <form (ngSubmit)="updateProfile()">
-            <label>Username:<input type="username" [(ngModel)]="userProfile.username" name="username"></label>
-            <label>Email:<input type="email" [(ngModel)]="userProfile.email" name="email"></label>
-            <label>Address:<input type="text" [(ngModel)]="userProfile.address" name="address"></label>
-            <label>Birthdate:<input type="date" [(ngModel)]="userProfile.birthdate" name="birthdate"></label>
-            <button type="submit">Update Profile</button>
-            <button type="button" (click)="toggleEditMode()">Cancel</button>
-        </form>
+        <div *ngIf="showUpdateForm">
+            <form (ngSubmit)="confirmUpdate()" class="update-form">
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">Username</span>
+                    <input type="text" class="form-control" id="username" [(ngModel)]="userProfile.username" name="username">
+                </div>
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">Email</span>
+                    <input type="email" class="form-control" id="email" [(ngModel)]="userProfile.email" name="email">
+                </div>
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">Address</span>
+                    <input type="text" class="form-control" id="address" [(ngModel)]="userProfile.address" name="address">
+                </div>
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">Birthdate</span>
+                    <input type="date" class="form-control" id="birthdate" [(ngModel)]="userProfile.birthdate" name="birthdate">
+                </div>
+                <button type="submit" class="btn btn-success">Update Profile</button>
+                <button type="button" (click)="toggleUserDataDisplay()" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+        <button *ngIf="!showUpdateForm" (click)="toggleEditMode()" class="btn btn-success">Edit Profile</button>
+        <div *ngIf="showUserData" class="user-data table-responsive">
+            <table class="table table-striped">
+                <tbody>
+                    <tr><th>Username</th><td>{{ userProfile.username }}</td></tr>
+                    <tr><th>Email</th><td>{{ userProfile.email }}</td></tr>
+                    <tr><th>Address</th><td>{{ userProfile.address }}</td></tr>
+                    <tr><th>Birthdate</th><td>{{ userProfile.birthdate }}</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <button (click)="logout()">Logout</button>
+    <button (click)="logout()" class="btn btn-danger logout-button">Logout</button>
 </div>

@@ -13,7 +13,8 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AboutComponent } from './components/about/about.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component'; // Import HomepageComponent
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ReactiveFormsModule } from '@angular/forms'; // Added this line
 
 @NgModule({
   declarations: [
@@ -24,12 +25,13 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     ProfileComponent,
     AboutComponent,
     HomepageComponent,
-    ChangePasswordComponent // Add HomepageComponent to declarations
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule // Added this line
   ],
   providers: [
     AuthService,

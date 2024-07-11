@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AboutComponent {
   // Information about the AI Dungeon Master
-  title = 'AI Dungeon Master';
+  title = 'DeMe - AI Dungeon Master :';
   developer = 'Nur Bilu';
   framework = 'DnD 5e';
 }
