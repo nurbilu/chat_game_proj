@@ -4,19 +4,17 @@ import logging
 from flask import Flask, request, jsonify, make_response
 from flask_caching import Cache
 from flask_socketio import SocketIO, emit
-from flask_cors import CORS , cross_origin  # Import Flask-CORS
-from chrcter_creation import MongoDBCache  # Import the custom MongoDB cache class
+from flask_caching.backends.base import BaseCache
+from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
 from bson.json_util import dumps, loads
 from datetime import datetime
 import random  # For dice rolls
-from chrcter_creation import chrcter_creation  # Import the chrcter_creation Blueprint
-from flask_caching.backends.base import BaseCache  # Import BaseCache for MongoDBCache definition
 from chatbot_model import ChatbotModel  # Import ChatbotModel
+from GEM_cnnction import GeminiConnection
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})  # This allows all domains. Adjust if necessary for security.
-app.register_blueprint(chrcter_creation)
 
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200")  # Ensure SocketIO also respects CORS
 
@@ -45,7 +43,7 @@ def logger(func):
             return result
         except Exception as e:
             app_logger.error(f"Error in {func.__name__}: {str(e)}")
-            raise  
+            raise
     return wrapper
 
 # Connect to MongoDB
@@ -83,30 +81,21 @@ class MongoDBCache(BaseCache):
 app.config['CACHE_TYPE'] = 'chrcter_creation.MongoDBCache'  # Adjusted to correct import path
 cache = Cache(app)
 
-@app.route('/generate_text', methods=['POST', 'OPTIONS'])  # Apply the logging decorator
+@app.route('/generate_text', methods=['POST', 'OPTIONS'])
 @cross_origin(origin='*', headers=['Content-Type', 'Authorization'], supports_credentials=True)
 def generate_text():
     user_input = request.json.get('text')
-    player_name = request.json.get('username')
+    player_name = request.json.get('username', 'Anonymous')
 
-    # Retrieve or initialize session data
-    session_data = db.sessions.find_one({"username": player_name})
-    if not session_data:
-        session_data = {"username": player_name, "history": [], "use_gemini_api": False}
-        db.sessions.insert_one(session_data)
-
+    session_data = db.sessions.find_one({"username": player_name}) or {"username": player_name, "history": [], "use_gemini_api": True}
     chatbot = ChatbotModel(session_data)
-    if session_data.get('use_gemini_api', False):
-        response_text = chatbot.generate_response_gemini(user_input, player_name)
-    else:
-        response_text = chatbot.handle_player_input(user_input)
+    response_text = chatbot.handle_player_input(user_input)
 
     if "Failed to connect to Gemini API" in response_text:
-        return jsonify({'error': 'API Error', 'message': 'Failed to connect to Gemini API'}), 503
+        return jsonify({'error': 'API Error', 'message': response_text}), 503
 
-    # Update session history and save
     session_data['history'].append({"user": user_input, "bot": response_text, "timestamp": datetime.now()})
-    db.sessions.update_one({"username": player_name}, {"$set": session_data})
+    db.sessions.update_one({"username": player_name}, {"$set": session_data}, upsert=True)
     return jsonify({'text': response_text, 'username': player_name}), 200
 
 @app.route('/logout', methods=['POST'], endpoint='logout_post')
@@ -138,14 +127,17 @@ def handle_connect():
 
 @socketio.on('send_message')
 def handle_message(data):
-    player_name = data.get('username', 'Anonymous')
-    user_input = data.get('text', '').strip()
+    try:
+        player_name = data.get('username', 'Anonymous')
+        user_input = data.get('text', '').strip()
 
-    chatbot = ChatbotModel(db.sessions.find_one({"username": player_name}) or {})
-    response_text = chatbot.handle_player_input(user_input)
+        chatbot = ChatbotModel(db.sessions.find_one({"username": player_name}) or {})
+        response_text = chatbot.handle_player_input(user_input)
 
-    emit('response', {'text': response_text, 'username': player_name})
-    chatbot.save_session(player_name, chatbot.session_data)  # Ensure session is saved after handling
+        emit('response', {'text': response_text, 'username': player_name})
+        chatbot.save_session(player_name, chatbot.session_data)  # Ensure session is saved after handling
+    except Exception as e:
+        emit('error', {'error': str(e)})
 
 def _build_cors_preflight_response():
     response = make_response()

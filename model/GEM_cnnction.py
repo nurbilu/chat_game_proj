@@ -8,11 +8,10 @@ class GeminiConnection:
         self.model = genai.GenerativeModel(model_name="gemini-1.5-pro")
 
     def generate_response(self, prompt, context):
-        """Generate response using the Gemini API with enhanced context handling."""
-        full_prompt = f"{context}\n{prompt}"
         try:
-            response = self.model.generate_content(full_prompt)
+            response = self.model.generate_content(f"{context}\n{prompt}")
             return response.text
         except Exception as e:
-            logging.error(f"Failed to generate response from Gemini API: {str(e)}")
-            return "Failed to connect to Gemini API. Please try again later."
+            error_message = f"Failed to connect to Gemini API: {str(e)}"
+            logging.error(error_message)
+            return error_message

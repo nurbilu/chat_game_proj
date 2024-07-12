@@ -4,6 +4,26 @@ from pymongo import MongoClient
 from bson.json_util import dumps, loads
 from flask_cors import CORS
 import logging
+from flask_caching.backends.base import BaseCache
+from pymongo import MongoClient
+from bson.json_util import loads, dumps
+
+class MongoDBCache(BaseCache):
+    def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='DnD_AI_DB', collection='cache'):
+        self.default_timeout = default_timeout
+        self.client = MongoClient(host, port)
+        self.db = self.client[db_name]
+        self.collection = self.db[collection]
+        super(MongoDBCache, self).__init__(default_timeout)
+
+    def get(self, key):
+        item = self.collection.find_one({"key": key})
+        if item:
+            return loads(item['value'])
+        return None
+
+    def set(self, key, value, timeout=None):
+        self.collection.update_one({"key": key}, {"$set": {"value": dumps(value), "timeout": timeout}}, upsert=True)
 
 def create_app():
     app = Flask(__name__)
@@ -49,3 +69,4 @@ def build_cors_preflight_response():
 if __name__ == '__main__':
     app = create_app()
     app.run(host='0.0.0.0', port=6500, debug=True)
+

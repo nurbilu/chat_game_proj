@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,13 @@ export class ChatService {
     username = username || localStorage.getItem('username')!;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'  // Ensure CORS is handled
+      'Access-Control-Allow-Origin': '*'
     });
-    return this.http.post<any>(this.apiUrl, { text: message, username }, { headers });
+    return this.http.post<any>(this.apiUrl, { text: message, username }, { headers }).pipe(
+      catchError(error => {
+        console.error('HTTP error:', error);
+        return throwError(() => new Error('Failed to send message'));
+      })
+    );
   }
 }

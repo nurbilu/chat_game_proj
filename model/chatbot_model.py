@@ -25,14 +25,19 @@ class ChatbotModel:
         self.gemini_connection = GeminiConnection(API_KEY)
 
     def handle_player_input(self, user_input):
-        # Simplified logic for handling player input
-        response_text = "Processing your adventure..."
-        # Example of using Gemini API for generating responses
-        if self.session_data.get('use_gemini_api', False):
-            response_text = self.gemini_connection.generate_response(user_input, self.session_data['username'])
+        if self.session_data.get('use_gemini_api', True):  # Assume using Gemini by default
+            context = self.session_data.get('context', '')
+            response = self.gemini_connection.generate_response(user_input, context)
+            self.update_context(user_input, response)
+            return response
         else:
-            response_text = "Let's continue your journey!"
-        return response_text
+            return "Let's continue your journey!"
+
+    def update_context(self, user_input, response):
+        # Append new interaction to the context
+        new_context = f"{self.session_data.get('context', '')}\nUser: {user_input}\nBot: {response}"
+        self.session_data['context'] = new_context
+        self.save_session(self.session_data['username'], self.session_data)
 
     def save_session(self, username, session_data):
         """Update session data in the database."""
