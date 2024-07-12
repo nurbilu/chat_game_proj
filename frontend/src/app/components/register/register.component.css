@@ -1,10 +1,13 @@
 .register-container {
-    max-width: 1300px; /* Matched width */
-    max-height: 950px;
-    padding: 380px;
-    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/frost-battle.png') no-repeat center center;
-    background-size: cover;
-    border: 2px solid #d3c29d; /* Old paper style border */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: white;
-  }
+  max-width: 100%; /* Full width */
+  min-height: 93vh; /* Full viewport height */
+  padding: 20px; /* Reduced padding */
+  background: rgba(255, 255, 255, 0.8) url('/assets/imgs/frost-battle.png') no-repeat center center;
+  background-size: cover; /* Ensure background covers the entire container */
+  display: flex;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+  border: none; /* Optional: remove border */
+  box-shadow: none; /* Optional: remove shadow */
+  color: rgb(14, 13, 13);
+}

@@ -19,6 +19,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.checkSuperuser();
     this.loadUserProfile();
+    if (this.isSuperuser) {
+      this.loadAllUserProfiles();
+    }
   }
 
   loadUserProfile(): void {
@@ -38,6 +41,15 @@ export class ProfileComponent implements OnInit {
       address: tokenPayload.address,
       birthdate: new Date(tokenPayload.birthdate)
     };
+  }
+
+  loadAllUserProfiles(): void {
+    this.authService.getUserProfiles().subscribe({
+      next: (profiles) => {
+        this.userProfiles = profiles;
+      },
+      error: (error) => console.error('Failed to load user profiles:', error)
+    });
   }
 
   checkSuperuser(): void {

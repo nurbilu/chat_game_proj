@@ -59,9 +59,9 @@ export class AuthService {
     }
 
     getUserProfiles(): Observable<any> {
-        const token = localStorage.getItem('token');
+        const token = this.getToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get(`${this.baseUrl}profile/`, { headers });
+        return this.http.get(`${this.baseUrl}profile/all/`, { headers });
     }
 
     updateUserProfile(userProfile: any): Observable<any> {

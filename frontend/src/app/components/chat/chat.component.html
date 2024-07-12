@@ -1,7 +1,6 @@
 <div class="chat-container">
   <h2>D&D Adventure Chat</h2>
   <div *ngIf="!username">
-    <p>Please log in to start your adventure.</p>
   </div>
   <div *ngIf="username">
     <div class="chat-window">
@@ -12,7 +11,7 @@
     <div class="input-container">
       <span>{{ username }}: </span>
       <input type="text" [(ngModel)]="message" placeholder="Type your message here" required (keydown)="onEnter($event)">
-      <button (click)="sendMessage()">Send</button>
+      <button (click)="sendMessage()" class="btn btn-success">Send</button>
     </div>
   </div>
   <div style="text-align: right; margin-top: 10px;">

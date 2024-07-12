@@ -7,9 +7,10 @@ from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, Us
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from .utils import get_gemini_response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 User = get_user_model()
 
@@ -21,25 +22,28 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 class UserProfileView(APIView):
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, username=None):
         if request.user.is_superuser:
-            # Return all user profiles for superusers
-            users = User.objects.all()
-            serializer = UserProfileSerializer(users, many=True)
-            return Response(serializer.data)
-        else:
-            # Return the profile of the requesting user
-            try:
-                user_profile = User.objects.get(username=request.user.username)
-                serializer = UserProfileSerializer(user_profile)
+            # Superuser can access any profiles
+            if username:
+                try:
+                    user = User.objects.get(username=username)
+                except User.DoesNotExist:
+                    raise Http404
+            else:
+                users = User.objects.all()
+                serializer = UserProfileSerializer(users, many=True)
                 return Response(serializer.data)
-            except User.DoesNotExist:
-                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-            except Exception as e:
-                logging.error(f"Error retrieving user profile: {str(e)}")
-                return Response({"error": "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            # Regular users can only access their own profile
+            if username and username != request.user.username:
+                return Response({"error": "Unauthorized"}, status=403)
+            user = request.user
+            serializer = UserProfileSerializer(user)
+            return Response(serializer.data)
 
     def put(self, request):
         serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
