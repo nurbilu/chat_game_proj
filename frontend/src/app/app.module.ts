@@ -6,15 +6,18 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ChatComponent } from './components/chat/chat.component';
-import { AuthService } from './auth.service';
-import { ChatService } from './chat.service';
+import { AuthService } from './services/auth.service';
+import { ChatService } from './services/chat.service';
 import { FormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AboutComponent } from './components/about/about.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { ReactiveFormsModule } from '@angular/forms'; // Added this line
+import { ReactiveFormsModule } from '@angular/forms';
+import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-creation.component';
+import { HttpClientModule } from '@angular/common/http';
+import { EnvironmentsModule } from './environments.module'; // Import HttpClientModule
 
 @NgModule({
   declarations: [
@@ -25,13 +28,16 @@ import { ReactiveFormsModule } from '@angular/forms'; // Added this line
     ProfileComponent,
     AboutComponent,
     HomepageComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ChrcterCreationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule // Added this line
+    ReactiveFormsModule,
+    HttpClientModule,
+    EnvironmentsModule // Add HttpClientModule here
   ],
   providers: [
     AuthService,

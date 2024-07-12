@@ -8,9 +8,9 @@ class GeminiConnection:
         self.model = genai.GenerativeModel(model_name="gemini-1.5-pro")
 
     def generate_response(self, prompt, context):
+        """Generate response using the Gemini API with enhanced context handling."""
+        full_prompt = f"{context}\n{prompt}"
         try:
-            # Incorporate context into the prompt
-            full_prompt = f"{context}\n{prompt}"
             response = self.model.generate_content(full_prompt)
             return response.text
         except Exception as e:

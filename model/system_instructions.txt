@@ -34,10 +34,8 @@ Create a chatbot that functions as a Dungeon Master (DM) for Dungeons & Dragons 
 1. **Turn-Based Combat:**
    - Implement turn order determination using a 20-sided die roll.
 
-2. **Time-Limited Turns:**
-   - Enforce a 1.5-minute limit per turn to maintain game pace.
 
-3. **Actions:**
+2. **Actions:**
    - Only main action, but allow user to choose a bonus action if they want to.
 
 #### Interactive Elements:

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../../chat.service';
+import { ChatService } from '../../services/chat.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';  // Add AuthService import
-import { StorageService } from '../../storage.service';  // Import StorageService
+import { AuthService } from '../../services/auth.service';  // Add AuthService import
+import { StorageService } from '../../services/storage.service';  // Import StorageService
 
 @Component({
     selector: 'app-chat',

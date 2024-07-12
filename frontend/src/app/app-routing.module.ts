@@ -5,20 +5,22 @@ import { RegisterComponent } from './components/register/register.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AboutComponent } from './components/about/about.component';
-import { AuthGuard } from './auth.guard';  // Import AuthGuard
+import { AuthGuard } from './services/auth.guard';  // Import AuthGuard
 import { HomepageComponent } from './components/homepage/homepage.component'; // Import HomepageComponent
 import { ChangePasswordComponent } from './components/change-password/change-password.component'; // Import ChangePasswordComponent
+import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-creation.component'; // Import ChrcterCreationComponent
 
 const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'chat', component: ChatComponent },  // Protect chat route
-    { path: 'profile', component: ProfileComponent },  // Protect profile route
+    { path: 'profile', component: ProfileComponent , canActivate: [AuthGuard]},  // Protect profile route
     { path: 'about', component: AboutComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'homepage', component: HomepageComponent },  // Add route for homepage
     { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },  // Add change password route
+    { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] }, // Add route for character creation and protect with AuthGuard
 ];
 
 @NgModule({

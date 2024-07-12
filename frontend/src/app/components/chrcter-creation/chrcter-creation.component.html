@@ -1,0 +1,26 @@
+<section>
+    <h2>Welcome to Character Creation</h2>
+    <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat style do you desire? There are 3 Game Styles to choose from:</p>
+    <ul>
+      <li><strong>Warrior Fighter</strong>: Choose this if you prefer a bold and direct approach in combat. This style includes classes like Fighter, Barbarian, and Paladin. They excel in martial prowess, wielding weapons and armor with great skill and endurance.</li>
+      <li><strong>Rogue Druid</strong>: Opt for this if you enjoy stealth, nature, and versatility. Classes such as Rogue, Druid, and Ranger fall under this style. They are adept at sneaking, nature magic, and animal companionship, blending cunning tactics with natural abilities.</li>
+      <li><strong>Mage Sorcerer</strong>: Select this if you fancy wielding arcane powers and unleashing potent spells. Classes like Wizard, Sorcerer, and Warlock belong to this style. They command the forces of magic, casting spells of devastating power and mysterious origins.</li>
+    </ul>
+    <p>Please choose 1 for Warrior Fighter, 2 for Rogue Druid, or 3 for Mage Sorcerer to begin your adventure!</p>
+    <form (ngSubmit)="createCharacter()">
+      <input type="text" [(ngModel)]="character.name" name="name" placeholder="Name" required>
+      <select [(ngModel)]="character.gameStyle" name="gameStyle" required>
+        <option value="none" disabled selected>Select Game Style</option>
+        <option *ngFor="let style of gameStyles" [value]="style">{{ style }}</option>
+      </select>
+      <select [(ngModel)]="character.race" name="race" required>
+        <option value="" disabled selected>Select Race</option>
+        <option *ngFor="let race of races" [value]="race.name">{{ race.name }}</option>
+      </select>
+      <button type="submit">Create Character</button>
+    </form>
+    <h3>Race Descriptions</h3>
+    <ul>
+      <li *ngFor="let race of races">{{ race.name }}: {{ race.description }}</li>
+    </ul>
+  </section>

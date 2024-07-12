@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth.service'; // Ensure AuthService is correctly imported
+import { AuthService } from '../../services/auth.service'; // Ensure AuthService is correctly imported
 
 @Component({
   selector: 'app-change-password',

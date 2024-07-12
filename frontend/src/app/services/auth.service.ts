@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable ,Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,12 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
     private baseUrl = 'http://127.0.0.1:8000/';
 
-    constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+    constructor(private http: HttpClient, private jwtHelper: JwtHelperService, @Inject(PLATFORM_ID) private platformId: Object) { }
+
+    // Method to retrieve the token
+    getToken(): string | null {
+        return localStorage.getItem('access_token');
+    }
 
     register(username: string, password: string, email: string, address: string, birthdate: string): Observable<any> {
         return this.http.post(`${this.baseUrl}register/`, { username, password, email, address, birthdate });
@@ -65,17 +71,21 @@ export class AuthService {
     }
 
     decodeToken(): any {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('No token found');
-            return null;
+        if (isPlatformBrowser(this.platformId)) {
+            // Safe to use localStorage here
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found');
+                return null;
+            }
+            try {
+                return this.jwtHelper.decodeToken(token);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+                return null;
+            }
         }
-        try {
-            return this.jwtHelper.decodeToken(token);
-        } catch (error) {
-            console.error('Error decoding token:', error);
-            return null;
-        }
+        return null;
     }
 
     changePassword(data: any): Observable<any> {
