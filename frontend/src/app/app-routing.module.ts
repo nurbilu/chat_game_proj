@@ -9,6 +9,7 @@ import { AuthGuard } from './services/auth.guard';  // Import AuthGuard
 import { HomepageComponent } from './components/homepage/homepage.component'; // Import HomepageComponent
 import { ChangePasswordComponent } from './components/change-password/change-password.component'; // Import ChangePasswordComponent
 import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-creation.component'; // Import ChrcterCreationComponent
+import { SuperProfileComponent } from './components/super-profile/super-profile.component'; // Import SuperProfileComponent
 
 const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },  // Add route for homepage
     { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },  // Add change password route
     { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] }, // Add route for character creation and protect with AuthGuard
+    { path: 'super-profile', component: SuperProfileComponent, canActivate: [AuthGuard] }, // Add route for SuperProfileComponent
 ];
 
 @NgModule({

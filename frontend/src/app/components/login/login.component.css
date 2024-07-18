@@ -23,7 +23,7 @@ button:hover {
 .login-container {
     max-width: 2150px; /* Matched width */ 
     max-height: 900px;
-    padding: 470px; /* Increased padding */
+    padding: 469px; /* Increased padding */
     background: rgba(255, 255, 255, 0.8) url('/assets/imgs/powerful_battle.jpg') no-repeat center center;
     background-size: cover;
     border: 2px solid #d3c29d; /* Old paper style border */

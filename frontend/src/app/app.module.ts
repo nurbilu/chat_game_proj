@@ -18,6 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-creation.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EnvironmentsModule } from './environments.module'; // Import HttpClientModule
+import { SuperProfileComponent } from './components/super-profile/super-profile.component'; // Import SuperProfileComponent
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { EnvironmentsModule } from './environments.module'; // Import HttpClient
     AboutComponent,
     HomepageComponent,
     ChangePasswordComponent,
-    ChrcterCreationComponent
+    ChrcterCreationComponent,
+    SuperProfileComponent  // Add SuperProfileComponent here
   ],
   imports: [
     BrowserModule,

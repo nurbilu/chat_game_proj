@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import logging
+import json
 
 class GeminiConnection:
     def __init__(self, api_key):
@@ -9,9 +10,9 @@ class GeminiConnection:
 
     def generate_response(self, prompt, context):
         try:
-            response = self.model.generate_content(f"{context}\n{prompt}")
+            # Generate response using the Gemini API with both prompt and context
+            response = self.model.generate_content({"prompt": prompt, "context": context})
             return response.text
         except Exception as e:
-            error_message = f"Failed to connect to Gemini API: {str(e)}"
-            logging.error(error_message)
-            return error_message
+            logging.error(f"Failed to connect to Gemini API: {str(e)}")
+            return "An error occurred while connecting to the Gemini API."

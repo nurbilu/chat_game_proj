@@ -1,6 +1,7 @@
 # to do list : 
 a one a check a two
 ###### notice that if more changes or steps needed should be wrttin here :: 
+(if task is done delete task line/s)
 
 1. go on the notes that eyal dictate for us for the project and for the general instructions for the project {there is no check box because these are instructions and not an actual step in the process}
 link for the instructions: 
@@ -11,20 +12,19 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 3. implement the chat as basic as it can be ( x ) : 
 
 4. decide if game gonna be just one main and only hero or keep as ai chat bot for dnd ( x ) :
-    more simple chatbot , only three game style 
+    more simple chatbot , only three game style - maybe i'll add more in the future .()
 
 5. focus and specify the chat and web site ( ) : 
-    - fix profile page - done
-        fix profile page to be able to edit all the fields except password - done 
-        make change password in a different component + add link in login for change password component for "forgot your password? click here"   
+    - make change password in a different component + add link in login for change password component for "forgot your password? click here"   
     - fix superuser profile 
-    - fix chat initial prompt and characterization of player not in loop when proccess is correct by model - almost : 
-    - fix full gemini integration ai with the initial prompt and player characterization
+    - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
+        maybe chatbot_model should be seperated to different files and classes to be more organized and maybe it will work better - sort of a bulk of blueprints for the chatbot to work, becuase until now it was only at a file called chatbot_model.py , so maybe it will be better to have a class for each game mechanic and then ai can use all of them to create the game mechanics for the chatbot. 
+        i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .
+    - maybe instead of using the MongoDB compass either find a way to connect to Atlas or use Atlas cluster directly OR use a different no sql DB like          firebase - work better with Gemini but will cost more to remember how to connect to it correctly and potentially more expensive .()
 
-    
 6. create unit tests for all API calls ( ) :
 
-7. design the website first edition ( ) :
+7. design the website first edition ( X ) :
 
 8. implemnt and finish the dockers ( ) :
 

@@ -1,6 +1,6 @@
-import { Injectable ,Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
@@ -15,7 +15,7 @@ export class AuthService {
 
     // Method to retrieve the token
     getToken(): string | null {
-        return localStorage.getItem('access_token');
+        return localStorage.getItem('token');  // Ensure this matches the key used in localStorage
     }
 
     register(username: string, password: string, email: string, address: string, birthdate: string): Observable<any> {
@@ -43,13 +43,18 @@ export class AuthService {
         );
     }
 
-    logout(): void {
+    logout(): Observable<any> {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        return of({ success: true });  // Simulate an observable response
     }
 
     getUserProfile(username?: string): Observable<any> {
-        const token = localStorage.getItem('token');
+        const token = this.getToken();
+        if (!token) {
+            console.error('No token found');
+            return throwError(() => new Error('Authentication token not found'));
+        }
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         let url = `${this.baseUrl}profile/`;
         if (username) {
@@ -60,32 +65,66 @@ export class AuthService {
 
     getUserProfiles(): Observable<any> {
         const token = this.getToken();
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get(`${this.baseUrl}profile/all/`, { headers });
+        if (!token) {
+            console.error('No token found');
+            return throwError(() => new Error('Authentication token not found'));
+        }
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        return this.http.get(`${this.baseUrl}profile/all/`, { headers }).pipe(
+            catchError(error => {
+                console.error('Failed to fetch user profiles:', error);
+                return throwError(() => new Error('Failed to fetch user profiles'));
+            })
+        );
+    }
+
+    getSuperUserProfiles(): Observable<any> {
+        const token = this.getToken();
+        if (!token) {
+            console.error('No token found');
+            return throwError(() => new Error('Authentication token not found'));
+        }
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        return this.http.get(`${this.baseUrl}profile/superuser/`, { headers }).pipe(
+            catchError(error => {
+                console.error('Failed to fetch superuser profiles:', error);
+                return throwError(() => new Error('Failed to fetch superuser profiles'));
+            })
+        );
     }
 
     updateUserProfile(userProfile: any): Observable<any> {
-        const token = localStorage.getItem('token');
+        const token = this.getToken();
+        if (!token) {
+            console.error('No token found');
+            return throwError(() => new Error('Authentication token not found'));
+        }
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.put(`${this.baseUrl}profile/`, userProfile, { headers });
     }
 
-    decodeToken(): any {
-        if (isPlatformBrowser(this.platformId)) {
-            // Safe to use localStorage here
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.error('No token found');
-                return null;
+    decodeToken(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            if (isPlatformBrowser(this.platformId)) {
+                const token = this.getToken();
+                if (token) {
+                    try {
+                        const decoded = this.jwtHelper.decodeToken(token);
+                        resolve(decoded);
+                    } catch (error) {
+                        reject('Error decoding token');
+                    }
+                } else {
+                    reject('Token not found');
+                }
+            } else {
+                reject('Not running in a browser environment');
             }
-            try {
-                return this.jwtHelper.decodeToken(token);
-            } catch (error) {
-                console.error('Error decoding token:', error);
-                return null;
-            }
-        }
-        return null;
+        });
     }
 
     changePassword(data: any): Observable<any> {

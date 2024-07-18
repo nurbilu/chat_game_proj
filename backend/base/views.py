@@ -11,6 +11,7 @@ from django.http import JsonResponse, Http404
 from .utils import get_gemini_response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 User = get_user_model()
 
@@ -22,23 +23,23 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 class UserProfileView(APIView):
-    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, username=None):
         if request.user.is_superuser:
-            # Superuser can access any profiles
             if username:
                 try:
                     user = User.objects.get(username=username)
+                    serializer = UserProfileSerializer(user)
+                    return Response(serializer.data)
                 except User.DoesNotExist:
-                    raise Http404
+                    return Response({"error": "User not found"}, status=404)
             else:
                 users = User.objects.all()
                 serializer = UserProfileSerializer(users, many=True)
                 return Response(serializer.data)
         else:
-            # Regular users can only access their own profile
             if username and username != request.user.username:
                 return Response({"error": "Unauthorized"}, status=403)
             user = request.user
@@ -73,7 +74,7 @@ class UserLoginView(APIView):
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 class RegisterView(APIView):
-    permission_classes = [AllowAny]  # Allow unauthenticated users
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = UserRegisterSerializer(data=request.data)
@@ -98,3 +99,14 @@ class ChangePasswordView(APIView):
             user.save()
             return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SuperUserProfileView(APIView):
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if not request.user.is_superuser:
+            return Response({"error": "Unauthorized"}, status=403)
+        users = User.objects.all()
+        serializer = UserProfileSerializer(users, many=True)
+        return Response(serializer.data)

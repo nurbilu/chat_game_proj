@@ -7,6 +7,9 @@ import logging
 from flask_caching.backends.base import BaseCache
 from pymongo import MongoClient
 from bson.json_util import loads, dumps
+import requests
+from logging.handlers import RotatingFileHandler
+from bson import ObjectId
 
 class MongoDBCache(BaseCache):
     def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='DnD_AI_DB', collection='cache'):
@@ -41,15 +44,23 @@ def create_character():
     if request.method == 'OPTIONS':
         return build_cors_preflight_response()
     elif request.method == 'POST':
-        character_data = request.json
-        required_fields = ['name', 'gameStyle', 'race', 'username']
-        if not all(field in character_data for field in required_fields):
-            return jsonify({'error': 'Missing required fields'}), 400
         try:
-            db.character_creation_users.insert_one(character_data)
-            return jsonify({'message': 'Character created successfully'}), 201
+            character_data = request.json
+            required_fields = ['name', 'gameStyle', 'race', 'username']
+            if not all(field in character_data for field in required_fields):
+                return jsonify({'error': 'Missing required fields'}), 400
+
+            # Insert character data into MongoDB
+            result = db.character_creation_users.insert_one(character_data)
+            # Convert ObjectId to string for the response
+            character_data['_id'] = str(result.inserted_id)
+
+            # Send data to chat server and Gemini API
+            response = requests.post('http://127.0.0.1:5000/api/character_data', json=character_data)
+            return jsonify({'message': 'Character created', 'chat_response': response.json()}), 201
         except Exception as e:
-            return jsonify({'error': str(e)}), 500
+            app.logger.error(f"Failed to create character: {str(e)}")
+            return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 @character_blueprint.route('/races', methods=['GET'])
 def get_races():
@@ -68,5 +79,7 @@ def build_cors_preflight_response():
 
 if __name__ == '__main__':
     app = create_app()
+    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
     app.run(host='0.0.0.0', port=6500, debug=True)
-

@@ -1,7 +1,7 @@
 <!-- profile.component.html -->
 <div class="profile-container container">
     <h2>Profile</h2>
-    <div *ngIf="isSuperuser">
+    <div *ngIf="!isSuperuser">
         <div *ngIf="showUpdateForm">
             <form (ngSubmit)="confirmUpdate()" class="update-form">
                 <div class="mb-3 input-group">
@@ -28,10 +28,10 @@
         <div *ngIf="showUserData" class="user-data table-responsive">
             <table class="table table-striped">
                 <tbody>
-                    <tr><th>Username</th><td>{{ userProfile.username }}</td></tr>
-                    <tr><th>Email</th><td>{{ userProfile.email }}</td></tr>
-                    <tr><th>Address</th><td>{{ userProfile.address }}</td></tr>
-                    <tr><th>Birthdate</th><td>{{ userProfile.birthdate }}</td></tr>
+                    <tr><th>Username</th><td>{{ userProfile?.username }}</td></tr>
+                    <tr><th>Email</th><td>{{ userProfile?.email }}</td></tr>
+                    <tr><th>Address</th><td>{{ userProfile?.address }}</td></tr>
+                    <tr><th>Birthdate</th><td>{{ userProfile?.birthdate }}</td></tr>
                 </tbody>
             </table>
         </div>
