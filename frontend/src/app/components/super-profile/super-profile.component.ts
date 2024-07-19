@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class SuperProfileComponent implements OnInit {
   userProfiles: any[] = [];
-  selectedProfile: any = null;  // Add this line
+  selectedProfile: any = null;
   isLoading: boolean = false;
   error: string | null = null;
 
@@ -32,10 +32,11 @@ export class SuperProfileComponent implements OnInit {
             this.isLoading = false;
         }
     });
-}
+  }
 
-  onProfileSelect(): void {  // Add this method
-    // Handle profile selection logic here, if needed
+  onProfileSelect(profile: any): void {
+    this.selectedProfile = profile;
+    // Handle additional profile selection logic here, if needed
   }
 
   logout(): void {
@@ -43,6 +44,7 @@ export class SuperProfileComponent implements OnInit {
       next: () => {
         this.router.navigate(['/login']);
       },
-      error: (error: any) => console.error('Logout failed:', error)  // Explicitly type the error parameter
+      error: (error: any) => console.error('Logout failed:', error)
     });
-}}
+  }
+}

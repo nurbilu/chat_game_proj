@@ -105,8 +105,12 @@ class SuperUserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Accessed by user: {request.user.username}")
         if not request.user.is_superuser:
-            return Response({"error": "Unauthorized"}, status=403)
+            logger.warning("Unauthorized access attempt.")
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
         users = User.objects.all()
         serializer = UserProfileSerializer(users, many=True)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data, safe=False)

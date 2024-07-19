@@ -2,12 +2,15 @@ nav {
   background-color: #333740; /* Darker shade for a more subtle look */
   padding: 10px 20px;
   border-bottom: 2px solid #c9a66b; /* Gold color accent */
+  display: flex;
+  justify-content: center; /* Center the navbar items */
+  align-items: center;
 }
 
 nav ul {
   list-style-type: none;
   display: flex;
-  justify-content: space-around;
+  justify-content: center; /* Center the navbar items */
   padding: 0;
 }
 

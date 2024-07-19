@@ -60,19 +60,7 @@ export class AuthService {
         if (username) {
             url += `${username}/`;
         }
-        return this.http.get(url, { headers });
-    }
-
-    getUserProfiles(): Observable<any> {
-        const token = this.getToken();
-        if (!token) {
-            console.error('No token found');
-            return throwError(() => new Error('Authentication token not found'));
-        }
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-        return this.http.get(`${this.baseUrl}profile/all/`, { headers }).pipe(
+        return this.http.get(url, { headers }).pipe(
             catchError(error => {
                 console.error('Failed to fetch user profiles:', error);
                 return throwError(() => new Error('Failed to fetch user profiles'));
@@ -89,7 +77,7 @@ export class AuthService {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`
         });
-        return this.http.get(`${this.baseUrl}profile/superuser/`, { headers }).pipe(
+        return this.http.get(`${this.baseUrl}superuser/`, { headers }).pipe(
             catchError(error => {
                 console.error('Failed to fetch superuser profiles:', error);
                 return throwError(() => new Error('Failed to fetch superuser profiles'));

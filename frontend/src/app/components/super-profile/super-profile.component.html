@@ -1,6 +1,6 @@
 <div class="super-profile-container container">
     <h2>All User Profiles</h2>
-    <select class="form-control mb-3" [(ngModel)]="selectedProfile" (change)="onProfileSelect()">
+    <select class="form-control mb-3" [(ngModel)]="selectedProfile" (change)="onProfileSelect(selectedProfile)">
         <option *ngFor="let profile of userProfiles" [ngValue]="profile">
             {{ profile.username }}
         </option>
