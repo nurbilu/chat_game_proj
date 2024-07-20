@@ -1,13 +1,13 @@
 /* profile.component.css */
 .profile-container {
-    max-width: 2200px; 
-    max-height: 370px;
-    padding: 470px; 
+    max-width: 2300px;
+    padding: 163px;
     background: rgba(255, 255, 255, 0.8) url('/assets/imgs/golden-kingdom.png') no-repeat center center;
     background-size: cover;
     border: 2px solid #d3c29d;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: white;
+    color: #333;
+    border-radius: 10px;
 }
 
 .custom-btn {
@@ -16,4 +16,8 @@
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
+}
+
+.logout-button {
+    width: 100%;
 }

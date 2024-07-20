@@ -1,18 +1,24 @@
-import google.generativeai as genai
-import logging
-import json
+import openai
+import os
+from dotenv import load_dotenv
 
-class GeminiConnection:
-    def __init__(self, api_key):
-        self.api_key = api_key
-        genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel(model_name="gemini-1.5-pro")
+# Load environment variables from .env file
+load_dotenv()
 
-    def generate_response(self, prompt, context):
-        try:
-            # Generate response using the Gemini API with both prompt and context
-            response = self.model.generate_content({"prompt": prompt, "context": context})
-            return response.text
-        except Exception as e:
-            logging.error(f"Failed to connect to Gemini API: {str(e)}")
-            return "An error occurred while connecting to the Gemini API."
+def generate_gemini_response(prompt):
+    # Get the API key and URL from environment variables
+    api_key = os.getenv('GEMINI_API_KEY')
+    api_url = os.getenv('GEMINI_URL')
+    
+    if not api_key or not api_url:
+        raise ValueError("GEMINI_API_KEY or GEMINI_URL is not set in the environment variables")
+    
+    openai.api_key = api_key
+
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=150
+    )
+
+    return response.choices[0].text.strip()

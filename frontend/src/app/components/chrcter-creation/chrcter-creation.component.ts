@@ -15,7 +15,7 @@ export class ChrcterCreationComponent implements OnInit {
     private router: Router
   ) { }
   character = {
-    name: '',  // Add the class field
+    name: '', 
     gameStyle: 'none',
     race: '',
     username: ''
@@ -28,18 +28,15 @@ export class ChrcterCreationComponent implements OnInit {
     this.authService.decodeToken().then((decodedToken) => {
         if (decodedToken && decodedToken.username) {
             this.character.username = decodedToken.username;
-        } else {
-            console.error('Username is undefined.');
-            this.router.navigate(['/login']);
         }
     }).catch(error => console.error(error));
-}
+  }
 
   createCharacter(): void {
     if (this.character.name && this.character.gameStyle !== 'none' && this.character.race && this.character.username) {
       this.chcrcterCreationService.createCharacter(this.character).subscribe({
         next: (response) => {
-          console.log('Character created!', response);
+          console.log('Character created!');
         },
         error: (error) => {
           console.error('Failed to create character:', error);

@@ -15,7 +15,10 @@ export class AuthService {
 
     // Method to retrieve the token
     getToken(): string | null {
-        return localStorage.getItem('token');  // Ensure this matches the key used in localStorage
+        if (isPlatformBrowser(this.platformId)) {
+            return localStorage.getItem('token');
+        }
+        return null;  // Return null if not in browser environment
     }
 
     register(username: string, password: string, email: string, address: string, birthdate: string): Observable<any> {
@@ -34,8 +37,10 @@ export class AuthService {
                     console.error('Username not provided in token:', decodedToken);
                     throw new Error('Username not provided in token');
                 }
-                localStorage.setItem('token', response.access);
-                localStorage.setItem('username', decodedToken.username);
+                if (isPlatformBrowser(this.platformId)) {
+                    localStorage.setItem('token', response.access);
+                    localStorage.setItem('username', decodedToken.username);
+                }
             }),
             catchError(error => {
                 return throwError(() => new Error('Login failed: ' + error.message));
@@ -44,8 +49,10 @@ export class AuthService {
     }
 
     logout(): Observable<any> {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+        }
         return of({ success: true });  // Simulate an observable response
     }
 

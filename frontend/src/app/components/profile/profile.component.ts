@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,8 +13,9 @@ export class ProfileComponent implements OnInit {
   isSuperuser: boolean = false;
   showUpdateForm: boolean = false;
   showUserData: boolean = true;
+  characters: any[] = [];
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadUserProfile();
@@ -21,8 +23,10 @@ export class ProfileComponent implements OnInit {
         this.isSuperuser = decodedToken.isSuperuser;
         if (this.isSuperuser) {
             this.router.navigate(['/super-profile']);
+        } else {
+            this.loadUserCharacters(decodedToken.username); // Ensure this is called correctly
         }
-    }).catch(error => console.error(error));
+    }).catch(error => console.error('Error decoding token:', error));
   }
 
   loadUserProfile(): void {
@@ -34,6 +38,50 @@ export class ProfileComponent implements OnInit {
             birthdate: new Date(tokenPayload.birthdate)
         };
     }).catch(error => console.error(error));
+  }
+
+  loadUserCharacters(username: string): void {
+    this.characterService.fetchCharactersByUsername(username).subscribe(
+      (characters) => {
+        this.characters = characters;
+        console.log('Characters loaded:', this.characters); // Detailed log
+      },
+      (error) => {
+        console.error('Failed to load characters:', error);
+      }
+    );
+  }
+
+  deleteCharacter(username: string, characterName: string): void {
+    if (!username || !characterName) {
+      console.error('Username or Character Name is undefined');
+      return;
+    }
+    this.characterService.deleteCharacter(username, characterName).subscribe(
+      () => {
+        this.characters = this.characters.filter(character => character.name !== characterName);
+        console.log('Character deleted successfully');
+      },
+      (error) => {
+        console.error('Failed to delete character:', error);
+      }
+    );
+  }
+
+  createCharacter(character: any): void {
+    if (!character || !character.name || !character.race || !character.gameStyle) {
+      console.error('Character object is invalid:', character);
+      return;
+    }
+    this.characterService.createCharacter(character).subscribe(
+      (response) => {
+        console.log('Character created successfully:', response);
+        this.loadUserCharacters(this.userProfile.username); // Reload characters after creation
+      },
+      (error) => {
+        console.error('Failed to create character:', error);
+      }
+    );
   }
 
   toggleEditMode(): void {

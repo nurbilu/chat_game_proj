@@ -1,6 +1,6 @@
 <!-- profile.component.html -->
 <div class="profile-container container">
-    <h2>Profile</h2>
+    <h2 class="text-center my-4">Profile</h2>
     <div *ngIf="!isSuperuser">
         <div *ngIf="showUpdateForm">
             <form (ngSubmit)="confirmUpdate()" class="update-form">
@@ -20,11 +20,13 @@
                     <span class="input-group-text">Birthdate</span>
                     <input type="date" class="form-control" id="birthdate" [(ngModel)]="userProfile.birthdate" name="birthdate">
                 </div>
-                <button type="submit" class="btn btn-success">Update Profile</button>
-                <button type="button" (click)="toggleUserDataDisplay()" class="btn btn-secondary">Cancel</button>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Update Profile</button>
+                    <button type="button" (click)="toggleUserDataDisplay()" class="btn btn-secondary">Cancel</button>
+                </div>
             </form>
         </div>
-        <button *ngIf="!showUpdateForm" (click)="toggleEditMode()" class="btn btn-success">Edit Profile</button>
+        <button *ngIf="!showUpdateForm" (click)="toggleEditMode()" class="btn btn-success my-3">Edit Profile</button>
         <div *ngIf="showUserData" class="user-data table-responsive">
             <table class="table table-striped">
                 <tbody>
@@ -35,6 +37,15 @@
                 </tbody>
             </table>
         </div>
+        <div *ngIf="characters.length > 0" class="characters-list mt-4">
+            <h3>Your Characters</h3>
+            <ul class="list-group">
+                <li *ngFor="let character of characters" class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ character.name }} - {{ character.race }} - {{ character.gameStyle }}</span>
+                    <button (click)="deleteCharacter(userProfile.username, character.name)" class="btn btn-danger btn-sm">Delete</button>
+                </li>
+            </ul>
+        </div>
     </div>
-    <button (click)="logout()" class="btn btn-danger logout-button">Logout</button>
+    <button (click)="logout()" class="btn btn-danger logout-button mt-4">Logout</button>
 </div>

@@ -23,8 +23,7 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 5. focus and specify the chat and web site ( Adding AI-extra 10 points !()! ) : 
     - make change password in a different component + add link in login for change password component for "forgot your password? click here"   
-    - fix superuser profile 
-    - Imageuploading(toprofileorforanyotheruse)
+    - Image uploading (to profile or for any other use)
     - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
         i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .

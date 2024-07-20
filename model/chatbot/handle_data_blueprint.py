@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 import json
+from bson import json_util
 
 handle_data_blueprint = Blueprint('handle_data', __name__)
 
@@ -13,7 +14,8 @@ def fetch_game_data():
     collections = ['races', 'spells', 'equipment', 'monsters', 'game_styles']
     game_data = {}
     for collection in collections:
-        game_data[collection] = list(db[collection].find({}, {'_id': 0}))
+        # game_data[collection] = list(db[collection].find({}, {'_id': 0}))
+        game_data[collection] = json.loads(json_util.dumps(list(db[collection].find())))
     return jsonify(game_data)
 
 

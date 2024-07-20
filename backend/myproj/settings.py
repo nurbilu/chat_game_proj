@@ -15,6 +15,7 @@ from datetime import timedelta
 import environ
 import logging
 from logging.handlers import RotatingFileHandler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -250,3 +251,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_COOKIE_NAME = "csrftoken"
+
+# Function to clear the log file
+def clear_log():
+    with open(os.path.join(BASE_DIR, 'log.log'), 'w'):
+        pass  # Opening in write mode with no content to clear the file
+
+# Configure the scheduler to clear the log file every 5 minutes
+scheduler = BackgroundScheduler()
+scheduler.add_job(clear_log, 'interval', minutes=5)
+scheduler.start()
+
+# Ensure to catch the scheduler shutdown on application exit
+import atexit
+atexit.register(lambda: scheduler.shutdown())
