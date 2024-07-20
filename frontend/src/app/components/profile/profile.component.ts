@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
     this.characterService.fetchCharactersByUsername(username).subscribe(
       (characters) => {
         this.characters = characters;
-        console.log('Characters loaded:', this.characters); // Detailed log
+        console.log('display of characters is successful', username); // Detailed log
       },
       (error) => {
         console.error('Failed to load characters:', error);

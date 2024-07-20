@@ -7,9 +7,10 @@ import logging
 from flask_caching.backends.base import BaseCache
 from pymongo import MongoClient
 import requests
-from logging.handlers import RotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 from bson import ObjectId , json_util
 import json
+import os
 
 class MongoDBCache(BaseCache):
     def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='DnD_AI_DB', collection='cache'):
@@ -43,7 +44,33 @@ def create_app():
     CORS(app, resources={r"/*": {"origins": "*"}})  # Configure CORS more securely
     app.config['MONGO_URI'] = 'mongodb://localhost:27017/DnD_AI_DB'
     app.register_blueprint(character_blueprint, url_prefix='/api')
+    configure_logging(app)
+    
     return app
+
+def configure_logging(app):
+    log_file = 'chrcter_creation.log'
+    
+    # Remove existing handlers
+    for handler in app.logger.handlers[:]:
+        app.logger.removeHandler(handler)
+    
+    # Create a TimedRotatingFileHandler
+    file_handler = TimedRotatingFileHandler(
+        log_file,
+        when='M',
+        interval=5,
+        backupCount=0
+    )
+    file_handler.setLevel(logging.INFO)
+    
+    # Create a formatter
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    
+    # Add the handler to the app's logger
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
 
 character_blueprint = Blueprint('character', __name__)
 mongo_client = MongoClient('mongodb://localhost:27017/')
@@ -132,7 +159,4 @@ def build_cors_preflight_response():
 
 if __name__ == '__main__':
     app = create_app()
-    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
-    handler.setLevel(logging.INFO)
-    app.logger.addHandler(handler)
     app.run(host='0.0.0.0', port=6500, debug=True)
