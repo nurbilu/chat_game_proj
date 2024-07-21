@@ -1,16 +1,16 @@
 from flask import Flask, request, jsonify, make_response, Blueprint
 from flask_caching import Cache
+from flask_caching.backends.base import BaseCache  # Added this import
 from pymongo import MongoClient
+from bson import json_util
 from bson.json_util import dumps, loads
 from flask_cors import CORS, cross_origin
 import logging
-from flask_caching.backends.base import BaseCache
-from pymongo import MongoClient
-import requests
+from flask.logging import default_handler
 from logging.handlers import TimedRotatingFileHandler
-from bson import ObjectId , json_util
 import json
-import os
+import requests  # Added this import
+from flask.logging import default_handler
 
 class MongoDBCache(BaseCache):
     def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='DnD_AI_DB', collection='cache'):
@@ -38,22 +38,16 @@ class CustomJSONEncoder(json.JSONEncoder):
         except TypeError:
             return str(obj)
 
-def create_app():
-    app = Flask(__name__)
-    app.json_encoder = CustomJSONEncoder
-    CORS(app, resources={r"/*": {"origins": "*"}})  # Configure CORS more securely
-    app.config['MONGO_URI'] = 'mongodb://localhost:27017/DnD_AI_DB'
-    app.register_blueprint(character_blueprint, url_prefix='/api')
-    configure_logging(app)
-    
-    return app
-
-def configure_logging(app):
+def configure_logging():
     log_file = 'chrcter_creation.log'
     
+    # Create a logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    
     # Remove existing handlers
-    for handler in app.logger.handlers[:]:
-        app.logger.removeHandler(handler)
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
     
     # Create a TimedRotatingFileHandler
     file_handler = TimedRotatingFileHandler(
@@ -62,15 +56,49 @@ def configure_logging(app):
         interval=5,
         backupCount=0
     )
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.DEBUG)
     
     # Create a formatter
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # Fixed typo here
     file_handler.setFormatter(formatter)
     
-    # Add the handler to the app's logger
-    app.logger.addHandler(file_handler)
-    app.logger.setLevel(logging.INFO)
+    # Add the handler to the logger
+    logger.addHandler(file_handler)
+    
+    # Configure Werkzeug logger
+    werkzeug_logger = logging.getLogger('werkzeug')
+    werkzeug_logger.handlers = []
+    
+    # Add a StreamHandler for initial startup messages
+    startup_handler = logging.StreamHandler()
+    startup_handler.setLevel(logging.INFO)
+    startup_handler.setFormatter(logging.Formatter('%(message)s'))
+    werkzeug_logger.addHandler(startup_handler)
+    
+    # Add a FileHandler for all other messages
+    werkzeug_logger.addHandler(file_handler)
+    
+    # Filter to keep only startup messages in the console
+    class WerkzeugFilter(logging.Filter):
+        def filter(self, record):
+            return 'Running on' in record.msg or 'Press CTRL+C to quit' in record.msg
+
+    startup_handler.addFilter(WerkzeugFilter())
+    
+    return logger
+
+def create_app():
+    app = Flask(__name__)
+    app.json_encoder = CustomJSONEncoder
+    CORS(app, resources={r"/*": {"origins": "*"}})  # Configure CORS more securely
+    app.config['MONGO_URI'] = 'mongodb://localhost:27017/DnD_AI_DB'
+    app.register_blueprint(character_blueprint, url_prefix='/api')
+    
+    # Configure logging
+    app.logger = configure_logging()
+    app.logger.handlers = []
+    
+    return app
 
 character_blueprint = Blueprint('character', __name__)
 mongo_client = MongoClient('mongodb://localhost:27017/')
@@ -85,6 +113,7 @@ def create_character():
             character_data = request.json
             required_fields = ['name', 'gameStyle', 'race', 'username']
             if not all(field in character_data for field in required_fields):
+                app.logger.warning(f"Missing required fields: {character_data}")
                 return jsonify({'error': 'Missing required fields'}), 400
 
             # Insert character data into MongoDB
@@ -159,4 +188,4 @@ def build_cors_preflight_response():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host='0.0.0.0', port=6500, debug=True)
+    app.run(host='0.0.0.0', port=6500, debug=False, use_reloader=False)

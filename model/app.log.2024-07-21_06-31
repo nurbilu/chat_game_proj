@@ -1,0 +1,5 @@
+2024-07-21 06:31:21,131 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-07-21 06:31:21,132 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-07-21 06:32:46,663 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:32:46] "[33mOPTIONS /generate_text HTTP/1.1[0m" 404 -
+2024-07-21 06:34:39,485 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:34:39] "[33mOPTIONS /generate_text HTTP/1.1[0m" 404 -

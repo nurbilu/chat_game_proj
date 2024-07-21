@@ -1,0 +1,14 @@
+2024-07-21 06:45:30,804 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:6500
+ * Running on http://10.0.0.10:6500
+2024-07-21 06:45:30,807 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-07-21 06:45:48,289 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:45:48] "OPTIONS /api/characters/eddie HTTP/1.1" 200 -
+2024-07-21 06:45:48,300 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:45:48] "GET /api/characters/eddie HTTP/1.1" 200 -
+2024-07-21 06:45:52,886 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:45:52] "GET /api/races HTTP/1.1" 200 -
+2024-07-21 06:46:04,591 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:46:04] "OPTIONS /api/characters HTTP/1.1" 200 -
+2024-07-21 06:46:04,596 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:46:04] "[35m[1mPOST /api/characters HTTP/1.1[0m" 500 -
+2024-07-21 06:46:10,566 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:46:10] "OPTIONS /api/characters/eddie HTTP/1.1" 200 -
+2024-07-21 06:46:10,577 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:46:10] "GET /api/characters/eddie HTTP/1.1" 200 -
+2024-07-21 06:46:15,995 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:46:15] "OPTIONS /api/characters/eddie/sokolov HTTP/1.1" 200 -
+2024-07-21 06:46:15,999 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:46:15] "DELETE /api/characters/eddie/sokolov HTTP/1.1" 200 -
