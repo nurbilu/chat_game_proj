@@ -101,7 +101,7 @@ pydantic_core==2.18.4
 pygitguardian==1.13.0
 Pygments==2.18.0
 PyJWT==2.6.0
-pymongo==4.7.3
+pymongo==4.8.0
 pyparsing==3.1.2
 pypiwin32==223
 python-dateutil==2.8.2

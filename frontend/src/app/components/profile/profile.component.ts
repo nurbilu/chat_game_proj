@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
   showUpdateForm: boolean = false;
   showUserData: boolean = true;
   characters: any[] = [];
+  profilePictureUrl: string = 'assets/imgs/profile_pictures/no_profile_pic.png';  // Default placeholder image
 
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router) {}
 
@@ -30,14 +31,15 @@ export class ProfileComponent implements OnInit {
   }
 
   loadUserProfile(): void {
-    this.authService.decodeToken().then((tokenPayload) => {
-        this.userProfile = {
-            username: tokenPayload.username,
-            email: tokenPayload.email,
-            address: tokenPayload.address,
-            birthdate: new Date(tokenPayload.birthdate)
-        };
-    }).catch(error => console.error(error));
+    this.authService.getUserProfile().subscribe(
+      (data) => {
+        this.userProfile = data;
+        this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
+      },
+      (error) => {
+        console.error('Failed to load user profile:', error);
+      }
+    );
   }
 
   loadUserCharacters(username: string): void {
@@ -100,7 +102,23 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.clear();
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+        this.authService.uploadProfilePicture(file).subscribe(
+            response => {
+                console.log('Profile picture uploaded successfully:', response);
+                this.loadUserProfile();  // Reload profile to reflect the new picture
+            },
+            error => {
+                console.error('Failed to upload profile picture:', error);
+            }
+        );
+    }
   }
 }

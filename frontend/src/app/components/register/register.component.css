@@ -11,3 +11,8 @@
   box-shadow: none; /* Optional: remove shadow */
   color: rgb(14, 13, 13);
 }
+
+.img-thumbnail {
+  max-width: 150px;
+  max-height: 150px;
+}

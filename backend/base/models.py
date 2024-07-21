@@ -3,8 +3,7 @@ from django.contrib.auth.models import AbstractUser
 import datetime
 
 class User(AbstractUser):
-    # Change CharField to TextField for the password field
-    password = models.TextField()  # Changed from CharField to TextField
+    password = models.TextField()
     email = models.EmailField(unique=True)
     address = models.CharField(max_length=255, blank=True, null=True) 
     birthdate = models.DateField(default=datetime.date.today)
@@ -24,3 +23,4 @@ class User(AbstractUser):
         related_name="custom_user_permissions",
         related_query_name="user",
     )
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='media\profile_pictures\no_profile_pic.png')

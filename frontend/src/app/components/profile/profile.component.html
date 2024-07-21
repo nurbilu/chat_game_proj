@@ -2,6 +2,9 @@
 <div class="profile-container container">
     <h2 class="text-center my-4">Profile</h2>
     <div *ngIf="!isSuperuser">
+        <div class="text-center mb-4">
+            <img [src]="profilePictureUrl" class="img-thumbnail profile-picture" alt="Profile Picture">
+        </div>
         <div *ngIf="showUpdateForm">
             <form (ngSubmit)="confirmUpdate()" class="update-form">
                 <div class="mb-3 input-group">
@@ -19,6 +22,10 @@
                 <div class="mb-3 input-group">
                     <span class="input-group-text">Birthdate</span>
                     <input type="date" class="form-control" id="birthdate" [(ngModel)]="userProfile.birthdate" name="birthdate">
+                </div>
+                <div class="mb-3">
+                    <label for="profilePicture" class="form-label">Upload Profile Picture</label>
+                    <input type="file" class="form-control" id="profilePicture" (change)="onFileSelected($event)">
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Update Profile</button>

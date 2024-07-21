@@ -238,11 +238,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/images/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Ensure STATIC_ROOT and MEDIA_ROOT are set to different directories
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Django collects static files here
-MEDIA_ROOT = BASE_DIR / 'media'  # For uploaded media files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

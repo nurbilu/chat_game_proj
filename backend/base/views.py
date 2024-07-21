@@ -12,6 +12,7 @@ from .utils import get_gemini_response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.parsers import MultiPartParser, FormParser
 
 User = get_user_model()
 
@@ -59,17 +60,18 @@ class UserLoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
             login(request, user)
             refresh = RefreshToken.for_user(user)
             return Response({
+                'refresh': str(refresh),
                 'access': str(refresh.access_token),
-                'username': user.username, 
+                'username': user.username,
                 'email': user.email,
                 'address': user.address,
                 'birthdate': user.birthdate.isoformat() if user.birthdate else None,
-                'message': 'User logged in successfully'
+                'profile_picture': user.profile_picture.url if user.profile_picture else 'profile_pictures/no_profile_pic.png'
             }, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -114,3 +116,18 @@ class SuperUserProfileView(APIView):
         users = User.objects.all()
         serializer = UserProfileSerializer(users, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+class ProfilePictureUploadView(APIView):
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        user = request.user
+        file = request.FILES.get('profile_picture')
+        if not file:
+            return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.profile_picture = file
+        user.save()
+        return Response({'message': 'Profile picture uploaded successfully'}, status=status.HTTP_200_OK)

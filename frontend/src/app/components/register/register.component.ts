@@ -13,11 +13,22 @@ export class RegisterComponent {
     email: string = '';
     address: string = '';
     birthdate: string = '';
+    profilePicture: File | null = null;
 
     constructor(private authService: AuthService, private router: Router) { }
 
     register() {
-        this.authService.register(this.username, this.password, this.email, this.address, this.birthdate).subscribe(
+        const formData = new FormData();
+        formData.append('username', this.username);
+        formData.append('password', this.password);
+        formData.append('email', this.email);
+        formData.append('address', this.address);
+        formData.append('birthdate', this.birthdate);
+        if (this.profilePicture) {
+            formData.append('profile_picture', this.profilePicture);
+        }
+
+        this.authService.register(formData).subscribe(
             data => {
                 this.router.navigate(['/login']);
             },
@@ -27,10 +38,13 @@ export class RegisterComponent {
         );
     }
 
+    onFileSelected(event: any): void {
+        this.profilePicture = event.target.files[0];
+    }
+
     logout(): void {
         // localStorage.removeItem('token');
         localStorage.clear();
         this.router.navigate(['/login']);
     }
 }
-

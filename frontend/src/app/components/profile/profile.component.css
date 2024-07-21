@@ -1,7 +1,7 @@
 /* profile.component.css */
 .profile-container {
-    max-width: 2300px;
-    padding: 163px;
+    max-width: 2400px;
+    padding: 76px;
     background: rgba(255, 255, 255, 0.8) url('/assets/imgs/golden-kingdom.png') no-repeat center center;
     background-size: cover;
     border: 2px solid #d3c29d;
@@ -20,4 +20,14 @@
 
 .logout-button {
     width: 100%;
+}
+
+.img-thumbnail {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.profile-picture {
+    border: 2px solid #d3c29d;
+    border-radius: 10px;
 }

@@ -24,6 +24,11 @@
             <label for="birthdate" class="form-label">Birthdate:</label>
             <input type="date" class="form-control" id="birthdate" [(ngModel)]="birthdate" name="birthdate" required>
           </div>
+          <div class="mb-3">
+            <label for="profilePicture" class="form-label">Upload Profile Picture</label>
+            <input type="file" class="form-control" id="profilePicture" (change)="onFileSelected($event)">
+            <img id="previewHolder" src="https://via.placeholder.com/150" class="img-thumbnail mt-3" alt="Profile Picture Preview">
+          </div>
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">Register</button>
           </div>

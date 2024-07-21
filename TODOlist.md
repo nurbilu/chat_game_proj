@@ -23,11 +23,11 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 5. focus and specify the chat and web site ( Adding AI-extra 10 points !()! ) : 
     - make change password in a different component + add link in login for change password component for "forgot your password? click here"   
-    - Image uploading (to profile or for any other use)
     - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
         i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .
     - maybe instead of using the MongoDB compass either find a way to connect to Atlas or use Atlas cluster directly OR use a different no sql DB like          firebase - work better with Gemini but will cost more to remember how to connect to it correctly and potentially more expensive .()
+    - fix the creation of files like chrcter_creation.log.2024-07-21_10-12 , upgrade the loggers so they have some sort of simple security measures in kindof way.
 
 6. create unit tests for all API calls ( bonus 6 points - could help and wont hurt - ( ) - see if have time to implement) :
     - sending emails (3 extra points each).
@@ -41,8 +41,17 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
     - Responsive (using MUI extra 2 points)
 
 
-9. implemnt and finish the dockers ( ) :
+9.a. implemnt and finish the dockers ( ) :
     (Dockerfile ( bonus + 10 points! ))
+
+9.b. security measures ( ) :
+    - add a security measure to the loggers so they dont show the full path to the file and just the name of the file .
+    - add a sort of notification system to that monitor al loggers and use a real time db that send all logs data either to an portable hard drive or to the cloud or to a sdd card .
+    - improve logger more , and make them even more organised readable , send all Werkzeug in to different folder - for kind of Werkzeug messages , excluding the framework cmd temrinal logger Werzeug startup messages.
+    - add more sections if u think its needed .
+    
+
+
 
 10. cloud deployment ( ) :
     not a must project wise , but will make the game more wide spread a fast reactions and prompts 

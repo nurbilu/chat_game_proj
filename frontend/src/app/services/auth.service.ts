@@ -10,19 +10,44 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class AuthService {
     private baseUrl = 'http://127.0.0.1:8000/';
+    private inMemoryStorage: { [key: string]: string } = {};
 
     constructor(private http: HttpClient, private jwtHelper: JwtHelperService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
     // Method to retrieve the token
     getToken(): string | null {
         if (isPlatformBrowser(this.platformId)) {
-            return localStorage.getItem('token');
+            return localStorage.getItem('token') || this.inMemoryStorage['token'] || null;
         }
-        return null;  // Return null if not in browser environment
+        return this.inMemoryStorage['token'] || null;  // Return from in-memory storage if not in browser environment
     }
 
-    register(username: string, password: string, email: string, address: string, birthdate: string): Observable<any> {
-        return this.http.post(`${this.baseUrl}register/`, { username, password, email, address, birthdate });
+    setItem(key: string, value: string): void {
+        if (isPlatformBrowser(this.platformId)) {
+            try {
+                localStorage.setItem(key, value);
+            } catch (e) {
+                this.inMemoryStorage[key] = value;
+            }
+        } else {
+            this.inMemoryStorage[key] = value;
+        }
+    }
+
+    removeItem(key: string): void {
+        if (isPlatformBrowser(this.platformId)) {
+            try {
+                localStorage.removeItem(key);
+            } catch (e) {
+                delete this.inMemoryStorage[key];
+            }
+        } else {
+            delete this.inMemoryStorage[key];
+        }
+    }
+
+    register(formData: FormData): Observable<any> {
+        return this.http.post(`${this.baseUrl}register/`, formData);
     }
 
     login(username: string, password: string): Observable<any> {
@@ -37,10 +62,9 @@ export class AuthService {
                     console.error('Username not provided in token:', decodedToken);
                     throw new Error('Username not provided in token');
                 }
-                if (isPlatformBrowser(this.platformId)) {
-                    localStorage.setItem('token', response.access);
-                    localStorage.setItem('username', decodedToken.username);
-                }
+                this.setItem('token', response.access);
+                this.setItem('username', decodedToken.username);
+                this.setItem('profile_picture', decodedToken.profile_picture || 'profile_pictures/no_profile_pic.png');
             }),
             catchError(error => {
                 return throwError(() => new Error('Login failed: ' + error.message));
@@ -49,10 +73,9 @@ export class AuthService {
     }
 
     logout(): Observable<any> {
-        if (isPlatformBrowser(this.platformId)) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-        }
+        this.removeItem('token');
+        this.removeItem('username');
+        this.removeItem('profile_picture');
         return of({ success: true });  // Simulate an observable response
     }
 
@@ -104,20 +127,16 @@ export class AuthService {
 
     decodeToken(): Promise<any> {
         return new Promise((resolve, reject) => {
-            if (isPlatformBrowser(this.platformId)) {
-                const token = this.getToken();
-                if (token) {
-                    try {
-                        const decoded = this.jwtHelper.decodeToken(token);
-                        resolve(decoded);
-                    } catch (error) {
-                        reject('Error decoding token');
-                    }
-                } else {
-                    reject('Token not found');
+            const token = this.getToken();
+            if (token) {
+                try {
+                    const decoded = this.jwtHelper.decodeToken(token);
+                    resolve(decoded);
+                } catch (error) {
+                    reject('Error decoding token');
                 }
             } else {
-                reject('Not running in a browser environment');
+                reject('Token not found');
             }
         });
     }
@@ -125,6 +144,20 @@ export class AuthService {
     changePassword(data: any): Observable<any> {
         return this.http.post(`${this.baseUrl}change-password/`, data).pipe(
             catchError(error => throwError(() => new Error('Error changing password: ' + error.message)))
+        );
+    }
+
+    uploadProfilePicture(file: File): Observable<any> {
+        const token = this.getToken();
+        if (!token) {
+            console.error('No token found');
+            return throwError(() => new Error('Authentication token not found'));
+        }
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        const formData = new FormData();
+        formData.append('profile_picture', file);
+        return this.http.post(`${this.baseUrl}upload-profile-picture/`, formData, { headers }).pipe(
+            catchError(error => throwError(() => new Error('Error uploading profile picture: ' + error.message)))
         );
     }
 }
