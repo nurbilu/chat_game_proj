@@ -1,7 +1,0 @@
-2024-07-21 06:51:55,817 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on all addresses (0.0.0.0)
- * Running on http://127.0.0.1:6500
- * Running on http://10.0.0.10:6500
-2024-07-21 06:51:55,819 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2024-07-21 06:52:38,574 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:52:38] "OPTIONS /api/characters/check HTTP/1.1" 200 -
-2024-07-21 06:52:38,590 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:52:38] "GET /api/characters/check HTTP/1.1" 200 -

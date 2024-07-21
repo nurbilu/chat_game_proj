@@ -1,9 +1,0 @@
-2024-07-21 06:31:23,553 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on all addresses (0.0.0.0)
- * Running on http://127.0.0.1:6500
- * Running on http://10.0.0.10:6500
-2024-07-21 06:31:23,554 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2024-07-21 06:32:54,510 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:32:54] "OPTIONS /api/characters/eddie HTTP/1.1" 200 -
-2024-07-21 06:32:54,521 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:32:54] "[35m[1mGET /api/characters/eddie HTTP/1.1[0m" 500 -
-2024-07-21 06:34:47,269 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:34:47] "OPTIONS /api/characters/kobi HTTP/1.1" 200 -
-2024-07-21 06:34:47,450 - werkzeug - INFO - 127.0.0.1 - - [21/Jul/2024 06:34:47] "[35m[1mGET /api/characters/kobi HTTP/1.1[0m" 500 -

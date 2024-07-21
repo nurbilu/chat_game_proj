@@ -1,4 +1,5 @@
 import os
+import signal
 import sys
 import json
 import logging
@@ -64,6 +65,14 @@ def configure_logging():
     startup_handler.addFilter(WerkzeugFilter())
     
     return logger
+
+def clear_log_file(log_file):
+    with open(log_file, 'w'):
+        pass
+
+def handle_exit(signum, frame):
+    clear_log_file('app.log')
+    os._exit(0)
 
 app = Flask(__name__)
 app.logger = configure_logging()
@@ -141,4 +150,5 @@ def _build_cors_preflight_response():
     return response
 
 if __name__ == '__main__':
+    signal.signal(signal.SIGINT, handle_exit)
     socketio.run(app, debug=False, use_reloader=False)

@@ -1,3 +1,5 @@
+import os
+import signal
 from flask import Flask, request, jsonify, make_response, Blueprint
 from flask_caching import Cache
 from flask_caching.backends.base import BaseCache  # Added this import
@@ -86,6 +88,14 @@ def configure_logging():
     startup_handler.addFilter(WerkzeugFilter())
     
     return logger
+
+def clear_log_file(log_file):
+    with open(log_file, 'w'):
+        pass
+
+def handle_exit(signum, frame):
+    clear_log_file('chrcter_creation.log')
+    os._exit(0)
 
 def create_app():
     app = Flask(__name__)
@@ -187,5 +197,6 @@ def build_cors_preflight_response():
     return response
 
 if __name__ == '__main__':
+    signal.signal(signal.SIGINT, handle_exit)
     app = create_app()
     app.run(host='0.0.0.0', port=6500, debug=False, use_reloader=False)
