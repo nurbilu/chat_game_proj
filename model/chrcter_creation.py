@@ -2,16 +2,15 @@ import os
 import signal
 from flask import Flask, request, jsonify, make_response, Blueprint
 from flask_caching import Cache
-from flask_caching.backends.base import BaseCache  # Added this import
+from flask_caching.backends.base import BaseCache
 from pymongo import MongoClient
 from bson import json_util
 from bson.json_util import dumps, loads
 from flask_cors import CORS, cross_origin
 import logging
-from flask.logging import default_handler
-from logging.handlers import TimedRotatingFileHandler
+from logging import FileHandler  # Corrected import
 import json
-import requests  # Added this import
+import requests
 from flask.logging import default_handler
 
 class MongoDBCache(BaseCache):
@@ -51,17 +50,14 @@ def configure_logging():
     for handler in logger.handlers[:]:
         logger.removeHandler(handler)
     
-    # Create a TimedRotatingFileHandler
-    file_handler = TimedRotatingFileHandler(
-        log_file,
-        when='M',
-        interval=5,
-        backupCount=0
-    )
+    # Create a FileHandler
+    if not os.path.exists(log_file):
+        open(log_file, 'w').close()
+    file_handler = FileHandler(log_file)
     file_handler.setLevel(logging.DEBUG)
     
     # Create a formatter
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # Fixed typo here
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
     
     # Add the handler to the logger

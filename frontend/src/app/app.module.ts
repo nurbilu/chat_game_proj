@@ -8,17 +8,18 @@ import { RegisterComponent } from './components/register/register.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { AuthService } from './services/auth.service';
 import { ChatService } from './services/chat.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AboutComponent } from './components/about/about.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-creation.component';
 import { HttpClientModule } from '@angular/common/http';
-import { EnvironmentsModule } from './environments.module'; // Import HttpClientModule
-import { SuperProfileComponent } from './components/super-profile/super-profile.component'; // Import SuperProfileComponent
+import { EnvironmentsModule } from './environments.module';
+import { SuperProfileComponent } from './components/super-profile/super-profile.component';
+import { RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModule
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { SuperProfileComponent } from './components/super-profile/super-profile.
     HomepageComponent,
     ChangePasswordComponent,
     ChrcterCreationComponent,
-    SuperProfileComponent  // Add SuperProfileComponent here
+    SuperProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,9 @@ import { SuperProfileComponent } from './components/super-profile/super-profile.
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    EnvironmentsModule // Add HttpClientModule here
+    EnvironmentsModule,
+    RouterModule,
+    NgbModule // Add NgbModule to imports
   ],
   providers: [
     AuthService,

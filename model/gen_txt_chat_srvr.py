@@ -15,6 +15,7 @@ from bson.json_util import dumps, loads
 from datetime import datetime
 import random  # For dice rolls
 from chatbot import handle_data_blueprint, game_mchnics_blueprint, logout_user_blueprint, GEM_cnnction
+from chatbot.GEM_cnnction import generate_gemini_response
 from flask.logging import default_handler
 
 def configure_logging():
@@ -28,13 +29,10 @@ def configure_logging():
     for handler in logger.handlers[:]:
         logger.removeHandler(handler)
     
-    # Create a TimedRotatingFileHandler
-    file_handler = TimedRotatingFileHandler(
-        log_file,
-        when='M',
-        interval=5,
-        backupCount=0
-    )
+    # Create a FileHandler
+    if not os.path.exists(log_file):
+        open(log_file, 'w').close()
+    file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(logging.DEBUG)
     
     # Create a formatter
@@ -82,11 +80,11 @@ CORS(app, resources={r"/*": {"origins": "*"}})  # This allows all domains. Adjus
 
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200") 
 
-
-handle_data_blueprint = Blueprint('handle_data', __name__)
-game_mchnics_blueprint = Blueprint('game_mchnics', __name__)
-logout_user_blueprint = Blueprint('logout_user', __name__)
-GEM_cnnction = Blueprint('GEM_cnnction', __name__)
+# Register blueprints
+app.register_blueprint(handle_data_blueprint)
+app.register_blueprint(game_mchnics_blueprint)
+app.register_blueprint(logout_user_blueprint)
+app.register_blueprint(GEM_cnnction)
 
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/mike')
@@ -140,7 +138,22 @@ def handle_message(data):
         emit('response', {'text': response_text, 'username': player_name})
         db.sessions.update_one({"username": player_name}, {"$set": session_data}, upsert=True)  # Ensure session is saved after handling
     except Exception as e:
+        app.logger.exception("Error handling message")
         emit('error', {'error': str(e)})
+
+@app.route('/generate_text', methods=['POST'])
+def generate_text():
+    try:
+        data = request.json
+        prompt = data.get('prompt', '')
+        if not prompt:
+            return jsonify({'error': 'Prompt is required'}), 400
+        
+        response_text = generate_gemini_response(prompt)
+        return jsonify({'response': response_text})
+    except Exception as e:
+        app.logger.exception("Error generating text")
+        return jsonify({'error': str(e)}), 500
 
 def _build_cors_preflight_response():
     response = make_response()
