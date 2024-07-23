@@ -13,6 +13,7 @@
     "server.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.ts",
+    "src/polyfills.ts"
   ]
 }

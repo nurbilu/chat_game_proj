@@ -10,6 +10,17 @@ nav {
   border-radius: 50%;
 }
 
+.navbar-toggler {
+  border: none;
+  background-color: #c9a66b; /* Gold color */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%288, 8, 8, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
 .offcanvas-header {
   background-color: #333740;
   color: #f4eee8; /* Parchment white */
@@ -41,4 +52,8 @@ nav {
 
 body.offcanvas-open {
   overflow: hidden;
+}
+
+.navbar-nav .btn-group {
+  margin-left: auto;
 }

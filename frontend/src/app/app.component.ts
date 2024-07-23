@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbOffcanvas, NgbOffcanvasRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +11,9 @@ export class AppComponent implements OnInit {
   title = 'DeMe - pick your story';
 
   @ViewChild('offcanvasContent', { static: true }) offcanvasContent!: TemplateRef<any>;
-  private modalRef!: NgbModalRef;
+  private offcanvasRef!: NgbOffcanvasRef;
 
-  constructor(private router: Router, private modalService: NgbModal) {}
+  constructor(private router: Router, private offcanvasService: NgbOffcanvas) {}
 
   logout(): void {
     localStorage.clear();
@@ -23,6 +23,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {}
 
   openOffcanvas() {
-    this.modalRef = this.modalService.open(this.offcanvasContent, { ariaLabelledBy: 'offcanvasNavbarLabel' });
+    this.offcanvasRef = this.offcanvasService.open(this.offcanvasContent, { ariaLabelledBy: 'offcanvasNavbarLabel' });
+  }
+
+  closeOffcanvas() {
+    if (this.offcanvasRef) {
+      this.offcanvasRef.dismiss();
+    }
   }
 }
