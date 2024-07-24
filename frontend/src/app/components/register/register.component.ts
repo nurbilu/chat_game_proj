@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
     selector: 'app-register',
@@ -15,7 +16,10 @@ export class RegisterComponent {
     birthdate: string = '';
     profilePicture: File | null = null;
 
-    constructor(private authService: AuthService, private router: Router) { }
+    @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
+    @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
+
+    constructor(private authService: AuthService, private router: Router, private toastService: ToastService) { }
 
     register() {
         const formData = new FormData();
@@ -31,9 +35,16 @@ export class RegisterComponent {
         this.authService.register(formData).subscribe(
             data => {
                 this.router.navigate(['/login']);
+                this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+                this.username = '';
+                this.password = '';
+                this.email = '';
+                this.address = '';
+                this.birthdate = '';
+                this.profilePicture = null;
             },
             error => {
-                console.error('Registration failed', error);
+                this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
             }
         );
     }
@@ -43,7 +54,6 @@ export class RegisterComponent {
     }
 
     logout(): void {
-        // localStorage.removeItem('token');
         localStorage.clear();
         this.router.navigate(['/login']);
     }

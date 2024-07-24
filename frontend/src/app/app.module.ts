@@ -20,6 +20,7 @@ import { EnvironmentsModule } from './environments.module';
 import { SuperProfileComponent } from './components/super-profile/super-profile.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModule
+import { ToastsContainerComponent } from './components/toasts-container/toasts-container.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModule
     HomepageComponent,
     ChangePasswordComponent,
     ChrcterCreationComponent,
-    SuperProfileComponent
+    SuperProfileComponent,
+    ToastsContainerComponent // Add this line
   ],
   imports: [
     BrowserModule,

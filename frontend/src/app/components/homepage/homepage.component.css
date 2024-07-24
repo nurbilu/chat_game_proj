@@ -2,11 +2,17 @@
     position: relative;
     max-width: 100%;
     min-height: 400px;
-    padding: 305px;
+    padding: 274px;
     border: 2px solid #d3c29d;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     color: white;
     overflow: hidden;
+    
+    /* Add these properties to center the text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .homepage-container::before {
@@ -20,6 +26,10 @@
     background-size: cover;
     filter: brightness(0.5);
     z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .text-container {
@@ -29,7 +39,7 @@
 }
 
 .card {
-    background-color: #f8f9fa;
+    background-color: #71b1f0;
     color: #000;
 }
 

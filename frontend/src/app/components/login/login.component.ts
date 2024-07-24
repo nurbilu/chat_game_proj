@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
     selector: 'app-login',
@@ -11,22 +12,32 @@ export class LoginComponent {
     username: string = '';
     password: string = '';
 
-    constructor(private authService: AuthService, private router: Router) { }
+    @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
+    @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
+    @ViewChild('logoutTemplate', { static: true }) logoutTemplate!: TemplateRef<any>;
+
+    constructor(private authService: AuthService, private router: Router, private toastService: ToastService) { }
 
     login() {
         this.authService.login(this.username, this.password).subscribe({
             next: (response) => {
-                this.router.navigate(['/chat']); 
-                console.log('Login successful');
+                this.router.navigate(['/chat']);
+                this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+                this.username = '';
+                this.password = '';
             },
             error: (error) => {
-                console.error('Login failed');
+                this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
             }
         });
     }
 
+
     logout(): void {
+        const username = localStorage.getItem('username'); // Pull username from local storage
         localStorage.clear();
         this.router.navigate(['/login']);
+        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+        this.toastService.show({ template: this.logoutTemplate, classname: 'bg-success text-light', delay: 10000, context: { username } });
     }
 }

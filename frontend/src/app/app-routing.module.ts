@@ -15,14 +15,13 @@ const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'chat', component: ChatComponent },  // Protect chat route
-    { path: 'profile', component: ProfileComponent , canActivate: [AuthGuard]},  // Protect profile route
+    { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
+    { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'about', component: AboutComponent },
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: 'homepage', component: HomepageComponent },  // Add route for homepage
-    { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },  // Add change password route
-    { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] }, // Add route for character creation and protect with AuthGuard
-    { path: 'super-profile', component: SuperProfileComponent, canActivate: [AuthGuard] }, // Add route for SuperProfileComponent
+    { path: '', redirectTo: '/homepage', pathMatch: 'full' },  // Redirect to homepage
+    { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+    { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] },
+    { path: 'super-profile', component: SuperProfileComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

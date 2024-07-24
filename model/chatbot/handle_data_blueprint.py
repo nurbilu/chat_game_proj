@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app as app
 from pymongo import MongoClient
 import json
 from bson import json_util
@@ -28,11 +28,19 @@ def save_session():
 def generate_text():
     try:
         data = request.json
-        prompt = data.get('prompt', '')
+        prompt = data.get('prompt', '').strip()
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
         
-        response_text = generate_gemini_response(prompt)
+        # Connect to the database
+        client = MongoClient('mongodb://localhost:27017/mike')
+        db = client.DnD_AI_DB
+        
+        # Assuming a simplified session handling and response generation
+        session_data = db.sessions.find_one({"username": data.get('username', 'Anonymous')}) or {}
+        enriched_prompt = f"{prompt}\n\nSession Data:\n{json.dumps(session_data)}"
+        
+        response_text = generate_gemini_response(enriched_prompt, db)
         return jsonify({'response': response_text})
     except Exception as e:
         app.logger.exception("Error generating text")

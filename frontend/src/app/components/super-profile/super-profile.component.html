@@ -1,21 +1,29 @@
 <div class="super-profile-container container">
-    <h2>All User Profiles</h2>
-    <select class="form-control mb-3" [(ngModel)]="selectedProfile" (change)="onProfileSelect(selectedProfile)">
-        <option *ngFor="let profile of userProfiles" [ngValue]="profile">
-            {{ profile.username }}
-        </option>
-    </select>
-    <div *ngIf="isLoading">Loading profiles...</div>
-    <div *ngIf="error">{{ error }}</div>
-    <div *ngIf="selectedProfile" class="user-data table-responsive">
-        <table class="table table-striped">
-            <tbody>
-                <tr><th>Username</th><td>{{ selectedProfile.username }}</td></tr>
-                <tr><th>Email</th><td>{{ selectedProfile.email }}</td></tr>
-                <tr><th>Address</th><td>{{ selectedProfile.address }}</td></tr>
-                <tr><th>Birthdate</th><td>{{ selectedProfile.birthdate }}</td></tr>
-            </tbody>
-        </table>
+    <div class="super-profile-content">
+        <h2 class="text-center mb-4">All User Profiles</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="profileSelect" class="form-label">Select Profile</label>
+                    <select id="profileSelect" class="form-select" [(ngModel)]="selectedProfile" (change)="onProfileSelect(selectedProfile)">
+                        <option *ngFor="let profile of userProfiles" [ngValue]="profile">
+                            {{ profile.username }}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="isLoading" class="alert alert-info">Loading profiles...</div>
+                <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+                <div *ngIf="selectedProfile" class="user-data table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr><th>Username</th><td>{{ selectedProfile.username }}</td></tr>
+                            <tr><th>Email</th><td>{{ selectedProfile.email }}</td></tr>
+                            <tr><th>Address</th><td>{{ selectedProfile.address }}</td></tr>
+                            <tr><th>Birthdate</th><td>{{ selectedProfile.birthdate }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <button (click)="logout()" class="btn btn-danger logout-button">Logout</button>
 </div>

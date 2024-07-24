@@ -1,3 +1,7 @@
+<ng-template #logoutTemplate let-username="username">
+  <div>Until the next time adventurer, {{ username }}</div>
+</ng-template>
+
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
   <a className="navbar-brand" href="#">
     <img src="favicon.ico" alt="Logo" className="rounded-circle" style="width: 40px; height: 40px;">
@@ -5,11 +9,12 @@
   <button class="navbar-toggler" type="button" (click)="openOffcanvas()">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div className="collapse navbar-collapse" id="navbarNav">
+  <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <div class="btn-group" role="group" aria-label="Login and Logout">
-        <button class="btn btn-primary" routerLink="/login">Login</button>
-        <button class="btn btn-danger" (click)="logout()">Logout</button>
+      <div class="btn-group" role="group" aria-label="homepage, Login and Logout">
+        <button class="btn btn-primary" routerLink="/homepage">Homepage</button>
+        <button class="btn btn-success" routerLink="/login">Login</button>
+        <button class="btn btn-warning" (click)="logout()">Logout</button>
       </div>
     </ul>
   </div>
@@ -22,11 +27,10 @@
   </div>
   <div class="offcanvas-body">
     <ul class="navbar-nav">
-      <li className="nav-item"><a className="nav-link" routerLink="/login">Login</a></li>
+      <li className="nav-item"><a className="nav-link" routerLink="/homepage">Homepage</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/register">Register</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/character-creation">Create Character</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/chat">Chat</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/homepage">Homepage</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/about">About</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/profile">Profile</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/change-password">Change Password</a></li>
@@ -35,5 +39,8 @@
     </ul>
   </div>
 </ng-template>
-
+<ng-template #logoutTemplate let-username="username">
+  <div>Until the next time adventurer, {{ username }}</div>
+</ng-template>
+<app-toasts-container></app-toasts-container>
 <router-outlet></router-outlet>

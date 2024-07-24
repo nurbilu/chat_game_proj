@@ -22,7 +22,7 @@ export class ChatService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     });
-    return this.http.post<any>(this.apiUrl, { text: message, username }, { headers }).pipe(
+    return this.http.post<any>(this.apiUrl, { prompt: message, username }, { headers }).pipe(
       catchError(error => {
         console.error('HTTP error:', error);
         return throwError(() => new Error('Failed to send message'));

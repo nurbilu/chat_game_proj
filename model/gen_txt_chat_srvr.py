@@ -3,20 +3,22 @@ import signal
 import sys
 import json
 import logging
-from logging.handlers import TimedRotatingFileHandler
+from logging import FileHandler
 from flask import Flask, request, jsonify, make_response, Blueprint
 from flask_caching import Cache
 from flask_caching.backends.base import BaseCache
 from flask_socketio import SocketIO, emit
-from flask_caching.backends.base import BaseCache
 from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
 from bson.json_util import dumps, loads
 from datetime import datetime
 import random  # For dice rolls
-from chatbot import handle_data_blueprint, game_mchnics_blueprint, logout_user_blueprint, GEM_cnnction
-from chatbot.GEM_cnnction import generate_gemini_response
+from chatbot.handle_data_blueprint import handle_data_blueprint
+from chatbot.game_mchnics_blueprint import game_mchnics_blueprint
+from chatbot.logout_user_blueprint import logout_user_blueprint
+from chatbot.GEM_cnnction import GEM_cnnction  # Import the blueprint
 from flask.logging import default_handler
+import google.generativeai as genai
 
 def configure_logging():
     log_file = 'app.log'
@@ -32,7 +34,7 @@ def configure_logging():
     # Create a FileHandler
     if not os.path.exists(log_file):
         open(log_file, 'w').close()
-    file_handler = logging.FileHandler(log_file)
+    file_handler = FileHandler(log_file)
     file_handler.setLevel(logging.DEBUG)
     
     # Create a formatter
@@ -69,15 +71,10 @@ def clear_log_file(log_file):
         pass
 
 def handle_exit(signum, frame):
-    clear_log_file('app.log')
-    os._exit(0)
+    sys.exit(0)
 
 app = Flask(__name__)
-app.logger = configure_logging()
-app.logger.handlers = []
-
-CORS(app, resources={r"/*": {"origins": "*"}})  # This allows all domains. Adjust if necessary for security.
-
+CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200") 
 
 # Register blueprints
@@ -129,31 +126,20 @@ def handle_connect():
 def handle_message(data):
     try:
         player_name = data.get('username', 'Anonymous')
-        user_input = data.get('text', '').strip()
+        user_input = data.get('prompt', '').strip()
 
         # Assuming a simplified session handling and response generation
         session_data = db.sessions.find_one({"username": player_name}) or {}
-        response_text = "Response based on " + user_input  # Simplified response logic
+        enriched_prompt = f"{user_input}\n\nSession Data:\n{json.dumps(session_data)}"
+        
+        # Generate response using genai
+        response_text = generate_gemini_response(enriched_prompt, db)
 
         emit('response', {'text': response_text, 'username': player_name})
         db.sessions.update_one({"username": player_name}, {"$set": session_data}, upsert=True)  # Ensure session is saved after handling
     except Exception as e:
         app.logger.exception("Error handling message")
         emit('error', {'error': str(e)})
-
-@app.route('/generate_text', methods=['POST'])
-def generate_text():
-    try:
-        data = request.json
-        prompt = data.get('prompt', '')
-        if not prompt:
-            return jsonify({'error': 'Prompt is required'}), 400
-        
-        response_text = generate_gemini_response(prompt)
-        return jsonify({'response': response_text})
-    except Exception as e:
-        app.logger.exception("Error generating text")
-        return jsonify({'error': str(e)}), 500
 
 def _build_cors_preflight_response():
     response = make_response()

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-chrcter-creation',
@@ -9,10 +10,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./chrcter-creation.component.css']
 })
 export class ChrcterCreationComponent implements OnInit {
+  @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
+  @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
+  @ViewChild('fillFieldsTemplate', { static: true }) fillFieldsTemplate!: TemplateRef<any>;
+
   constructor(
     private chcrcterCreationService: ChcrcterCreationService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) { }
   character = {
     name: '', 
@@ -36,15 +42,17 @@ export class ChrcterCreationComponent implements OnInit {
     if (this.character.name && this.character.gameStyle !== 'none' && this.character.race && this.character.username) {
       this.chcrcterCreationService.createCharacter(this.character).subscribe({
         next: (response) => {
-          console.log('Character created!');
+          this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+          this.character.name = '';
+          this.character.gameStyle = 'none';
+          this.character.race = '';
         },
         error: (error) => {
-          console.error('Failed to create character:', error);
+          this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
         }
       });
     } else {
-      console.error('Missing required character fields:', this.character);
-      // Optionally, display an error message to the user
+      this.toastService.show({ template: this.fillFieldsTemplate, classname: 'bg-danger text-light', delay: 15000 });
     }
   }
 
@@ -57,7 +65,7 @@ export class ChrcterCreationComponent implements OnInit {
         }));
       },
       error: (error) => {
-        console.error('Failed to fetch races:', error);
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
       }
     });
   }

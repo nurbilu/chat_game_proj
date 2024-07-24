@@ -54,5 +54,11 @@
             </ul>
         </div>
     </div>
-    <button (click)="logout()" class="btn btn-danger logout-button mt-4">Logout</button>
 </div>
+
+<ng-template #successTemplate>
+  <div>Operation successful</div>
+</ng-template>
+<ng-template #errorTemplate>
+  <div>Operation failed</div>
+</ng-template>

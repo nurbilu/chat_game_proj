@@ -48,6 +48,8 @@ google-api-core==2.19.0
 google-api-python-client==2.134.0
 google-auth==2.30.0
 google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.1
+google-cloud==0.34.0
 google-cloud-aiplatform==1.57.0
 google-cloud-bigquery==3.25.0
 google-cloud-core==2.4.1
@@ -112,6 +114,7 @@ pytz==2024.1
 pywin32==306
 PyYAML==6.0.1
 requests==2.31.0
+requests-oauthlib==2.0.0
 rich==12.5.1
 rsa==4.9
 scipy==1.13.0
