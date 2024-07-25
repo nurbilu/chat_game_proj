@@ -23,4 +23,4 @@ class User(AbstractUser):
         related_name="custom_user_permissions",
         related_query_name="user",
     )
-    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='media\profile_pictures\no_profile_pic.png')
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='media/profile_pictures/no_profile_pic.png')

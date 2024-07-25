@@ -22,12 +22,13 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
     more simple chatbot , only three game style - maybe i'll add more in the future .( X + ?)
 
 5. focus and specify the chat and web site ( Adding AI-extra 10 points !()! ) : 
-    - make change password in a different component + add link in login for change password component for "forgot your password? click here"   
+    - ***try focus first on making a "pro" website .***
+    - make change password in a different component + add link in login for change password component for "forgot your password? click here" - after successfull password change redirect to login page.
+    - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page
     - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
         i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .
     - maybe instead of using the MongoDB compass either find a way to connect to Atlas or use Atlas cluster directly OR use a different no sql DB like          firebase - work better with Gemini but will cost more to remember how to connect to it correctly and potentially more expensive .()
-    - fix the creation of files like chrcter_creation.log.2024-07-21_10-12 , upgrade the loggers so they have some sort of simple security measures in kindof way.
 
 6. create unit tests for all API calls ( bonus 6 points - could help and wont hurt - ( ) - see if have time to implement) :
     - sending emails (3 extra points each).
@@ -37,7 +38,10 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 
 8. finish design part two/second edition or more , make it responsive as it can be ( ) : 
-    - using bootstrap to finish the responsiveness of the website 
+    - using ng-bootstrap+bootstrap to finish the responsiveness of the website : 
+        1. make the toast messages more responsive , display the username when login .
+            also , customize taost messages of the other components
+        2. ""add more sections if needed"" 
     - Responsive (using MUI extra 2 points)
 
 

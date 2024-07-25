@@ -1,11 +1,12 @@
 <div class="toast-container">
-    <ng-container *ngFor="let toast of toastService.toasts">
-      <ngb-toast
-        [class]="toast.classname"
-        [autohide]="true"
-        [delay]="toast.delay || 5000"
-        (hidden)="toastService.remove(toast)">
-        <ng-template [ngTemplateOutlet]="toast.template"></ng-template>
-      </ngb-toast>
-    </ng-container>
-  </div>
+  <ng-container *ngFor="let toast of toastService.getToasts()">
+    <ngb-toast
+      [header]="toast.title"
+      [class]="toast.classname"
+      [autohide]="true"
+      [delay]="toast.delay || 5000"
+      (hidden)="toastService.remove(toast)">
+      <ng-template [ngTemplateOutlet]="toast.template" [ngTemplateOutletContext]="{ username: toast.context.username }"></ng-template>
+    </ngb-toast>
+  </ng-container>
+</div>

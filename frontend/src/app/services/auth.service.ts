@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
     providedIn: 'root'
 })
 export class AuthService {
-    private baseUrl = 'http://127.0.0.1:8000/';
+    private baseUrl = 'http://127.0.0.1:8000/'; // Ensure this is correct
     private inMemoryStorage: { [key: string]: string } = {};
 
     constructor(private http: HttpClient, private jwtHelper: JwtHelperService, @Inject(PLATFORM_ID) private platformId: Object) { }
@@ -141,8 +141,17 @@ export class AuthService {
         });
     }
 
-    changePassword(data: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}change-password/`, data).pipe(
+    changePassword(data: { oldPassword: string; newPassword: string; confirmPassword: string }): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.getToken()}`
+        });
+        const payload = {
+            old_password: data.oldPassword,
+            new_password: data.newPassword,
+            confirm_new_password: data.confirmPassword
+        };
+        return this.http.put(`${this.baseUrl}change-password/`, payload, { headers }).pipe(
             catchError(error => throwError(() => new Error('Error changing password: ' + error.message)))
         );
     }

@@ -14,8 +14,8 @@
   </form>
 </div>
 
-<ng-template #successTemplate>
-  <div>Login successful</div>
+<ng-template #welcomeTemplate let-username="username">
+  <div>Welcome {{ username }}, let's play!</div>
 </ng-template>
 <ng-template #errorTemplate>
   <div>Login failed</div>

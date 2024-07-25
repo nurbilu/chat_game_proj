@@ -1,5 +1,5 @@
 <ng-template #logoutTemplate let-username="username">
-  <div>Until the next time adventurer, {{ username }}</div>
+  <div>Until the next time adventure, {{ username }}</div>
 </ng-template>
 
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -38,9 +38,6 @@
       <li className="nav-item"><a className="nav-link" (click)="logout()" style="cursor: pointer;">Logout</a></li>
     </ul>
   </div>
-</ng-template>
-<ng-template #logoutTemplate let-username="username">
-  <div>Until the next time adventurer, {{ username }}</div>
 </ng-template>
 <app-toasts-container></app-toasts-container>
 <router-outlet></router-outlet>

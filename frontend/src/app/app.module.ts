@@ -20,7 +20,9 @@ import { EnvironmentsModule } from './environments.module';
 import { SuperProfileComponent } from './components/super-profile/super-profile.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModule
-import { ToastsContainerComponent } from './components/toasts-container/toasts-container.component';
+import { ToastsContainerComponent } from './components/toasts-container/toasts-container.component'; // Added this line
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Required for animations
 
 @NgModule({
   declarations: [
@@ -34,7 +36,7 @@ import { ToastsContainerComponent } from './components/toasts-container/toasts-c
     ChangePasswordComponent,
     ChrcterCreationComponent,
     SuperProfileComponent,
-    ToastsContainerComponent // Add this line
+    ToastsContainerComponent // Added this line
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,9 @@ import { ToastsContainerComponent } from './components/toasts-container/toasts-c
     HttpClientModule,
     EnvironmentsModule,
     RouterModule,
-    NgbModule // Add NgbModule to imports
+    NgbModule, // Add NgbModule to imports
+    BrowserAnimationsModule, // Add BrowserAnimationsModule
+    ToastrModule.forRoot() // Initialize ToastrModule
   ],
   providers: [
     AuthService,

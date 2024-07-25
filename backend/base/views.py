@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, update_session_auth_hash  # Ensure this import is added
 from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,8 +13,14 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.contrib.auth.hashers import make_password
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+import logging
+
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 class UserRegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -90,17 +96,26 @@ class RegisterView(APIView):
             }, status=201)
         return Response(serializer.errors, status=400)
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ChangePasswordView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
+    def put(self, request, *args, **kwargs):
+        logger.debug(f"Received data: {request.data}")
         user = request.user
-        serializer = ChangePasswordSerializer(data=request.data, context={'user': user})
-        if serializer.is_valid():
-            user.set_password(serializer.validated_data['new_password'])
-            user.save()
-            return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
+        confirm_new_password = request.data.get('confirm_new_password')
+
+        if not user.check_password(old_password):
+            return Response({'error': 'Incorrect old password.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_password != confirm_new_password:
+            return Response({'error': 'New passwords must match.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password)
+        user.save()
+        update_session_auth_hash(request, user)  # Important to keep the user logged in after password change
+        return Response({'success': 'Password updated successfully.'}, status=status.HTTP_200_OK)
+
 
 class SuperUserProfileView(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
