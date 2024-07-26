@@ -112,10 +112,10 @@ class ChangePasswordView(APIView):
             return Response({'error': 'New passwords must match.'}, status=status.HTTP_400_BAD_REQUEST)
 
         user.set_password(new_password)
+        user.pwd_user_str = new_password  # Update the pwd_user_str field
         user.save()
         update_session_auth_hash(request, user)  # Important to keep the user logged in after password change
         return Response({'success': 'Password updated successfully.'}, status=status.HTTP_200_OK)
-
 
 class SuperUserProfileView(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
@@ -146,3 +146,16 @@ class ProfilePictureUploadView(APIView):
         user.profile_picture = file
         user.save()
         return Response({'message': 'Profile picture uploaded successfully'}, status=status.HTTP_200_OK)
+
+class UserProfileUpdateView(APIView):
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

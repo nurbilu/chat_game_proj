@@ -29,6 +29,14 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
         i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .
     - maybe instead of using the MongoDB compass either find a way to connect to Atlas or use Atlas cluster directly OR use a different no sql DB like          firebase - work better with Gemini but will cost more to remember how to connect to it correctly and potentially more expensive .()
+    - 2024-07-26 08:36:52,170 - WARNING - Unauthorized: /api/profile/update/
+       2024-07-26 08:36:52,171 - WARNING - "PUT /api/profile/update/ HTTP/1.1" 401 58
+       
+       in Thunder Client :
+       024-07-26 08:39:34,731 - DEBUG - (0.031) UPDATE `base_user` SET `last_login` = NULL, `is_superuser` = 0, `username` = 'fofo', `first_name` = 'fofo\'el', `last_name` =          'fofonski', `is_staff` = 0, `is_active` = 1, `date_joined` = '2024-07-26 04:01:12.271509', `password` = 'pbkdf2_sha256$390000$eaDekTr2pVLMqLxz0NXc5u$hy4JxKD1Xsa6GaH/6/l/           yIWADkR3O/Un4d7SBCNVfRo=', `email` = 'fofofofo1234@gmail.com', `address` = '', `birthdate` = '1962-12-04', `profile_picture` = 'profile_pictures/dog_user_8S2JZdX.png',            `pwd_user_str` = 'ffff1234' WHERE `base_user`.`id` = 32; args=(False, 'fofo', "fofo'el", 'fofonski', False, True, '2024-07-26 04:01:12.271509',            'pbkdf2_sha256$390000$eaDekTr2pVLMqLxz0NXc5u$hy4JxKD1Xsa6GaH/6/l/yIWADkR3O/Un4d7SBCNVfRo=', 'fofofofo1234@gmail.com', '', '1962-12-04', 'profile_pictures/dog_user_8S2JZdX.        png', 'ffff1234', 32); alias=default
+       2024-07-26 08:39:34,741 - INFO - "PUT /api/profile/update/ HTTP/1.1" 200 201
+       
+       it seems there is a problem with the connection between the django and the angular
 
 6. create unit tests for all API calls ( bonus 6 points - could help and wont hurt - ( ) - see if have time to implement) :
     - sending emails (3 extra points each).
@@ -47,6 +55,9 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 9.a. implemnt and finish the dockers ( ) :
     (Dockerfile ( bonus + 10 points! ))
+    - fix before build : 
+        - ▲ [WARNING] Polyfill for "@angular/localize/init" was added automatically. [plugin angular-polyfills]
+            In the future, this functionality will be removed. Please add this polyfill in the "polyfills" section of your "angular.json" instead. - fix this so it wont be a problem for the docker to build in the future or create a malfuction container .
 
 9.b. security measures ( ) :
     - add a security measure to the loggers so they dont show the full path to the file and just the name of the file .

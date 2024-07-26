@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
@@ -9,17 +9,17 @@ import { isPlatformBrowser } from '@angular/common';
     providedIn: 'root'
 })
 export class AuthService {
-    private baseUrl = 'http://127.0.0.1:8000/'; // Ensure this is correct
-    private inMemoryStorage: { [key: string]: string } = {};
+    private baseUrl = 'http://127.0.0.1:8000/';
+    private _isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
 
     constructor(private http: HttpClient, private jwtHelper: JwtHelperService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
     // Method to retrieve the token
     getToken(): string | null {
         if (isPlatformBrowser(this.platformId)) {
-            return localStorage.getItem('token') || this.inMemoryStorage['token'] || null;
+            return localStorage.getItem('token') || null;
         }
-        return this.inMemoryStorage['token'] || null;  // Return from in-memory storage if not in browser environment
+        return null;  // Return null if not in browser environment
     }
 
     setItem(key: string, value: string): void {
@@ -27,10 +27,8 @@ export class AuthService {
             try {
                 localStorage.setItem(key, value);
             } catch (e) {
-                this.inMemoryStorage[key] = value;
+                // Handle error if localStorage is not available
             }
-        } else {
-            this.inMemoryStorage[key] = value;
         }
     }
 
@@ -39,10 +37,8 @@ export class AuthService {
             try {
                 localStorage.removeItem(key);
             } catch (e) {
-                delete this.inMemoryStorage[key];
+                // Handle error if localStorage is not available
             }
-        } else {
-            delete this.inMemoryStorage[key];
         }
     }
 
@@ -63,8 +59,8 @@ export class AuthService {
                     throw new Error('Username not provided in token');
                 }
                 this.setItem('token', response.access);
-                this.setItem('username', decodedToken.username);
-                this.setItem('profile_picture', decodedToken.profile_picture || 'profile_pictures/no_profile_pic.png');
+                this.setItem('username', username);
+                this._isLoggedIn.next(true); // Update login state
             }),
             catchError(error => {
                 return throwError(() => new Error('Login failed: ' + error.message));
@@ -72,10 +68,15 @@ export class AuthService {
         );
     }
 
+    get isLoggedIn() {
+        return this._isLoggedIn.asObservable();
+    }
+
     logout(): Observable<any> {
-        this.removeItem('token');
-        this.removeItem('username');
-        this.removeItem('profile_picture');
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.clear();
+        }
+        this._isLoggedIn.next(false);
         return of({ success: true });  // Simulate an observable response
     }
 
@@ -116,13 +117,18 @@ export class AuthService {
     }
 
     updateUserProfile(userProfile: any): Observable<any> {
-        const token = this.getToken();
-        if (!token) {
-            console.error('No token found');
-            return throwError(() => new Error('Authentication token not found'));
+        const formData = new FormData();
+        formData.append('username', userProfile.username);
+        formData.append('email', userProfile.email);
+        formData.append('address', userProfile.address);
+        formData.append('birthdate', userProfile.birthdate);
+        formData.append('first_name', userProfile.first_name);
+        formData.append('last_name', userProfile.last_name);
+        if (userProfile.profile_picture instanceof File) {
+            formData.append('profile_picture', userProfile.profile_picture);
         }
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.put(`${this.baseUrl}profile/`, userProfile, { headers });
+
+        return this.http.put(`${this.baseUrl}api/profile/update/`, formData);
     }
 
     decodeToken(): Promise<any> {
@@ -168,5 +174,18 @@ export class AuthService {
         return this.http.post(`${this.baseUrl}upload-profile-picture/`, formData, { headers }).pipe(
             catchError(error => throwError(() => new Error('Error uploading profile picture: ' + error.message)))
         );
+    }
+
+    isSuperUser(): boolean {
+        const token = this.getToken();
+        if (!token) {
+            return false;
+        }
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        return decodedToken && decodedToken.is_superuser;
+    }
+
+    private hasToken(): boolean {
+        return isPlatformBrowser(this.platformId) && !!localStorage.getItem('token');
     }
 }

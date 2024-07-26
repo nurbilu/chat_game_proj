@@ -6,10 +6,18 @@
             <img [src]="profilePictureUrl" class="img-thumbnail profile-picture" alt="Profile Picture">
         </div>
         <div *ngIf="showUpdateForm">
-            <form (ngSubmit)="confirmUpdate()" class="update-form">
+            <form (ngSubmit)="confirmUpdate()" class="update-form" enctype="multipart/form-data">
                 <div class="mb-3 input-group">
                     <span class="input-group-text">Username</span>
                     <input type="text" class="form-control" id="username" [(ngModel)]="userProfile.username" name="username">
+                </div>
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">First Name</span>
+                    <input type="text" class="form-control" id="first_name" [(ngModel)]="userProfile.first_name" name="first_name">
+                </div>
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">Last Name</span>
+                    <input type="text" class="form-control" id="last_name" [(ngModel)]="userProfile.last_name" name="last_name">
                 </div>
                 <div class="mb-3 input-group">
                     <span class="input-group-text">Email</span>
@@ -23,9 +31,9 @@
                     <span class="input-group-text">Birthdate</span>
                     <input type="date" class="form-control" id="birthdate" [(ngModel)]="userProfile.birthdate" name="birthdate">
                 </div>
-                <div class="mb-3">
-                    <label for="profilePicture" class="form-label">Upload Profile Picture</label>
-                    <input type="file" class="form-control" id="profilePicture" (change)="onFileSelected($event)">
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">Profile Picture</span>
+                    <input type="file" class="form-control" id="profile_picture" (change)="onFileSelected($event)">
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Update Profile</button>
@@ -38,6 +46,8 @@
             <table class="table table-striped">
                 <tbody>
                     <tr><th>Username</th><td>{{ userProfile?.username }}</td></tr>
+                    <tr><th>First Name</th><td>{{ userProfile?.first_name }}</td></tr>
+                    <tr><th>Last Name</th><td>{{ userProfile?.last_name }}</td></tr>
                     <tr><th>Email</th><td>{{ userProfile?.email }}</td></tr>
                     <tr><th>Address</th><td>{{ userProfile?.address }}</td></tr>
                     <tr><th>Birthdate</th><td>{{ userProfile?.birthdate }}</td></tr>

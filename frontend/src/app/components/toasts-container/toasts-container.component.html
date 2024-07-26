@@ -6,7 +6,7 @@
       [autohide]="true"
       [delay]="toast.delay || 5000"
       (hidden)="toastService.remove(toast)">
-      <ng-template [ngTemplateOutlet]="toast.template" [ngTemplateOutletContext]="{ username: toast.context.username }"></ng-template>
+      <ng-template [ngTemplateOutlet]="toast.template" [ngTemplateOutletContext]="{ username: toast.context?.username }"></ng-template>
     </ngb-toast>
   </ng-container>
 </div>

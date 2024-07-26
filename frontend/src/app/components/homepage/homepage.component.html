@@ -41,7 +41,7 @@
             </ul>
         </div>
 
-        <div class="btn-group mt-4" role="group">
+        <div class="btn-group mt-4" role="group" *ngIf="isSuperUser">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Superuser
             </button>
@@ -61,7 +61,7 @@
             <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#aboutInfo" aria-expanded="false" aria-controls="aboutInfo">
                 About Info
             </button>
-            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#superuserInfo" aria-expanded="false" aria-controls="superuserInfo">
+            <button class="btn btn-secondary" *ngIf="isSuperUser" type="button" data-bs-toggle="collapse" data-bs-target="#superuserInfo" aria-expanded="false" aria-controls="superuserInfo">
                 Superuser Info
             </button>
         </div>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <div class="collapse mt-4" id="superuserInfo">
+        <div class="collapse mt-4" id="superuserInfo" *ngIf="isSuperUser">
             <div class="card card-body">
                 <p>The Superuser section is for administrative tasks and managing the platform at a higher level.</p>
             </div>

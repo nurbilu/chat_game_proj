@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserProfile();
     this.authService.decodeToken().then((decodedToken) => {
-        this.isSuperuser = decodedToken.isSuperuser;
+        this.isSuperuser = decodedToken.is_superuser;
         if (this.isSuperuser) {
             this.router.navigate(['/super-profile']);
         } else {
@@ -40,6 +40,31 @@ export class ProfileComponent implements OnInit {
       (data) => {
         this.userProfile = data;
         this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
+      },
+      (error) => {
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
+  }
+
+  updateUserProfile(): void {
+    const formData = new FormData();
+    formData.append('username', this.userProfile.username);
+    formData.append('email', this.userProfile.email);
+    formData.append('address', this.userProfile.address);
+    formData.append('birthdate', this.userProfile.birthdate);
+    formData.append('first_name', this.userProfile.first_name);
+    formData.append('last_name', this.userProfile.last_name);
+    if (this.userProfile.profile_picture instanceof File) {
+        formData.append('profile_picture', this.userProfile.profile_picture);
+    }
+
+    this.authService.updateUserProfile(formData).subscribe(
+      (data) => {
+        this.userProfile = data;
+        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+        this.showUpdateForm = false;
+        this.showUserData = true;
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
@@ -102,8 +127,7 @@ export class ProfileComponent implements OnInit {
   }
 
   confirmUpdate(): void {
-    this.showUpdateForm = false;
-    this.showUserData = true;
+    this.updateUserProfile();
   }
 
   logout(): void {
@@ -118,15 +142,7 @@ export class ProfileComponent implements OnInit {
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
-        this.authService.uploadProfilePicture(file).subscribe(
-            response => {
-                this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-                this.loadUserProfile();  // Reload profile to reflect the new picture
-            },
-            error => {
-                this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-            }
-        );
+        this.userProfile.profile_picture = file;
     }
   }
 }

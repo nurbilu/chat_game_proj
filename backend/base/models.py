@@ -24,3 +24,4 @@ class User(AbstractUser):
         related_query_name="user",
     )
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='media/profile_pictures/no_profile_pic.png')
+    pwd_user_str = models.CharField(max_length=128, blank=True, null=True)

@@ -14,6 +14,8 @@ export class RegisterComponent {
     email: string = '';
     address: string = '';
     birthdate: string = '';
+    firstName: string = '';
+    lastName: string = '';
     profilePicture: File | null = null;
 
     @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
@@ -28,6 +30,8 @@ export class RegisterComponent {
         formData.append('email', this.email);
         formData.append('address', this.address);
         formData.append('birthdate', this.birthdate);
+        formData.append('first_name', this.firstName);
+        formData.append('last_name', this.lastName);
         if (this.profilePicture) {
             formData.append('profile_picture', this.profilePicture);
         }
@@ -41,6 +45,8 @@ export class RegisterComponent {
                 this.email = '';
                 this.address = '';
                 this.birthdate = '';
+                this.firstName = '';
+                this.lastName = '';
                 this.profilePicture = null;
             },
             error => {

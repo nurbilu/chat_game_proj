@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, NgZone } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
@@ -17,21 +17,25 @@ export class LoginComponent {
     @ViewChild('logoutTemplate', { static: true }) logoutTemplate!: TemplateRef<any>;
     @ViewChild('welcomeTemplate', { static: true }) welcomeTemplate!: TemplateRef<any>;
 
-    constructor(private authService: AuthService, private router: Router, private toastService: ToastService) { }
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+        private toastService: ToastService,
+        private ngZone: NgZone
+    ) { }
 
     login() {
         this.authService.login(this.username, this.password).subscribe({
             next: (response) => {
-                localStorage.setItem('username', this.username); // Store username in local storage
-                this.router.navigate(['/chat']);
-                if (this.username) {
-                    this.toastService.show({
-                        template: this.welcomeTemplate,
-                        classname: 'bg-success text-light',
-                        delay: 10000,
-                        context: { username: this.username }
-                    });
-                }
+                this.toastService.show({
+                    template: this.welcomeTemplate,
+                    classname: 'bg-success text-light',
+                    delay: 10000,
+                    context: { username: this.username }
+                });
+                this.ngZone.run(() => {
+                    this.router.navigate(['/chat']);
+                });
                 this.username = '';
                 this.password = '';
             },
@@ -41,19 +45,17 @@ export class LoginComponent {
         });
     }
 
-
     logout(): void {
-        const username = localStorage.getItem('username'); // Pull username from local storage
-        console.log('Passing username to toast:', username);
+        const username = localStorage.getItem('username');
+        this.authService.logout();
         this.toastService.show({
             template: this.logoutTemplate,
             classname: 'bg-success text-light',
             delay: 10000,
             context: { username }
         });
-        localStorage.clear();
-        this.router.navigate(['/login']);
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-        this.toastService.show({ template: this.logoutTemplate, classname: 'bg-success text-light', delay: 10000, context: { username } });
+        this.ngZone.run(() => {
+            this.router.navigate(['/login']);
+        });
     }
 }

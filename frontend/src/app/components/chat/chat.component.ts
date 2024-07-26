@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';  // Add AuthService import
-import { StorageService } from '../../services/storage.service';  // Import StorageService
+import { AuthService } from '../../services/auth.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
     selector: 'app-chat',
@@ -17,18 +17,20 @@ export class ChatComponent implements OnInit {
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
     ngOnInit() {
-        if (this.storageService.isLocalStorageAvailable()) {
-            this.username = this.storageService.getItem('username')!;
-            if (!this.username) {
+        this.authService.isLoggedIn.subscribe(isLoggedIn => {
+            if (isLoggedIn) {
+                this.username = localStorage.getItem('username')!;
+                if (!this.username) {
+                    this.responses = [{ text: 'Please log in to start your adventure.', from: 'bot' }];
+                    this.router.navigate(['/login']);
+                } else {
+                    this.responses = [{ text: `Welcome back, ${this.username}! Continue your adventure.`, from: 'bot' }];
+                }
+            } else {
                 this.responses = [{ text: 'Please log in to start your adventure.', from: 'bot' }];
                 this.router.navigate(['/login']);
-            } else {
-                this.responses = [{ text: `Welcome back, ${this.username}! Continue your adventure.`, from: 'bot' }];
             }
-        } else {
-            // Handle cases where localStorage is not available
-            this.responses = [{ text: 'LocalStorage is not available in this environment.', from: 'bot' }];
-        }
+        });
     }
 
     sendMessage(): void {
@@ -55,7 +57,8 @@ export class ChatComponent implements OnInit {
     }
 
     logout(): void {
-        localStorage.clear();
-        this.router.navigate(['/login']);
+        this.authService.logout().subscribe(() => {
+            this.router.navigate(['/homepage']);
+        });
     }
 }

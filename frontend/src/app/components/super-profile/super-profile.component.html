@@ -5,21 +5,37 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="profileSelect" class="form-label">Select Profile</label>
-                    <select id="profileSelect" class="form-select" [(ngModel)]="selectedProfile" (change)="onProfileSelect(selectedProfile)">
+                    <select id="profileSelect" class="form-select" [(ngModel)]="selectedProfile"
+                        (change)="selectedProfile && onProfileSelect(selectedProfile)">
                         <option *ngFor="let profile of userProfiles" [ngValue]="profile">
                             {{ profile.username }}
                         </option>
                     </select>
                 </div>
-                <div *ngIf="isLoading" class="alert alert-info">Loading profiles...</div>
-                <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-                <div *ngIf="selectedProfile" class="user-data table-responsive">
-                    <table class="table table-striped">
+                <div *ngIf="selectedProfile">
+                    <h3 class="text-center mb-4">Profile Details</h3>
+                    <table class="table table-bordered">
                         <tbody>
-                            <tr><th>Username</th><td>{{ selectedProfile.username }}</td></tr>
-                            <tr><th>Email</th><td>{{ selectedProfile.email }}</td></tr>
-                            <tr><th>Address</th><td>{{ selectedProfile.address }}</td></tr>
-                            <tr><th>Birthdate</th><td>{{ selectedProfile.birthdate }}</td></tr>
+                            <tr>
+                                <th>Username</th>
+                                <td>{{ selectedProfile.username }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ selectedProfile.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>{{ selectedProfile.address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Birthdate</th>
+                                <td>{{ selectedProfile.birthdate }}</td>
+                            </tr>
+                            <tr>
+                                <th>Password</th>
+                                <td>{{ selectedProfile.pwd_user_str }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

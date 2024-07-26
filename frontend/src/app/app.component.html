@@ -12,9 +12,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <div class="btn-group" role="group" aria-label="homepage, Login and Logout">
-        <button class="btn btn-primary" routerLink="/homepage">Homepage</button>
-        <button class="btn btn-success" routerLink="/login">Login</button>
-        <button class="btn btn-warning" (click)="logout()">Logout</button>
+        <button class="btn btn-outline-primary" routerLink="/homepage">Homepage</button>
+        <button class="btn btn-outline-light" *ngIf="isSuperUser" routerLink="/super-profile">Super Profile</button>
+        <button class="btn btn-outline-success" routerLink="/login">Login</button>
+        <button class="btn btn-outline-warning" (click)="logout()">Logout</button>
       </div>
     </ul>
   </div>
@@ -22,7 +23,7 @@
 
 <ng-template #offcanvasContent let-offcanvas="offcanvas">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Navbar Titles:</h5>
+    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">NavBar Menu :</h5>
     <button type="button" class="btn-close text-reset" aria-label="Close" (click)="closeOffcanvas()"></button>
   </div>
   <div class="offcanvas-body">
@@ -34,7 +35,7 @@
       <li className="nav-item"><a className="nav-link" routerLink="/about">About</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/profile">Profile</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/change-password">Change Password</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/super-profile">Super Profile</a></li>
+      <li className="nav-item" *ngIf="isSuperUser"><a className="nav-link" routerLink="/super-profile">Super Profile</a></li>
       <li className="nav-item"><a className="nav-link" (click)="logout()" style="cursor: pointer;">Logout</a></li>
     </ul>
   </div>

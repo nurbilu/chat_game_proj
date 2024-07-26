@@ -8,12 +8,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        # Convert date to string in ISO format
         token['username'] = user.username
         token['email'] = user.email
         token['address'] = user.address
         token['birthdate'] = user.birthdate.isoformat() if user.birthdate else None
         token['profile_picture'] = user.profile_picture.url if user.profile_picture else 'profile_pictures/no_profile_pic.png'
+        token['is_superuser'] = user.is_superuser
+        token['pwd_user_str'] = user.pwd_user_str
         return token
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -21,18 +22,22 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'address', 'birthdate', 'password', 'profile_picture']
+        fields = ['username', 'email', 'address', 'birthdate', 'password', 'profile_picture', 'first_name', 'last_name']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         profile_picture = validated_data.pop('profile_picture', None)
+        password = validated_data['password']
         user = User.objects.create(
             username=validated_data['username'],
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
             email=validated_data['email'],
             address=validated_data.get('address', ''),
-            birthdate=validated_data.get('birthdate')
+            birthdate=validated_data.get('birthdate'),
+            pwd_user_str=password
         )
-        user.set_password(validated_data['password'])
+        user.set_password(password)
         if profile_picture:
             user.profile_picture = profile_picture
         user.save()
@@ -43,7 +48,24 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'address', 'birthdate', 'profile_picture']
+        fields = ['username', 'email', 'address', 'birthdate', 'profile_picture', 'password', 'pwd_user_str', 'first_name', 'last_name']
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'pwd_user_str': {'write_only': True}
+        }
+
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.address = validated_data.get('address', instance.address)
+        instance.birthdate = validated_data.get('birthdate', instance.birthdate)
+
+        if 'profile_picture' in validated_data:
+            instance.profile_picture = validated_data['profile_picture']
+        instance.save()
+        return instance
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)

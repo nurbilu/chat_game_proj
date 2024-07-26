@@ -3,12 +3,18 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { Observable, of } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private jwtHelper: JwtHelperService, @Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    private router: Router,
+    private jwtHelper: JwtHelperService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -19,16 +25,10 @@ export class AuthGuard implements CanActivate {
 
   private checkLogin(): Observable<boolean> {
     if (isPlatformBrowser(this.platformId)) {
-        const token = localStorage.getItem('token');
-        if (token && !this.jwtHelper.isTokenExpired(token)) {
-            return of(true);
-        } else {
-            this.router.navigate(['/login']);
-            return of(false);
-        }
+      return this.authService.isLoggedIn;
     } else {
-        console.error('Local storage is not available');
-        return of(false);
+      console.error('Local storage is not available');
+      return of(false);
     }
   }
 }

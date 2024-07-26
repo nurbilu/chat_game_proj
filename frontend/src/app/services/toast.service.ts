@@ -19,8 +19,8 @@ export class ToastService {
 
   show(toast: { template?: TemplateRef<any>, classname?: string, delay?: number, context?: any }) {
     console.log('Showing toast with context:', toast.context);
-    if (!toast.context || !toast.context.username) {
-        console.error('Toast context is missing or username is undefined');
+    if (!toast.context) {
+      toast.context = {};  // Ensure context is an object
     }
     this.toasts.push(toast);
   }
