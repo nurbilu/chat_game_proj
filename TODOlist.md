@@ -45,13 +45,13 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 7. design the website first edition ( X ) :
 
 
-8. finish design part two/second edition or more , make it responsive as it can be ( ) : 
+8. finish design part two/second edition or more , make it responsive as it can be and some git additions( ) : 
     - using ng-bootstrap+bootstrap to finish the responsiveness of the website : 
         1. make the toast messages more responsive , display the username when login .
             also , customize taost messages of the other components
-        2. ""add more sections if needed"" 
+        2. angular : incrypt pwd_user_str data that only when superuser is logged in and ask for a password to decrypt the pwd_user_str data and display for superuser .
     - Responsive (using MUI extra 2 points)
-
+    - add to readme.md terminals commands to run the project 
 
 9.a. implemnt and finish the dockers ( ) :
     (Dockerfile ( bonus + 10 points! ))

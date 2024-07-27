@@ -1,6 +1,6 @@
 <div class="login-container">
   <!-- <h2>Login</h2> -->
-  <form (ngSubmit)="login()">
+  <form (ngSubmit)="login()" #loginForm="ngForm">
     <div>
       <label for="username"></label>
       <input type="text" id="username" [(ngModel)]="username" name="username" required placeholder="Please enter your Username to Login ">
@@ -10,7 +10,8 @@
       <br>
       <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="Please enter your Password to Login ">
     </div>
-    <button type="submit" >Login</button>
+    <a href="javascript:void(0)" (click)="navigateToForgotPassword()" class="reset-link">Forgot Password?</a>
+    <button type="submit">Login</button>
   </form>
 </div>
 

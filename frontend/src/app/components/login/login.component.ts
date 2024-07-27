@@ -58,4 +58,8 @@ export class LoginComponent {
             this.router.navigate(['/login']);
         });
     }
+
+    navigateToForgotPassword(): void {
+        this.router.navigate(['/forget-password']);
+    }
 }

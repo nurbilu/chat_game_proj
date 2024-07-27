@@ -1,5 +1,11 @@
 # the DnD AI program 
-log always 1 
+
+## running the project : 
+- "" add docker commands to run the project "" 
+- for Django : py manage.py runserver OR python manage.py runserver
+- for Angular : ng serve -o OR ng s -o 
+- for Gemini API chabot Flask frameworks : 1. py gen_txt_chat_srvr.py
+                                           2. py chrcter_creation.py
 
 ## 1. Project Setup
 - **Setup Version Control:**

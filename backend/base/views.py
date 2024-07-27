@@ -3,16 +3,16 @@ from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, UserProfileSerializer, ChangePasswordSerializer
+from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, UserProfileSerializer, ChangePasswordSerializer, ValidateUserSerializer, ResetPasswordSerializer
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
 from django.http import JsonResponse, Http404
 from .utils import get_gemini_response
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser  # Add JSONParser
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -70,14 +70,15 @@ class UserLoginView(APIView):
         if user is not None:
             login(request, user)
             refresh = RefreshToken.for_user(user)
+            # fix the responce maybe it send to much data
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 'username': user.username,
-                'email': user.email,
-                'address': user.address,
-                'birthdate': user.birthdate.isoformat() if user.birthdate else None,
-                'profile_picture': user.profile_picture.url if user.profile_picture else 'profile_pictures/no_profile_pic.png'
+                # 'email': user.email,
+                # 'address': user.address,
+                # 'birthdate': user.birthdate.isoformat() if user.birthdate else None,
+                # 'profile_picture': user.profile_picture.url if user.profile_picture else 'profile_pictures/no_profile_pic.png'
             }, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -150,12 +151,55 @@ class ProfilePictureUploadView(APIView):
 class UserProfileUpdateView(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]  # Add JSONParser
 
     def put(self, request):
         user = request.user
+        logger.debug(f"Received data: {request.data}")  # Add logging
         serializer = UserProfileSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            logger.debug(f"Updated user: {serializer.data}")  # Add logging
             return Response(serializer.data, status=status.HTTP_200_OK)
+        logger.debug(f"Errors: {serializer.errors}")  # Add logging
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ValidateUserView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = ValidateUserSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data.get('username')
+            email = serializer.validated_data.get('email')
+            try:
+                user = User.objects.get(username=username, email=email)
+                token = RefreshToken.for_user(user).access_token
+                return Response({'token': str(token)}, status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                return Response({'error': 'Invalid username or email'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ResetPasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def put(self, request):
+        serializer = ResetPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                token = request.headers.get('Authorization').split(' ')[1]
+                user = User.objects.get(id=AccessToken(token).payload['user_id'])  # Use AccessToken instead of RefreshToken
+                new_password = serializer.validated_data.get('new_password')
+                confirm_new_password = serializer.validated_data.get('confirm_new_password')
+
+                if new_password != confirm_new_password:
+                    return Response({'error': 'New passwords must match.'}, status=status.HTTP_400_BAD_REQUEST)
+
+                user.set_password(new_password)
+                user.pwd_user_str = new_password
+                user.save()
+                return Response({'success': 'Password reset successfully.'}, status=status.HTTP_200_OK)
+            except Exception as e:
+                logger.error(f"Error resetting password: {str(e)}")
+                return Response({'error': 'Server error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

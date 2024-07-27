@@ -48,10 +48,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'address', 'birthdate', 'profile_picture', 'password', 'pwd_user_str', 'first_name', 'last_name']
+        fields = ['username', 'first_name', 'last_name', 'email', 'address', 'birthdate', 'profile_picture', 'pwd_user_str']
         extra_kwargs = {
-            'password': {'write_only': True},
-            'pwd_user_str': {'write_only': True}
+            'pwd_user_str': {'read_only': True}
         }
 
     def update(self, instance, validated_data):
@@ -69,6 +68,19 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_new_password = serializers.CharField(required=True)
+
+    def validate(self, data):
+        if data['new_password'] != data['confirm_new_password']:
+            raise serializers.ValidationError({"confirm_new_password": "New Password and Confirm New Password do not match"})
+        return data
+
+class ValidateUserSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+
+class ResetPasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)
     confirm_new_password = serializers.CharField(required=True)
 

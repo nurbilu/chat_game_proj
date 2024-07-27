@@ -18,11 +18,15 @@ import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-
 import { HttpClientModule } from '@angular/common/http';
 import { EnvironmentsModule } from './environments.module';
 import { SuperProfileComponent } from './components/super-profile/super-profile.component';
-import { RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router'; // Import RouterModule
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModule
 import { ToastsContainerComponent } from './components/toasts-container/toasts-container.component'; // Added this line
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Required for animations
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component';
+import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     ChangePasswordComponent,
     ChrcterCreationComponent,
     SuperProfileComponent,
-    ToastsContainerComponent // Added this line
+    ToastsContainerComponent, // Added this line
+    ForgetPwdComponent,
+    ResetPwdComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +51,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     ReactiveFormsModule,
     HttpClientModule,
     EnvironmentsModule,
-    RouterModule,
+    RouterModule.forRoot([]), // Ensure RouterModule is imported
     NgbModule, // Add NgbModule to imports
     BrowserAnimationsModule, // Add BrowserAnimationsModule
     ToastrModule.forRoot() // Initialize ToastrModule
@@ -55,7 +61,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     ChatService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

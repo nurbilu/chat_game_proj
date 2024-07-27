@@ -50,21 +50,29 @@ export class ProfileComponent implements OnInit {
   updateUserProfile(): void {
     const formData = new FormData();
     formData.append('username', this.userProfile.username);
+    formData.append('first_name', this.userProfile.first_name);
+    formData.append('last_name', this.userProfile.last_name);
     formData.append('email', this.userProfile.email);
     formData.append('address', this.userProfile.address);
     formData.append('birthdate', this.userProfile.birthdate);
-    formData.append('first_name', this.userProfile.first_name);
-    formData.append('last_name', this.userProfile.last_name);
     if (this.userProfile.profile_picture instanceof File) {
         formData.append('profile_picture', this.userProfile.profile_picture);
     }
 
+    // Log the form data for debugging
+    for (let [key, value] of (formData as any).entries()) {
+        console.log(`${key}: ${value}`);
+    }
+
+    console.log('Sending update request with data:', formData);  // Add logging
+
     this.authService.updateUserProfile(formData).subscribe(
       (data) => {
         this.userProfile = data;
+        this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
         this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
         this.showUpdateForm = false;
-        this.showUserData = true;
+        this.showUserData = true;  // Switch back to readable table
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });

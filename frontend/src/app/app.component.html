@@ -12,7 +12,8 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <div class="btn-group" role="group" aria-label="homepage, Login and Logout">
-        <button class="btn btn-outline-primary" routerLink="/homepage">Homepage</button>
+        <button class="btn btn-outline-info" routerLink="/homepage">Homepage</button>
+        <button class="btn btn-outline-primary" routerLink="/register">Register</button>
         <button class="btn btn-outline-light" *ngIf="isSuperUser" routerLink="/super-profile">Super Profile</button>
         <button class="btn btn-outline-success" routerLink="/login">Login</button>
         <button class="btn btn-outline-warning" (click)="logout()">Logout</button>

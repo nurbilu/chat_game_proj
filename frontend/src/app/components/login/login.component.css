@@ -9,11 +9,10 @@ button {
   text-align: center; /* Center the text */
   line-height: 1.1; /* Adjust line height for better appearance */
   position: absolute; /* Position the button */
-  top: 70%; /* Align vertically in the middle */
+  top: 75%; /* Align vertically in the middle */
   left: 50%; /* Align horizontally in the middle */
   transform: translate(-50%, -50%); /* Center the button precisely */
   font-size: 20px;
-  
 }
 
 button:hover {
@@ -48,4 +47,18 @@ input[type="password"] {
 input[type="text"]::placeholder,
 input[type="password"]::placeholder {
     color: #555; /* Change placeholder text color */
+}
+
+.reset-link {
+  display: block;
+  padding: 10px;
+  margin: 10px auto; /* Center the link */
+  font-size: 20px;
+  color: #63239e; /* Match button color */
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.submit-link:hover {
+  color: #5a6268; /* Darker shade for hover */
 }

@@ -1,9 +1,10 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +12,15 @@ import { isPlatformBrowser } from '@angular/common';
 export class AuthService {
     private baseUrl = 'http://127.0.0.1:8000/';
     private _isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
+    private tokenExpirationTimer: any;
 
-    constructor(private http: HttpClient, private jwtHelper: JwtHelperService, @Inject(PLATFORM_ID) private platformId: Object) { }
+    constructor(
+        private http: HttpClient,
+        private jwtHelper: JwtHelperService,
+        @Inject(PLATFORM_ID) private platformId: Object,
+        private router: Router,
+        private ngZone: NgZone
+    ) { }
 
     // Method to retrieve the token
     getToken(): string | null {
@@ -61,6 +69,7 @@ export class AuthService {
                 this.setItem('token', response.access);
                 this.setItem('username', username);
                 this._isLoggedIn.next(true); // Update login state
+                this.startTokenExpirationTimer();
             }),
             catchError(error => {
                 return throwError(() => new Error('Login failed: ' + error.message));
@@ -77,7 +86,7 @@ export class AuthService {
             localStorage.clear();
         }
         this._isLoggedIn.next(false);
-        return of({ success: true });  // Simulate an observable response
+        return of({ success: true });
     }
 
     getUserProfile(username?: string): Observable<any> {
@@ -117,18 +126,19 @@ export class AuthService {
     }
 
     updateUserProfile(userProfile: any): Observable<any> {
-        const formData = new FormData();
-        formData.append('username', userProfile.username);
-        formData.append('email', userProfile.email);
-        formData.append('address', userProfile.address);
-        formData.append('birthdate', userProfile.birthdate);
-        formData.append('first_name', userProfile.first_name);
-        formData.append('last_name', userProfile.last_name);
-        if (userProfile.profile_picture instanceof File) {
-            formData.append('profile_picture', userProfile.profile_picture);
+        const token = this.getToken();
+        if (!token) {
+            console.error('No token found');
+            return throwError(() => new Error('Authentication token not found'));
         }
-
-        return this.http.put(`${this.baseUrl}api/profile/update/`, formData);
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        const formData = new FormData();
+        for (const key in userProfile) {
+            if (userProfile.hasOwnProperty(key)) {
+                formData.append(key, userProfile[key]);
+            }
+        }
+        return this.http.put(`${this.baseUrl}person/data/update/`, formData, { headers });
     }
 
     decodeToken(): Promise<any> {
@@ -187,5 +197,49 @@ export class AuthService {
 
     private hasToken(): boolean {
         return isPlatformBrowser(this.platformId) && !!localStorage.getItem('token');
+    }
+
+    private startTokenExpirationTimer() {
+        const token = this.getToken();
+        if (token) {
+            const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
+            if (expirationDate) {
+                const expiresIn = expirationDate.getTime() - Date.now();
+                this.tokenExpirationTimer = setTimeout(() => {
+                    this.ngZone.run(() => {
+                        this.clearLocalStorageAndRefresh();
+                    });
+                }, expiresIn);
+            }
+        }
+    }
+
+    private clearLocalStorageAndRefresh() {
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.clear();
+        }
+        this.router.navigate(['/homepage']).then(() => {
+            window.location.reload();
+        });
+    }
+
+    validateUser(data: { username: string; email: string }): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}validate-user/`, data).pipe(
+            catchError(error => throwError(() => new Error('Error validating user: ' + error.message)))
+        );
+    }
+
+    resetPassword(token: string, data: { newPassword: string; confirmPassword: string }): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        });
+        const payload = {
+            new_password: data.newPassword,
+            confirm_new_password: data.confirmPassword
+        };
+        return this.http.put(`${this.baseUrl}reset-password/`, payload, { headers }).pipe(
+            catchError(error => throwError(() => new Error('Error resetting password: ' + error.message)))
+        );
     }
 }
