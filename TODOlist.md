@@ -23,20 +23,14 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 5. focus and specify the chat and web site ( Adding AI-extra 10 points !()! ) : 
     - ***try focus first on making a "pro" website .***
-    - make change password in a different component + add link in login for change password component for "forgot your password? click here" - after successfull password change redirect to login page.
     - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page
     - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
         i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .
     - maybe instead of using the MongoDB compass either find a way to connect to Atlas or use Atlas cluster directly OR use a different no sql DB like          firebase - work better with Gemini but will cost more to remember how to connect to it correctly and potentially more expensive .()
-    - 2024-07-26 08:36:52,170 - WARNING - Unauthorized: /api/profile/update/
-       2024-07-26 08:36:52,171 - WARNING - "PUT /api/profile/update/ HTTP/1.1" 401 58
-       
-       in Thunder Client :
-       024-07-26 08:39:34,731 - DEBUG - (0.031) UPDATE `base_user` SET `last_login` = NULL, `is_superuser` = 0, `username` = 'fofo', `first_name` = 'fofo\'el', `last_name` =          'fofonski', `is_staff` = 0, `is_active` = 1, `date_joined` = '2024-07-26 04:01:12.271509', `password` = 'pbkdf2_sha256$390000$eaDekTr2pVLMqLxz0NXc5u$hy4JxKD1Xsa6GaH/6/l/           yIWADkR3O/Un4d7SBCNVfRo=', `email` = 'fofofofo1234@gmail.com', `address` = '', `birthdate` = '1962-12-04', `profile_picture` = 'profile_pictures/dog_user_8S2JZdX.png',            `pwd_user_str` = 'ffff1234' WHERE `base_user`.`id` = 32; args=(False, 'fofo', "fofo'el", 'fofonski', False, True, '2024-07-26 04:01:12.271509',            'pbkdf2_sha256$390000$eaDekTr2pVLMqLxz0NXc5u$hy4JxKD1Xsa6GaH/6/l/yIWADkR3O/Un4d7SBCNVfRo=', 'fofofofo1234@gmail.com', '', '1962-12-04', 'profile_pictures/dog_user_8S2JZdX.        png', 'ffff1234', 32); alias=default
-       2024-07-26 08:39:34,741 - INFO - "PUT /api/profile/update/ HTTP/1.1" 200 201
-       
-       it seems there is a problem with the connection between the django and the angular
+    - incrypt pwd_user_str data that only when superuser is logged in and ask for a password to decrypt the pwd_user_str data and display for superuser both (backend & frontend)
+    - add a DnD and game info library - contain all the data needed for the game mechanics , same component but in a table with select and search input box (races , spells , equipment , monsters , game styles and more if seems needed or found something more to add).
+    -""if have more functions or some other ideas to enrich the projet when submitting and also for the future to real users to use."" .
 
 6. create unit tests for all API calls ( bonus 6 points - could help and wont hurt - ( ) - see if have time to implement) :
     - sending emails (3 extra points each).
@@ -47,8 +41,9 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 8. finish design part two/second edition or more , make it responsive as it can be and some git additions( ) : 
     - using ng-bootstrap+bootstrap to finish the responsiveness of the website : 
-        1. make the toast messages more responsive , display the username when login .
-            also , customize taost messages of the other components
+        1. make the toast messages more responsive , display the username when login(half done) .
+            also , customize toast messages of the other components
+        2. fix navbar for superuser , when is true ,profile will show super - profile . 
         2. angular : incrypt pwd_user_str data that only when superuser is logged in and ask for a password to decrypt the pwd_user_str data and display for superuser .
     - Responsive (using MUI extra 2 points)
     - add to readme.md terminals commands to run the project 
