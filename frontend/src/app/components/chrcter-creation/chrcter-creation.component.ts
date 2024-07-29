@@ -30,6 +30,12 @@ export class ChrcterCreationComponent implements OnInit {
   gameStyles = ['warrior_fighter', 'rogue_druid', 'mage_sorcerer'];
 
   ngOnInit(): void {
+    if (this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+      if (!isLoggedIn) {
+          this.router.navigate(['/login']);
+          return;
+      }
+    }))
     this.fetchRaces();
     this.authService.decodeToken().then((decodedToken) => {
         if (decodedToken && decodedToken.username) {

@@ -89,3 +89,10 @@
 </ng-template>
 <app-toasts-container></app-toasts-container>
 <router-outlet></router-outlet>
+
+<div *ngIf="isLoggedIn; else loginTemplate">
+  <button (click)="onLogout()">Logout</button>
+</div>
+<ng-template #loginTemplate>
+  <a routerLink="/login">Login</a>
+</ng-template>

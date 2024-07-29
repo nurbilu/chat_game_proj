@@ -25,26 +25,22 @@ export class LoginComponent {
     ) { }
 
     login() {
-        this.authService.login(this.username, this.password).subscribe({
-            next: (response) => {
-                this.toastService.show({
-                    template: this.welcomeTemplate,
-                    classname: 'bg-success text-light',
-                    delay: 10000,
-                    context: { username: this.username }
+        const user = {
+            username: this.username,
+            password: this.password
+        };
+
+        this.authService.login(user.username, user.password).subscribe({
+            next: () => {
+                this.router.navigate(['/']).then(() => {
+                    window.location.reload();
                 });
-                this.ngZone.run(() => {
-                    this.router.navigate(['/chat']);
-                });
-                this.username = '';
-                this.password = '';
             },
-            error: (error) => {
-                this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+            error: (err) => {
+                console.error('Login failed', err);
             }
         });
     }
-
 
     navigateToForgotPassword(): void {
         this.router.navigate(['/forget-password']);

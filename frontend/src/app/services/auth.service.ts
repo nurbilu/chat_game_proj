@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
     private baseUrl = 'http://127.0.0.1:8000/';
-    private _isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
+    private _isLoggedIn = new BehaviorSubject<boolean>(false);
     private tokenExpirationTimer: any;
 
     constructor(
@@ -20,7 +20,12 @@ export class AuthService {
         @Inject(PLATFORM_ID) private platformId: Object,
         private router: Router,
         private ngZone: NgZone
-    ) { }
+    ) {
+        if (isPlatformBrowser(this.platformId)) {
+            const token = localStorage.getItem('token');
+            this._isLoggedIn.next(!!token);
+        }
+    }
 
     // Method to retrieve the token
     getToken(): string | null {
@@ -77,17 +82,6 @@ export class AuthService {
         );
     }
 
-    get isLoggedIn() {
-        return this._isLoggedIn.asObservable();
-    }
-
-    logout(): Observable<any> {
-        if (isPlatformBrowser(this.platformId)) {
-            localStorage.clear();
-        }
-        this._isLoggedIn.next(false);
-        return of({ success: true });
-    }
 
     getUserProfile(username?: string): Observable<any> {
         const token = this.getToken();
@@ -241,5 +235,20 @@ export class AuthService {
         return this.http.put(`${this.baseUrl}reset-password/`, payload, { headers }).pipe(
             catchError(error => throwError(() => new Error('Error resetting password: ' + error.message)))
         );
+    }
+
+    isLoggedIn(): Observable<boolean> {
+        return this._isLoggedIn.asObservable();
+    }
+
+    logout(): Observable<void> {
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.clear();
+            this._isLoggedIn.next(false);
+            this.router.navigate(['/homepage']).then(() => {
+                window.location.reload();
+            });
+        }
+        return of();
     }
 }

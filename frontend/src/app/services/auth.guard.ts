@@ -20,12 +20,17 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.checkLogin();
+    return this.checkLogin(state.url);
   }
 
-  private checkLogin(): Observable<boolean> {
+  private checkLogin(url: string): Observable<boolean> {
     if (isPlatformBrowser(this.platformId)) {
-      return this.authService.isLoggedIn;
+      if (this.authService.isLoggedIn()) {
+        return of(true);
+      } else {
+        this.router.navigate(['/homepage'], { queryParams: { returnUrl: url } });
+        return of(false);
+      }
     } else {
       console.error('Local storage is not available');
       return of(false);

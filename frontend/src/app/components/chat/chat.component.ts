@@ -17,18 +17,17 @@ export class ChatComponent implements OnInit {
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
     ngOnInit() {
-        this.authService.isLoggedIn.subscribe(isLoggedIn => {
-            if (isLoggedIn) {
-                this.username = localStorage.getItem('username')!;
-                if (!this.username) {
-                    this.responses = [{ text: 'Please log in to start your adventure.', from: 'bot' }];
-                    this.router.navigate(['/login']);
-                } else {
-                    this.responses = [{ text: `Welcome back, ${this.username}! Continue your adventure.`, from: 'bot' }];
-                }
-            } else {
+        this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+            if (!isLoggedIn) {
+                this.router.navigate(['/login']);
+                return;
+            }
+            this.username = localStorage.getItem('username')!;
+            if (!this.username) {
                 this.responses = [{ text: 'Please log in to start your adventure.', from: 'bot' }];
                 this.router.navigate(['/login']);
+            } else {
+                this.responses = [{ text: `Welcome back, ${this.username}! Continue your adventure.`, from: 'bot' }];
             }
         });
     }
@@ -58,7 +57,7 @@ export class ChatComponent implements OnInit {
 
     logout(): void {
         this.authService.logout().subscribe(() => {
-            this.router.navigate(['/homepage']);
+            this.router.navigate(['/login']);
         });
     }
 }

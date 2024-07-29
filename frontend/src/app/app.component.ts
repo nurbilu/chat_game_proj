@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
   private offcanvasRef!: NgbOffcanvasRef;
+isLoggedIn: any;
 
   constructor(
     private router: Router,
@@ -34,7 +35,11 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.isLoggedIn.subscribe((isLoggedIn: boolean) => {
+    this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+      if (!isLoggedIn) {
+        this.router.navigate(['/homepage']);
+        return;
+      }
       this.ngZone.run(() => {
         if (isLoggedIn) {
           this.isSuperUser = this.authService.isSuperUser();
@@ -44,8 +49,9 @@ export class AppComponent implements OnInit {
             this.router.navigate(['/chat']);
           }
         } else {
-          this.router.navigate(['/homepage']);
+          this.router.navigate(['/login']);
         }
+        
       });
     });
   }
@@ -53,6 +59,7 @@ export class AppComponent implements OnInit {
   logout(): void {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/homepage']).then(() => {
+        window.location.reload();
         console.log('Navigated to homepage');
       });
     });
@@ -99,9 +106,6 @@ export class AppComponent implements OnInit {
             delay: 10000,
             context: { username: this.username }
           });
-          this.ngZone.run(() => {
-            this.router.navigate(['/chat']);
-          });
           modal.close('Login click');
           this.username = '';
           this.password = '';
@@ -132,5 +136,11 @@ export class AppComponent implements OnInit {
     if (this.offcanvasRef) {
       this.offcanvasRef.dismiss();
     }
+  }
+
+  onLogout() {
+    this.authService.logout().subscribe(() => {
+      console.log('User logged out');
+    });
   }
 }

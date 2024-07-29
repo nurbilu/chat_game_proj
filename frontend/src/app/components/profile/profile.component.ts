@@ -21,17 +21,23 @@ export class ProfileComponent implements OnInit {
   characters: any[] = [];
   profilePictureUrl: string = 'assets/imgs/profile_pictures/no_profile_pic.png';  // Default placeholder image
 
-  constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) {}
+  constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
 
   ngOnInit(): void {
+    if (this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+      if (!isLoggedIn) {
+          this.router.navigate(['/login']);
+          return;
+      }
+    }))
     this.loadUserProfile();
     this.authService.decodeToken().then((decodedToken) => {
-        this.isSuperuser = decodedToken.is_superuser;
-        if (this.isSuperuser) {
-            this.router.navigate(['/super-profile']);
-        } else {
-            this.loadUserCharacters(decodedToken.username); // Ensure this is called correctly
-        }
+      this.isSuperuser = decodedToken.is_superuser;
+      if (this.isSuperuser) {
+        this.router.navigate(['/super-profile']);
+      } else {
+        this.loadUserCharacters(decodedToken.username); // Ensure this is called correctly
+      }
     }).catch(error => console.error('Error decoding token:', error));
   }
 
@@ -56,12 +62,12 @@ export class ProfileComponent implements OnInit {
     formData.append('address', this.userProfile.address);
     formData.append('birthdate', this.userProfile.birthdate);
     if (this.userProfile.profile_picture instanceof File) {
-        formData.append('profile_picture', this.userProfile.profile_picture);
+      formData.append('profile_picture', this.userProfile.profile_picture);
     }
 
     // Log the form data for debugging
     for (let [key, value] of (formData as any).entries()) {
-        console.log(`${key}: ${value}`);
+      console.log(`${key}: ${value}`);
     }
 
     console.log('Sending update request with data:', formData);  // Add logging
@@ -138,19 +144,22 @@ export class ProfileComponent implements OnInit {
     this.updateUserProfile();
   }
 
-  logout(): void {
-    const username = localStorage.getItem('username'); // Pull username from local storage
-    this.authService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
-      this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-      this.toastService.show({ template: this.logoutTemplate, classname: 'bg-success text-light', delay: 10000, context: { username } });
-    });
-  }
+
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
-        this.userProfile.profile_picture = file;
+      this.userProfile.profile_picture = file;
     }
+  }
+
+  logout(): void {
+    const username = localStorage.getItem('username'); // Pull username from local storage
+    this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+    this.toastService.show({ template: this.logoutTemplate, classname: 'bg-success text-light', delay: 10000, context: { username } });
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+
+    });
   }
 }
