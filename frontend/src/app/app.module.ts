@@ -54,7 +54,11 @@ import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
     RouterModule.forRoot([]), // Ensure RouterModule is imported
     NgbModule, // Add NgbModule to imports
     BrowserAnimationsModule, // Add BrowserAnimationsModule
-    ToastrModule.forRoot() // Initialize ToastrModule
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }), // Initialize ToastrModule
   ],
   providers: [
     AuthService,

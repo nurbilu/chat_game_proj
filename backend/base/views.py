@@ -203,3 +203,6 @@ class ResetPasswordView(APIView):
                 logger.error(f"Error resetting password: {str(e)}")
                 return Response({'error': 'Server error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+

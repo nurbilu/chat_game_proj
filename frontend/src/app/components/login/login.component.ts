@@ -45,19 +45,6 @@ export class LoginComponent {
         });
     }
 
-    logout(): void {
-        const username = localStorage.getItem('username');
-        this.authService.logout();
-        this.toastService.show({
-            template: this.logoutTemplate,
-            classname: 'bg-success text-light',
-            delay: 10000,
-            context: { username }
-        });
-        this.ngZone.run(() => {
-            this.router.navigate(['/login']);
-        });
-    }
 
     navigateToForgotPassword(): void {
         this.router.navigate(['/forget-password']);

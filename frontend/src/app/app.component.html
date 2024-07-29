@@ -1,10 +1,55 @@
-<ng-template #logoutTemplate let-username="username">
-  <div>Until the next time adventure, {{ username }}</div>
+<ng-template #logoutTemplate let-modal="modal" >
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Logout</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="crossClick()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to logout, {{ username }}?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelLogout()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="confirmLogout()">Logout</button>
+  </div>
+</ng-template>
+
+<ng-template #loginTemplate let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Login</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="login(modal)" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" required>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #welcomeTemplate let-username="username">
+  <div>Welcome {{ username }}, let's play!</div>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <div>Login failed</div>
+</ng-template>
+
+<ng-template #successTemplate let-message="message">
+  <div>{{ message }}</div>
 </ng-template>
 
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
   <a className="navbar-brand" href="#">
-    <img src="favicon.ico" alt="Logo" className="rounded-circle" style="width: 40px; height: 40px;">
+    <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px;">
   </a>
   <button class="navbar-toggler" type="button" (click)="openOffcanvas()">
     <span class="navbar-toggler-icon"></span>
@@ -15,8 +60,8 @@
         <button class="btn btn-outline-info" routerLink="/homepage">Homepage</button>
         <button class="btn btn-outline-primary" routerLink="/register">Register</button>
         <button class="btn btn-outline-light" *ngIf="isSuperUser" routerLink="/super-profile">Super Profile</button>
-        <button class="btn btn-outline-success" routerLink="/login">Login</button>
-        <button class="btn btn-outline-warning" (click)="logout()">Logout</button>
+        <button class="btn btn-outline-success" (click)="openLoginModal(loginTemplate)">Login</button>
+        <button class="btn btn-outline-warning" (click)="openLogoutModal(logoutTemplate)">Logout</button>
       </div>
     </ul>
   </div>
@@ -30,6 +75,7 @@
   <div class="offcanvas-body">
     <ul class="navbar-nav">
       <li className="nav-item"><a className="nav-link" routerLink="/homepage">Homepage</a></li>
+      <li className="nav-item"><a className="nav-link" routerLink="/login">login Page</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/register">Register</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/character-creation">Create Character</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/chat">Chat</a></li>
@@ -37,7 +83,7 @@
       <li className="nav-item"><a className="nav-link" routerLink="/profile">Profile</a></li>
       <li className="nav-item"><a className="nav-link" routerLink="/change-password">Change Password</a></li>
       <li className="nav-item" *ngIf="isSuperUser"><a className="nav-link" routerLink="/super-profile">Super Profile</a></li>
-      <li className="nav-item"><a className="nav-link" (click)="logout()" style="cursor: pointer;">Logout</a></li>
+      <li className="nav-item"><a className="nav-link" (click)="openLogoutModal(logoutTemplate)" style="cursor: pointer;">Logout</a></li>
     </ul>
   </div>
 </ng-template>

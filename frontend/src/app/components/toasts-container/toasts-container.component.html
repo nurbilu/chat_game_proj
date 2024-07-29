@@ -1,4 +1,4 @@
-<div class="toast-container">
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1200;">
   <ng-container *ngFor="let toast of toastService.getToasts()">
     <ngb-toast
       [header]="toast.title"
@@ -6,7 +6,7 @@
       [autohide]="true"
       [delay]="toast.delay || 5000"
       (hidden)="toastService.remove(toast)">
-      <ng-template [ngTemplateOutlet]="toast.template" [ngTemplateOutletContext]="{ username: toast.context?.username }"></ng-template>
+      <ng-template [ngTemplateOutlet]="toast.template" [ngTemplateOutletContext]="{ username: toast.context?.username, message: toast.context?.message }"></ng-template>
     </ngb-toast>
   </ng-container>
 </div>

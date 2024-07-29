@@ -10,19 +10,21 @@ export class ToastService {
   constructor(private toastr: ToastrService) {}
 
   success(message: string) {
-    this.toastr.success(message);
+    this.toasts.push({ classname: 'bg-success text-light', delay: 5000, message });
   }
 
   error(message: string) {
-    this.toastr.error(message);
+    this.toasts.push({ classname: 'bg-danger text-light', delay: 5000, message });
   }
 
   show(toast: { template?: TemplateRef<any>, classname?: string, delay?: number, context?: any }) {
-    console.log('Showing toast with context:', toast.context);
-    if (!toast.context) {
-      toast.context = {};  // Ensure context is an object
-    }
     this.toasts.push(toast);
+
+    if (toast.context && toast.context.username) {
+      console.log(`Showing toast for username: ${toast.context.username}`);
+    } else {
+      console.log('Showing toast without username');
+    }
   }
 
   remove(toast: any): void {
