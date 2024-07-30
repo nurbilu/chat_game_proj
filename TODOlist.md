@@ -43,10 +43,14 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
     - using ng-bootstrap+bootstrap to finish the responsiveness of the website : 
         1. make the toast messages more responsive , display the username when login(half done) .
             also , customize toast messages of the other components
-        2. fix navbar for superuser , when is true ,profile will show super - profile . 
         2. angular : incrypt pwd_user_str data that only when superuser is logged in and ask for a password to decrypt the pwd_user_str data and display for superuser .
+        3. add more design to the login modal
+        4. add more design to login page - more like a real mmo game login page .
+        5. add more design to the chat page - more like a real mmo game chat page .
+        6. add more design to the homepage - more like a real mmo game homepage - add more relavent text. 
+        7."" add more if have any"" 
     - Responsive (using MUI extra 2 points)
-    - add to readme.md terminals commands to run the project 
+    
 
 9.a. implemnt and finish the dockers ( ) :
     (Dockerfile ( bonus + 10 points! ))
@@ -59,7 +63,7 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
     - add a sort of notification system to that monitor al loggers and use a real time db that send all logs data either to an portable hard drive or to the cloud or to a sdd card .
     - improve logger more , and make them even more organised readable , send all Werkzeug in to different folder - for kind of Werkzeug messages , excluding the framework cmd temrinal logger Werzeug startup messages.
     - add more sections if u think its needed .
-    
+    - investigate DMZ SSL and SSH
 
 
 

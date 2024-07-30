@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserRegisterView, MyTokenObtainPairView, UserProfileView, RegisterView, ChangePasswordView, SuperUserProfileView, ProfilePictureUploadView, UserProfileUpdateView, ValidateUserView, ResetPasswordView
+from .views import UserRegisterView, MyTokenObtainPairView, UserProfileView, RegisterView, ChangePasswordView, SuperUserProfileView, ProfilePictureUploadView, UserProfileUpdateView, ValidateUserView, ResetPasswordView, CreateSuperUserView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path('person/data/update/', UserProfileUpdateView.as_view(), name='profile-update'),
     path('validate-user/', ValidateUserView.as_view(), name='validate_user'),
     path('reset-password/', ResetPasswordView.as_view(), name='reset_password'),
+    path('create-superuser/', CreateSuperUserView.as_view(), name='create-superuser'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

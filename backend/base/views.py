@@ -2,8 +2,8 @@ from django.contrib.auth import authenticate, login, update_session_auth_hash  #
 from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, UserProfileSerializer, ChangePasswordSerializer, ValidateUserSerializer, ResetPasswordSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated , IsAdminUser
+from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, UserProfileSerializer, ChangePasswordSerializer, ValidateUserSerializer, ResetPasswordSerializer, CreateSuperUserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
@@ -16,7 +16,8 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser  # Ad
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-import logging
+from django.contrib.auth.models import User 
+
 
 
 User = get_user_model()
@@ -203,6 +204,13 @@ class ResetPasswordView(APIView):
                 logger.error(f"Error resetting password: {str(e)}")
                 return Response({'error': 'Server error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
 
+class CreateSuperUserView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        serializer = CreateSuperUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({'message': 'Superuser created successfully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

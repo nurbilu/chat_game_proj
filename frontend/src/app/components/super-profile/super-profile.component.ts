@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface UserProfile {
   username: string;
@@ -8,9 +9,9 @@ interface UserProfile {
   address?: string;
   birthdate?: string;
   password?: string;
-  pwd_user_str?: string;  // Add this field
-  first_name?: string;    // Add this field
-  last_name?: string;     // Add this field
+  pwd_user_str?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 @Component({
@@ -23,8 +24,19 @@ export class SuperProfileComponent implements OnInit {
   selectedProfile: UserProfile | null = null;
   isLoading: boolean = false;
   error: string | null = null;
+  superUserForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.superUserForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.loadSuperUserProfiles();
@@ -47,7 +59,21 @@ export class SuperProfileComponent implements OnInit {
 
   onProfileSelect(profile: UserProfile): void {
     this.selectedProfile = profile;
-    // Handle additional profile selection logic here, if needed
+  }
+
+  createSuperUser(): void {
+    if (this.superUserForm.valid) {
+      this.authService.createSuperUser(this.superUserForm.value).subscribe({
+        next: () => {
+          this.loadSuperUserProfiles();
+          this.superUserForm.reset();
+        },
+        error: (error) => {
+          console.error('Failed to create superuser:', error);
+          this.error = 'Failed to create superuser';
+        }
+      });
+    }
   }
 
   logout(): void {

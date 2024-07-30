@@ -251,4 +251,18 @@ export class AuthService {
         }
         return of();
     }
+
+    createSuperUser(data: { username: string; email: string; password: string }): Observable<any> {
+        const token = this.getToken();
+        if (!token) {
+            return throwError(() => new Error('Authentication token not found'));
+        }
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        });
+        return this.http.post(`${this.baseUrl}create-superuser/`, data, { headers }).pipe(
+            catchError(error => throwError(() => new Error('Error creating superuser: ' + error.message)))
+        );
+    }
 }
