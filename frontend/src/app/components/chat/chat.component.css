@@ -1,6 +1,6 @@
 .chat-container {
   max-width: 2200px; /* Matched width */ 
-  padding: 90px ; /* Increased padding */
+  padding: 18px ; /* Increased padding */
   background: rgba(255, 255, 255, 0.8) url('/assets/imgs/the_pinker_canyon.jpg') no-repeat center center;
   background-size: cover;
   border: 2px solid #d3c29d; /* Old paper style border */

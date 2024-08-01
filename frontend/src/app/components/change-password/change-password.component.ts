@@ -37,10 +37,10 @@ export class ChangePasswordComponent implements OnInit {
   onSubmit() {
     if (this.changePasswordForm.valid) {
       this.authService.changePassword(this.changePasswordForm.value).subscribe(
-        response => {
+        (response: any) => {
           this.toastService.success('Password changed successfully');
         },
-        error => {
+        (error: any) => {
           this.toastService.error('Error changing password');
         }
       );

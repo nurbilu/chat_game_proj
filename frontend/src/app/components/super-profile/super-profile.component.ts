@@ -76,6 +76,10 @@ export class SuperProfileComponent implements OnInit {
     }
   }
 
+  hideTable(): void {
+    this.selectedProfile = null;
+  }
+
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {

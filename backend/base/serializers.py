@@ -9,12 +9,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token['username'] = user.username
-        token['email'] = user.email
-        token['address'] = user.address
-        token['birthdate'] = user.birthdate.isoformat() if user.birthdate else None
-        token['profile_picture'] = user.profile_picture.url if user.profile_picture else 'profile_pictures/no_profile_pic.png'
         token['is_superuser'] = user.is_superuser
-        token['pwd_user_str'] = user.pwd_user_str
         return token
 
 class UserRegisterSerializer(serializers.ModelSerializer):

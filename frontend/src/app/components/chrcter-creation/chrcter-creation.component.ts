@@ -30,30 +30,30 @@ export class ChrcterCreationComponent implements OnInit {
   gameStyles = ['warrior_fighter', 'rogue_druid', 'mage_sorcerer'];
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+    this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
           this.router.navigate(['/login']);
           return;
       }
-    }))
+    });
     this.fetchRaces();
-    this.authService.decodeToken().then((decodedToken) => {
+    this.authService.decodeToken().then((decodedToken: any) => {
         if (decodedToken && decodedToken.username) {
             this.character.username = decodedToken.username;
         }
-    }).catch(error => console.error(error));
+    }).catch((error: any) => console.error(error));
   }
 
   createCharacter(): void {
     if (this.character.name && this.character.gameStyle !== 'none' && this.character.race && this.character.username) {
       this.chcrcterCreationService.createCharacter(this.character).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
           this.character.name = '';
           this.character.gameStyle = 'none';
           this.character.race = '';
         },
-        error: (error) => {
+        error: (error: any) => {
           this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
         }
       });
@@ -64,13 +64,13 @@ export class ChrcterCreationComponent implements OnInit {
 
   fetchRaces(): void {
     this.chcrcterCreationService.fetchRaces().subscribe({
-      next: (races) => {
-        this.races = races.map(race => ({
+      next: (races: any) => {
+        this.races = races.map((race: any) => ({
           name: race.name,
           description: race.alignment + '. ' + race.size_description
         }));
       },
-      error: (error) => {
+      error: (error: any) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
       }
     });

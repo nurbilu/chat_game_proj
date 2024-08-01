@@ -12,11 +12,12 @@ import { Router } from '@angular/router';
 export class AuthService {
     private baseUrl = 'http://127.0.0.1:8000/';
     private _isLoggedIn = new BehaviorSubject<boolean>(false);
+    private username = new BehaviorSubject<string>('');
     private tokenExpirationTimer: any;
+    private jwtHelper = new JwtHelperService();
 
     constructor(
         private http: HttpClient,
-        private jwtHelper: JwtHelperService,
         @Inject(PLATFORM_ID) private platformId: Object,
         private router: Router,
         private ngZone: NgZone
@@ -24,6 +25,10 @@ export class AuthService {
         if (isPlatformBrowser(this.platformId)) {
             const token = localStorage.getItem('token');
             this._isLoggedIn.next(!!token);
+            if (token) {
+                const decodedToken = this.jwtHelper.decodeToken(token);
+                this.username.next(decodedToken.username);
+            }
         }
     }
 
@@ -74,6 +79,7 @@ export class AuthService {
                 this.setItem('token', response.access);
                 this.setItem('username', username);
                 this._isLoggedIn.next(true); // Update login state
+                this.username.next(decodedToken.username);
                 this.startTokenExpirationTimer();
             }),
             catchError(error => {
@@ -241,10 +247,15 @@ export class AuthService {
         return this._isLoggedIn.asObservable();
     }
 
+    getUsername(): Observable<string> {
+        return this.username.asObservable();
+    }
+
     logout(): Observable<void> {
         if (isPlatformBrowser(this.platformId)) {
             localStorage.clear();
             this._isLoggedIn.next(false);
+            this.username.next('');
             this.router.navigate(['/homepage']).then(() => {
                 window.location.reload();
             });

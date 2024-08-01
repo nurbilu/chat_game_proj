@@ -23,6 +23,14 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 5. focus and specify the chat and web site ( Adding AI-extra 10 points !()! ) : 
     - ***try focus first on making a "pro" website .***
+    - add toast messages for all the actions that the user can do - more like a real mmo game toast messages :
+        1. login modal 
+        2. register component 
+        3. chat component 
+        4. profile component 
+        5. super - profile component 
+        6. create character component *
+    -fix create character , that only after selection of user character with select -> will 
     - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page
     - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
@@ -44,19 +52,18 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
         1. make the toast messages more responsive , display the username when login(half done) .
             also , customize toast messages of the other components
         2. angular : incrypt pwd_user_str data that only when superuser is logged in and ask for a password to decrypt the pwd_user_str data and display for superuser .
-        3. add more design to the login modal
-        4. add more design to login page - more like a real mmo game login page .
-        5. add more design to the chat page - more like a real mmo game chat page .
-        6. add more design to the homepage - more like a real mmo game homepage - add more relavent text. 
-        7."" add more if have any"" 
+        3. make login button modal be a dropdown form , all redirect for un-auth click instead of redirecting to the login page will to modal , after reset password will be redirected to the login page or when click on login from navbar or from homepage menu.
+        4. add Scrollspy/Pagination in table of the website : profile tables (profile and character) , library (when created) and if there is more tables add to them too . 
+        5. add more design to login page - more like a real mmo game login page . 
+        6. add more design to the chat page - more like a real mmo game chat page . 
+        7.add more design to the homepage - more like a real mmo game homepage - add more relavent text.
+        8. "" add more if have any"" 
     - Responsive (using MUI extra 2 points)
     
 
 9.a. implemnt and finish the dockers ( ) :
     (Dockerfile ( bonus + 10 points! ))
-    - fix before build : 
-        - ▲ [WARNING] Polyfill for "@angular/localize/init" was added automatically. [plugin angular-polyfills]
-            In the future, this functionality will be removed. Please add this polyfill in the "polyfills" section of your "angular.json" instead. - fix this so it wont be a problem for the docker to build in the future or create a malfuction container .
+    
 
 9.b. security measures ( ) :
     - add a security measure to the loggers so they dont show the full path to the file and just the name of the file .

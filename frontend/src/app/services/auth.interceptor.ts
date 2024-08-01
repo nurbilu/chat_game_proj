@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           this.authService.logout().subscribe(() => {
-            this.router.navigate(['/homepage']);
+            this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
           });
         } else if (error.status === 500) {
           console.error('Server error:', error.message);

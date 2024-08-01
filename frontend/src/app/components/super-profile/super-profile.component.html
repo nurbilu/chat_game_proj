@@ -3,17 +3,19 @@
         <h2 class="text-center mb-4">All User Profiles</h2>
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="profileSelect" class="form-label">Select Profile</label>
-                    <select id="profileSelect" class="form-select" [(ngModel)]="selectedProfile"
-                        (change)="selectedProfile && onProfileSelect(selectedProfile)">
-                        <option *ngFor="let profile of userProfiles" [ngValue]="profile">
+                <div ngbDropdown class="d-inline-block" placement="top">
+                    <button class="btn btn-secondary dropdown-toggle" id="profileDropdown" ngbDropdownToggle>
+                        Select Profile
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="profileDropdown">
+                        <button class="dropdown-item" *ngFor="let profile of userProfiles" (click)="onProfileSelect(profile)">
                             {{ profile.username }}
-                        </option>
-                    </select>
+                        </button>
+                    </div>
                 </div>
-                <div *ngIf="selectedProfile">
+                <div *ngIf="selectedProfile" class="mt-3">
                     <h3 class="text-center mb-4">Profile Details</h3>
+                    <button class="btn btn-warning mb-3" (click)="hideTable()">Hide Table</button>
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
@@ -44,21 +46,28 @@
         <div class="row justify-content-center mt-4">
             <div class="col-md-6">
                 <h3 class="text-center mb-4">Create Superuser</h3>
-                <form [formGroup]="superUserForm" (ngSubmit)="createSuperUser()">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input id="username" class="form-control" formControlName="username">
+                <div ngbDropdown class="d-inline-block" placement="end">
+                    <button class="btn btn-primary dropdown-toggle" id="createSuperuserDropdown" ngbDropdownToggle>
+                        Create Superuser
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="createSuperuserDropdown" class="dropend-form">
+                        <form [formGroup]="superUserForm" (ngSubmit)="createSuperUser()">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input id="username" class="form-control" formControlName="username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input id="email" class="form-control" formControlName="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input id="password" type="password" class="form-control" formControlName="password">
+                            </div>
+                            <button type="submit" class="btn btn-primary" [disabled]="superUserForm.invalid">Create Superuser</button>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input id="email" class="form-control" formControlName="email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input id="password" type="password" class="form-control" formControlName="password">
-                    </div>
-                    <button type="submit" class="btn btn-primary" [disabled]="superUserForm.invalid">Create Superuser</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>

@@ -71,15 +71,10 @@ class UserLoginView(APIView):
         if user is not None:
             login(request, user)
             refresh = RefreshToken.for_user(user)
-            # fix the responce maybe it send to much data
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 'username': user.username,
-                # 'email': user.email,
-                # 'address': user.address,
-                # 'birthdate': user.birthdate.isoformat() if user.birthdate else None,
-                # 'profile_picture': user.profile_picture.url if user.profile_picture else 'profile_pictures/no_profile_pic.png'
             }, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -175,7 +170,7 @@ class ValidateUserView(APIView):
             email = serializer.validated_data.get('email')
             try:
                 user = User.objects.get(username=username, email=email)
-                token = RefreshToken.for_user(user).access_token
+                token = RefreshToken.for_user(user)
                 return Response({'token': str(token)}, status=status.HTTP_200_OK)
             except User.DoesNotExist:
                 return Response({'error': 'Invalid username or email'}, status=status.HTTP_400_BAD_REQUEST)

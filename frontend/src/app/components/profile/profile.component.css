@@ -1,7 +1,7 @@
 /* profile.component.css */
 .profile-container {
-    max-width: 2400px;
-    padding: 76px;
+    max-width: 2000px;
+    padding: 2px;
     background: rgba(255, 255, 255, 0.8) url('/assets/imgs/golden-kingdom.png') no-repeat center center;
     background-size: cover;
     border: 2px solid #d3c29d;

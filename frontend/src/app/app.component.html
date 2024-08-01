@@ -27,6 +27,7 @@
         <label for="password">Password</label>
         <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" required>
       </div>
+      <a href="javascript:void(0)" (click)="navigateToForgotPassword()" class="reset-link">Forgot Password?</a>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
         <button type="submit" class="btn btn-primary">Login</button>
@@ -39,13 +40,7 @@
   <div>Welcome {{ username }}, let's play!</div>
 </ng-template>
 
-<ng-template #errorTemplate>
-  <div>Login failed</div>
-</ng-template>
 
-<ng-template #successTemplate let-message="message">
-  <div>{{ message }}</div>
-</ng-template>
 
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
   <a className="navbar-brand" href="#">
@@ -63,6 +58,12 @@
         <button class="btn btn-outline-success" (click)="openLoginModal(loginTemplate)">Login</button>
         <button class="btn btn-outline-warning" (click)="openLogoutModal(logoutTemplate)">Logout</button>
       </div>
+      <div>
+        <li class="nav-item d-flex align-items-center">
+          <img [src]="isLoggedIn ? 'assets/imgs/icons/green-dot.png' : 'assets/imgs/icons/red-dot.png'" alt="status-icon" style="width: 20px; height: 20px;">
+          <span *ngIf="isLoggedIn" class="text-white ml-2">{{ username }} logged in</span>
+        </li>
+      </div>
     </ul>
   </div>
 </nav>
@@ -74,25 +75,24 @@
   </div>
   <div class="offcanvas-body">
     <ul class="navbar-nav">
-      <li className="nav-item"><a className="nav-link" routerLink="/homepage">Homepage</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/login">login Page</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/register">Register</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/character-creation">Create Character</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/chat">Chat</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/about">About</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/profile">Profile</a></li>
-      <li className="nav-item"><a className="nav-link" routerLink="/change-password">Change Password</a></li>
-      <li className="nav-item" *ngIf="isSuperUser"><a className="nav-link" routerLink="/super-profile">Super Profile</a></li>
-      <li className="nav-item"><a className="nav-link" (click)="openLogoutModal(logoutTemplate)" style="cursor: pointer;">Logout</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/homepage">Homepage</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/login">Login Page</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/register">Register</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/character-creation">Create Character</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/chat">Chat</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/about">About</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/profile">Profile</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/change-password">Change Password</a></li>
+      <li class="nav-item" *ngIf="isSuperUser"><a class="nav-link" routerLink="/super-profile">Super Profile</a></li>
+      <li class="nav-item"><a class="nav-link" (click)="openLogoutModal(logoutTemplate)" style="cursor: pointer;">Logout</a></li>
     </ul>
   </div>
 </ng-template>
 <app-toasts-container></app-toasts-container>
 <router-outlet></router-outlet>
 
-<div *ngIf="isLoggedIn; else loginTemplate">
-  <button (click)="onLogout()">Logout</button>
-</div>
-<ng-template #loginTemplate>
-  <a routerLink="/login">Login</a>
-</ng-template>
+<footer class="footer bg-dark text-white text-center py-3">
+  <div class="container">
+    <span>&copy; 2024 DeMe - pick your story. All rights reserved.</span>
+  </div>
+</footer>

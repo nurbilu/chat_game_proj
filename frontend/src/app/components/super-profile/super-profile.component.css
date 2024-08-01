@@ -20,3 +20,15 @@
     width: 100%;
     max-width: 800px;
 }
+
+.dropdown-menu {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.dropend-form {
+    width: 300px; /* Increased width */
+    height: auto; /* Reduced height */
+    padding: 20px;
+}

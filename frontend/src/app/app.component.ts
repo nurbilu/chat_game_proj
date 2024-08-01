@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
   private offcanvasRef!: NgbOffcanvasRef;
-isLoggedIn: any;
+  isLoggedIn: boolean = false;
 
   constructor(
     private router: Router,
@@ -36,10 +36,17 @@ isLoggedIn: any;
 
   ngOnInit() {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
-      if (!isLoggedIn) {
-        this.router.navigate(['/homepage']);
-        return;
+      this.isLoggedIn = isLoggedIn;
+      if (isLoggedIn) {
+        this.authService.getUsername().subscribe((username: string) => {
+          this.username = username;
+          this.isSuperUser = this.authService.isSuperUser();
+          this.reloadCurrentRoute(); // Reload the current route once after login
+        });
       }
+    });
+
+    this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       this.ngZone.run(() => {
         if (isLoggedIn) {
           this.isSuperUser = this.authService.isSuperUser();
@@ -49,10 +56,16 @@ isLoggedIn: any;
             this.router.navigate(['/chat']);
           }
         } else {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/homepage']);
         }
-        
       });
+    });
+  }
+
+  private reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
     });
   }
 
@@ -142,5 +155,9 @@ isLoggedIn: any;
     this.authService.logout().subscribe(() => {
       console.log('User logged out');
     });
+  }
+
+  navigateToForgotPassword(): void {
+    this.router.navigate(['/forget-password']);
   }
 }
