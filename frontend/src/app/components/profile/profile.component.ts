@@ -79,18 +79,18 @@ export class ProfileComponent implements OnInit {
   updateProfilePicture(): void {
     const formData = new FormData();
     if (this.userProfile.profile_picture instanceof File) {
-      formData.append('profile_picture', this.userProfile.profile_picture);
+        formData.append('profile_picture', this.userProfile.profile_picture);
     }
 
     this.authService.updateUserProfilePicture(formData).subscribe(
-      (data) => {
-        this.userProfile = data;
-        this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
+        (data) => {
+            this.userProfile.profile_picture = data.profile_picture;  // Update only the profile picture URL
+            this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
+            this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+        },
+        (error) => {
+            this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+        }
     );
   }
 

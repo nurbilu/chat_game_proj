@@ -1,0 +1,6 @@
+2024-08-02 00:01:23,020 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:01:23] "OPTIONS /api/characters/fofo HTTP/1.1" 200 -
+2024-08-02 00:01:23,043 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:01:23] "GET /api/characters/fofo HTTP/1.1" 200 -
+2024-08-02 00:02:01,458 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:02:01] "OPTIONS /api/characters/fofo HTTP/1.1" 200 -
+2024-08-02 00:02:01,485 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:02:01] "GET /api/characters/fofo HTTP/1.1" 200 -
+2024-08-02 00:13:20,285 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:13:20] "OPTIONS /api/characters/yosef HTTP/1.1" 200 -
+2024-08-02 00:13:20,302 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:13:20] "[33mGET /api/characters/yosef HTTP/1.1[0m" 404 -

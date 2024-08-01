@@ -31,7 +31,7 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
         5. super - profile component 
         6. create character component *
     -fix create character , that only after selection of user character with select -> will 
-    - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page
+    - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page if not a real email two options : 1. send another file but to get auth need to input : username + email + last_name + birthdate. 2. email is invalid or not real -> redirect to login page with a toast message that email is invalid or not real -> try again with a real email.
     - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
         i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .

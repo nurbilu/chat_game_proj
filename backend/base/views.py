@@ -141,8 +141,8 @@ class ProfilePictureUploadView(APIView):
             return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
         
         user.profile_picture = file
-        user.save()
-        return Response({'message': 'Profile picture uploaded successfully'}, status=status.HTTP_200_OK)
+        user.save(update_fields=['profile_picture'])  # Only update the profile_picture field
+        return Response({'profile_picture': user.profile_picture.url}, status=status.HTTP_200_OK)
     
     def put(self, request):
         user = request.user
@@ -151,8 +151,8 @@ class ProfilePictureUploadView(APIView):
             return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
         
         user.profile_picture = file
-        user.save()
-        return Response({'message': 'Profile picture uploaded successfully'}, status=status.HTTP_200_OK)
+        user.save(update_fields=['profile_picture'])  # Only update the profile_picture field
+        return Response({'profile_picture': user.profile_picture.url}, status=status.HTTP_200_OK)
 
 class UserProfileUpdateView(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
