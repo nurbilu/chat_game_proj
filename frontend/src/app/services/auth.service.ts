@@ -131,14 +131,18 @@ export class AuthService {
             console.error('No token found');
             return throwError(() => new Error('Authentication token not found'));
         }
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        const formData = new FormData();
-        for (const key in userProfile) {
-            if (userProfile.hasOwnProperty(key)) {
-                formData.append(key, userProfile[key]);
-            }
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Content-Type', 'application/json');
+        return this.http.put(`${this.baseUrl}person/data/update/`, userProfile, { headers });
+    }
+
+    updateUserProfilePicture(profilePicture: FormData): Observable<any> {
+        const token = this.getToken();
+        if (!token) {
+            console.error('No token found');
+            return throwError(() => new Error('Authentication token not found'));
         }
-        return this.http.put(`${this.baseUrl}person/data/update/`, formData, { headers });
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.put(`${this.baseUrl}upload-profile-picture/`, profilePicture, { headers });
     }
 
     decodeToken(): Promise<any> {

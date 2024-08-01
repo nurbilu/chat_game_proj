@@ -40,6 +40,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 500,  # 500 MB
             'backupCount': 4,
             'formatter': 'verbose',
+            'encoding': 'utf-8',  # Add this line to set the encoding to utf-8
         },
     },
     'formatters': {

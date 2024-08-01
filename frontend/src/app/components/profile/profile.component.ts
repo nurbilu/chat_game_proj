@@ -24,12 +24,12 @@ export class ProfileComponent implements OnInit {
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+    this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
-          this.router.navigate(['/login']);
-          return;
+        this.router.navigate(['/login']);
+        return;
       }
-    }))
+    });
     this.loadUserProfile();
     this.authService.decodeToken().then((decodedToken) => {
       this.isSuperuser = decodedToken.is_superuser;
@@ -54,31 +54,39 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUserProfile(): void {
+    const userProfileData = {
+      username: this.userProfile.username,
+      first_name: this.userProfile.first_name,
+      last_name: this.userProfile.last_name,
+      email: this.userProfile.email,
+      address: this.userProfile.address,
+      birthdate: this.userProfile.birthdate
+    };
+
+    this.authService.updateUserProfile(userProfileData).subscribe(
+      (data) => {
+        this.userProfile = data;
+        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+        this.showUpdateForm = false;
+        this.showUserData = true;  // Switch back to readable table
+      },
+      (error) => {
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
+  }
+
+  updateProfilePicture(): void {
     const formData = new FormData();
-    formData.append('username', this.userProfile.username);
-    formData.append('first_name', this.userProfile.first_name);
-    formData.append('last_name', this.userProfile.last_name);
-    formData.append('email', this.userProfile.email);
-    formData.append('address', this.userProfile.address);
-    formData.append('birthdate', this.userProfile.birthdate);
     if (this.userProfile.profile_picture instanceof File) {
       formData.append('profile_picture', this.userProfile.profile_picture);
     }
 
-    // Log the form data for debugging
-    for (let [key, value] of (formData as any).entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
-    console.log('Sending update request with data:', formData);  // Add logging
-
-    this.authService.updateUserProfile(formData).subscribe(
+    this.authService.updateUserProfilePicture(formData).subscribe(
       (data) => {
         this.userProfile = data;
         this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
         this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-        this.showUpdateForm = false;
-        this.showUserData = true;  // Switch back to readable table
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
@@ -144,8 +152,6 @@ export class ProfileComponent implements OnInit {
     this.updateUserProfile();
   }
 
-
-
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
@@ -158,8 +164,7 @@ export class ProfileComponent implements OnInit {
     this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
     this.toastService.show({ template: this.logoutTemplate, classname: 'bg-success text-light', delay: 10000, context: { username } });
     this.authService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
-
+      this.router.navigate(['/homepage']);
     });
   }
 }

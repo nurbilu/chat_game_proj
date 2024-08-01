@@ -143,11 +143,21 @@ class ProfilePictureUploadView(APIView):
         user.profile_picture = file
         user.save()
         return Response({'message': 'Profile picture uploaded successfully'}, status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        user = request.user
+        file = request.FILES.get('profile_picture')
+        if not file:
+            return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.profile_picture = file
+        user.save()
+        return Response({'message': 'Profile picture uploaded successfully'}, status=status.HTTP_200_OK)
 
 class UserProfileUpdateView(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser, JSONParser]  # Add JSONParser
+    parser_classes = [JSONParser]  # Only JSONParser for user data update
 
     def put(self, request):
         user = request.user
