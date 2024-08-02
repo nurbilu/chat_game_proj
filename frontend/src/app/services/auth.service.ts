@@ -81,6 +81,7 @@ export class AuthService {
                 this._isLoggedIn.next(true); // Update login state
                 this.username.next(decodedToken.username);
                 this.startTokenExpirationTimer();
+                this.router.navigate(['/chat']); // Navigate to chat after successful login
             }),
             catchError(error => {
                 return throwError(() => new Error('Login failed: ' + error.message));

@@ -29,12 +29,10 @@ export class LoginComponent {
             username: this.username,
             password: this.password
         };
-
+    
         this.authService.login(user.username, user.password).subscribe({
             next: () => {
-                this.router.navigate(['/']).then(() => {
-                    window.location.reload();
-                });
+                this.router.navigate(['/chat']); // Navigate to chat after successful login
             },
             error: (err) => {
                 console.error('Login failed', err);

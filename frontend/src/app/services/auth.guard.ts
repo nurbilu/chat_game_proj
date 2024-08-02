@@ -20,15 +20,15 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.checkLogin(state.url);
+    return this.checkLogin();
   }
 
-  private checkLogin(url: string): Observable<boolean> {
+  private checkLogin(): Observable<boolean> {
     if (isPlatformBrowser(this.platformId)) {
       if (this.authService.isLoggedIn()) {
         return of(true);
       } else {
-        this.router.navigate(['/homepage'], { queryParams: { returnUrl: url } });
+        this.router.navigate(['/homepage']);
         return of(false);
       }
     } else {

@@ -41,24 +41,13 @@ export class AppComponent implements OnInit {
         this.authService.getUsername().subscribe((username: string) => {
           this.username = username;
           this.isSuperUser = this.authService.isSuperUser();
-          this.reloadCurrentRoute(); // Reload the current route once after login
+          this.router.navigate(['/chat']).then(() => {
+            this.reloadCurrentRoute(); // Reload the current route once after navigation
+          });
         });
+      } else {
+        this.router.navigate(['/homepage']);
       }
-    });
-
-    this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
-      this.ngZone.run(() => {
-        if (isLoggedIn) {
-          this.isSuperUser = this.authService.isSuperUser();
-          if (this.isSuperUser) {
-            this.router.navigate(['/super-profile']);
-          } else {
-            this.router.navigate(['/chat']);
-          }
-        } else {
-          this.router.navigate(['/homepage']);
-        }
-      });
     });
   }
 
@@ -122,6 +111,7 @@ export class AppComponent implements OnInit {
           modal.close('Login click');
           this.username = '';
           this.password = '';
+          this.router.navigate(['/chat']); // Navigate to chat after successful login
         },
         error: (error) => {
           this.toastService.show({

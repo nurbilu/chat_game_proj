@@ -61,6 +61,6 @@ export class RegisterComponent {
 
     logout(): void {
         localStorage.clear();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/homepage']);
     }
 }

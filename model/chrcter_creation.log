@@ -1,6 +1,7 @@
-2024-08-02 00:01:23,020 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:01:23] "OPTIONS /api/characters/fofo HTTP/1.1" 200 -
-2024-08-02 00:01:23,043 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:01:23] "GET /api/characters/fofo HTTP/1.1" 200 -
-2024-08-02 00:02:01,458 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:02:01] "OPTIONS /api/characters/fofo HTTP/1.1" 200 -
-2024-08-02 00:02:01,485 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:02:01] "GET /api/characters/fofo HTTP/1.1" 200 -
-2024-08-02 00:13:20,285 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:13:20] "OPTIONS /api/characters/yosef HTTP/1.1" 200 -
-2024-08-02 00:13:20,302 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 00:13:20] "[33mGET /api/characters/yosef HTTP/1.1[0m" 404 -
+2024-08-02 16:56:33,175 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:6500
+ * Running on http://10.0.0.10:6500
+2024-08-02 16:56:33,177 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-08-02 16:59:10,315 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 16:59:10] "OPTIONS /api/characters/fofo HTTP/1.1" 200 -
+2024-08-02 16:59:10,327 - werkzeug - INFO - 127.0.0.1 - - [02/Aug/2024 16:59:10] "GET /api/characters/fofo HTTP/1.1" 200 -

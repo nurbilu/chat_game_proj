@@ -21,6 +21,7 @@ const routes: Routes = [
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'about', component: AboutComponent },
     { path: '', redirectTo: '/homepage', pathMatch: 'full' }, 
+    // { path: '', redirectTo: '/chat', pathMatch: 'full' }, 
     { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
     { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] },
     { path: 'super-profile', component: SuperProfileComponent, canActivate: [AuthGuard] },

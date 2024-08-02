@@ -57,7 +57,7 @@ export class ChatComponent implements OnInit {
 
     logout(): void {
         this.authService.logout().subscribe(() => {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/homepage']);
         });
     }
 }

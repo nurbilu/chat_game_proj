@@ -23,7 +23,7 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/homepage']);
       }
     });
   }
