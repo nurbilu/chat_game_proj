@@ -46,20 +46,34 @@ export class AppComponent implements OnInit {
           });
         });
       } else {
-        this.router.navigate(['/homepage']);
+        this.reloadCurrentRoute(); 
+        
       }
     });
   }
 
+  alert(message: string) {
+    alert(message);
+  }
+
+
   private reloadCurrentRoute() {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentUrl]);
-    });
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const hasReloaded = localStorage.getItem('hasReloaded');
+      if (!hasReloaded) {
+        localStorage.setItem('hasReloaded', 'true');
+        window.location.reload();
+      } else {
+        localStorage.removeItem('hasReloaded');
+      }
+    } else {
+      console.warn('localStorage is not available');
+    }
   }
 
   logout(): void {
     this.authService.logout().subscribe(() => {
+      localStorage.removeItem('hasReloaded');
       this.router.navigate(['/homepage']).then(() => {
         window.location.reload();
         console.log('Navigated to homepage');

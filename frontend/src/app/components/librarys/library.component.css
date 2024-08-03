@@ -1,0 +1,18 @@
+.scrollspy-example {
+    position: relative;
+    height: 400px;
+    overflow: auto;
+}
+
+.table {
+    margin-bottom: 2rem;
+}
+
+span[data-full-text] {
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 200px;
+}

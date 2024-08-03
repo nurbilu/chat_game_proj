@@ -12,6 +12,7 @@ import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-
 import { SuperProfileComponent } from './components/super-profile/super-profile.component';
 import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component';
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
+import { LibraryComponent } from './components/librarys/library.component';
 
 const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },
@@ -20,8 +21,9 @@ const routes: Routes = [
     { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'about', component: AboutComponent },
-    { path: '', redirectTo: '/homepage', pathMatch: 'full' }, 
-    // { path: '', redirectTo: '/chat', pathMatch: 'full' }, 
+    { path: 'library', component: LibraryComponent }, 
+    // { path: '', redirectTo: '/chat', pathMatch: 'full' },
+    { path: '', redirectTo: '/homepage', pathMatch: 'full' },
     { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
     { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] },
     { path: 'super-profile', component: SuperProfileComponent, canActivate: [AuthGuard] },
@@ -30,7 +32,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

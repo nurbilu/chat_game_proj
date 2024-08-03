@@ -27,6 +27,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component';
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
+import { LibraryComponent } from './components/librarys/library.component'; // Import LibraryComponent
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
     SuperProfileComponent,
     ToastsContainerComponent, // Added this line
     ForgetPwdComponent,
-    ResetPwdComponent
+    ResetPwdComponent,
+    LibraryComponent // Declare LibraryComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,53 @@
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link" *ngFor="let collection of collectionKeys"
+       [class.active]="collection === selectedCollection" (click)="selectCollection(collection)">
+      {{collection}}
+    </a>
+  </div>
+</nav>
+<div class="tab-content scrollspy-example" id="nav-tabContent" data-bs-spy="scroll" data-bs-target="#nav-tab"
+    data-bs-offset="0" tabindex="0">
+  <div class="tab-pane fade show active" role="tabpanel">
+    <h4>{{selectedCollection}}</h4>
+    <table class="table" *ngIf="collections[selectedCollection] && collections[selectedCollection].length > 0">
+      <thead>
+        <tr>
+          <th *ngIf="selectedCollection === 'game styles' && 'style' in collections[selectedCollection][0]">style</th>
+          <th *ngIf="selectedCollection !== 'game styles' && 'name' in collections[selectedCollection][0]">name</th>
+          <ng-container *ngFor="let key of $any(collections[selectedCollection][0]) | keyvalue">
+            <th *ngIf="key.key !== '_id' && key.key !== 'url' && key.key !== 'name' && key.key !== 'style'">{{key.key}}</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of getPaginatedItems()">
+          <td *ngIf="selectedCollection === 'game styles' && 'style' in item">{{item.style}}</td>
+          <td *ngIf="selectedCollection !== 'game styles' && 'name' in item">{{item.name}}</td>
+          <ng-container *ngFor="let key of $any(item) | keyvalue">
+            <td *ngIf="key.key !== 'id' && key.key !== 'url' && key.key !== 'name' && key.key !== 'style'">
+              <span *ngIf="isStringOrNumber(key.value)" [attr.data-full-text]="key.value"
+                    [attr.data-truncated-text]="truncateText(key.value?.toString() ?? '', 50)">
+                {{truncateText(key.value?.toString() ?? '', 50)}}
+              </span>
+              <button *ngIf="isStringOrNumber(key.value) && (key.value?.toString() ?? '').length > 50"
+                      (click)="toggleText($event, true)">
+                <img src="assets/imgs/icons/open-txt-clmn.png" alt="Open">
+              </button>
+              <button *ngIf="isStringOrNumber(key.value) && (key.value?.toString() ?? '').length > 50"
+                      (click)="toggleText($event, false)">
+                <span class="btn-close" aria-label="Close"></span>
+              </button>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!collections[selectedCollection] || collections[selectedCollection].length === 0">
+      No data available.
+    </div>
+    <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
+        [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
+        [ellipses]="true"></ngb-pagination>
+  </div>
+</div>

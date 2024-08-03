@@ -5,10 +5,8 @@
     "outDir": "./out-tsc/spec",
     "types": [
       "jasmine",
-      "node"
-      // ,
-      // "jest",
-      // "mocha"
+      "node",
+      "@angular/localize"
     ]
   },
   "files": [

@@ -1,11 +1,13 @@
-1.fix redirection after login(*5) 
+1.fix redirection after login - now after login -> /chat , now is login -> /chat ->/homepage -> /chat - fix so only /chat is redirected after login.
+
+2.navbar stick with top of the page when scrolling and centered with the page () 
 
 3. adjust homepage so all links need authentication that been not will redirect to login page. (done)
 
 
 4. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
 
-5. set reload after login either on the backend or on the frontend and either superuser or not superuser ()
+5. set reload after login either on the backend or on the frontend and either superuser or not superuser (done)
 
 6. set library 
 

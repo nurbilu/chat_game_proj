@@ -1,0 +1,253 @@
+{
+    "game_style": "rogue_druid",
+    "classes": [
+      {
+        "_id": "5f2329a70b1bb138c5940d34",
+        "index": "druid",
+        "name": "Druid",
+        "hit_die": 8,
+        "proficiency_choices": [
+          {
+            "choose": 2,
+            "type": "proficiencies",
+            "from": [
+              {
+                "url": "/api/proficiencies/skill-animal-handling",
+                "name": "Skill: Animal Handling"
+              },
+              {
+                "url": "/api/proficiencies/skill-arcana",
+                "name": "Skill: Arcana"
+              },
+              {
+                "url": "/api/proficiencies/skill-insight",
+                "name": "Skill: Insight"
+              },
+              {
+                "url": "/api/proficiencies/skill-medicine",
+                "name": "Skill: Medicine"
+              },
+              {
+                "url": "/api/proficiencies/skill-nature",
+                "name": "Skill: Nature"
+              },
+              {
+                "url": "/api/proficiencies/skill-perception",
+                "name": "Skill: Perception"
+              },
+              {
+                "url": "/api/proficiencies/skill-religion",
+                "name": "Skill: Religion"
+              },
+              {
+                "url": "/api/proficiencies/skill-survival",
+                "name": "Skill: Survival"
+              }
+            ]
+          }
+        ],
+        "proficiencies": [
+          {
+            "name": "Light armor",
+            "url": "/api/proficiencies/light-armor"
+          },
+          {
+            "name": "Medium armor",
+            "url": "/api/proficiencies/medium-armor"
+          },
+          {
+            "name": "Shields",
+            "url": "/api/proficiencies/shields"
+          },
+          {
+            "name": "Clubs",
+            "url": "/api/proficiencies/clubs"
+          },
+          {
+            "name": "Daggers",
+            "url": "/api/proficiencies/daggers"
+          },
+          {
+            "name": "Javelins",
+            "url": "/api/proficiencies/javelins"
+          },
+          {
+            "name": "Maces",
+            "url": "/api/proficiencies/maces"
+          },
+          {
+            "name": "Quarterstaffs",
+            "url": "/api/proficiencies/quarterstaffs"
+          },
+          {
+            "name": "Sickles",
+            "url": "/api/proficiencies/sickles"
+          },
+          {
+            "name": "Spears",
+            "url": "/api/proficiencies/spears"
+          },
+          {
+            "name": "Darts",
+            "url": "/api/proficiencies/darts"
+          },
+          {
+            "name": "Slings",
+            "url": "/api/proficiencies/slings"
+          },
+          {
+            "name": "Scimitars",
+            "url": "/api/proficiencies/scimitars"
+          },
+          {
+            "name": "Herbalism Kit",
+            "url": "/api/proficiencies/herbalism-kit"
+          }
+        ],
+        "saving_throws": [
+          {
+            "name": "INT",
+            "url": "/api/ability-scores/int"
+          },
+          {
+            "name": "WIS",
+            "url": "/api/ability-scores/wis"
+          }
+        ],
+        "starting_equipment": {
+          "url": "/api/starting-equipment/4",
+          "class": "Druid"
+        },
+        "class_levels": {
+          "url": "/api/classes/druid/levels",
+          "class": "Druid"
+        },
+        "subclasses": [
+          {
+            "url": "/api/subclasses/land",
+            "name": "Land"
+          }
+        ],
+        "url": "/api/classes/druid",
+        "spellcasting": {
+          "url": "/api/spellcasting/druid",
+          "class": "Druid"
+        }
+      },
+      {
+        "_id": "5f2329a70b1bb138c5940d37",
+        "index": "rogue",
+        "name": "Rogue",
+        "hit_die": 8,
+        "proficiency_choices": [
+          {
+            "choose": 4,
+            "type": "proficiencies",
+            "from": [
+              {
+                "url": "/api/proficiencies/skill-acrobatics",
+                "name": "Skill: Acrobatics"
+              },
+              {
+                "url": "/api/proficiencies/skill-athletics",
+                "name": "Skill: Athletics"
+              },
+              {
+                "url": "/api/proficiencies/skill-deception",
+                "name": "Skill: Deception"
+              },
+              {
+                "url": "/api/proficiencies/skill-insight",
+                "name": "Skill: Insight"
+              },
+              {
+                "url": "/api/proficiencies/skill-intimidation",
+                "name": "Skill: Intimidation"
+              },
+              {
+                "url": "/api/proficiencies/skill-investigation",
+                "name": "Skill: Investigation"
+              },
+              {
+                "url": "/api/proficiencies/skill-perception",
+                "name": "Skill: Perception"
+              },
+              {
+                "url": "/api/proficiencies/skill-performance",
+                "name": "Skill: Performance"
+              },
+              {
+                "url": "/api/proficiencies/skill-persuasion",
+                "name": "Skill: Persuasion"
+              },
+              {
+                "url": "/api/proficiencies/skill-sleight-of-hand",
+                "name": "Skill: Sleight of Hand"
+              },
+              {
+                "url": "/api/proficiencies/skill-stealth",
+                "name": "Skill: Stealth"
+              }
+            ]
+          }
+        ],
+        "proficiencies": [
+          {
+            "name": "Light armor",
+            "url": "/api/proficiencies/light-armor"
+          },
+          {
+            "name": "Simple weapons",
+            "url": "/api/proficiencies/simple-weapons"
+          },
+          {
+            "name": "Longswords",
+            "url": "/api/proficiencies/longswords"
+          },
+          {
+            "name": "Rapiers",
+            "url": "/api/proficiencies/rapiers"
+          },
+          {
+            "name": "Shortswords",
+            "url": "/api/proficiencies/shortswords"
+          },
+          {
+            "name": "Crossbows, hand",
+            "url": "/api/proficiencies/crossbows-hand"
+          },
+          {
+            "name": "Thieves' Tools",
+            "url": "/api/proficiencies/thieves-tools"
+          }
+        ],
+        "saving_throws": [
+          {
+            "name": "DEX",
+            "url": "/api/ability-scores/dex"
+          },
+          {
+            "name": "INT",
+            "url": "/api/ability-scores/int"
+          }
+        ],
+        "starting_equipment": {
+          "url": "/api/starting-equipment/9",
+          "class": "Rogue"
+        },
+        "class_levels": {
+          "url": "/api/classes/rogue/levels",
+          "class": "Rogue"
+        },
+        "subclasses": [
+          {
+            "url": "/api/subclasses/thief",
+            "name": "Thief"
+          }
+        ],
+        "url": "/api/classes/rogue",
+        "spellcasting": ""
+      }
+    ]
+  }
+  
