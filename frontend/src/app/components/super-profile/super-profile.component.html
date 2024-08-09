@@ -1,14 +1,20 @@
-<div class="super-profile-container container">
+<div class="super-profile-container container" data-bs-spy="scroll" data-bs-target="#profileDropdown" data-bs-offset="0" tabindex="0">
     <div class="super-profile-content">
         <h2 class="text-center mb-4">All User Profiles</h2>
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div ngbDropdown class="d-inline-block" placement="top">
+                <div ngbDropdown class="d-inline-block" [placement]="selectedProfile ? 'bottom' : 'top'">
                     <button class="btn btn-secondary dropdown-toggle" id="profileDropdown" ngbDropdownToggle>
                         Select Profile
                     </button>
                     <div ngbDropdownMenu aria-labelledby="profileDropdown">
-                        <button class="dropdown-item" *ngFor="let profile of userProfiles" (click)="onProfileSelect(profile)">
+                        <button
+                            class="dropdown-item"
+                            *ngFor="let profile of userProfiles"
+                            (click)="onProfileSelect(profile)"
+                            [class.scrollspy-active]="currentSection === profile.username"
+                            id="{{ profile.username }}"
+                        >
                             {{ profile.username }}
                         </button>
                     </div>

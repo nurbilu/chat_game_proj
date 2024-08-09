@@ -32,7 +32,7 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
         6. create character component *
     -fix create character , that only after selection of user character with select -> will 
     - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page if not a real email two options : 1. send another file but to get auth need to input : username + email + last_name + birthdate. 2. email is invalid or not real -> redirect to login page with a toast message that email is invalid or not real -> try again with a real email.
-    - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles maybe fireball too)
+    - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles) . fireball - is very chaotic and its json files are not very easy to work with .  
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
         i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .
     - maybe instead of using the MongoDB compass either find a way to connect to Atlas or use Atlas cluster directly OR use a different no sql DB like          firebase - work better with Gemini but will cost more to remember how to connect to it correctly and potentially more expensive .()
@@ -41,8 +41,8 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
     -""if have more functions or some other ideas to enrich the projet when submitting and also for the future to real users to use."" .
 
 6. create unit tests for all API calls ( bonus 6 points - could help and wont hurt - ( ) - see if have time to implement) :
-    - sending emails (3 extra points each).
-    - Using unit test (extra 3 points). 
+    - sending emails (3 extra points ).
+    - Using unit test (extra 3 points each). 
 
 7. design the website first edition ( X ) :
 
@@ -62,18 +62,22 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
     
 
 9.a. implemnt and finish the dockers ( ) :
-    (Dockerfile ( bonus + 10 points! ))
+    (Dockerfile ( bonus of 10 points! ))
     
+
+these sections are recommanded for a project to be profitable and professinal implemantation : (fix vocabilary errors in this heading)
 
 9.b. security measures ( ) :
     - add a security measure to the loggers so they dont show the full path to the file and just the name of the file .
-    - add a sort of notification system to that monitor al loggers and use a real time db that send all logs data either to an portable hard drive or to the cloud or to a sdd card .
+    - add a sort of notification system, that monitor all loggers and use a real time db that send all logs data either to an portable hard drive or to the cloud (or to a sdd card - optional) .
     - improve logger more , and make them even more organised readable , send all Werkzeug in to different folder - for kind of Werkzeug messages , excluding the framework cmd temrinal logger Werzeug startup messages.
     - add more sections if u think its needed .
-    - investigate DMZ SSL and SSH
+    - investigate DMZ SSL and SSH for higher securtiy for the local storage .
 
 
 
 10. cloud deployment ( ) :
-    not a must project wise , but will make the game more wide spread a fast reactions and prompts 
+    for a deeper and more practical 
     - deploy on the cloud firebase ? 
+    or if not using firebase/firestore and keep using Mongo for the chat DB : 
+    - deploy with other cloud platform - do a little research 

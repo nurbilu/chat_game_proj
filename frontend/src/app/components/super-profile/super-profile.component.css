@@ -32,3 +32,8 @@
     height: auto; /* Reduced height */
     padding: 20px;
 }
+
+.scrollspy-active {
+    background-color: #f0f0f0;
+    border-left: 4px solid #007bff;
+}

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ScrollSpyService } from '../../services/scroll-spy.service';
 
 interface UserProfile {
   username: string;
@@ -25,11 +26,13 @@ export class SuperProfileComponent implements OnInit {
   isLoading: boolean = false;
   error: string | null = null;
   superUserForm: FormGroup;
+  currentSection: string = '';
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private scrollSpyService: ScrollSpyService
   ) {
     this.superUserForm = this.fb.group({
       username: ['', Validators.required],
@@ -40,6 +43,9 @@ export class SuperProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSuperUserProfiles();
+    this.scrollSpyService.getScrollObservable().subscribe((section: string) => {
+      this.currentSection = section;
+    });
   }
 
   loadSuperUserProfiles(): void {
