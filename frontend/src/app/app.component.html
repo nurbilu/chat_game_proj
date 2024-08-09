@@ -40,10 +40,8 @@
   <div>Welcome {{ username }}, let's play!</div>
 </ng-template>
 
-
-
-<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a className="navbar-brand" href="#">
+<nav className="navbar navbar-expand-lg navbar-dark bg-dark" [class.sticky-top]="isNavbarSticky">
+  <a class="navbar-brand" href="#">
     <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px;">
   </a>
   <button class="navbar-toggler" type="button" (click)="openOffcanvas()">

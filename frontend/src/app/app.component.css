@@ -49,6 +49,7 @@ nav {
 
 .offcanvas-body {
   background-color: #333740;
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .offcanvas-body ul {

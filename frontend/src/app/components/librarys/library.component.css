@@ -1,11 +1,11 @@
 .scrollspy-example {
     position: relative;
-    height: 400px;
+    height: 1000px;
     overflow: auto;
 }
 
 .table {
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 span[data-full-text] {

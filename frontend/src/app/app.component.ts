@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, NgZone, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbOffcanvas, NgbOffcanvasRef, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from './services/toast.service';
@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   username: string | null = null;
   password: string = '';
   private modalRef: NgbModalRef | undefined;
+  isNavbarSticky: boolean = false;
 
   @ViewChild('offcanvasContent', { static: true }) offcanvasContent!: TemplateRef<any>;
   @ViewChild('logoutTemplate', { static: true }) logoutTemplate!: TemplateRef<any>;
@@ -46,16 +47,19 @@ export class AppComponent implements OnInit {
           });
         });
       } else {
-        this.reloadCurrentRoute(); 
-        
+        this.router.navigate(['/login'])
       }
     });
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isNavbarSticky = window.pageYOffset > 0;
   }
 
   alert(message: string) {
     alert(message);
   }
-
 
   private reloadCurrentRoute() {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -146,7 +150,11 @@ export class AppComponent implements OnInit {
   }
 
   openOffcanvas() {
-    this.offcanvasRef = this.offcanvasService.open(this.offcanvasContent, { ariaLabelledBy: 'offcanvasNavbarLabel' });
+    this.offcanvasRef = this.offcanvasService.open(this.offcanvasContent, {
+      ariaLabelledBy: 'offcanvasNavbarLabel',
+      scroll: true,
+      backdrop: true
+    });
   }
 
   closeOffcanvas() {
