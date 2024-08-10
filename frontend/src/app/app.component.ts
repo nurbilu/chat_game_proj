@@ -36,18 +36,13 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+    this.authService.isLoggedIn().subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
       if (isLoggedIn) {
-        this.authService.getUsername().subscribe((username: string) => {
+        this.authService.getUsername().subscribe(username => {
           this.username = username;
           this.isSuperUser = this.authService.isSuperUser();
-          this.router.navigate(['/chat']).then(() => {
-            this.reloadCurrentRoute(); // Reload the current route once after navigation
-          });
         });
-      } else {
-        this.router.navigate(['/login'])
       }
     });
   }
@@ -61,27 +56,9 @@ export class AppComponent implements OnInit {
     alert(message);
   }
 
-  private reloadCurrentRoute() {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const hasReloaded = localStorage.getItem('hasReloaded');
-      if (!hasReloaded) {
-        localStorage.setItem('hasReloaded', 'true');
-        window.location.reload();
-      } else {
-        localStorage.removeItem('hasReloaded');
-      }
-    } else {
-      console.warn('localStorage is not available');
-    }
-  }
-
   logout(): void {
     this.authService.logout().subscribe(() => {
-      localStorage.removeItem('hasReloaded');
-      this.router.navigate(['/homepage']).then(() => {
-        window.location.reload();
-        console.log('Navigated to homepage');
-      });
+      this.router.navigate(['/homepage']);
     });
   }
 
@@ -116,9 +93,9 @@ export class AppComponent implements OnInit {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  login(modal: any) {
+  loginWithModal(modal: any) {
     if (this.username && this.password) {
-      this.authService.login(this.username, this.password).subscribe({
+      this.authService.loginForModal(this.username, this.password).subscribe({
         next: (response) => {
           this.toastService.show({
             template: this.welcomeTemplate,
@@ -127,15 +104,17 @@ export class AppComponent implements OnInit {
             context: { username: this.username }
           });
           modal.close('Login click');
-          this.username = '';
+          this.username = localStorage.getItem('username');
           this.password = '';
-          this.router.navigate(['/chat']); // Navigate to chat after successful login
+          this.isLoggedIn = true;
+          this.isSuperUser = this.authService.isSuperUser();
         },
         error: (error) => {
           this.toastService.show({
             template: this.errorTemplate,
             classname: 'bg-danger text-light',
-            delay: 15000
+            delay: 15000,
+            context: { message: error.message }
           });
         }
       });

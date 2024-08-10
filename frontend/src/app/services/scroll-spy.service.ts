@@ -27,9 +27,11 @@ export class ScrollSpyService {
     const sections = document.querySelectorAll('section');
     let currentSection = '';
     sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= 0 && rect.bottom >= 0) {
-        currentSection = section.id;
+      if (section instanceof HTMLElement) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 0 && rect.bottom >= 0) {
+          currentSection = section.id;
+        }
       }
     });
     return currentSection;

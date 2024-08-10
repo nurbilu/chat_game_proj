@@ -18,7 +18,7 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
-    <form (ngSubmit)="login(modal)" #loginForm="ngForm">
+    <form (ngSubmit)="loginWithModal(modal)" #loginForm="ngForm">
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control" required>
@@ -40,6 +40,12 @@
   <div>Welcome {{ username }}, let's play!</div>
 </ng-template>
 
+<ng-template #failureTemplate let-message="message">
+  <div class="toast-body">
+    {{ message }}
+  </div>
+</ng-template>
+
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark" [class.sticky-top]="isNavbarSticky">
   <a class="navbar-brand" href="#">
     <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px;">
@@ -50,10 +56,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <div class="btn-group" role="group" aria-label="homepage, Login and Logout">
+        <button class="btn btn-outline-success" (click)="openLoginModal(loginTemplate)">Login</button>
         <button class="btn btn-outline-info" routerLink="/homepage">Homepage</button>
         <button class="btn btn-outline-primary" routerLink="/register">Register</button>
         <button class="btn btn-outline-light" *ngIf="isSuperUser" routerLink="/super-profile">Super Profile</button>
-        <button class="btn btn-outline-success" (click)="openLoginModal(loginTemplate)">Login</button>
         <button class="btn btn-outline-warning" (click)="openLogoutModal(logoutTemplate)">Logout</button>
       </div>
       <div>

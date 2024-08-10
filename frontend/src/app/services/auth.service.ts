@@ -45,7 +45,7 @@ export class AuthService {
             try {
                 localStorage.setItem(key, value);
             } catch (e) {
-                // Handle error if localStorage is not available
+                console.error('LocalStorage not available:', e);
             }
         }
     }
@@ -77,11 +77,13 @@ export class AuthService {
                     throw new Error('Username not provided in token');
                 }
                 this.setItem('token', response.access);
+                this.setItem('refresh_token', response.refresh);
                 this.setItem('username', username);
                 this._isLoggedIn.next(true); // Update login state
                 this.username.next(decodedToken.username);
                 this.startTokenExpirationTimer();
-                this.router.navigate(['/chat']); // Navigate to chat after successful login
+                const targetRoute = this.isSuperUser() ? '/super-profile' : '/chat';
+                this.router.navigate([targetRoute]);
             }),
             catchError(error => {
                 return throwError(() => new Error('Login failed: ' + error.message));
@@ -89,6 +91,32 @@ export class AuthService {
         );
     }
 
+    loginForModal(username: string, password: string): Observable<any> {
+        const loginPayload = { username, password };
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+        });
+
+        return this.http.post(`${this.baseUrl}login/`, loginPayload, { headers }).pipe(
+            tap((response: any) => {
+                if (!response || !response.access) {
+                    console.error('Invalid response structure:', response);
+                    throw new Error('Access token not provided');
+                }
+                this.setItem('token', response.access);
+                this.setItem('refresh_token', response.refresh);
+                this.setItem('username', username);
+                this._isLoggedIn.next(true);
+                const decodedToken = this.jwtHelper.decodeToken(response.access);
+                if (!decodedToken || !decodedToken.username) {
+                    console.error('Username not provided in token:', decodedToken);
+                    throw new Error('Username not provided in token');
+                }
+                this.username.next(decodedToken.username);
+            }),
+            catchError(error => throwError(() => new Error('Login failed: ' + error.message)))
+        );
+    }
 
     getUserProfile(username?: string): Observable<any> {
         const token = this.getToken();
@@ -223,9 +251,7 @@ export class AuthService {
         if (isPlatformBrowser(this.platformId)) {
             localStorage.clear();
         }
-        this.router.navigate(['/homepage']).then(() => {
-            window.location.reload();
-        });
+        alert('Token expired. Please login again.');
     }
 
     validateUser(data: { username: string; email: string }): Observable<any> {
@@ -261,9 +287,7 @@ export class AuthService {
             localStorage.clear();
             this._isLoggedIn.next(false);
             this.username.next('');
-            this.router.navigate(['/homepage']).then(() => {
-                window.location.reload();
-            });
+            this.router.navigate(['/homepage']);
         }
         return of();
     }

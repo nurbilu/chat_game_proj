@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, NgZone } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
@@ -20,22 +20,21 @@ export class LoginComponent {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private toastService: ToastService,
-        private ngZone: NgZone
+        private toastService: ToastService
     ) { }
 
     login() {
-        const user = {
-            username: this.username,
-            password: this.password
-        };
-    
-        this.authService.login(user.username, user.password).subscribe({
+        this.authService.login(this.username, this.password).subscribe({
             next: () => {
-                this.router.navigate(['/chat']); // Navigate to chat after successful login
+                // Success handled by AuthService
             },
             error: (err) => {
                 console.error('Login failed', err);
+                this.toastService.show({
+                    template: this.errorTemplate,
+                    classname: 'bg-danger text-light',
+                    delay: 15000
+                });
             }
         });
     }
