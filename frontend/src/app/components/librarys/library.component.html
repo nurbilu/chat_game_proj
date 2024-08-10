@@ -1,43 +1,42 @@
-<nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link" *ngFor="let collection of collectionKeys"
-       [class.active]="collection === selectedCollection" (click)="selectCollection(collection)">
+      [class.active]="collection === selectedCollection" (click)="selectCollection(collection)">
       {{collection}}
     </a>
   </div>
 </nav>
 <div class="tab-content scrollspy-example" id="nav-tabContent" data-bs-spy="scroll" data-bs-target="#nav-tab"
-    data-bs-offset="0" tabindex="0">
+  data-bs-offset="0" tabindex="0">
   <div class="tab-pane fade show active" role="tabpanel">
     <h4>{{selectedCollection}}</h4>
-    <table class="table" *ngIf="collections[selectedCollection] && collections[selectedCollection].length > 0">
-      <thead>
+    <table class="table table-striped table-hover table-responsive">
+      <thead class="table-dark">
         <tr>
-          <th *ngIf="selectedCollection === 'game styles' && 'style' in collections[selectedCollection][0]">style</th>
-          <th *ngIf="selectedCollection !== 'game styles' && 'name' in collections[selectedCollection][0]">name</th>
-          <ng-container *ngFor="let key of $any(collections[selectedCollection][0]) | keyvalue">
-            <th *ngIf="key.key !== '_id' && key.key !== 'url' && key.key !== 'name' && key.key !== 'style'">{{key.key}}</th>
+          <th>Item #</th>
+          <th>Name</th>
+          <ng-container *ngFor="let key of $any(collections[selectedCollection]?.[0] ?? {}) | keyvalue">
+            <th *ngIf="key.key !== '_id' && key.key !== 'url' && key.key !== 'name' && key.key !== 'id' && key.key !== 'index'">{{key.key}}</th>
           </ng-container>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of getPaginatedItems()">
-          <td *ngIf="selectedCollection === 'game styles' && 'style' in item">{{item.style}}</td>
-          <td *ngIf="selectedCollection !== 'game styles' && 'name' in item">{{item.name}}</td>
-          <ng-container *ngFor="let key of $any(item) | keyvalue">
-            <td *ngIf="key.key !== 'id' && key.key !== 'url' && key.key !== 'name' && key.key !== 'style'">
-              <span *ngIf="isStringOrNumber(key.value)" [attr.data-full-text]="key.value"
-                    [attr.data-truncated-text]="truncateText(key.value?.toString() ?? '', 50)">
-                {{truncateText(key.value?.toString() ?? '', 50)}}
-              </span>
-              <button *ngIf="isStringOrNumber(key.value) && (key.value?.toString() ?? '').length > 50"
-                      (click)="toggleText($event, true)">
-                <img src="assets/imgs/icons/open-txt-clmn.png" alt="Open">
-              </button>
-              <button *ngIf="isStringOrNumber(key.value) && (key.value?.toString() ?? '').length > 50"
-                      (click)="toggleText($event, false)">
-                <span class="btn-close" aria-label="Close"></span>
-              </button>
+        <tr *ngFor="let item of getPaginatedItems(); let i = index" [ngClass]="{'long-text-row': isLongText(item.name)}">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ item.name | stripUrl }}</td>
+          <ng-container *ngFor="let key of $any(item) | keyvalue; let k = index">
+            <td *ngIf="key.key !== '_id' && key.key !== 'url' && key.key !== 'name' && key.key !== 'id' && key.key !== 'index'">
+              <div *ngIf="isString(key.value) && isLongText(key.value)">
+                <button (click)="toggleTextVisibility(i * 1000 + k)" class="btn btn-outline-secondary btn-sm">
+                  <img [src]="textVisibility[i * 1000 + k] ? 'assets/imgs/icons/collapnd-btn.png' : 'assets/imgs/icons/collapnd-btn.png'" alt="Toggle">
+                </button>
+                <div [ngbCollapse]="!textVisibility[i * 1000 + k]">
+                  <span>{{ key.value | stripUrl }}</span>
+                </div>
+              </div>
+              <div *ngIf="!isString(key.value) || !isLongText(key.value)">
+                <span>{{ key.value | stripUrl }}</span>
+              </div>
             </td>
           </ng-container>
         </tr>
@@ -47,7 +46,7 @@
       No data available.
     </div>
     <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
-        [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
-        [ellipses]="true"></ngb-pagination>
+      [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
+      [ellipses]="true" class="pagination"></ngb-pagination>
   </div>
 </div>

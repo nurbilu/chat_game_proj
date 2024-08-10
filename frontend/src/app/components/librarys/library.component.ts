@@ -16,8 +16,9 @@ export class LibraryComponent implements OnInit {
   collectionKeys: string[] = [];
   selectedCollection: string = '';
   page: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 12;
   maxPages: number = 25;
+  textVisibility: { [key: number]: boolean } = {};
 
   constructor(private libraryService: LibraryService, private router: Router) { }
 
@@ -25,15 +26,14 @@ export class LibraryComponent implements OnInit {
     this.libraryService.fetchAllCollections().subscribe((data: Collection) => {
       this.collections = data;
       this.collectionKeys = Object.keys(data);
-      this.sortCollections();
       if (this.collectionKeys.length > 0) {
         this.selectedCollection = this.collectionKeys[0];
       }
     });
   }
 
-  navigateToSection(sectionId: string): void {
-    this.router.navigate([], { fragment: sectionId });
+  toggleTextVisibility(index: number): void {
+    this.textVisibility[index] = !this.textVisibility[index];
   }
 
   getPaginatedItems(): any[] {
@@ -47,45 +47,19 @@ export class LibraryComponent implements OnInit {
 
   selectCollection(collection: string): void {
     this.selectedCollection = collection;
-    this.page = 1; // Reset to first page when changing collection
+    this.page = 1;
   }
 
-  sortCollections(): void {
-    for (const key of this.collectionKeys) {
-      this.collections[key].sort((a, b) => {
-        const aKeys = Object.keys(a);
-        const bKeys = Object.keys(b);
-        if (key === 'game styles' && aKeys.includes('style') && bKeys.includes('style')) {
-          if (a['style'] < b['style']) return -1;
-          if (a['style'] > b['style']) return 1;
-        } else if (aKeys.includes('name') && bKeys.includes('name')) {
-          if (a['name'] < b['name']) return -1;
-          if (a['name'] > b['name']) return 1;
-        }
-        for (let i = 0; i < aKeys.length; i++) {
-          if (a[aKeys[i]] < b[bKeys[i]]) return -1;
-          if (a[aKeys[i]] > b[bKeys[i]]) return 1;
-        }
-        return 0;
-      });
+  isLongText(value: unknown): boolean {
+    if (typeof value !== 'string') {
+      return false;
     }
+    const maxCharsPerLine = 30; // Adjust based on your average character count per line
+    const maxLines = 5;
+    return value.length > maxCharsPerLine * maxLines;
   }
 
-  truncateText(text: string, length: number): string {
-    if (text.length > length) {
-      return text.substring(0, length) + '...';
-    }
-    return text;
-  }
-
-  toggleText(event: any, showFullText: boolean): void {
-    const element = event.target.closest('td').querySelector('span');
-    const fullText = element.getAttribute('data-full-text');
-    const truncatedText = element.getAttribute('data-truncated-text');
-    element.innerText = showFullText ? fullText : truncatedText;
-  }
-
-  isStringOrNumber(value: any): boolean {
-    return typeof value === 'string' || typeof value === 'number';
+  isString(value: any): boolean {
+    return typeof value === 'string';
   }
 }

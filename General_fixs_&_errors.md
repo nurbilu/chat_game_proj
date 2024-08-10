@@ -1,8 +1,8 @@
 ### what to fix and errors : 
 
-1. fix redirection after login - now after login -> /chat , now is login -> /chat ->/homepage -> /chat - fix so only /chat is redirected after login. or is it reloading twice ? ()
+1. fix redirection after login - now after login -> /chat , now is login -> /chat ->/homepage -> /chat - fix so only /chat is redirected after login. or is it reloading twice ? (done ?) - double check if it is reloading twice , let it rest and check if i fix if so .
 
-2. navbar stick with top of the page when scrolling and centered with the page (done ?) 
+2. navbar stick with top of the page when scrolling and centered with the page also offcanvas (done) 
 
 3. adjust homepage so all links need authentication that been not will redirect to login page (done)
 

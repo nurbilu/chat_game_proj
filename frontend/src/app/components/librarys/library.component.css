@@ -1,18 +1,63 @@
+body {
+    width: 100%;
+    max-width: 1200px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the page content */
+    padding: 20px; /* Add some padding around the content */
+    font-size: 16px; /* Adjust base font size */
+    background-color: #f4f4f4; /* Optional: background color of the page */
+}
+
 .scrollspy-example {
-    position: relative;
-    height: 1000px;
+    position: sticky;
+    top: 0;
+    height: 700px;
     overflow: auto;
 }
 
 .table {
-    margin-bottom: 4rem;
+    margin-bottom: 40rem;
+    width: 100%; /* Ensure table uses full container width */
 }
 
 span[data-full-text] {
     cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: inline-block;
-    max-width: 200px;
+    width: 100%; /* Allow span to fill the cell */
+}
+
+pre {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 5px;
+  overflow: auto;
+  max-height: 200px;
+}
+
+.table tr {
+  height: auto; /* Default height, can be overridden by ngStyle */
+}
+
+.table td {
+  min-width: 200px; /* Minimum width for table cells */
+  white-space: normal; /* Allow text to wrap */
+  overflow: visible; /* Allow text to overflow */
+}
+
+.table tr.long-text-row {
+  height: auto; /* Let height grow as needed */
+}
+
+.pagination {
+    display: flex;
+    justify-content: center; /* Center pagination horizontally */
+    position: fixed;
+    bottom: 90px; /* Adjust this value based on your footer's height */
+    right: 0;
+    left: calc(50% - 50vw); /* Adjust this value to align with your table */
+    background: white;
+    padding: 2px 0;
+    border-top: 1px solid #ccc;
+    width: 100vw; /* This will make the pagination bar extend full viewport width */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* Optional: adds shadow for better visibility */
+    z-index: 100; /* Ensure it's above other content */
 }

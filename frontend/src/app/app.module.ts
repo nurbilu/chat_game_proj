@@ -28,6 +28,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component';
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
 import { LibraryComponent } from './components/librarys/library.component'; // Import LibraryComponent
+import { StripUrlPipe } from './strip-url.pipe'; // Import the StripUrlPipe
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { LibraryComponent } from './components/librarys/library.component'; // I
     ToastsContainerComponent, // Added this line
     ForgetPwdComponent,
     ResetPwdComponent,
-    LibraryComponent // Declare LibraryComponent
+    LibraryComponent, // Declare LibraryComponent
+    StripUrlPipe // Declare the StripUrlPipe
   ],
   imports: [
     BrowserModule,

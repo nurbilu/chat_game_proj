@@ -92,15 +92,19 @@ lib_srvr = Blueprint('lib_srvr', __name__)
 @lib_srvr.route('/fetch_all_collections', methods=['GET'])
 def fetch_all_collections():
     try:
-        collections = ['races', 'spells', 'equipment', 'monsters', 'game styles']
+        all_collections = ['game styles', 'equipment', 'classes', 'races']  # Add other collections as needed
         all_data = {}
-        for collection in collections:
-            data = list(db[collection].find())
+        for collection in all_collections:
+            data = list(db[collection].find({}))
             filtered_data = []
             for item in data:
-                filtered_item = {key: value for key, value in item.items() if key not in ['_id', 'url']}
-                if collection == 'game styles' and 'classes' in filtered_item:
-                    classes = filtered_item.pop('classes')
+                # Filter out empty columns, except for 'game styles'
+                if collection != 'game styles':
+                    filtered_item = {key: value for key, value in item.items() if value and key not in ['_id', 'url']}
+                else:
+                    filtered_item = {key: value for key, value in item.items() if key not in ['_id', 'url']}
+                if 'classes' in filtered_item:
+                    classes = json.loads(filtered_item.pop('classes'))
                     for cls in classes:
                         class_name = cls.get('name', 'unknown_class')
                         filtered_item[f'class_{class_name}'] = cls
