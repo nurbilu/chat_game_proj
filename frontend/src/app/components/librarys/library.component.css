@@ -38,7 +38,7 @@ pre {
 }
 
 .table td {
-  min-width: 200px; /* Minimum width for table cells */
+  min-width: 250px; /* Minimum width for table cells */
   white-space: normal; /* Allow text to wrap */
   overflow: visible; /* Allow text to overflow */
 }

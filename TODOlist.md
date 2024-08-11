@@ -30,7 +30,7 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
         4. profile component 
         5. super - profile component 
         6. create character component *
-    -fix create character , that only after selection of user character with select -> will 
+    -adjust change create character , that instead of forms , use the library component to select the data and then use the data to create the character OR use character creation as a chat bot Ai that will assist the user to create the character .
     - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page if not a real email two options : 1. send another file but to get auth need to input : username + email + last_name + birthdate. 2. email is invalid or not real -> redirect to login page with a toast message that email is invalid or not real -> try again with a real email.
     - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles) . fireball - is very chaotic and its json files are not very easy to work with .  
         chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt

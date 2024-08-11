@@ -9,7 +9,8 @@ export class StripUrlPipe implements PipeTransform {
     if (typeof value !== 'string') {
       return value as string; // Cast to string, assuming it's safe to display
     }
-    return value.replace(/https?:\/\/\S+/g, '').trim();
+    // Remove URLs and then remove {} and []
+    return value.replace(/https?:\/\/\S+/g, '').replace(/[\{\}\[\]]/g, '').trim();
   }
 
 }

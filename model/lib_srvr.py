@@ -11,7 +11,6 @@ import logging
 from logging import FileHandler, Filter
 from flask import Flask, Blueprint, request, jsonify
 from pymongo import MongoClient
-import json
 from bson import json_util
 from flask_cors import CORS
 import sys
@@ -89,54 +88,62 @@ def handle_exit(signum, frame):
 # Define the blueprint
 lib_srvr = Blueprint('lib_srvr', __name__)
 
-@lib_srvr.route('/fetch_all_collections', methods=['GET'])
-def fetch_all_collections():
+@lib_srvr.route('/fetch_races', methods=['GET'])
+def fetch_races():
     try:
-        all_collections = ['game styles', 'equipment', 'classes', 'races']  # Add other collections as needed
-        all_data = {}
-        for collection in all_collections:
-            data = list(db[collection].find({}))
-            filtered_data = []
-            for item in data:
-                # Filter out empty columns, except for 'game styles'
-                if collection != 'game styles':
-                    filtered_item = {key: value for key, value in item.items() if value and key not in ['_id', 'url']}
-                else:
-                    filtered_item = {key: value for key, value in item.items() if key not in ['_id', 'url']}
-                if 'classes' in filtered_item:
-                    classes = json.loads(filtered_item.pop('classes'))
-                    for cls in classes:
-                        class_name = cls.get('name', 'unknown_class')
-                        filtered_item[f'class_{class_name}'] = cls
-                filtered_data.append(filtered_item)
-            all_data[collection] = filtered_data
-        app.logger.info("Fetched all collections")
-        return jsonify(json.loads(json_util.dumps(all_data)))
+        data = list(db['races'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
+        for item in data:
+            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
+        app.logger.info("Fetched races")
+        return jsonify(json_util.loads(json_util.dumps(data)))
     except Exception as e:
-        app.logger.error("Error in fetch_all_collections", exc_info=True)
+        app.logger.error("Error in fetch_races", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
-@lib_srvr.route('/fetch_game_styles', methods=['GET'])
-def fetch_game_styles():
+# @lib_srvr.route('/fetch_game_styles', methods=['GET'])
+# def fetch_game_styles():
+#     try:
+#         data = list(db['game_styles'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
+#         app.logger.info("Fetched game styles")
+#         return jsonify(json_util.loads(json_util.dumps(data)))
+#     except Exception as e:
+#         app.logger.error("Error in fetch_game_styles", exc_info=True)
+#         return jsonify({"error": str(e)}), 500
+
+@lib_srvr.route('/fetch_equipment', methods=['GET'])
+def fetch_equipment():
     try:
-        game_styles = ['warrior_fighter', 'rogue_druid', 'mage_sorcerer']
-        all_data = {}
-        for style in game_styles:
-            data = list(db['game styles'].find({style: {"$exists": True}}))
-            filtered_data = []
-            for item in data:
-                filtered_item = {key: value for key, value in item.items() if key not in ['_id', 'url']}
-                if 'classes' in filtered_item:
-                    classes = json.loads(filtered_item.pop('classes'))
-                    for cls in classes:
-                        class_name = cls.get('name', 'unknown_class')
-                        filtered_item[f'class_{class_name}'] = cls
-                filtered_data.append(filtered_item)
-            all_data[style] = json.loads(json_util.dumps(filtered_data))
-        app.logger.info("Fetched game styles")
-        return jsonify(all_data)
+        data = list(db['equipment'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
+        for item in data:
+            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
+        app.logger.info("Fetched equipment")
+        return jsonify(json_util.loads(json_util.dumps(data)))
     except Exception as e:
-        app.logger.error("Error in fetch_game_styles", exc_info=True)
+        app.logger.error("Error in fetch_equipment", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+
+@lib_srvr.route('/fetch_classes', methods=['GET'])
+def fetch_classes():
+    try:
+        data = list(db['classes'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
+        for item in data:
+            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
+        app.logger.info("Fetched classes")
+        return jsonify(json_util.loads(json_util.dumps(data)))
+    except Exception as e:
+        app.logger.error("Error in fetch_classes", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+
+@lib_srvr.route('/fetch_spells', methods=['GET'])
+def fetch_spells():
+    try:
+        data = list(db['spells'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
+        for item in data:
+            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
+        app.logger.info("Fetched spells")
+        return jsonify(json_util.loads(json_util.dumps(data)))
+    except Exception as e:
+        app.logger.error("Error in fetch_spells", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
 def create_app():
