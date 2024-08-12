@@ -6,9 +6,18 @@ import { AuthService } from './auth.service';
 
 interface Race {
   name: string;
-  description: string;
   alignment: string;
+  age: string;
   size_description: string;
+  language_desc: string;
+}
+
+export interface Character {
+  name: string;
+  class: string;
+  race: string;
+  gameStyle: string;
+  // Add other properties as needed
 }
 
 @Injectable({
@@ -18,6 +27,22 @@ export class ChcrcterCreationService {
   private apiUrl = 'http://127.0.0.1:6500/api'; // Updated URL to match the new server location
 
   constructor(private http: HttpClient, private authService: AuthService) { }
+fetchCharactersByUsername(username: string): Observable<Character[]> {
+  return this.http.get<Character[]>(`${this.apiUrl}/characters/${username}`).pipe(
+    catchError(error => {
+      console.error('Failed to fetch characters by username:', error);
+      return throwError(() => new Error('Error fetching characters by username: ' + error.message));
+    })
+  );
+}
+  fetchRaces(): Observable<Race[]> {
+    return this.http.get<Race[]>(`${this.apiUrl}/races`).pipe(
+      catchError(error => {
+        console.error('Failed to fetch races:', error);
+        return throwError(() => new Error('Error fetching races: ' + error.message));
+      })
+    );
+  }
 
   createCharacter(character: any): Observable<any> {
     const headers = new HttpHeaders({
@@ -31,24 +56,6 @@ export class ChcrcterCreationService {
       })
     );
   }
-  
-  fetchRaces(): Observable<Race[]> {
-    const racesUrl = `${this.apiUrl}/races`; // Adjust the URL to where your backend API for races is hosted
-    return this.http.get<Race[]>(racesUrl);
-  }
-
-  fetchCharactersByUsername(username: string): Observable<any[]> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`,
-      'Content-Type': 'application/json'
-    });
-    return this.http.get<any[]>(`${this.apiUrl}/characters/${username}`, { headers }).pipe(
-      catchError(error => {
-        console.error('Failed to fetch characters:', error);
-        return throwError(() => new Error('Error fetching characters: ' + error.message));
-      })
-    );
-  }
 
   deleteCharacter(username: string, characterName: string): Observable<any> {
     const headers = new HttpHeaders({
@@ -59,6 +66,15 @@ export class ChcrcterCreationService {
       catchError(error => {
         console.error('Failed to delete character:', error);
         return throwError(() => new Error('Error deleting character: ' + error.message));
+      })
+    );
+  }
+
+  sendMessageToChatbot(payload: { message: string, username: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/chatbot`, payload).pipe(
+      catchError(error => {
+        console.error('Failed to send message to chatbot:', error);
+        return throwError(() => new Error('Error sending message to chatbot: ' + error.message));
       })
     );
   }

@@ -1,38 +1,58 @@
 <div class="chrcter-creation-container container">
-    <div class="text-frame">
-        <h2>Welcome to Character Creation</h2>
-        <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat style do you desire? There are 3 Game Styles to choose from:</p>
-        <ul>
-          <li><strong>Warrior Fighter</strong>: Choose this if you prefer a bold and direct approach in combat. This style includes classes like Fighter, Barbarian, and Paladin. They excel in martial prowess, wielding weapons and armor with great skill and endurance.</li>
-          <li><strong>Rogue Druid</strong>: Opt for this if you enjoy stealth, nature, and versatility. Classes such as Rogue, Druid, and Ranger fall under this style. They are adept at sneaking, nature magic, and animal companionship, blending cunning tactics with natural abilities.</li>
-          <li><strong>Mage Sorcerer</strong>: Select this if you fancy wielding arcane powers and unleashing potent spells. Classes like Wizard, Sorcerer, and Warlock belong to this style. They command the forces of magic, casting spells of devastating power and mysterious origins.</li>
-        </ul>
-        <p>Please choose 1 for Warrior Fighter, 2 for Rogue Druid, or 3 for Mage Sorcerer to begin your adventure!</p>
+  <div class="text-frame">
+      <h2>Welcome to Character Creation Advisor</h2>
+      <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat style do you desire? There are many classes and races to choose from in DnD 5e:</p>
+      <p>For more information on spells, visit <a href="https://rpgbot.net/dnd5/characters/spells/" target="_blank">RPGBot</a>.</p>
+  </div>
+  <div class="text-frame">
+      <h3>Classes Description</h3>
+      <div ngbAccordion>
+        <div ngbAccordionItem *ngFor="let class of classes">
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>{{ class.name }}</button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <p>{{ class.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="text-frame">
+      <h3>Race Descriptions</h3>
+      <div ngbAccordion>
+        <div ngbAccordionItem *ngFor="let race of races">
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>{{ race.name }}</button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <p>{{ race.description }}</p>
+              <p><strong>Alignment:</strong> {{ race.alignment }}</p>
+              <p><strong>Age:</strong> {{ race.age }}</p>
+              <p><strong>Size:</strong> {{ race.size_description }}</p>
+              <p><strong>Languages:</strong> {{ race.language_desc }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="text-frame">
+    <h3>Character Creation Prompt</h3>
+    <textarea [(ngModel)]="userMessage" placeholder="Enter your message" rows="10" class="large-textarea"></textarea>
+    <button (click)="sendCharacterPrompt()">Send</button>
+  </div>
+  <div class="text-frame chat-container">
+    <h3>Character Creation Advisor</h3>
+    <div *ngFor="let message of chatMessages" [ngClass]="message.role">
+      {{ message.content }}
     </div>
-    <form (ngSubmit)="createCharacter()" class="text-frame">
-      <div class="mb-3 input-group">
-        <input type="text" class="form-control" [(ngModel)]="character.name" name="name" placeholder="Name" required>
-      </div>
-      <div class="mb-3 input-group">
-        <select class="form-control" [(ngModel)]="character.gameStyle" name="gameStyle" required>
-          <option value="none" disabled selected>Select Game Style</option>
-          <option *ngFor="let style of gameStyles" [value]="style">{{ style }}</option>
-        </select>
-      </div>
-      <div class="mb-3 input-group">
-        <select class="form-control" [(ngModel)]="character.race" name="race" required>
-          <option value="" disabled selected>Select Race</option>
-          <option *ngFor="let race of races" [value]="race.name">{{ race.name }}</option>
-        </select>
-      </div>
-      <button type="submit" class="btn custom-btn">Create Character</button>
-    </form>
-    <div class="text-frame">
-        <h3>Race Descriptions</h3>
-        <ul>
-          <li *ngFor="let race of races">{{ race.name }}: {{ race.description }}</li>
-        </ul>
+    <div class="input-container">
+      <textarea [(ngModel)]="characterPrompt" placeholder="Enter your character creation prompt" rows="10" class="large-textarea"></textarea>
+      <button (click)="sendMessage()">Submit Prompt</button>
     </div>
+  </div>
 </div>
 
 <ng-template #successTemplate>

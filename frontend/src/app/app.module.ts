@@ -54,7 +54,7 @@ import { LibraryComponent } from './components/librarys/library.component'; // I
     HttpClientModule,
     EnvironmentsModule,
     RouterModule.forRoot([]), // Ensure RouterModule is imported
-    NgbModule, // Add NgbModule to imports
+    NgbModule, // Add NgbModule here
     BrowserAnimationsModule, // Add BrowserAnimationsModule
     ToastrModule.forRoot({
       timeOut: 3000,

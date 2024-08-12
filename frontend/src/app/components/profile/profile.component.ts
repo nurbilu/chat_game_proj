@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
+import { Character, ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
 
@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   isSuperuser: boolean = false;
   showUpdateForm: boolean = false;
   showUserData: boolean = true;
-  characters: any[] = [];
+  characters: Character[] = []; // Use Character type
   profilePictureUrl: string = 'assets/imgs/profile_pictures/no_profile_pic.png';  // Default placeholder image
 
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
@@ -93,14 +93,13 @@ export class ProfileComponent implements OnInit {
         }
     );
   }
-
   loadUserCharacters(username: string): void {
     this.characterService.fetchCharactersByUsername(username).subscribe(
-      (characters) => {
+      (characters: Character[]) => {
         this.characters = characters;
         console.log('display of characters is successful', username); // Detailed log
       },
-      (error) => {
+      (error: any) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
       }
     );

@@ -97,7 +97,6 @@ def create_app():
     app = Flask(__name__)
     app.json_encoder = CustomJSONEncoder
     CORS(app, resources={r"/*": {"origins": "*"}})  # Configure CORS more securely
-    app.config['MONGO_URI'] = 'mongodb://localhost:27017/DnD_AI_DB'
     app.register_blueprint(character_blueprint, url_prefix='/api')
     
     # Configure logging
@@ -107,7 +106,7 @@ def create_app():
     return app
 
 character_blueprint = Blueprint('character', __name__)
-mongo_client = MongoClient('mongodb://localhost:27017/')
+mongo_client = MongoClient('mongodb://localhost:27017/mike')
 db = mongo_client['DnD_AI_DB']
 
 @character_blueprint.route('/characters', methods=['POST', 'OPTIONS'])
@@ -117,7 +116,7 @@ def create_character():
     elif request.method == 'POST':
         try:
             character_data = request.json
-            required_fields = ['name', 'gameStyle', 'race', 'username']
+            required_fields = ['name', 'class', 'race', 'username']
             if not all(field in character_data for field in required_fields):
                 app.logger.warning(f"Missing required fields: {character_data}")
                 return jsonify({'error': 'Missing required fields'}), 400
@@ -163,7 +162,7 @@ def get_races():
         return build_cors_preflight_response()
     elif request.method == 'GET':
         try:
-            races = list(db.races.find({}, {'_id': 0}))
+            races = list(db.races.find({}, {'_id': 0, 'name': 1, 'alignment': 1, 'age': 1, 'size_description': 1, 'language_desc': 1}))
             return jsonify(races), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -183,6 +182,27 @@ def delete_character(username, character_name):
         except Exception as e:
             app.logger.error(f"Failed to delete character: {str(e)}")
             return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/chatbot', methods=['POST'])
+def chatbot_interaction():
+    try:
+        user_message = request.json.get('message')
+        username = request.json.get('username')
+        if not user_message or not username:
+            return jsonify({'error': 'Message and username are required'}), 400
+
+        # Send the message to the AI Gemini bot
+        response = requests.post('http://127.0.0.1:5000/api/chatbot', json={'message': user_message})
+        if response.status_code == 200:
+            reply = response.json().get('reply')
+            # Save the JSON file to the database
+            db.game_styles.insert_one({'username': username, 'content': reply})
+            return jsonify({'reply': reply}), 200
+        else:
+            return jsonify({'error': 'Failed to get response from AI Gemini bot'}), 500
+    except Exception as e:
+        app.logger.error(f"Failed to interact with chatbot: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 # Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():

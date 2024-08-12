@@ -3,7 +3,8 @@
 
 2. make create character either a chat bot for the user to make a prompt for chat to create a charater ( not have to be AI but must use library/DB data and auto completion) OR either a form base on the library/DB data (as a option B).
 
-3. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
+3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
+3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
    - remove empty columns values from library tables -
    - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , 
    - add/fix buttons to expand/collapse long text columns - 

@@ -1,6 +1,6 @@
 # This will be the main Flask application for the library component.
 # It will show all MongoDB data for: game styles, equipment, classes, races, etc.
-# Simple CRUD, GET, SEARCH & POST.
+# Simple CRUD, GET, SEARCH & POST (only for superusers).
 # Functions: get all tables - set in square containers - use select, have a search bar on the top between the navbar and the table/s.
 # Use logger like chrcter_creation.py OR/AND gen_txt_chat_srvr.py for logger file.
 
@@ -11,7 +11,7 @@ import logging
 from logging import FileHandler, Filter
 from flask import Flask, Blueprint, request, jsonify
 from pymongo import MongoClient
-from bson import json_util
+import json
 from flask_cors import CORS
 import sys
 import traceback
@@ -88,63 +88,53 @@ def handle_exit(signum, frame):
 # Define the blueprint
 lib_srvr = Blueprint('lib_srvr', __name__)
 
-@lib_srvr.route('/fetch_races', methods=['GET'])
-def fetch_races():
+def fetch_data_from_db(collection_name):
     try:
-        data = list(db['races'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
+        # Only include the 'Name' field and exclude the '_id' field
+        projection = {'Name': 1, '_id': 0}
+        data = list(db[collection_name].find({}, projection))
+
+        # Ensure 'name' is lowercase and rearrange the fields to show 'name' first
+        formatted_data = []
         for item in data:
-            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
-        app.logger.info("Fetched races")
-        return jsonify(json_util.loads(json_util.dumps(data)))
+            formatted_item = {'name': item.pop('Name').lower()}
+            formatted_item.update(item)  # Add remaining fields after 'name'
+            formatted_data.append(formatted_item)
+        
+        app.logger.info(f"Fetched {collection_name}")
+        return jsonify(json.loads(json.dumps(formatted_data)))  # Convert to JSON
+
     except Exception as e:
-        app.logger.error("Error in fetch_races", exc_info=True)
+        app.logger.error(f"Error in fetch_{collection_name}", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
+@lib_srvr.route('/fetch_races', methods=['GET'])
+def fetch_races():
+    return fetch_data_from_db('races')
+
+@lib_srvr.route('/fetch_equipment', methods=['GET'])
+def fetch_equipment():
+    return fetch_data_from_db('equipment')
+
+@lib_srvr.route('/fetch_classes', methods=['GET'])
+def fetch_classes():
+    return fetch_data_from_db('classes')
+
+@lib_srvr.route('/fetch_spells', methods=['GET'])
+def fetch_spells():
+    return fetch_data_from_db('spells')
+
+# adjust fetch_game_styles to use fetch_data_from_db and add the modefication to manipulate the data of game styles collection - but
+# there is a chance that game styles going to change its meaning and use so will not be even in library !
 # @lib_srvr.route('/fetch_game_styles', methods=['GET'])
 # def fetch_game_styles():
 #     try:
-#         data = list(db['game_styles'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
+#         data = list(db['game_styles'].find({}, {'_id': 0, 'index': 0, 'Name': 1})) 
 #         app.logger.info("Fetched game styles")
 #         return jsonify(json_util.loads(json_util.dumps(data)))
 #     except Exception as e:
 #         app.logger.error("Error in fetch_game_styles", exc_info=True)
 #         return jsonify({"error": str(e)}), 500
-
-@lib_srvr.route('/fetch_equipment', methods=['GET'])
-def fetch_equipment():
-    try:
-        data = list(db['equipment'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
-        for item in data:
-            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
-        app.logger.info("Fetched equipment")
-        return jsonify(json_util.loads(json_util.dumps(data)))
-    except Exception as e:
-        app.logger.error("Error in fetch_equipment", exc_info=True)
-        return jsonify({"error": str(e)}), 500
-
-@lib_srvr.route('/fetch_classes', methods=['GET'])
-def fetch_classes():
-    try:
-        data = list(db['classes'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
-        for item in data:
-            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
-        app.logger.info("Fetched classes")
-        return jsonify(json_util.loads(json_util.dumps(data)))
-    except Exception as e:
-        app.logger.error("Error in fetch_classes", exc_info=True)
-        return jsonify({"error": str(e)}), 500
-
-@lib_srvr.route('/fetch_spells', methods=['GET'])
-def fetch_spells():
-    try:
-        data = list(db['spells'].find({}, {'_id': 0, 'index': 0, 'Name': 1}))  # Exclude _id and index, include Name
-        for item in data:
-            item['name'] = item.pop('Name').lower()  # Ensure 'name' is lowercase
-        app.logger.info("Fetched spells")
-        return jsonify(json_util.loads(json_util.dumps(data)))
-    except Exception as e:
-        app.logger.error("Error in fetch_spells", exc_info=True)
-        return jsonify({"error": str(e)}), 500
 
 def create_app():
     app = Flask(__name__)
