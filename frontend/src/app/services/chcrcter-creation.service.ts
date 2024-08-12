@@ -13,11 +13,8 @@ interface Race {
 }
 
 export interface Character {
-  name: string;
-  class: string;
-  race: string;
-  gameStyle: string;
-  // Add other properties as needed
+  username: string;
+  prompt: any;
 }
 
 @Injectable({
@@ -27,14 +24,16 @@ export class ChcrcterCreationService {
   private apiUrl = 'http://127.0.0.1:6500/api'; // Updated URL to match the new server location
 
   constructor(private http: HttpClient, private authService: AuthService) { }
-fetchCharactersByUsername(username: string): Observable<Character[]> {
-  return this.http.get<Character[]>(`${this.apiUrl}/characters/${username}`).pipe(
-    catchError(error => {
-      console.error('Failed to fetch characters by username:', error);
-      return throwError(() => new Error('Error fetching characters by username: ' + error.message));
-    })
-  );
-}
+
+  fetchCharactersByUsername(username: string): Observable<Character[]> {
+    return this.http.get<Character[]>(`${this.apiUrl}/characters/${username}`).pipe(
+      catchError(error => {
+        console.error('Failed to fetch characters by username:', error);
+        return throwError(() => new Error('Error fetching characters by username: ' + error.message));
+      })
+    );
+  }
+
   fetchRaces(): Observable<Race[]> {
     return this.http.get<Race[]>(`${this.apiUrl}/races`).pipe(
       catchError(error => {
@@ -75,6 +74,19 @@ fetchCharactersByUsername(username: string): Observable<Character[]> {
       catchError(error => {
         console.error('Failed to send message to chatbot:', error);
         return throwError(() => new Error('Error sending message to chatbot: ' + error.message));
+      })
+    );
+  }
+
+  saveDraft(draft: { username: string; prompt: string; }): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}/saveDraft`, JSON.stringify(draft), { headers }).pipe(
+      catchError(error => {
+        console.error('Failed to save draft:', error);
+        return throwError(() => new Error('Error saving draft: ' + error.message));
       })
     );
   }

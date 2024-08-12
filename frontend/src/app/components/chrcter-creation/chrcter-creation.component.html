@@ -28,7 +28,6 @@
           </h2>
           <div ngbAccordionCollapse>
             <div ngbAccordionBody>
-              <p>{{ race.description }}</p>
               <p><strong>Alignment:</strong> {{ race.alignment }}</p>
               <p><strong>Age:</strong> {{ race.age }}</p>
               <p><strong>Size:</strong> {{ race.size_description }}</p>
@@ -40,17 +39,20 @@
   </div>
   <div class="text-frame">
     <h3>Character Creation Prompt</h3>
-    <textarea [(ngModel)]="userMessage" placeholder="Enter your message" rows="10" class="large-textarea"></textarea>
-    <button (click)="sendCharacterPrompt()">Send</button>
+    <div class="text-editor-container">
+      <st-editor [(ngModel)]="character.prompt" [config]="editorConfig"></st-editor>
+    </div>
+    <button (click)="sendMessage()">Send</button>
+    <button (click)="saveDraft()">Save Draft</button>
   </div>
   <div class="text-frame chat-container">
     <h3>Character Creation Advisor</h3>
-    <div *ngFor="let message of chatMessages" [ngClass]="message.role">
+    <div *ngFor="let message of chatMessages" [ngClass]="message.role" class="chat-bubble">
       {{ message.content }}
     </div>
     <div class="input-container">
-      <textarea [(ngModel)]="characterPrompt" placeholder="Enter your character creation prompt" rows="10" class="large-textarea"></textarea>
-      <button (click)="sendMessage()">Submit Prompt</button>
+      <input type="text" [(ngModel)]="userMessage" placeholder="Type your message here" required (keydown.enter)="sendChatMessage()">
+      <button (click)="sendChatMessage()" class="btn btn-success">Send</button>
     </div>
   </div>
 </div>

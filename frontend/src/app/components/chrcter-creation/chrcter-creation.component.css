@@ -24,10 +24,56 @@
     border: 1px solid #ccc;
     font-size: 16px;
     resize: none;
+    overflow-y: auto;
 }
 
 .chat-container {
     margin-top: 20px;
+}
+
+.chat-bubble {
+    max-width: 60%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    position: relative;
+    background: #f1f0f0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble.assistant {
+    background: #e0f7fa;
+    align-self: flex-start;
+}
+
+.chat-bubble.user {
+    background: #c8e6c9;
+    align-self: flex-end;
+}
+
+.chat-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+}
+
+.chat-bubble.assistant::after {
+    left: 10px;
+    border-bottom-color: #e0f7fa;
+    border-top: 0;
+    margin-left: -10px;
+    margin-bottom: -10px;
+}
+
+.chat-bubble.user::after {
+    right: 10px;
+    border-bottom-color: #c8e6c9;
+    border-top: 0;
+    margin-right: -10px;
+    margin-bottom: -10px;
 }
 
 .input-container {
@@ -38,4 +84,24 @@
 
 .ngb-accordion .card {
     margin-bottom: 10px;
+}
+
+/* Add styles for the text editor container */
+.text-editor-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background: #fff;
+}
+
+/* Add styles for the text editor toolbar buttons */
+.st-editor-toolbar button {
+    background: none; /* Ensure no background color is set */
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.st-editor-toolbar button i {
+    font-size: 20px;
 }

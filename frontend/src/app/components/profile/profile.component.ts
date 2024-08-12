@@ -53,6 +53,45 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  loadUserCharacters(username: string): void {
+    this.characterService.fetchCharactersByUsername(username).subscribe(
+      (characters) => {
+        this.characters = characters;
+      },
+      (error) => {
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
+  }
+
+  deleteCharacter(username: string, characterPrompt: string): void {
+    this.characterService.deleteCharacter(username, characterPrompt).subscribe(
+      () => {
+        this.characters = this.characters.filter(character => character.prompt !== characterPrompt);
+        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+      },
+      (error) => {
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
+  }
+
+  createCharacter(character: any): void {
+    if (!character || !character.prompt) {
+      this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      return;
+    }
+    this.characterService.createCharacter(character).subscribe(
+      (response) => {
+        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+        this.loadUserCharacters(this.userProfile.username); // Reload characters after creation
+      },
+      (error) => {
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
+  }
+
   updateUserProfile(): void {
     const userProfileData = {
       username: this.userProfile.username,
@@ -91,49 +130,6 @@ export class ProfileComponent implements OnInit {
         (error) => {
             this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
         }
-    );
-  }
-  loadUserCharacters(username: string): void {
-    this.characterService.fetchCharactersByUsername(username).subscribe(
-      (characters: Character[]) => {
-        this.characters = characters;
-        console.log('display of characters is successful', username); // Detailed log
-      },
-      (error: any) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
-    );
-  }
-
-  deleteCharacter(username: string, characterName: string): void {
-    if (!username || !characterName) {
-      this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      return;
-    }
-    this.characterService.deleteCharacter(username, characterName).subscribe(
-      () => {
-        this.characters = this.characters.filter(character => character.name !== characterName);
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
-    );
-  }
-
-  createCharacter(character: any): void {
-    if (!character || !character.name || !character.race || !character.gameStyle) {
-      this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      return;
-    }
-    this.characterService.createCharacter(character).subscribe(
-      (response) => {
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-        this.loadUserCharacters(this.userProfile.username); // Reload characters after creation
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
     );
   }
 

@@ -90,15 +90,18 @@ lib_srvr = Blueprint('lib_srvr', __name__)
 
 def fetch_data_from_db(collection_name):
     try:
-        # Only include the 'Name' field and exclude the '_id' field
-        projection = {'Name': 1, '_id': 0}
+        # Exclude the '_id' and 'index' fields
+        projection = {'_id': 0, 'index': 0}
         data = list(db[collection_name].find({}, projection))
 
-        # Ensure 'name' is lowercase and rearrange the fields to show 'name' first
+        # Ensure 'name' is lowercase if 'Name' exists and rearrange the fields to show 'name' first
         formatted_data = []
         for item in data:
-            formatted_item = {'name': item.pop('Name').lower()}
-            formatted_item.update(item)  # Add remaining fields after 'name'
+            if 'name' in item:
+                formatted_item = {'Name': item.pop('name').lower()}
+                formatted_item.update(item)  # Add remaining fields after 'name'
+            else:
+                formatted_item = item  # Use the item as is if 'Name' is not present
             formatted_data.append(formatted_item)
         
         app.logger.info(f"Fetched {collection_name}")
@@ -116,6 +119,10 @@ def fetch_races():
 def fetch_equipment():
     return fetch_data_from_db('equipment')
 
+@lib_srvr.route('/fetch_monsters', methods=['GET'])
+def fetch_monsters():
+    return fetch_data_from_db('monsters')
+
 @lib_srvr.route('/fetch_classes', methods=['GET'])
 def fetch_classes():
     return fetch_data_from_db('classes')
@@ -123,18 +130,6 @@ def fetch_classes():
 @lib_srvr.route('/fetch_spells', methods=['GET'])
 def fetch_spells():
     return fetch_data_from_db('spells')
-
-# adjust fetch_game_styles to use fetch_data_from_db and add the modefication to manipulate the data of game styles collection - but
-# there is a chance that game styles going to change its meaning and use so will not be even in library !
-# @lib_srvr.route('/fetch_game_styles', methods=['GET'])
-# def fetch_game_styles():
-#     try:
-#         data = list(db['game_styles'].find({}, {'_id': 0, 'index': 0, 'Name': 1})) 
-#         app.logger.info("Fetched game styles")
-#         return jsonify(json_util.loads(json_util.dumps(data)))
-#     except Exception as e:
-#         app.logger.error("Error in fetch_game_styles", exc_info=True)
-#         return jsonify({"error": str(e)}), 500
 
 def create_app():
     app = Flask(__name__)

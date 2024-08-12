@@ -61,8 +61,8 @@
             <h3>Your Characters</h3>
             <ul class="list-group">
                 <li *ngFor="let character of characters" class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ character.name }} - {{ character.race }} - {{ character.gameStyle }}</span>
-                    <button (click)="deleteCharacter(userProfile.username, character.name)" class="btn btn-danger btn-sm">Delete</button>
+                    <span>{{ character.prompt }}</span>
+                    <button (click)="deleteCharacter(userProfile.username, character.prompt)" class="btn btn-danger btn-sm">Delete</button>
                 </li>
             </ul>
         </div>

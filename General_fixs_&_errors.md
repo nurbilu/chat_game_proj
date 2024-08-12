@@ -1,7 +1,7 @@
 ### what to fix and errors : 
 1. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
 
-2. make create character either a chat bot for the user to make a prompt for chat to create a charater ( not have to be AI but must use library/DB data and auto completion) OR either a form base on the library/DB data (as a option B).
+2. fix icon displayment for the text editor ()
 
 3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
 3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
@@ -11,11 +11,13 @@
    - add search bar to the tables - 
    - add pagination to the tables - done. 
 
-4. add/fix/adjust/modify when reload from browser display the current component instead to homepage()
+4. implement chracter create completely + fix Gemini integration ()
 
-5. make django framework more efficient - too many debug messages and many calls to each endpoints ()
+5. add/fix/adjust/modify when reload from browser display the current component instead to homepage()
 
-6. 
+6. make django framework more efficient - too many debug messages and many calls to each endpoints ()
+
+7. 
 
 
 
@@ -39,4 +41,6 @@ DONE LIST :
 3. 3. adjust homepage so all links need authentication that been not will redirect to login page (done)
 
 4. 5. set reload after login either on the backend or on the frontend and either superuser or not superuser (done)
+
+5. 2. make create character either a chat bot for the user to make a prompt for chat to create a charater ( not have to be AI but must use library/DB data and auto completion) OR either a form base on the library/DB data (as a option B). (half done).
 

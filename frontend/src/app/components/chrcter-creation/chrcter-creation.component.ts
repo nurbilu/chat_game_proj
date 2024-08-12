@@ -3,29 +3,59 @@ import { ChcrcterCreationService } from '../../services/chcrcter-creation.servic
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
+import { NgbAccordionItem } from '@ng-bootstrap/ng-bootstrap';
+import { EditorConfig, ST_BUTTONS, ToolbarItemType, ExecCommand } from 'ngx-simple-text-editor';
+import { ChatService } from '../../services/chat.service';
+
 
 @Component({
   selector: 'app-chrcter-creation',
   templateUrl: './chrcter-creation.component.html',
   styleUrls: ['./chrcter-creation.component.css']
 })
-export class ChrcterCreationComponent implements OnInit, AfterViewInit {
+export class ChrcterCreationComponent implements OnInit {
+  public editorConfig: EditorConfig = {
+    placeholder: 'Type your prompt here...',
+    buttons: [
+        { type: ToolbarItemType.Button, command: ExecCommand.bold, icon: 'assets/imgs/icons/bold.png', title: 'Bold' },
+        { type: ToolbarItemType.Button, command: ExecCommand.italic, icon: 'assets/imgs/icons/italic.png', title: 'Italic' },
+        { type: ToolbarItemType.Button, command: ExecCommand.underline, icon: 'assets/imgs/icons/underline.png', title: 'Underline' },
+        { type: ToolbarItemType.Button, command: ExecCommand.strikeThrough, icon: 'assets/imgs/icons/strikethrough.png', title: 'Strike Through' },
+        { type: ToolbarItemType.Button, command: ExecCommand.fontName, icon: 'assets/imgs/icons/fontname.png', title: 'Font Name' },
+        { type: ToolbarItemType.Button, command: ExecCommand.fontSize, icon: 'assets/imgs/icons/fontsize.png', title: 'Font Size' },
+        { type: ToolbarItemType.Button, command: ExecCommand.foreColor, icon: 'assets/imgs/icons/fontcolor.png', title: 'Font Color' },
+        { type: ToolbarItemType.Button, command: ExecCommand.backColor, icon: 'assets/imgs/icons/backcolor.png', title: 'Background Color' },
+        { type: ToolbarItemType.Button, command: ExecCommand.createLink, icon: 'assets/imgs/icons/link.png', title: 'Create Link' },
+        { type: ToolbarItemType.Button, command: ExecCommand.insertImage, icon: 'assets/imgs/icons/image.png', title: 'Insert Image' },
+        { type: ToolbarItemType.Button, command: ExecCommand.removeFormat, icon: 'assets/imgs/icons/clearformat.png', title: 'Clear Format' },
+        { type: ToolbarItemType.Button, command: ExecCommand.justifyLeft, icon: 'assets/imgs/icons/alignleft.png', title: 'Justify Left' },
+        { type: ToolbarItemType.Button, command: ExecCommand.justifyCenter, icon: 'assets/imgs/icons/aligncenter.png', title: 'Justify Center' },
+        { type: ToolbarItemType.Button, command: ExecCommand.justifyRight, icon: 'assets/imgs/icons/alignright.png', title: 'Justify Right' },
+        { type: ToolbarItemType.Button, command: ExecCommand.justifyFull, icon: 'assets/imgs/icons/alignjustify.png', title: 'Justify Full' },
+        { type: ToolbarItemType.Button, command: ExecCommand.insertOrderedList, icon: 'assets/imgs/icons/orderedlist.png', title: 'Ordered List' },
+        { type: ToolbarItemType.Button, command: ExecCommand.insertUnorderedList, icon: 'assets/imgs/icons/unorderedlist.png', title: 'Unordered List' },
+        { type: ToolbarItemType.Button, command: ExecCommand.outdent, icon: 'assets/imgs/icons/outdent.png', title: 'Outdent' },
+        { type: ToolbarItemType.Button, command: ExecCommand.indent, icon: 'assets/imgs/icons/indent.png', title: 'Indent' },
+    ]
+};
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
   @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
   @ViewChild('fillFieldsTemplate', { static: true }) fillFieldsTemplate!: TemplateRef<any>;
+  @ViewChild('acc', { static: true }) accordion!: NgbAccordionItem;
+  characterPromptEditor: any;
+toolbar: any;
 
-  constructor(
-    private chcrcterCreationService: ChcrcterCreationService,
-    private authService: AuthService,
-    private router: Router,
-    private toastService: ToastService
-  ) { }
+constructor(
+  private chcrcterCreationService: ChcrcterCreationService,
+  private authService: AuthService,
+  private router: Router,
+  private toastService: ToastService,
+  private chatService: ChatService
+) { }
 
   character = {
     name: '', 
-    gameStyle: 'none',
-    race: '',
-    username: ''
+    prompt: ''
   };
   races: any[] = [];
   classes: { name: string, description: string }[] = [
@@ -66,44 +96,56 @@ export class ChrcterCreationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  sendMessage(): void {
-    if (this.characterPrompt.trim()) {
-      this.authService.getUsername().subscribe((username: string) => {
-        const payload = {
-          message: this.characterPrompt,
-          username: username
-        };
-        this.chcrcterCreationService.sendMessageToChatbot(payload).subscribe({
-          next: (response: any) => {
-            this.chatMessages.push({ role: 'assistant', content: response.reply });
-            this.characterPrompt = '';
-          },
-          error: (error: any) => {
-            this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-          }
-        });
+  sendMessage() {
+    this.authService.getUsername().subscribe((username: string) => {
+      const message = {
+        username: username,
+        message: this.character.prompt
+      };
+      this.chcrcterCreationService.sendMessageToChatbot(message).subscribe({
+        next: () => {
+          this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 5000 });
+        },
+        error: (error: any) => {
+          this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+        }
       });
-    }
+    });
   }
-  
-  sendCharacterPrompt(): void {
-    if (this.userMessage.trim()) {
-      this.authService.getUsername().subscribe((username: string) => {
-        const payload = {
-          message: this.userMessage,
-          username: username
-        };
-        this.chatMessages.push({ role: 'user', content: this.userMessage });
-        this.chcrcterCreationService.sendMessageToChatbot(payload).subscribe({
-          next: (response: any) => {
-            this.chatMessages.push({ role: 'assistant', content: response.reply });
-            this.userMessage = '';
-          },
-          error: (error: any) => {
-            this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-          }
-        });
+
+  saveDraft() {
+    this.authService.getUsername().subscribe((username: string) => {
+      const draft = {
+        username: username,
+        prompt: this.character.prompt
+      };
+      this.chcrcterCreationService.saveDraft(draft).subscribe({
+        next: () => {
+          this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 5000 });
+        },
+        error: (error: any) => {
+          this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+        }
       });
-    }
+    });
+  }
+
+  sendChatMessage() {
+    this.authService.getUsername().subscribe((username: string) => {
+      const message = {
+        username: username,
+        message: this.userMessage
+      };
+      this.chatService.sendMessage(this.userMessage, username).subscribe({
+        next: (response) => {
+          this.chatMessages.push({ role: 'user', content: this.userMessage });
+          this.chatMessages.push({ role: 'bot', content: response.response });
+          this.userMessage = '';
+        },
+        error: (error: any) => {
+          console.error('Failed to send message:', error);
+        }
+      });
+    });
   }
 }

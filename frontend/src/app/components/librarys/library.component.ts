@@ -14,7 +14,7 @@ interface Collection {
 })
 export class LibraryComponent implements OnInit {
   collections: Collection = {};
-  collectionKeys: string[] = ['races', /* 'game_styles', */ 'equipment', 'classes', 'spells'];
+  collectionKeys: string[] = ['races', /* 'game_styles', */ 'equipment', 'classes', 'spells', 'monsters'];
   selectedCollection: string = '';
   page: number = 1;
   pageSize: number = 12;
@@ -52,6 +52,9 @@ export class LibraryComponent implements OnInit {
         break;
       case 'spells':
         fetchObservable = this.libraryService.fetchSpells();
+        break;
+      case 'monsters':
+        fetchObservable = this.libraryService.fetchMonsters();
         break;
       default:
         return;

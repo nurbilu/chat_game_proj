@@ -28,6 +28,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component';
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
 import { LibraryComponent } from './components/librarys/library.component'; // Import LibraryComponent
+import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor'; // Import NgxSimpleTextEditorModule
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { LibraryComponent } from './components/librarys/library.component'; // I
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }), // Initialize ToastrModule
+    NgxSimpleTextEditorModule // Import NgxSimpleTextEditorModule
   ],
   providers: [
     AuthService,

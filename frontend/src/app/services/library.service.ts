@@ -14,20 +14,20 @@ export class LibraryService {
     return this.http.get(`${this.apiUrl}/fetch_races`);
   }
 
-  // fetchGameStyles(): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/fetch_game_styles`);
-  // }
 
   fetchEquipment(): Observable<any> {
     return this.http.get(`${this.apiUrl}/fetch_equipment`);
   }
 
-
   fetchSpells(): Observable<any> {
     return this.http.get(`${this.apiUrl}/fetch_spells`);
   }
-//  no need for classes but maybe yes find a way .
-    fetchClasses(): Observable<any> {
+
+  fetchClasses(): Observable<any> {
     return this.http.get(`${this.apiUrl}/fetch_classes`);
+  }
+
+  fetchMonsters(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/fetch_monsters`);
   }
 }
