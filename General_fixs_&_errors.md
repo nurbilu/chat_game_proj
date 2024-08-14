@@ -1,7 +1,7 @@
 ### what to fix and errors : 
 1. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
 
-2. fix icon displayment for the text editor ()
+2. fix icon displayment for the text editor ( X )
 
 3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
 3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
@@ -12,11 +12,15 @@
    - add pagination to the tables - done. 
    - make table columns bar more responsive - 
 
-4. implement chracter create completely + fix Gemini integration ()
+4. implement chracter create completely + fix Gemini integration : ()
+   - implenent character create prompt - 
+   - fix Gemini integration - 
+   = fix that chat will work  simple and easy - 
+   = fix that chat will work with the library - (optional)
 
-5. add/fix/adjust/modify when reload from browser display the current component instead to homepage()
+6. add/fix/adjust/modify when reload from browser display the current component instead to homepage()
 
-6. make django framework more efficient - too many debug messages and many calls to each endpoints ()
+7. make django framework more efficient - too many debug messages and many calls to each endpoints ()
 
 7. 
 

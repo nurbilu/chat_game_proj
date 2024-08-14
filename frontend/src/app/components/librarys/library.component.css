@@ -1,8 +1,9 @@
 body {
     width: 100%;
-    max-width: 1200px; /* Adjust the maximum width as needed */
+    max-width: 1200px;
+    max-height: 1000px; /* Adjust the maximum width as needed */
     margin: 0 auto; /* Center the page content */
-    padding: 20px; /* Add some padding around the content */
+    padding: 150px; /* Add some padding around the content */
     font-size: 16px; /* Adjust base font size */
     background-color: #f4f4f4; /* Optional: background color of the page */
 }
@@ -60,4 +61,8 @@ pre {
     width: 100vw; /* This will make the pagination bar extend full viewport width */
     box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* Optional: adds shadow for better visibility */
     z-index: 100; /* Ensure it's above other content */
+}
+
+.card {
+    margin-bottom: 1rem;
 }

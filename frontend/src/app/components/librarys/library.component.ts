@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LibraryService } from '../../services/library.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { CleanTextPipe } from '../../clean-text.pipe'; // Import CleanTextPipe
 
 interface Collection {
   [key: string]: any[];
@@ -14,15 +15,15 @@ interface Collection {
 })
 export class LibraryComponent implements OnInit {
   collections: Collection = {};
-  collectionKeys: string[] = ['races', /* 'game_styles', */ 'equipment', 'classes', 'spells', 'monsters'];
+  collectionKeys: string[] = ['races', 'classes','equipment', 'spells', 'monsters'];
   selectedCollection: string = '';
   page: number = 1;
-  pageSize: number = 12;
+  pageSize: number = 6;
   maxPages: number = 25;
   textVisibility: { [key: number]: boolean } = {};
   displayItems: any[] = [];
 
-  constructor(private libraryService: LibraryService, private router: Router) { }
+  constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe) { }
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -41,14 +42,11 @@ export class LibraryComponent implements OnInit {
       case 'races':
         fetchObservable = this.libraryService.fetchRaces();
         break;
-      // case 'game_styles':
-      //   fetchObservable = this.libraryService.fetchGameStyles();
-      //   break;
-      case 'equipment':
-        fetchObservable = this.libraryService.fetchEquipment();
-        break;
       case 'classes':
         fetchObservable = this.libraryService.fetchClasses();
+        break;
+      case 'equipment':
+        fetchObservable = this.libraryService.fetchEquipment();
         break;
       case 'spells':
         fetchObservable = this.libraryService.fetchSpells();
@@ -66,7 +64,7 @@ export class LibraryComponent implements OnInit {
           if (typeof item === 'object' && item !== null && 'name' in item) {
             return {
               ...item,
-              name: (item as { name: string }).name.toLowerCase()  // Ensure 'name' is lowercase
+              name: this.cleanTextPipe.transform((item as { name: string }).name.toLowerCase())  // Ensure 'name' is lowercase and cleaned
             };
           }
           return item;
@@ -76,7 +74,7 @@ export class LibraryComponent implements OnInit {
           if (typeof item === 'object' && item !== null && 'name' in item) {
             return {
               ...item,
-              name: (item as { name: string }).name.toLowerCase()  // Ensure 'name' is lowercase
+              name: this.cleanTextPipe.transform((item as { name: string }).name.toLowerCase())  // Ensure 'name' is lowercase and cleaned
             };
           }
           return item;
@@ -145,5 +143,14 @@ export class LibraryComponent implements OnInit {
 
   toggleTextVisibility(index: number): void {
     this.textVisibility[index] = !this.textVisibility[index];
+  }
+
+  isCardCollection(collection: string): boolean {
+    return ['classes', 'races'].includes(collection);
+  }
+
+  getTextVisibilityIndex(i: number, key: string): number {
+    // Ensure unique index for each collapsible element
+    return i * 1000 + this.getKeys(this.collections[this.selectedCollection][0]).indexOf(key);
   }
 }

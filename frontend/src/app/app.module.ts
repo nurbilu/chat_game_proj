@@ -29,6 +29,7 @@ import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
 import { LibraryComponent } from './components/librarys/library.component'; // Import LibraryComponent
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor'; // Import NgxSimpleTextEditorModule
+import { CleanTextPipe } from './clean-text.pipe'; // Import CleanTextPipe
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor'; // Import Ng
     ToastsContainerComponent, // Added this line
     ForgetPwdComponent,
     ResetPwdComponent,
-    LibraryComponent // Declare LibraryComponent
+    LibraryComponent, // Declare LibraryComponent
+    CleanTextPipe // Declare CleanTextPipe
   ],
   imports: [
     BrowserModule,
