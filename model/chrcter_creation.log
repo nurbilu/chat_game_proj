@@ -3,3 +3,30 @@
  * Running on http://127.0.0.1:6500
  * Running on http://10.0.0.7:6500
 2024-08-14 21:03:55,019 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-08-14 21:05:27,701 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:05:27] "OPTIONS /api/draft/andy HTTP/1.1" 200 -
+2024-08-14 21:05:27,711 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:05:27] "GET /api/draft/andy HTTP/1.1" 200 -
+2024-08-14 21:24:14,800 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:14] "OPTIONS /api/draft/andy HTTP/1.1" 200 -
+2024-08-14 21:24:14,804 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:14] "OPTIONS /api/races HTTP/1.1" 200 -
+2024-08-14 21:24:14,819 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:14] "GET /api/draft/andy HTTP/1.1" 200 -
+2024-08-14 21:24:14,828 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:14] "GET /api/races HTTP/1.1" 200 -
+2024-08-14 21:24:51,786 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:51] "OPTIONS /api/draft/andy HTTP/1.1" 200 -
+2024-08-14 21:24:51,794 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:51] "GET /api/draft/andy HTTP/1.1" 200 -
+2024-08-14 21:24:56,126 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:56] "[33mGET /api/draft/ HTTP/1.1[0m" 404 -
+2024-08-14 21:24:56,152 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:24:56] "[33mGET /api/draft/ HTTP/1.1[0m" 404 -
+2024-08-14 21:26:42,902 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "[33mOPTIONS /api/draft/ HTTP/1.1[0m" 404 -
+2024-08-14 21:26:42,904 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "OPTIONS /api/races HTTP/1.1" 200 -
+2024-08-14 21:26:42,912 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "OPTIONS /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:26:42,918 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "OPTIONS /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:26:42,925 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "OPTIONS /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:26:42,926 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "GET /api/races HTTP/1.1" 200 -
+2024-08-14 21:26:42,931 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "GET /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:26:42,941 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "GET /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:26:42,948 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:42] "GET /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:26:46,597 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:46] "GET /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:26:46,600 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:26:46] "GET /api/races HTTP/1.1" 200 -
+2024-08-14 21:29:07,389 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:29:07] "OPTIONS /api/races HTTP/1.1" 200 -
+2024-08-14 21:29:07,433 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:29:07] "OPTIONS /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:29:07,450 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:29:07] "GET /api/races HTTP/1.1" 200 -
+2024-08-14 21:29:07,525 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:29:07] "GET /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:29:51,012 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:29:51] "OPTIONS /api/draft/eddie HTTP/1.1" 200 -
+2024-08-14 21:29:51,021 - werkzeug - INFO - 127.0.0.1 - - [14/Aug/2024 21:29:51] "GET /api/draft/eddie HTTP/1.1" 200 -

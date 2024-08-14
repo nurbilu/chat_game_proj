@@ -13,29 +13,28 @@ import { ChatService } from '../../services/chat.service';
   styleUrls: ['./chrcter-creation.component.css']
 })
 export class ChrcterCreationComponent implements OnInit {
-  public editorConfig: EditorConfig = {
-    placeholder: 'Type your prompt here...',
-    buttons: [
-        { type: ToolbarItemType.Button, command: ExecCommand.bold, icon: '/assets/Icons/Bold.png', title: 'Bold' },
-        { type: ToolbarItemType.Button, command: ExecCommand.italic, icon: '/assets/Icons/Italic.png', title: 'Italic' },
-        { type: ToolbarItemType.Button, command: ExecCommand.underline, icon: '/assets/Icons/Underline.png', title: 'Underline' },
-        { type: ToolbarItemType.Button, command: ExecCommand.strikeThrough, icon: '/assets/Icons/StrikeThrough.png', title: 'Strike Through' },
-        { type: ToolbarItemType.Button, command: ExecCommand.fontName, icon: '/assets/Icons/Font.png', title: 'Font Name' },
-        { type: ToolbarItemType.Button, command: ExecCommand.fontSize, icon: '/assets/Icons/Font-Size.png', title: 'Font Size' },
-        { type: ToolbarItemType.Button, command: ExecCommand.foreColor, icon: '/assets/Icons/Text-Color.png', title: 'Font Color' },
-        { type: ToolbarItemType.Button, command: ExecCommand.backColor, icon: '/assets/Icons/BCGroud-Color-swatch.png', title: 'Background Color' },
-        { type: ToolbarItemType.Button, command: ExecCommand.createLink, icon: '/assets/Icons/Create-Link.png', title: 'Create Link' },
-        { type: ToolbarItemType.Button, command: ExecCommand.insertImage, icon: '/assets/Icons/Insert-Img.png', title: 'Insert Image' },
-        { type: ToolbarItemType.Button, command: ExecCommand.removeFormat, icon: '/assets/Icons/Remove-Format.png', title: 'Clear Format' },
-        { type: ToolbarItemType.Button, command: ExecCommand.justifyLeft, icon: '/assets/Icons/Justify-Left.png', title: 'Justify Left' },
-        { type: ToolbarItemType.Button, command: ExecCommand.justifyCenter, icon: '/assets/Icons/Justify-Full.png', title: 'Justify Center' },
-        { type: ToolbarItemType.Button, command: ExecCommand.justifyRight, icon: '/assets/Icons/Justify-Right.png', title: 'Justify Right' },
-        { type: ToolbarItemType.Button, command: ExecCommand.justifyFull, icon: '/assets/Icons/Justify-Full.png', title: 'Justify Full' },
-        { type: ToolbarItemType.Button, command: ExecCommand.insertOrderedList, icon: '/assets/Icons/Ordered-List.png', title: 'Ordered List' },
-        { type: ToolbarItemType.Button, command: ExecCommand.insertUnorderedList, icon: '/assets/Icons/Ordered-List.png', title: 'Unordered List' },
-        { type: ToolbarItemType.Button, command: ExecCommand.outdent, icon: '/assets/Icons/Outdent.png', title: 'Outdent' },
-        { type: ToolbarItemType.Button, command: ExecCommand.indent, icon: '/assets/Icons/Indent.png', title: 'Indent' },
-    ]
+  content = '';
+  title = 'ck-text-editor';
+
+  config = {
+    toolbar: [
+      { name: 'undo', groups: ['undo'], items: ['Undo', 'Redo'] },
+      { name: 'basicstyles', groups: ['basicstyles'], items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'] },
+      // { name: 'clipboard', groups: ['clipboard'], items: ['Cut', 'Copy', 'Paste'] },
+      { name: 'paragraph', groups: ['align', 'indent', 'list'], items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Outdent', 'Indent', '-', 'NumberedList', 'BulletedList'] },
+      { name: 'styles', groups: ['font', 'colors'], items: ['Font', 'FontSize', '-', 'TextColor', 'BGColor'] },
+      { name: 'links', items: ['Link', 'Unlink'] },
+      { name: 'forms', items: ['Checkbox', 'Radio'] },
+      { name: 'tools', items: ['Maximize'] }
+    ],
+    fontSize_sizes: '1/4px;2/6px;3/8px;4/10px;5/14px;6/20px;7/24px;',
+    font_names:
+      'Arial/Arial, Helvetica, sans-serif;' +
+      'Times New Roman/Times New Roman, Times, serif;' +
+      'Verdana/Verdana;' +
+      'Open Sans/Open Sans;',
+    fontSize_defaultLabel: '5',
+    font_defaultLabel: 'Open Sans',
   };
 
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
@@ -43,7 +42,6 @@ export class ChrcterCreationComponent implements OnInit {
   @ViewChild('fillFieldsTemplate', { static: true }) fillFieldsTemplate!: TemplateRef<any>;
   @ViewChild('acc', { static: true }) accordion!: NgbAccordionItem;
   characterPromptEditor: any;
-  toolbar: any;
 
   constructor(
     private chcrcterCreationService: ChcrcterCreationService,

@@ -42,7 +42,7 @@
   <div class="text-frame">
     <h3>Character Creation Prompt</h3>
     <div class="text-editor-container">
-      <st-editor [(ngModel)]="characterPrompt" [config]="editorConfig" class="editor-toolbar"></st-editor>
+      <st-editor [(ngModel)]="characterPrompt" [Config]="config" ></st-editor>
     </div>
     <button (click)="sendChatMessage()">Send</button>
     <button (click)="saveDraft()">Save Draft</button>
