@@ -1,49 +1,52 @@
 <div class="chrcter-creation-container container">
   <div class="text-frame">
-      <h2>Welcome to Character Creation Advisor</h2>
-      <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat style do you desire? There are many classes and races to choose from in DnD 5e:</p>
-      <p>For more information on spells, visit <a href="https://rpgbot.net/dnd5/characters/spells/" target="_blank">RPGBot</a>.</p>
+    <h2>Welcome to Character Creation Advisor</h2>
+    <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat
+      style do you desire? There are many classes and races to choose from in DnD 5e:</p>
+    <p>For more information on spells, visit <a href="https://rpgbot.net/dnd5/characters/spells/"
+        target="_blank">RPGBot</a>.</p>
   </div>
   <div class="text-frame">
-      <h3>Classes Description</h3>
-      <div ngbAccordion>
-        <div ngbAccordionItem *ngFor="let class of classes">
-          <h2 ngbAccordionHeader>
-            <button ngbAccordionButton>{{ class.name }}</button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <p>{{ class.description }}</p>
-            </div>
+    <h3>Classes Description</h3>
+    <div ngbAccordion>
+      <div ngbAccordionItem *ngFor="let class of classes">
+        <h2 ngbAccordionHeader>
+          <button ngbAccordionButton>{{ class.name }}</button>
+        </h2>
+        <div ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <p>{{ class.description }}</p>
           </div>
         </div>
       </div>
+    </div>
   </div>
   <div class="text-frame">
-      <h3>Race Descriptions</h3>
-      <div ngbAccordion>
-        <div ngbAccordionItem *ngFor="let race of races">
-          <h2 ngbAccordionHeader>
-            <button ngbAccordionButton>{{ race.name }}</button>
-          </h2>
-          <div ngbAccordionCollapse>
-            <div ngbAccordionBody>
-              <p><strong>Alignment:</strong> {{ race.alignment }}</p>
-              <p><strong>Age:</strong> {{ race.age }}</p>
-              <p><strong>Size:</strong> {{ race.size_description }}</p>
-              <p><strong>Languages:</strong> {{ race.language_desc }}</p>
-            </div>
+    <h3>Race Descriptions</h3>
+    <div ngbAccordion>
+      <div ngbAccordionItem *ngFor="let race of races">
+        <h2 ngbAccordionHeader>
+          <button ngbAccordionButton>{{ race.name }}</button>
+        </h2>
+        <div ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <p><strong>Alignment:</strong> {{ race.alignment }}</p>
+            <p><strong>Age:</strong> {{ race.age }}</p>
+            <p><strong>Size:</strong> {{ race.size_description }}</p>
+            <p><strong>Languages:</strong> {{ race.language_desc }}</p>
           </div>
         </div>
       </div>
+    </div>
   </div>
   <div class="text-frame">
     <h3>Character Creation Prompt</h3>
     <div class="text-editor-container">
-      <st-editor [(ngModel)]="character.prompt" [config]="editorConfig"></st-editor>
+      <st-editor [(ngModel)]="characterPrompt" [config]="editorConfig" class="editor-toolbar"></st-editor>
     </div>
-    <button (click)="sendMessage()">Send</button>
+    <button (click)="sendChatMessage()">Send</button>
     <button (click)="saveDraft()">Save Draft</button>
+    <button (click)="pasteDraft()">Paste Draft</button>
   </div>
   <div class="text-frame chat-container">
     <h3>Character Creation Advisor</h3>
@@ -51,7 +54,8 @@
       {{ message.content }}
     </div>
     <div class="input-container">
-      <input type="text" [(ngModel)]="userMessage" placeholder="Type your message here" required (keydown.enter)="sendChatMessage()">
+      <input type="text" [(ngModel)]="userMessage" placeholder="Type your message here" required
+        (keydown.enter)="sendChatMessage()">
       <button (click)="sendChatMessage()" class="btn btn-success">Send</button>
     </div>
   </div>

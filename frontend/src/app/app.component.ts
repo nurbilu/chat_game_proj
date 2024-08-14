@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbOffcanvas, NgbOffcanvasRef, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from './services/toast.service';
 import { AuthService } from './services/auth.service';
+import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-creation.component';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
   private offcanvasRef!: NgbOffcanvasRef;
   isLoggedIn: boolean = false;
+  @ViewChild(ChrcterCreationComponent) chrcterCreationComponent!: ChrcterCreationComponent;
 
   constructor(
     private router: Router,
@@ -58,7 +60,11 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     this.authService.logout().subscribe(() => {
-      this.router.navigate(['/homepage']);
+      localStorage.clear();
+      if (this.chrcterCreationComponent) {
+        this.chrcterCreationComponent.clearEditor();
+      }
+      this.router.navigate(['/login']);
     });
   }
 

@@ -32,13 +32,10 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
         6. create character component *
     -adjust change create character , that instead of forms , use the library component to select the data and then use the data to create the character OR use character creation as a chat bot Ai that will assist the user to create the character .
     - send varifaction code to the email + check if the code is correct + change the password - after successfull implementing basic password change redirect to login page if not a real email two options : 1. send another file but to get auth need to input : username + email + last_name + birthdate. 2. email is invalid or not real -> redirect to login page with a toast message that email is invalid or not real -> try again with a real email.
-    - fix full gemini integration ai with the neccesary data to create game mechanics (races , spells , equipment , monsters , game styles) . fireball - is very chaotic and its json files are not very easy to work with .  
-        chatbot_model.py was successfully split to blueprints , and chatbot as in the same chat error but integrated well to the gen_txt
-        i think its better becuase it didnt worked as i wanted it to or well, maybe i should try again with a different approach .
+    -make gemini integration using blueprints - as a simple chat , then add option in chat to add templates - like : the character creation template - that will create the character with the data that the user input in the chat - then the gemini will create the character in the game . instead of pulling the data from DB then send to chatbot , chatbot will create the character in the game - each user have a different character creation template and different chat data .
     - maybe instead of using the MongoDB compass either find a way to connect to Atlas or use Atlas cluster directly OR use a different no sql DB like          firebase - work better with Gemini but will cost more to remember how to connect to it correctly and potentially more expensive .()
     - incrypt pwd_user_str data that only when superuser is logged in and ask for a password to decrypt the pwd_user_str data and display for superuser both (backend & frontend)
-    - add a DnD and game info library - contain all the data needed for the game mechanics , same component but in a table with select and search input box (races , spells , equipment , monsters , game styles and more if seems needed or found something more to add).
-    -""if have more functions or some other ideas to enrich the projet when submitting and also for the future to real users to use."" .
+    - add a DnD and game info library - contain all the data needed for the game mechanics , same component but in a table with select and search input box (races , spells , equipment , monsters , game styles and more if seems needed or found something more to add). - done -but need modification to make it more practical and cleaner design .
 
 6. create unit tests for all API calls ( bonus 6 points - could help and wont hurt - ( ) - see if have time to implement) :
     - sending emails (3 extra points ).

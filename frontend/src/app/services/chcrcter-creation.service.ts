@@ -78,12 +78,21 @@ export class ChcrcterCreationService {
     );
   }
 
+  getDraft(username: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/draft/${username}`).pipe(
+      catchError(error => {
+        console.error('Failed to get draft:', error);
+        return throwError(() => new Error('Error getting draft: ' + error.message));
+      })
+    );
+  }
+
   saveDraft(draft: { username: string; prompt: string; }): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.getToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.http.post(`${this.apiUrl}/saveDraft`, JSON.stringify(draft), { headers }).pipe(
+    return this.http.post(`${this.apiUrl}/save_draft`, JSON.stringify(draft), { headers }).pipe(
       catchError(error => {
         console.error('Failed to save draft:', error);
         return throwError(() => new Error('Error saving draft: ' + error.message));

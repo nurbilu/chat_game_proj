@@ -10,6 +10,7 @@
    - add/fix buttons to expand/collapse long text columns - 
    - add search bar to the tables - 
    - add pagination to the tables - done. 
+   - make table columns bar more responsive - 
 
 4. implement chracter create completely + fix Gemini integration ()
 
@@ -18,8 +19,6 @@
 6. make django framework more efficient - too many debug messages and many calls to each endpoints ()
 
 7. 
-
-
 
 ### best for last : 
 1. async problem - Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received - seems to show in all components few moments after reload(only if presists in the future ( )) 

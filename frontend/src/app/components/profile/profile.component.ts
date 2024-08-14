@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   showUpdateForm: boolean = false;
   showUserData: boolean = true;
   characters: Character[] = []; // Use Character type
-  profilePictureUrl: string = 'assets/imgs/profile_pictures/no_profile_pic.png';  // Default placeholder image
+  profilePictureUrl: string = '';  // Initialize to an empty string
 
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
 
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
     this.authService.getUserProfile().subscribe(
       (data) => {
         this.userProfile = data;
-        this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
+        this.profilePictureUrl = `http://127.0.0.1:8000${data.profile_picture}`;
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
@@ -69,22 +69,6 @@ export class ProfileComponent implements OnInit {
       () => {
         this.characters = this.characters.filter(character => character.prompt !== characterPrompt);
         this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
-    );
-  }
-
-  createCharacter(character: any): void {
-    if (!character || !character.prompt) {
-      this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      return;
-    }
-    this.characterService.createCharacter(character).subscribe(
-      (response) => {
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-        this.loadUserCharacters(this.userProfile.username); // Reload characters after creation
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
@@ -124,7 +108,7 @@ export class ProfileComponent implements OnInit {
     this.authService.updateUserProfilePicture(formData).subscribe(
         (data) => {
             this.userProfile.profile_picture = data.profile_picture;  // Update only the profile picture URL
-            this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/imgs/profile_pictures/no_profile_pic.png';
+            this.profilePictureUrl = `http://127.0.0.1:8000${data.profile_picture}`;
             this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
         },
         (error) => {

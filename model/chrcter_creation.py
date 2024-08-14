@@ -204,6 +204,55 @@ def chatbot_interaction():
         app.logger.error(f"Failed to interact with chatbot: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
+@character_blueprint.route('/save_draft', methods=['POST'])
+def save_draft():
+    try:
+        draft_data = request.json
+        username = draft_data.get('username')
+        if not username:
+            return jsonify({'error': 'Username is required'}), 400
+
+        # Save draft data into MongoDB
+        db.character_drafts.update_one(
+            {"username": username},
+            {"$set": {"prompt": draft_data.get('prompt')}},
+            upsert=True
+        )
+        return jsonify({'message': 'Draft saved successfully'}), 200
+    except Exception as e:
+        app.logger.error(f"Failed to save draft: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/paste_draft', methods=['POST'])
+def paste_draft():
+    try:
+        draft_data = request.json
+        username = draft_data.get('username')
+        if not username:
+            return jsonify({'error': 'Username is required'}), 400
+
+        # Get draft data from MongoDB
+        draft = db.character_drafts.find_one({"username": username})
+        if draft:
+            return jsonify(json.loads(json_util.dumps(draft))), 200
+        else:
+            return jsonify({'error': 'Draft not found'}), 404
+    except Exception as e:
+        app.logger.error(f"Failed to get draft: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/draft/<username>', methods=['GET'])
+def get_draft(username):
+    try:
+        draft = db.character_drafts.find_one({"username": username})
+        if draft:
+            return jsonify(json.loads(json_util.dumps(draft))), 200
+        else:
+            return jsonify({'error': 'Draft not found'}), 404
+    except Exception as e:
+        app.logger.error(f"Failed to get draft: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
 # Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():
     response = make_response()

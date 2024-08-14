@@ -13,17 +13,15 @@
     <table class="table table-striped table-hover table-responsive">
       <thead class="table-dark">
         <tr>
-          <th>Name</th>
           <ng-container *ngFor="let key of getKeys(collections[selectedCollection]?.[0] ?? {})">
-            <th *ngIf="key !== 'url' && key !== 'Int32' && key !== 'name'">{{ key }}</th>
+            <th *ngIf="key !== 'url' && key !== 'name'">{{ key }}</th>
           </ng-container>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of getPaginatedItems(); let i = index" [ngClass]="{'long-text-row': isLongText(item.name)}">
-          <td>{{ item.name }}</td>
           <ng-container *ngFor="let key of getKeys(item); let k = index">
-            <td *ngIf="key !== 'url' && key !== 'Int32' && key !== 'name'">
+            <td *ngIf="key !== 'url' && key !== 'name'">
               <div *ngIf="isString($any(item[key])) && isLongText($any(item[key]))">
                 <button (click)="toggleTextVisibility(i * 1000 + k)" class="btn btn-outline-secondary btn-sm">
                   <img [src]="textVisibility[i * 1000 + k] ? 'assets/imgs/icons/collapnd-btn.png' : 'assets/imgs/icons/collapnd-btn.png'" alt="Toggle">

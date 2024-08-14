@@ -1,11 +1,19 @@
 .chrcter-creation-container {
-    max-width: 1350px; 
+    max-width: 1350px;
     max-height: 2400px;
-    padding: 5px; 
+    padding: 5px;
     background: rgba(255, 255, 255, 0.8) url('/assets/imgs/magic_plains.jpg') no-repeat center center;
     background-size: cover;
     border: 2px solid #000000;
     resize: vertical;
+}
+
+/* ... existing code ... */
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .text-frame {
@@ -87,21 +95,97 @@
 }
 
 /* Add styles for the text editor container */
-.text-editor-container {
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.st-editor-toolbar {
+    background-color: #f0f0f0;
     padding: 10px;
-    background: #fff;
 }
 
-/* Add styles for the text editor toolbar buttons */
+.icon-bold {
+    background-image: url('/assets/Icons/Bold.png');
+}
+
+.icon-italic {
+    background-image: url('/assets/Icons/Italic.png');
+}
+
+.icon-underline {
+    background-image: url('/assets/Icons/Underline.png');
+}
+
+.icon-strikeThrough {
+    background-image: url('/assets/Icons/StrikeThrough.png');
+}
+
+.icon-fontName {
+    background-image: url('/assets/Icons/Font.png');
+}
+
+.icon-fontSize {
+    background-image: url('/assets/Icons/Font-Size.png');
+}
+
+.icon-foreColor {
+    background-image: url('/assets/Icons/Text-Color.png');
+}
+
+.icon-backColor {
+    background-image: url('/assets/Icons/BCGroud-Color-swatch.png');
+}
+
+.icon-createLink {
+    background-image: url('/assets/Icons/Create-Link.png');
+}
+
+.icon-insertImage {
+    background-image: url('/assets/Icons/Insert-Img.png');
+}
+
+.icon-removeFormat {
+    background-image: url('/assets/Icons/Remove-Format.png');
+}
+
+.icon-justifyLeft {
+    background-image: url('/assets/Icons/Justify-Left.png');
+}
+
+.icon-justifyCenter {
+    background-image: url('/assets/Icons/Justify-Full.png');
+}
+
+.icon-justifyRight {
+    background-image: url('/assets/Icons/Justify-Right.png');
+}
+
+.icon-justifyFull {
+    background-image: url('/assets/Icons/Justify-Full.png');
+}
+
+.icon-insertOrderedList {
+    background-image: url('/assets/Icons/Ordered-List.png');
+}
+
+.icon-insertUnorderedList {
+    background-image: url('/assets/Icons/Ordered-List.png');
+}
+
+.icon-outdent {
+    background-image: url('/assets/Icons/Outdent.png');
+}
+
+.icon-indent {
+    background-image: url('/assets/Icons/Indent.png');
+}
+
 .st-editor-toolbar button {
-    background: none; /* Ensure no background color is set */
-    border: none;
+    width: 40px;
+    height: 40px;
     padding: 5px;
-    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none; /* Ensure no border is applied */
+    background-color: transparent; /* Ensure background is transparent */
 }
 
-.st-editor-toolbar button i {
-    font-size: 20px;
-}
+
+
