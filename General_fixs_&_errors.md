@@ -1,16 +1,17 @@
 ### what to fix and errors : 
 1. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
 
-2. fix icon displayment for the text editor ( X )
+2. create a search component that will be used to search for the library - to fix search bar in the library - ()
 
 3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
 3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
-   - remove empty columns values from library tables -
+   - remove empty columns values from library tables - ? 
    - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , 
-   - add/fix buttons to expand/collapse long text columns - 
    - add search bar to the tables - 
-   - add pagination to the tables - done. 
    - make table columns bar more responsive - 
+   - add sorting to the tables - 
+   - fix collapse butttons in the cards - add card width less cards in a row if needed - 
+   - 
 
 4. implement chracter create completely + fix Gemini integration : ()
    - implenent character create prompt - 
@@ -46,4 +47,6 @@ DONE LIST :
 4. 5. set reload after login either on the backend or on the frontend and either superuser or not superuser (done)
 
 5. 2. make create character either a chat bot for the user to make a prompt for chat to create a charater ( not have to be AI but must use library/DB data and auto completion) OR either a form base on the library/DB data (as a option B). (half done).
+
+6. 2. fix icon displayment for the text editor ( done )
 

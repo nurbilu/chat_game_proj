@@ -131,6 +131,20 @@ def fetch_classes():
 def fetch_spells():
     return fetch_data_from_db('spells')
 
+@lib_srvr.route('/search/<name>', methods=['GET'])
+def search_item_by_name(name):
+    projection = {'_id': 0, 'index': 0}
+    regex = re.compile(f'^{re.escape(name)}$', re.IGNORECASE)  # Exact match, case-insensitive
+    results = {}
+    for collection in ['spells', 'classes', 'races', 'monsters', 'equipment']:
+        data = db[collection].find_one({"name": regex}, projection)
+        if data:
+            results[collection] = data
+    if results:
+        return jsonify(results)
+    else:
+        return jsonify({"error": "Item not found"}), 404
+
 def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}})

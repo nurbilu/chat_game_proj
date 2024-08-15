@@ -30,6 +30,8 @@ import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
 import { LibraryComponent } from './components/librarys/library.component'; // Import LibraryComponent
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor'; // Import NgxSimpleTextEditorModule
 import { CleanTextPipe } from './clean-text.pipe'; // Import CleanTextPipe
+import { SearchService } from './search.service'; // Import SearchService
+import { LibSearchComponent } from './components/lib-search/lib-search.component'; // Import LibSearchComponent
 
 @NgModule({
   declarations: [
@@ -47,12 +49,13 @@ import { CleanTextPipe } from './clean-text.pipe'; // Import CleanTextPipe
     ForgetPwdComponent,
     ResetPwdComponent,
     LibraryComponent, // Declare LibraryComponent
-    CleanTextPipe // Declare CleanTextPipe
+    CleanTextPipe, // Declare CleanTextPipe
+    LibSearchComponent // Declare LibSearchComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
+    FormsModule, // Import FormsModule
     ReactiveFormsModule,
     HttpClientModule,
     EnvironmentsModule,
@@ -76,7 +79,8 @@ import { CleanTextPipe } from './clean-text.pipe'; // Import CleanTextPipe
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    SearchService // Add SearchService to providers
   ],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA] // Add this line

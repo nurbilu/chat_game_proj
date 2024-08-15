@@ -3,6 +3,7 @@ import { LibraryService } from '../../services/library.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CleanTextPipe } from '../../clean-text.pipe'; // Import CleanTextPipe
+import { SearchService } from '../../search.service'; // Import SearchService
 
 interface Collection {
   [key: string]: any[];
@@ -22,8 +23,11 @@ export class LibraryComponent implements OnInit {
   maxPages: number = 25;
   textVisibility: { [key: number]: boolean } = {};
   displayItems: any[] = [];
+  searchQuery: string = '';
+  searchResult: any = null; // Store single search result
+  showSearchResults: boolean = false; // Add a new property to track whether search results should be shown
 
-  constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe) { }
+  constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -131,6 +135,7 @@ export class LibraryComponent implements OnInit {
 
   selectCollection(collection: string): void {
     this.selectedCollection = collection;
+    this.showSearchResults = false; // Set to false to show the collection data
     console.log("Selected Collection:", collection);
     if (!this.collections[collection]) {
       console.log("Loading data for collection:", collection);
@@ -152,5 +157,22 @@ export class LibraryComponent implements OnInit {
   getTextVisibilityIndex(i: number, key: string): number {
     // Ensure unique index for each collapsible element
     return i * 1000 + this.getKeys(this.collections[this.selectedCollection][0]).indexOf(key);
+  }
+
+  onSearch(): void {
+    if (this.searchQuery) {
+      this.searchService.searchItemByName(this.searchQuery)
+        .subscribe({
+          next: (item) => {
+            this.searchResult = item ? [item] : [];
+            this.showSearchResults = true; // Set to true when search results are available
+            console.log('Search results:', this.searchResult);
+          },
+          error: (error) => {
+            console.error('Search error:', error);
+            this.showSearchResults = false;
+          }
+        });
+    }
   }
 }

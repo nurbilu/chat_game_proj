@@ -1,0 +1,7 @@
+<div *ngIf="showSearchResults">
+    <div *ngIf="searchResult">
+      <pre>{{ searchResult | json }}</pre> <!-- Use the JSON pipe here -->
+    </div>
+    <div *ngIf="!searchResult">
+    </div>
+  </div>
