@@ -12,6 +12,21 @@ from logging import FileHandler  # Corrected import
 import json
 import requests
 from flask.logging import default_handler
+from dotenv import load_dotenv
+import openai
+
+# Load environment variables from .env file
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY_USE")
+
+# Print the API key to verify it's loaded correctly (remove this in production)
+print(f"Loaded OpenAI API Key: {OPENAI_API_KEY}")
+
+if not OPENAI_API_KEY:
+    raise ValueError("No API key provided. Please set the OPENAI_API_KEY_USE environment variable.")
+
+# Configure OpenAI API key
+openai.api_key = OPENAI_API_KEY
 
 class MongoDBCache(BaseCache):
     def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='DnD_AI_DB', collection='cache'):
@@ -109,32 +124,32 @@ character_blueprint = Blueprint('character', __name__)
 mongo_client = MongoClient('mongodb://localhost:27017/mike')
 db = mongo_client['DnD_AI_DB']
 
-@character_blueprint.route('/characters', methods=['POST', 'OPTIONS'])
-def create_character():
-    if request.method == 'OPTIONS':
-        return build_cors_preflight_response()
-    elif request.method == 'POST':
-        try:
-            character_data = request.json
-            required_fields = ['name', 'class', 'race', 'username']
-            if not all(field in character_data for field in required_fields):
-                app.logger.warning(f"Missing required fields: {character_data}")
-                return jsonify({'error': 'Missing required fields'}), 400
+# @character_blueprint.route('/characters', methods=['POST', 'OPTIONS'])
+# def create_character():
+#     if request.method == 'OPTIONS':
+#         return build_cors_preflight_response()
+#     elif request.method == 'POST':
+#         try:
+#             character_data = request.json
+#             required_fields = ['name', 'class', 'race', 'username']
+#             if not all(field in character_data for field in required_fields):
+#                 app.logger.warning(f"Missing required fields: {character_data}")
+#                 return jsonify({'error': 'Missing required fields'}), 400
 
-            # Insert character data into MongoDB
-            result = db.character_creation_users.insert_one(character_data)
-            # Convert ObjectId to string for the response
-            character_data['_id'] = str(result.inserted_id)
+#             # Insert character data into MongoDB
+#             result = db.character_creation_users.insert_one(character_data)
+#             # Convert ObjectId to string for the response
+#             character_data['_id'] = str(result.inserted_id)
 
-            # Send data to chat server and Gemini API
-            response = requests.post('http://127.0.0.1:5000/api/character_data', json=character_data)
-            if response.status_code == 200:
-                return jsonify({'message': 'Character created', 'chat_response': response.json()}), 201
-            else:
-                return jsonify({'error': 'Failed to create character due to external API error'}), 500
-        except Exception as e:
-            app.logger.error(f"Failed to create character: {str(e)}")
-            return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+#             # Send data to chat server and Gemini API
+#             response = requests.post('http://127.0.0.1:5000/api/character_data', json=character_data)
+#             if response.status_code == 200:
+#                 return jsonify({'message': 'Character created', 'chat_response': response.json()}), 201
+#             else:
+#                 return jsonify({'error': 'Failed to create character due to external API error'}), 500
+#         except Exception as e:
+#             app.logger.error(f"Failed to create character: {str(e)}")
+#             return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 @character_blueprint.route('/characters/<username>', methods=['GET', 'OPTIONS'])
 def get_character_by_username(username):
@@ -191,10 +206,15 @@ def chatbot_interaction():
         if not user_message or not username:
             return jsonify({'error': 'Message and username are required'}), 400
 
-        # Send the message to the AI Gemini bot
-        response = requests.post('http://127.0.0.1:5000/api/chatbot', json={'message': user_message})
-        if response.status_code == 200:
-            reply = response.json().get('reply')
+        # Send the message to the OpenAI API
+        response = openai.Completion.create(
+            model="gpt-4o-mini",  # Use gpt-4o-mini model
+            prompt=user_message,
+            max_tokens=250
+        )
+
+        if response and response.choices:
+            reply = response.choices[0].text.strip()
             # Save the JSON file to the database
             db.game_styles.insert_one({'username': username, 'content': reply})
             return jsonify({'reply': reply}), 200
@@ -251,6 +271,27 @@ def get_draft(username):
             return jsonify({'error': 'Draft not found'}), 404
     except Exception as e:
         app.logger.error(f"Failed to get draft: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/save_character', methods=['POST'])
+def save_character():
+    try:
+        data = request.json
+        username = data.get('username')
+        character_prompt = data.get('characterPrompt')
+        
+        if not username or not character_prompt:
+            return jsonify({'error': 'Username and character prompt are required'}), 400
+
+        # Save character prompt to MongoDB
+        db.characters.update_one(
+            {"username": username},
+            {"$set": {"characterPrompt": character_prompt}},
+            upsert=True
+        )
+        return jsonify({'message': 'Character prompt saved successfully'}), 200
+    except Exception as e:
+        app.logger.error(f"Failed to save character prompt: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 # Ensure the preflight response is adequate for all methods

@@ -70,7 +70,11 @@ export class ChcrcterCreationService {
   }
 
   sendMessageToChatbot(payload: { message: string, username: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/chatbot`, payload).pipe(
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}/chatbot`, payload, { headers }).pipe(
       catchError(error => {
         console.error('Failed to send message to chatbot:', error);
         return throwError(() => new Error('Error sending message to chatbot: ' + error.message));
@@ -96,6 +100,18 @@ export class ChcrcterCreationService {
       catchError(error => {
         console.error('Failed to save draft:', error);
         return throwError(() => new Error('Error saving draft: ' + error.message));
+      })
+    );
+  }
+  saveCharacter(character: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}/save_character`, JSON.stringify(character), { headers }).pipe(
+      catchError(error => {
+        console.error('Failed to save character:', error);
+        return throwError(() => new Error('Error saving character: ' + error.message));
       })
     );
   }

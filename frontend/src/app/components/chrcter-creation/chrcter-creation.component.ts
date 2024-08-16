@@ -143,9 +143,9 @@ export class ChrcterCreationComponent implements OnInit {
     this.authService.getUsername().subscribe((username: string) => {
       const message = {
         username: username,
-        message: this.character.prompt
+        characterPrompt: this.characterPrompt
       };
-      this.chcrcterCreationService.sendMessageToChatbot(message).subscribe({
+      this.chcrcterCreationService.saveCharacter(message).subscribe({
         next: () => {
           this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 5000 });
         },
@@ -160,16 +160,17 @@ export class ChrcterCreationComponent implements OnInit {
     this.characterPrompt = '';
   }
 
+
   sendChatMessage() {
     this.authService.getUsername().subscribe((username: string) => {
       const message = {
         username: username,
         message: this.userMessage
       };
-      this.chatService.sendMessage(this.userMessage, username).subscribe({
+      this.chcrcterCreationService.sendMessageToChatbot(message).subscribe({
         next: (response) => {
           this.chatMessages.push({ role: 'user', content: this.userMessage });
-          this.chatMessages.push({ role: 'bot', content: response.response });
+          this.chatMessages.push({ role: 'bot', content: response.reply });
           this.userMessage = '';
         },
         error: (error: any) => {

@@ -44,7 +44,8 @@
     <div class="text-editor-container">
       <st-editor [(ngModel)]="characterPrompt" [Config]="config" ></st-editor>
     </div>
-    <button (click)="sendChatMessage()">Send</button>
+    <button (click)="sendMessage()">Send</button>
+    
     <button (click)="saveDraft()">Save Draft</button>
     <button (click)="pasteDraft()">Paste Draft</button>
   </div>
@@ -59,7 +60,6 @@
       <button (click)="sendChatMessage()" class="btn btn-success">Send</button>
     </div>
   </div>
-</div>
 
 <ng-template #successTemplate>
   <div>Character created successfully!</div>
