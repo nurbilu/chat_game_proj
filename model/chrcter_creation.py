@@ -14,6 +14,7 @@ import requests
 from flask.logging import default_handler
 from dotenv import load_dotenv
 import openai
+import ast
 
 # Load environment variables from .env file
 load_dotenv()
@@ -110,6 +111,7 @@ def handle_exit(signum, frame):
 
 def create_app():
     app = Flask(__name__)
+    app.url_map.strict_slashes = False
     app.json_encoder = CustomJSONEncoder
     CORS(app, resources={r"/*": {"origins": "*"}})  # Configure CORS more securely
     app.register_blueprint(character_blueprint, url_prefix='/api')
@@ -123,6 +125,22 @@ def create_app():
 character_blueprint = Blueprint('character', __name__)
 mongo_client = MongoClient('mongodb://localhost:27017/mike')
 db = mongo_client['DnD_AI_DB']
+spells_collection = db['spells']
+
+# Find all spells where `classes` is stored as a string
+spells = spells_collection.find({"classes": {"$type": "string"}})
+
+for spell in spells:
+    # Convert the string to a list of dictionaries
+    classes_list = ast.literal_eval(spell['classes'])
+
+    # Update the document with the correct structure
+    spells_collection.update_one(
+        {"_id": spell["_id"]},
+        {"$set": {"classes": classes_list}}
+    )
+
+print("Data structure fixed.")
 
 # @character_blueprint.route('/characters', methods=['POST', 'OPTIONS'])
 # def create_character():
@@ -283,7 +301,7 @@ def save_character():
         if not username or not character_prompt:
             return jsonify({'error': 'Username and character prompt are required'}), 400
 
-        # Save character prompt to MongoDB
+        # Save character prompt to MongoDB as a key-value pair
         db.characters.update_one(
             {"username": username},
             {"$set": {"characterPrompt": character_prompt}},
@@ -293,6 +311,43 @@ def save_character():
     except Exception as e:
         app.logger.error(f"Failed to save character prompt: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/spells/<class_name>', methods=['GET'])
+def get_spells(class_name):
+    try:
+        # Ensure the class_name is being passed and logged
+        app.logger.debug(f"Received class_name: {class_name}")
+
+        # Clean up and format class_name if necessary
+        class_name = class_name.strip()
+
+        # Log the cleaned class_name
+        app.logger.debug(f"Cleaned class_name: {class_name}")
+
+        # Use class_name in the query
+        query = {"classes.name": {"$regex": class_name, "$options": "i"}}
+        app.logger.debug(f"Querying with: {query}")
+
+        # Execute the query
+        spells = spells_collection.find(query)
+        spell_list = list(spells)
+
+        app.logger.debug(f"Found {len(spell_list)} spells")
+
+        if not spell_list:
+            return jsonify({'error': 'No spells found for the given class'}), 404
+
+        return jsonify(json.loads(json_util.dumps(spell_list))), 200
+    except Exception as e:
+        app.logger.error(f"Error: {e}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+
+
+
+
+
+
 
 # Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():

@@ -33,6 +33,14 @@ export class ChcrcterCreationService {
       })
     );
   }
+  fetchSpellsByClass(className: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/spells/${className}`).pipe(
+      catchError(error => {
+        console.error('Failed to fetch spells:', error);
+        return throwError(() => new Error('Error fetching spells: ' + error.message));
+      })
+    );
+  }
 
   fetchRaces(): Observable<Race[]> {
     return this.http.get<Race[]>(`${this.apiUrl}/races`).pipe(
