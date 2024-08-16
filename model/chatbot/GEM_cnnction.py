@@ -12,21 +12,16 @@ from google.api_core.exceptions import ResourceExhausted
 load_dotenv()
 
 # Configure Google Generative AI
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+genai.configure(api_key=os.getenv('GEMINI_API_KEY1'))
 
 def generate_gemini_response(prompt, db):
-    # Fetch additional data from the database to enrich the prompt
-    collections = ['races', 'spells', 'equipment', 'monsters', 'game_styles']
-    additional_data = {}
-    for collection in collections:
-        additional_data[collection] = list(db[collection].find())
-    
+    collections = ['races', 'spells', 'equipment', 'monsters', 'classes']
+    additional_data = {collection: list(db[collection].find()) for collection in collections}
     enriched_prompt = f"{prompt}\n\nAdditional Data:\n{json.dumps(additional_data)}"
 
     model = genai.GenerativeModel('gemini-1.5-pro')
     chat = model.start_chat(history=[])
 
-    # Implement exponential backoff
     for n in range(5):
         try:
             response = chat.send_message(enriched_prompt)
@@ -34,8 +29,7 @@ def generate_gemini_response(prompt, db):
         except ResourceExhausted as e:
             if n == 4:
                 raise e
-            sleep_time = (2 ** n) + random.random()
-            time.sleep(sleep_time)
+            time.sleep((2 ** n) + random.random())
 
 GEM_cnnction = Blueprint('GEM_cnnction', __name__)
 
@@ -47,9 +41,8 @@ def generate_text():
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
         
-        # Connect to the database
-        client = MongoClient('mongodb://localhost:27017/mike')
-        db = client.DnD_AI_DB
+        client = MongoClient(os.getenv('MONGO_URI'))
+        db = client[os.getenv('DB_NAME')]
         
         response_text = generate_gemini_response(prompt, db)
         return jsonify({'response': response_text})

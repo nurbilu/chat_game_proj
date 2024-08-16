@@ -1,7 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <input type="text" [(ngModel)]="searchQuery" placeholder="Search...">
-    <button (click)="onSearch()" class="btn btn-primary">Search</button>
+    <div class="input-group">
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
+      <button (click)="onSearch()" class="btn btn-primary">Search</button>
+    </div>
+
     <a class="nav-item nav-link" *ngFor="let collection of collectionKeys"
       [class.active]="collection === selectedCollection && !showSearchResults" (click)="selectCollection(collection)">
       {{collection}}
@@ -9,15 +12,7 @@
   </div>
 </nav>
 <div *ngIf="showSearchResults">
-  <div *ngIf="searchResult && searchResult.length > 0">
-    <h3>Search Results:</h3>
-    <div *ngFor="let item of searchResult">
-      <pre>{{ item | json }}</pre>
-    </div>
-  </div>
-  <div *ngIf="!searchResult || searchResult.length === 0">
-    No results found.
-  </div>
+  <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)" (searchCleared)="clearSearchResults()"></app-lib-search>
 </div>
 <div *ngIf="!showSearchResults">
   <div class="tab-content scrollspy-example" id="nav-tabContent" data-bs-spy="scroll" data-bs-target="#nav-tab"
@@ -25,7 +20,7 @@
     <div class="tab-pane fade show active" role="tabpanel">
       <h4>{{selectedCollection}}</h4>
       <div *ngIf="isCardCollection(selectedCollection)">
-        <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
           <div class="col" *ngFor="let item of getPaginatedItems(); let i = index">
             <div class="card">
               <div class="card-header">

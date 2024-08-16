@@ -28,6 +28,18 @@ export class ChatComponent implements OnInit {
                 this.router.navigate(['/login']);
             } else {
                 this.responses = [{ text: `Welcome back, ${this.username}! Continue your adventure.`, from: 'bot' }];
+                // Load session data
+                this.chatService.sendMessage('', this.username).subscribe({
+                    next: (response) => {
+                        if (response.last_prompt) {
+                            this.responses.push({ text: `Last prompt: ${response.last_prompt}`, from: 'bot' });
+                            this.responses.push({ text: `Last response: ${response.last_response}`, from: 'bot' });
+                        }
+                    },
+                    error: (error) => {
+                        console.error('Error loading session:', error);
+                    }
+                });
             }
         });
     }
@@ -39,7 +51,7 @@ export class ChatComponent implements OnInit {
 
         this.chatService.sendMessage(this.message, this.username).subscribe({
             next: (response) => {
-                this.responses.push({ text: response.text, from: 'bot' });
+                this.responses.push({ text: response.response, from: 'bot' });
                 this.message = '';
             },
             error: (error) => {

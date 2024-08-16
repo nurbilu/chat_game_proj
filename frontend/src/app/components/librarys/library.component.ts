@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { LibraryService } from '../../services/library.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CleanTextPipe } from '../../clean-text.pipe'; // Import CleanTextPipe
-import { SearchService } from '../../search.service'; // Import SearchService
+import { CleanTextPipe } from '../../clean-text.pipe';
+import { SearchService } from '../../search.service';
 
 interface Collection {
   [key: string]: any[];
@@ -16,7 +16,7 @@ interface Collection {
 })
 export class LibraryComponent implements OnInit {
   collections: Collection = {};
-  collectionKeys: string[] = ['races', 'classes','equipment', 'spells', 'monsters'];
+  collectionKeys: string[] = ['races', 'classes', 'equipment', 'spells', 'monsters'];
   selectedCollection: string = '';
   page: number = 1;
   pageSize: number = 6;
@@ -24,8 +24,8 @@ export class LibraryComponent implements OnInit {
   textVisibility: { [key: number]: boolean } = {};
   displayItems: any[] = [];
   searchQuery: string = '';
-  searchResult: any = null; // Store single search result
-  showSearchResults: boolean = false; // Add a new property to track whether search results should be shown
+  searchResult: any[] = [];
+  showSearchResults: boolean = false;
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -159,20 +159,38 @@ export class LibraryComponent implements OnInit {
     return i * 1000 + this.getKeys(this.collections[this.selectedCollection][0]).indexOf(key);
   }
 
+  handleSearchResults(results: { [key: string]: any }): void {
+    console.log('Handling search results:', results);
+    // Transform the results object into an array
+    this.searchResult = Object.values(results).flatMap((category: any) => Object.values(category));
+    this.showSearchResults = true;
+  }
+
+  clearSearchResults(): void {
+    this.searchResult = [];
+    this.showSearchResults = false;
+  }
+
   onSearch(): void {
+    console.log('LibraryComponent onSearch triggered with query:', this.searchQuery); // Ensure this is logged
     if (this.searchQuery) {
       this.searchService.searchItemByName(this.searchQuery)
         .subscribe({
-          next: (item) => {
-            this.searchResult = item ? [item] : [];
-            this.showSearchResults = true; // Set to true when search results are available
-            console.log('Search results:', this.searchResult);
+          next: (results: { [key: string]: any }) => {
+            console.log('Received results:', results);
+            this.searchResult = Object.values(results).flatMap((category: any) => Object.values(category));
+            this.showSearchResults = true;
           },
           error: (error) => {
             console.error('Search error:', error);
+            this.searchResult = [];
             this.showSearchResults = false;
           }
         });
+    } else {
+      console.log('Search query is empty');
+      this.searchResult = [];
+      this.showSearchResults = false;
     }
   }
 }

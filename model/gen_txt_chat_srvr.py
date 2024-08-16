@@ -12,11 +12,11 @@ from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
 from bson.json_util import dumps, loads
 from datetime import datetime
-import random  # For dice rolls
+import random
 from chatbot.handle_data_blueprint import handle_data_blueprint
 from chatbot.game_mchnics_blueprint import game_mchnics_blueprint
 from chatbot.logout_user_blueprint import logout_user_blueprint
-from chatbot.GEM_cnnction import GEM_cnnction  # Import the blueprint
+from chatbot.GEM_cnnction import GEM_cnnction
 from flask.logging import default_handler
 import google.generativeai as genai
 

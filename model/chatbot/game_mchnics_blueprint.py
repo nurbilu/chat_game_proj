@@ -6,7 +6,7 @@ game_mchnics_blueprint = Blueprint('game_mchnics', __name__)
 @game_mchnics_blueprint.route('/fetch_game_data', methods=['POST'])
 def fetch_game_data():
     username = request.json['username']
-    collections = ['races', 'spells', 'equipment', 'monsters', 'game_styles']
+    collections = ['races', 'spells', 'equipment', 'monsters', 'classes']
     game_data = {}
     for collection in collections:
         game_data[collection] = json.loads(json_util.dumps(list(db[collection].find())))
@@ -22,7 +22,6 @@ def roll_dice():
         return jsonify({'result': result})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 def roll_dice_logic(dice_type):
     import random
