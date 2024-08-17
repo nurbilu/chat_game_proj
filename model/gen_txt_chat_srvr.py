@@ -19,6 +19,7 @@ from chatbot.logout_user_blueprint import logout_user_blueprint
 from chatbot.GEM_cnnction import GEM_cnnction
 from flask.logging import default_handler
 import google.generativeai as genai
+from bs4 import BeautifulSoup
 
 def configure_logging():
     log_file = 'app.log'
@@ -147,6 +148,26 @@ def _build_cors_preflight_response():
     response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
     response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
     return response
+
+@app.route('/generate_text/character_prompt/<username>', methods=['GET', 'OPTIONS'])
+@cross_origin()
+def get_character_prompt(username):
+    if request.method == 'OPTIONS':
+        return _build_cors_preflight_response()
+    
+    try:
+        character = db.characters.find_one({"username": username})
+        if character:
+            raw_prompt = character.get("characterPrompt", "")
+            # Clean the HTML to plain text
+            soup = BeautifulSoup(raw_prompt, "html.parser")
+            cleaned_prompt = soup.get_text(separator="\n").strip()
+            return jsonify({"characterPrompt": cleaned_prompt}), 200
+        else:
+            return jsonify({'error': 'Character not found'}), 404
+    except Exception as e:
+        app.logger.error(f"Failed to fetch character prompt: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, handle_exit)

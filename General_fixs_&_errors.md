@@ -5,7 +5,7 @@
 
 3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
 3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
-   - change classes display on spells table - 
+   - change classes display on spells table - done
    - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , 
    - add sorting to the tables - 
    - try to fix the search result in the library - name is first , and adjust array and objects to strings . 

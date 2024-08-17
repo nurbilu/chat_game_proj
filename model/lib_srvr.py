@@ -90,7 +90,6 @@ lib_srvr = Blueprint('lib_srvr', __name__)
 
 def fetch_data_from_db(collection_name):
     try:
-        # Exclude the '_id' and 'index' fields
         projection = {'_id': 0, 'index': 0}
         data = list(db[collection_name].find({}, projection))
 
@@ -102,6 +101,11 @@ def fetch_data_from_db(collection_name):
                 formatted_item.update(item)  # Add remaining fields after 'name'
             else:
                 formatted_item = item  # Use the item as is if 'Name' is not present
+
+            # Handle 'classes' array within 'spells' collection
+            if collection_name == 'spells' and 'classes' in item:
+                formatted_item['classes'] = [cls.lower() for cls in item['classes']]
+
             formatted_data.append(formatted_item)
         
         app.logger.info(f"Fetched {collection_name}")

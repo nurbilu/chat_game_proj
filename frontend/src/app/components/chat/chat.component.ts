@@ -72,4 +72,16 @@ export class ChatComponent implements OnInit {
             this.router.navigate(['/homepage']);
         });
     }
+
+    pasteTemplate(): void {
+        this.chatService.getCharacterPrompt(this.username).subscribe({
+            next: (response) => {
+                this.message = response.characterPrompt;
+            },
+            error: (error) => {
+                console.error('Error fetching character prompt:', error);
+                this.responses.push({ text: 'Error: Could not fetch character prompt', from: 'bot' });
+            }
+        });
+    }
 }

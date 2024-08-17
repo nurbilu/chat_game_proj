@@ -12,6 +12,7 @@
       <span>{{ username }}: </span>
       <input type="text" [(ngModel)]="message" placeholder="Type your message here" required (keydown)="onEnter($event)">
       <button (click)="sendMessage()" class="btn btn-success">Send</button>
+      <button (click)="pasteTemplate()" class="btn btn-info">Paste Template</button>
     </div>
   </div>
   <div style="text-align: right; margin-top: 10px;">

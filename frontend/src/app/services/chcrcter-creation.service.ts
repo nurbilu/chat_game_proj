@@ -123,4 +123,13 @@ export class ChcrcterCreationService {
       })
     );
   }
+  getCharacterPrompt(username: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/character_prompt/${username}`).pipe(
+      catchError(error => {
+        console.error('Failed to fetch character prompt:', error);
+        return throwError(() => new Error('Error fetching character prompt: ' + error.message));
+      })
+    );
+  }
+
 }

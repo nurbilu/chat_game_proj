@@ -15,6 +15,7 @@ from flask.logging import default_handler
 from dotenv import load_dotenv
 import openai
 import ast
+from bs4 import BeautifulSoup
 
 # Load environment variables from .env file
 load_dotenv()
@@ -342,6 +343,21 @@ def get_spells(class_name):
         app.logger.error(f"Error: {e}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
+@character_blueprint.route('/character_prompt/<username>', methods=['GET'])
+def get_character_prompt(username):
+    try:
+        character = db.characters.find_one({"username": username})
+        if character:
+            raw_prompt = character.get("characterPrompt", "")
+            # Clean the HTML to plain text
+            soup = BeautifulSoup(raw_prompt, "html.parser")
+            cleaned_prompt = soup.get_text(separator="\n").strip()
+            return jsonify({"characterPrompt": cleaned_prompt}), 200
+        else:
+            return jsonify({'error': 'Character not found'}), 404
+    except Exception as e:
+        app.logger.error(f"Failed to fetch character prompt: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 # Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():

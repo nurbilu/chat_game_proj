@@ -8,6 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class ChatService {
   private apiUrl = 'http://127.0.0.1:5000/generate_text';
+  private apiUrl1 ='http://127.0.0.1:6500/api';
   private loginUrl = 'http://127.0.0.1:8000/login/';
 
   constructor(private http: HttpClient) {}
@@ -26,6 +27,15 @@ export class ChatService {
       catchError(error => {
         console.error('HTTP error:', error);
         return throwError(() => new Error('Failed to send message'));
+      })
+    );
+  }
+
+  getCharacterPrompt(username: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl1}/character_prompt/${username}`).pipe(
+      catchError(error => {
+        console.error('HTTP error:', error);
+        return throwError(() => new Error('Failed to fetch character prompt'));
       })
     );
   }

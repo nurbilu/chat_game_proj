@@ -144,6 +144,19 @@ export class ChrcterCreationComponent implements OnInit {
     });
   }
 
+  pasteTemplate(): void {
+    this.authService.getUsername().subscribe((username: string) => {
+      this.chcrcterCreationService.getCharacterPrompt(username).subscribe({
+        next: (response) => {
+          this.characterPrompt = `Here are some details for character creation: ${response.characterPrompt}`;
+        },
+        error: (error: any) => {
+          console.error('Failed to fetch character prompt:', error);
+        }
+      });
+    });
+  }
+
 
 
   ngAfterViewInit(): void {
