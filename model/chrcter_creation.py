@@ -31,7 +31,7 @@ if not OPENAI_API_KEY:
 openai.api_key = OPENAI_API_KEY
 
 class MongoDBCache(BaseCache):
-    def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='DnD_AI_DB', collection='cache'):
+    def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='NEW_DATA_DND', collection='cache'):
         self.default_timeout = default_timeout
         self.client = MongoClient(host, port)
         self.db = self.client[db_name]
@@ -125,7 +125,7 @@ def create_app():
 
 character_blueprint = Blueprint('character', __name__)
 mongo_client = MongoClient('mongodb://localhost:27017/mike')
-db = mongo_client['DnD_AI_DB']
+db = mongo_client['NEW_DATA_DND']
 spells_collection = db['spells']
 
 # Find all spells where `classes` is stored as a string

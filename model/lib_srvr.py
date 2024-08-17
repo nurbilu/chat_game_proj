@@ -18,7 +18,7 @@ import traceback
 
 # Initialize MongoDB client
 client = MongoClient('mongodb://localhost:27017/mike')
-db = client.DnD_AI_DB
+db = client.NEW_DATA_DND
 
 class FilterRemoveDateFromWerkzeugLogs(Filter):
     # Regex pattern to remove the date/time from Werkzeug logs
@@ -90,24 +90,20 @@ lib_srvr = Blueprint('lib_srvr', __name__)
 
 def fetch_data_from_db(collection_name):
     try:
-        projection = {'_id': 0, 'index': 0}
-        data = list(db[collection_name].find({}, projection))
-
-        # Ensure 'name' is lowercase if 'Name' exists and rearrange the fields to show 'name' first
+        data = db[collection_name].find({}, {'_id': 0, 'index': 0})
         formatted_data = []
+        all_keys = set()
+
+        # First pass to collect all keys
         for item in data:
-            if 'name' in item:
-                formatted_item = {'Name': item.pop('name').lower()}
-                formatted_item.update(item)  # Add remaining fields after 'name'
-            else:
-                formatted_item = item  # Use the item as is if 'Name' is not present
+            all_keys.update(item.keys())
 
-            # Handle 'classes' array within 'spells' collection
-            if collection_name == 'spells' and 'classes' in item:
-                formatted_item['classes'] = [cls.lower() for cls in item['classes']]
-
+        # Second pass to format data
+        data = db[collection_name].find({}, {'_id': 0, 'index': 0})
+        for item in data:
+            formatted_item = {key: item.get(key, 'None') for key in all_keys}
             formatted_data.append(formatted_item)
-        
+
         app.logger.info(f"Fetched {collection_name}")
         return jsonify(json.loads(json.dumps(formatted_data)))  # Convert to JSON
 
@@ -117,30 +113,30 @@ def fetch_data_from_db(collection_name):
 
 @lib_srvr.route('/fetch_races', methods=['GET'])
 def fetch_races():
-    return fetch_data_from_db('races')
+    return fetch_data_from_db('Races')
 
 @lib_srvr.route('/fetch_equipment', methods=['GET'])
 def fetch_equipment():
-    return fetch_data_from_db('equipment')
+    return fetch_data_from_db('Equipment')
 
 @lib_srvr.route('/fetch_monsters', methods=['GET'])
 def fetch_monsters():
-    return fetch_data_from_db('monsters')
+    return fetch_data_from_db('Monsters')
 
 @lib_srvr.route('/fetch_classes', methods=['GET'])
 def fetch_classes():
-    return fetch_data_from_db('classes')
+    return fetch_data_from_db('Classes')
 
 @lib_srvr.route('/fetch_spells', methods=['GET'])
 def fetch_spells():
-    return fetch_data_from_db('spells')
+    return fetch_data_from_db('Spells')
 
 @lib_srvr.route('/search/<name>', methods=['GET'])
 def search_item_by_name(name):
     projection = {'_id': 0, 'index': 0}
     regex = re.compile(f'^{re.escape(name)}$', re.IGNORECASE)  # Exact match, case-insensitive
     results = {}
-    for collection in ['spells', 'classes', 'races', 'monsters', 'equipment']:
+    for collection in ['Spells', 'Classes', 'Races', 'Monsters', 'Equipment']:
         data = db[collection].find_one({"name": regex}, projection)
         if data:
             results[collection] = data

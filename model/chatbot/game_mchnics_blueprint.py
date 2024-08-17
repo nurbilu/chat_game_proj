@@ -6,7 +6,7 @@ game_mchnics_blueprint = Blueprint('game_mchnics', __name__)
 @game_mchnics_blueprint.route('/fetch_game_data', methods=['POST'])
 def fetch_game_data():
     username = request.json['username']
-    collections = ['races', 'spells', 'equipment', 'monsters', 'classes']
+    collections = ['Races', 'Spells', 'Equipment', 'Monsters', 'Classes']
     game_data = {}
     for collection in collections:
         game_data[collection] = json.loads(json_util.dumps(list(db[collection].find())))

@@ -64,28 +64,22 @@ export class LibraryComponent implements OnInit {
 
     fetchObservable.subscribe((data: any) => {
       if (Array.isArray(data)) {
-        this.collections[collection] = data.map(item => {
-          if (typeof item === 'object' && item !== null && 'name' in item) {
-            return {
-              ...item,
-              name: this.cleanTextPipe.transform((item as { name: string }).name.toLowerCase())  // Ensure 'name' is lowercase and cleaned
-            };
-          }
-          return item;
+        const allKeys = new Set<string>();
+        data.forEach(item => Object.keys(item).forEach(key => allKeys.add(key)));
+
+        this.collections[collection] = data.map((item, index) => {
+          const formattedItem = { ...item, rowNumber: index + 1 };
+          allKeys.forEach(key => {
+            if (!(key in formattedItem)) {
+              formattedItem[key] = 'None';
+            }
+          });
+          return formattedItem;
         });
       } else if (typeof data === 'object') {
-        this.collections[collection] = Object.values(data).flat().map(item => {
-          if (typeof item === 'object' && item !== null && 'name' in item) {
-            return {
-              ...item,
-              name: this.cleanTextPipe.transform((item as { name: string }).name.toLowerCase())  // Ensure 'name' is lowercase and cleaned
-            };
-          }
-          return item;
-        });
+        // Handle object case if necessary
       } else {
-        console.error(`Data for collection ${collection} is not an array or object:`, data);
-        this.collections[collection] = [];
+        console.error('Unexpected data format:', data);
       }
       if (!this.selectedCollection) {
         this.selectedCollection = collection;

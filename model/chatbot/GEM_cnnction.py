@@ -15,7 +15,7 @@ load_dotenv()
 genai.configure(api_key=os.getenv('GEMINI_API_KEY1'))
 
 def generate_gemini_response(prompt, db):
-    collections = ['races', 'spells', 'equipment', 'monsters', 'classes']
+    collections = ['Races', 'Spells', 'Equipment', 'Monsters', 'Classes']
     additional_data = {collection: list(db[collection].find()) for collection in collections}
     enriched_prompt = f"{prompt}\n\nAdditional Data:\n{json.dumps(additional_data)}"
 
@@ -33,18 +33,18 @@ def generate_gemini_response(prompt, db):
 
 GEM_cnnction = Blueprint('GEM_cnnction', __name__)
 
-@GEM_cnnction.route('/generate_text', methods=['POST'])
-def generate_text():
-    try:
-        data = request.json
-        prompt = data.get('prompt', '')
-        if not prompt:
-            return jsonify({'error': 'Prompt is required'}), 400
+# @GEM_cnnction.route('/generate_text', methods=['POST'])
+# def generate_text():
+#     try:
+#         data = request.json
+#         prompt = data.get('prompt', '')
+#         if not prompt:
+#             return jsonify({'error': 'Prompt is required'}), 400
         
-        client = MongoClient(os.getenv('MONGO_URI'))
-        db = client[os.getenv('DB_NAME')]
+#         client = MongoClient(os.getenv('MONGO_URI'))
+#         db = client[os.getenv('DB_NAME')]
         
-        response_text = generate_gemini_response(prompt, db)
-        return jsonify({'response': response_text})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+#         response_text = generate_gemini_response(prompt, db)
+#         return jsonify({'response': response_text})
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500

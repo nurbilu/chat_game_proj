@@ -86,14 +86,14 @@ app.register_blueprint(GEM_cnnction)
 
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/mike')
-db = client['DnD_AI_DB']
+db = client['NEW_DATA_DND']
 
 # Fetch fireball prompts
 fireball_prompts = list(db.fireball.find({}))
 
 # Define the MongoDB cache class
 class MongoDBCache(BaseCache):
-    def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='DnD_AI_DB', collection='cache'):
+    def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='NEW_DATA_DND', collection='cache'):
         self.default_timeout = default_timeout
         self.client = MongoClient(host, port)
         self.db = self.client[db_name]
