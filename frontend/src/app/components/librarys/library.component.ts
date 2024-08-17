@@ -193,4 +193,11 @@ export class LibraryComponent implements OnInit {
       this.showSearchResults = false;
     }
   }
+
+  formatArray(value: any[]): string {
+    if (Array.isArray(value)) {
+      return value.map(item => item.name || item).join(', ');
+    }
+    return String(value);
+  }
 }

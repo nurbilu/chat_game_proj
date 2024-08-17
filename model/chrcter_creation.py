@@ -343,12 +343,6 @@ def get_spells(class_name):
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 
-
-
-
-
-
-
 # Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():
     response = make_response()

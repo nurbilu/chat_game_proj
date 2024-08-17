@@ -50,7 +50,7 @@ export class LibSearchComponent {
       return item;
     }
     if (Array.isArray(item)) {
-      return item.join(', ');
+      return item.map(i => i.name || i).join(', ');
     }
     if (typeof item === 'object' && item !== null) {
       return Object.values(item)

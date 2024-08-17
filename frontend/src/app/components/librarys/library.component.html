@@ -76,7 +76,7 @@
                     </div>
                   </div>
                   <div *ngIf="!isString($any(item[key])) || !isLongText($any(item[key]))">
-                    <span>{{ $any(item[key]) }}</span>
+                    <span>{{ formatArray($any(item[key])) }}</span>
                   </div>
                 </td>
               </ng-container>

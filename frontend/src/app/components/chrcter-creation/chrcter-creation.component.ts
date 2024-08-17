@@ -72,6 +72,10 @@ export class ChrcterCreationComponent implements OnInit {
     { name: 'Warlock', description: 'A wielder of magic that is derived from a bargain with an extraplanar entity.', spells: [] },
     { name: 'Wizard', description: 'A scholarly magic-user capable of manipulating the structures of reality.', spells: [] }
   ];
+  nonSpellClasses = ['Barbarian', 'Fighter', 'Monk', 'Rogue'];
+  spellClasses = this.classes.filter(classItem => !this.nonSpellClasses.includes(classItem.name));
+  nonSpellClassList = this.classes.filter(classItem => this.nonSpellClasses.includes(classItem.name));
+
   spells: any[] = [];
 
   userMessage: string = '';
