@@ -93,14 +93,6 @@ export class ChrcterCreationComponent implements OnInit {
       this.fetchAllSpells();
     });
   }
-  fetchAllSpells(): void {
-    this.classes.forEach(classItem => {
-      this.chcrcterCreationService.fetchSpellsByClass(classItem.name).subscribe((spells: any[]) => {
-        classItem.spells = spells;
-        this.cdr.detectChanges(); // Manually trigger change detection
-      });
-    });
-  }
   saveDraft() {
     this.authService.getUsername().subscribe((username: string) => {
       const draft = {
@@ -163,12 +155,24 @@ export class ChrcterCreationComponent implements OnInit {
     // No need for manual collapsible logic as we are using ng-bootstrap Accordion
   }
 
+  
+  fetchAllSpells(): void {
+    this.classes.forEach(classItem => {
+      this.chcrcterCreationService.fetchSpellsByClass(classItem.name).subscribe((spells: any[]) => {
+        classItem.spells = spells;
+        this.cdr.detectChanges(); // Manually trigger change detection
+      }, error => {
+        console.error(`Error fetching spells for class ${classItem.name}:`, error);
+      });
+    });
+}
+
   fetchRaces(): void {
     this.chcrcterCreationService.fetchRaces().subscribe((races: any[]) => {
       this.races = races;
+      this.cdr.detectChanges(); // Manually trigger change detection
     });
-  }
-
+}
   onClassChange(className: string) {
     this.chcrcterCreationService.fetchSpellsByClass(className).subscribe((spells: any[]) => {
       this.spells = spells;

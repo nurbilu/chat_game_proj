@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="text-frame">
       <h3>Spells for Each Class</h3>
       <div *ngFor="let classItem of classes">
         <ng-container *ngIf="!['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(classItem.name)">
@@ -58,22 +58,23 @@
           </p>
         </ng-container>
       </div>
+      <div>
+        <h3>Non-Spell Classes</h3>
+        <p>No spells available for these classes!</p>
+        <ul>
+          <li>Barbarian</li>
+          <li>Fighter</li>
+          <li>Monk</li>
+          <li>Rogue</li>
+        </ul>
+      </div>
       <p>
         For more information on spells, visit 
         <a href="https://rpgbot.net/dnd5/characters/spells/" target="_blank">RPGBot</a>.
       </p>
     </div>
 
-    <div>
-      <h3>Non-Spell Classes</h3>
-      <p>No spells available for these classes!</p>
-      <ul>
-        <li>Barbarian</li>
-        <li>Fighter</li>
-        <li>Monk</li>
-        <li>Rogue</li>
-      </ul>
-    </div>
+    
 
 <div class="text-frame">
   <h3>Classes Description</h3>

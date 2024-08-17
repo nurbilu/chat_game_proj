@@ -126,7 +126,7 @@ def create_app():
 character_blueprint = Blueprint('character', __name__)
 mongo_client = MongoClient('mongodb://localhost:27017/mike')
 db = mongo_client['NEW_DATA_DND']
-spells_collection = db['spells']
+spells_collection = db['Spells']
 
 # Find all spells where `classes` is stored as a string
 spells = spells_collection.find({"classes": {"$type": "string"}})
@@ -142,33 +142,6 @@ for spell in spells:
     )
 
 print("Data structure fixed.")
-
-# @character_blueprint.route('/characters', methods=['POST', 'OPTIONS'])
-# def create_character():
-#     if request.method == 'OPTIONS':
-#         return build_cors_preflight_response()
-#     elif request.method == 'POST':
-#         try:
-#             character_data = request.json
-#             required_fields = ['name', 'class', 'race', 'username']
-#             if not all(field in character_data for field in required_fields):
-#                 app.logger.warning(f"Missing required fields: {character_data}")
-#                 return jsonify({'error': 'Missing required fields'}), 400
-
-#             # Insert character data into MongoDB
-#             result = db.character_creation_users.insert_one(character_data)
-#             # Convert ObjectId to string for the response
-#             character_data['_id'] = str(result.inserted_id)
-
-#             # Send data to chat server and Gemini API
-#             response = requests.post('http://127.0.0.1:5000/api/character_data', json=character_data)
-#             if response.status_code == 200:
-#                 return jsonify({'message': 'Character created', 'chat_response': response.json()}), 201
-#             else:
-#                 return jsonify({'error': 'Failed to create character due to external API error'}), 500
-#         except Exception as e:
-#             app.logger.error(f"Failed to create character: {str(e)}")
-#             return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 @character_blueprint.route('/characters/<username>', methods=['GET', 'OPTIONS'])
 def get_character_by_username(username):
@@ -196,7 +169,16 @@ def get_races():
         return build_cors_preflight_response()
     elif request.method == 'GET':
         try:
-            races = list(db.races.find({}, {'_id': 0, 'name': 1, 'alignment': 1, 'age': 1, 'size_description': 1, 'language_desc': 1}))
+            # Project only the required fields
+            projection = {
+                '_id': 0,
+                'name': 1,
+                'alignment': 1,
+                'age': 1,
+                'size_description': 1,
+                'language_desc': 1
+            }
+            races = list(db.Races.find({}, projection))
             return jsonify(races), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -314,33 +296,17 @@ def save_character():
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 @character_blueprint.route('/spells/<class_name>', methods=['GET'])
-def get_spells(class_name):
+def fetch_spells_by_class(class_name):
     try:
-        # Ensure the class_name is being passed and logged
-        app.logger.debug(f"Received class_name: {class_name}")
-
-        # Clean up and format class_name if necessary
-        class_name = class_name.strip()
-
-        # Log the cleaned class_name
-        app.logger.debug(f"Cleaned class_name: {class_name}")
-
-        # Use class_name in the query
-        query = {"classes.name": {"$regex": class_name, "$options": "i"}}
-        app.logger.debug(f"Querying with: {query}")
-
-        # Execute the query
-        spells = spells_collection.find(query)
+        # Project only the 'name' field
+        projection = {'_id': 0, 'name': 1}
+        spells = spells_collection.find({"classes.name": class_name}, projection)
         spell_list = list(spells)
-
-        app.logger.debug(f"Found {len(spell_list)} spells")
-
         if not spell_list:
-            return jsonify({'error': 'No spells found for the given class'}), 404
-
-        return jsonify(json.loads(json_util.dumps(spell_list))), 200
+            return jsonify({"error": "No spells found for the given class"}), 404
+        return jsonify(spell_list), 200
     except Exception as e:
-        app.logger.error(f"Error: {e}")
+        app.logger.error(f"Failed to fetch spells for class {class_name}: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 @character_blueprint.route('/character_prompt/<username>', methods=['GET'])

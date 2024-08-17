@@ -1,7 +1,7 @@
 ### what to fix and errors : 
 1. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
 
-2. add a check for refresh token - if not refresh token - login regular and logout also when access token expired - if refresh token - login with refresh token ()
+2.if not refresh token - login regular and logout also when access token expired - check if expire ()
 
 3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
 3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
@@ -53,3 +53,5 @@ DONE LIST :
    - fix Gemini integration - done .
 
 9. 6. add/fix/adjust/modify when reload from browser display the current component instead to homepage(done?)
+
+10. 2. add a check for refresh token - if not refresh token - login regular and logout also when access token expired - if refresh token - login with refresh token (done)

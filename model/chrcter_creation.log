@@ -1,0 +1,34 @@
+2024-08-17 22:24:34,504 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:6500
+ * Running on http://10.0.0.7:6500
+2024-08-17 22:24:34,505 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-08-17 22:24:36,223 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:36] "GET /api/spells/Wizard HTTP/1.1" 200 -
+2024-08-17 22:24:44,709 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/draft/eddie HTTP/1.1" 200 -
+2024-08-17 22:24:44,716 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/races HTTP/1.1" 200 -
+2024-08-17 22:24:44,720 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Barbarian HTTP/1.1" 200 -
+2024-08-17 22:24:44,728 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Bard HTTP/1.1" 200 -
+2024-08-17 22:24:44,731 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Cleric HTTP/1.1" 200 -
+2024-08-17 22:24:44,743 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/draft/eddie HTTP/1.1" 200 -
+2024-08-17 22:24:44,751 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Druid HTTP/1.1" 200 -
+2024-08-17 22:24:44,755 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Fighter HTTP/1.1" 200 -
+2024-08-17 22:24:44,759 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/races HTTP/1.1" 200 -
+2024-08-17 22:24:44,763 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Monk HTTP/1.1" 200 -
+2024-08-17 22:24:44,769 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "[33mGET /api/spells/Barbarian HTTP/1.1[0m" 404 -
+2024-08-17 22:24:44,771 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Paladin HTTP/1.1" 200 -
+2024-08-17 22:24:44,783 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Ranger HTTP/1.1" 200 -
+2024-08-17 22:24:44,788 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Rogue HTTP/1.1" 200 -
+2024-08-17 22:24:44,793 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Sorcerer HTTP/1.1" 200 -
+2024-08-17 22:24:44,810 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Bard HTTP/1.1" 200 -
+2024-08-17 22:24:44,817 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Warlock HTTP/1.1" 200 -
+2024-08-17 22:24:44,827 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "OPTIONS /api/spells/Wizard HTTP/1.1" 200 -
+2024-08-17 22:24:44,830 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Cleric HTTP/1.1" 200 -
+2024-08-17 22:24:44,846 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Druid HTTP/1.1" 200 -
+2024-08-17 22:24:44,855 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "[33mGET /api/spells/Fighter HTTP/1.1[0m" 404 -
+2024-08-17 22:24:44,863 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "[33mGET /api/spells/Monk HTTP/1.1[0m" 404 -
+2024-08-17 22:24:44,868 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Paladin HTTP/1.1" 200 -
+2024-08-17 22:24:44,880 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Ranger HTTP/1.1" 200 -
+2024-08-17 22:24:44,881 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "[33mGET /api/spells/Rogue HTTP/1.1[0m" 404 -
+2024-08-17 22:24:44,904 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Warlock HTTP/1.1" 200 -
+2024-08-17 22:24:44,907 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Sorcerer HTTP/1.1" 200 -
+2024-08-17 22:24:44,920 - werkzeug - INFO - 127.0.0.1 - - [17/Aug/2024 22:24:44] "GET /api/spells/Wizard HTTP/1.1" 200 -

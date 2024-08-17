@@ -17,6 +17,11 @@ export interface Character {
   prompt: any;
 }
 
+export interface Spell {
+  name: string;
+  desc: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,14 +38,14 @@ export class ChcrcterCreationService {
       })
     );
   }
-  fetchSpellsByClass(className: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/spells/${className}`).pipe(
+  fetchSpellsByClass(className: string): Observable<Spell[]> {
+    return this.http.get<Spell[]>(`${this.apiUrl}/spells/${className}`).pipe(
       catchError(error => {
-        console.error('Failed to fetch spells:', error);
+        console.error(`Failed to fetch spells for class ${className}:`, error);
         return throwError(() => new Error('Error fetching spells: ' + error.message));
       })
     );
-  }
+}
 
   fetchRaces(): Observable<Race[]> {
     return this.http.get<Race[]>(`${this.apiUrl}/races`).pipe(
@@ -49,7 +54,7 @@ export class ChcrcterCreationService {
         return throwError(() => new Error('Error fetching races: ' + error.message));
       })
     );
-  }
+}
 
   createCharacter(character: any): Observable<any> {
     const headers = new HttpHeaders({
