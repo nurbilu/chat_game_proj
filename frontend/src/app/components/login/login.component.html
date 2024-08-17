@@ -10,6 +10,10 @@
       <br>
       <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="Please enter your Password to Login ">
     </div>
+    <div>
+      <input type="checkbox" id="rememberMe" [(ngModel)]="rememberMe" name="rememberMe">
+      <label for="rememberMe">Remember Me</label>
+    </div>
     <a href="javascript:void(0)" (click)="navigateToForgotPassword()" class="reset-link">Forgot Password?</a>
     <button type="submit">Login</button>
   </form>

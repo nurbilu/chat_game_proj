@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   isSuperUser: boolean = false;
   username: string | null = null;
   password: string = '';
+  rememberMe: boolean = false; // Added this line
   private modalRef: NgbModalRef | undefined;
   isNavbarSticky: boolean = false;
 
@@ -47,6 +48,13 @@ export class AppComponent implements OnInit {
         });
       }
     });
+
+    // Automatically logout when access token expires
+    this.authService.tokenExpiration$.subscribe(() => {
+      if (!localStorage.getItem('refresh_token')) {
+        this.onLogout();
+      }
+    });
   }
 
   @HostListener('window:scroll', [])
@@ -64,7 +72,7 @@ export class AppComponent implements OnInit {
       if (this.chrcterCreationComponent) {
         this.chrcterCreationComponent.clearEditor();
       }
-      this.router.navigate(['/login']);
+      this.router.navigate(['/homepage']);
     });
   }
 
@@ -101,7 +109,7 @@ export class AppComponent implements OnInit {
 
   loginWithModal(modal: any) {
     if (this.username && this.password) {
-      this.authService.loginForModal(this.username, this.password).subscribe({
+      this.authService.loginForModal(this.username, this.password, this.rememberMe).subscribe({
         next: (response) => {
           this.toastService.show({
             template: this.welcomeTemplate,
@@ -151,6 +159,10 @@ export class AppComponent implements OnInit {
   onLogout() {
     this.authService.logout().subscribe(() => {
       console.log('User logged out');
+      this.isLoggedIn = false;
+      this.username = null;
+      this.isSuperUser = false;
+      this.router.navigate(['/homepage']);
     });
   }
 

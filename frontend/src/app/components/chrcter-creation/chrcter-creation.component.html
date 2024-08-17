@@ -3,11 +3,12 @@
     <h2>Welcome to Character Creation </h2>
     <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat
       style do you desire? There are many classes and races to choose from in DnD 5e. create a prompt to paste at the
-      chat
-      use this Text Editor to create your promp , also use the chat to ask me questions about your character , dont
-      forget to use our library and the accordion
+      chat!
+      <br>
+      use this Text Editor to create your character creation prompt , also use the chat to ask me questions about your
+      character , dont
+      forget to use our library and the accordions
       to see the classes and races descriptions and spells:</p>
-
 
     <div class="text-frame">
       <h3>Character Creation Prompt</h3>
@@ -15,10 +16,10 @@
         <st-editor [(ngModel)]="characterPrompt" [Config]="config"></st-editor>
       </div>
       <button (click)="sendMessage()">Send</button>
-
       <button (click)="saveDraft()">Save Draft</button>
       <button (click)="pasteDraft()">Paste Draft</button>
     </div>
+
     <div class="text-frame chat-container">
       <h3>Character Creation Advisor</h3>
       <div *ngFor="let message of chatMessages" [ngClass]="message.role" class="chat-bubble">
@@ -30,54 +31,65 @@
         <button (click)="sendChatMessage()" class="btn btn-success">Send</button>
       </div>
     </div>
-    <p>For more information on spells, visit <a href="https://rpgbot.net/dnd5/characters/spells/"
-        target="_blank">RPGBot</a>.</p>
-    <div class="text-frame">
+
+    <div ngbAccordion>
+      <div ngbAccordionItem>
+        <h2 ngbAccordionHeader>
+          <button ngbAccordionButton>Spells for Each Class</button>
+        </h2>
+        <div ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <div *ngFor="let classItem of classes">
+              <h4>{{ classItem.name }}</h4>
+              <select *ngIf="classItem.spells.length > 0" class="form-select">
+                <option *ngFor="let spell of classItem.spells" [value]="spell.name">{{ spell.name }}</option>
+              </select>
+              <p *ngIf="classItem.spells.length === 0" class="no-spells">
+                No spells available for {{ classItem.name }}.
+              </p>
+            </div>
+            <p>
+              For more information on spells, visit 
+              <a href="https://rpgbot.net/dnd5/characters/spells/" target="_blank">RPGBot</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    
       <div ngbAccordion>
-        <h3>Spells for Each Class</h3>
-        <div *ngFor="let classItem of classes">
-          <h4>{{ classItem.name }}</h4>
-          <select *ngIf="classItem.spells.length > 0" class="form-select">
-            <option *ngFor="let spell of classItem.spells" [value]="spell.name">{{ spell.name }}</option>
-          </select>
-          <p *ngIf="classItem.spells.length === 0">No spells available for {{ classItem.name }}.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="text-frame">
-    <h3>Classes Description</h3>
-    <div ngbAccordion>
-      <div ngbAccordionItem *ngFor="let class of classes">
-        <h2 ngbAccordionHeader>
-          <button ngbAccordionButton>{{ class.name }}</button>
-        </h2>
-        <div ngbAccordionCollapse>
-          <div ngbAccordionBody>
-            <p>{{ class.description }}</p>
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>Classes Description</button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <div *ngFor="let class of classes">
+                <h4>{{ class.name }}</h4>
+                <p>{{ class.description }}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="text-frame">
-    <h3>Race Descriptions</h3>
-    <div ngbAccordion>
-      <div ngbAccordionItem *ngFor="let race of races">
-        <h2 ngbAccordionHeader>
-          <button ngbAccordionButton>{{ race.name }}</button>
-        </h2>
-        <div ngbAccordionCollapse>
-          <div ngbAccordionBody>
-            <p><strong>Alignment:</strong> {{ race.alignment }}</p>
-            <p><strong>Age:</strong> {{ race.age }}</p>
-            <p><strong>Size:</strong> {{ race.size_description }}</p>
-            <p><strong>Languages:</strong> {{ race.language_desc }}</p>
+    
+        <div ngbAccordion>
+          <div ngbAccordionItem>
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>Race Descriptions</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <div *ngFor="let race of races">
+                  <h4>{{ race.name }}</h4>
+                  <p><strong>Alignment:</strong> {{ race.alignment }}</p>
+                  <p><strong>Age:</strong> {{ race.age }}</p>
+                  <p><strong>Size:</strong> {{ race.size_description }}</p>
+                  <p><strong>Languages:</strong> {{ race.language_desc }}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+        
 
   <ng-template #successTemplate>
     <div>Character created successfully!</div>
@@ -88,3 +100,4 @@
   <ng-template #fillFieldsTemplate>
     <div>Please fill all fields</div>
   </ng-template>
+</div>

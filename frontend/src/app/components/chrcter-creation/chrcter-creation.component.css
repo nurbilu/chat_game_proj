@@ -1,6 +1,6 @@
 .chrcter-creation-container {
-    max-width: 1350px;
-    max-height: 3100px;
+    max-width: 2100px;
+    max-height: 3400px;
     padding: 5px;
     background: rgba(255, 255, 255, 0.8) url('/assets/imgs/magic_plains.jpg') no-repeat center center;
     background-size: cover;
@@ -103,6 +103,11 @@ button {
     background-position: center;
     border: none; /* Ensure no border is applied */
     background-color: transparent; /* Ensure background is transparent */
+}
+.no-spells {
+    color: rgb(248, 242, 242);
+    font-style: italic;
+    margin-top: 10px;
 }
 
 

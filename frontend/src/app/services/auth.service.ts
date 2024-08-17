@@ -16,6 +16,9 @@ export class AuthService {
     private tokenExpirationTimer: any;
     private jwtHelper = new JwtHelperService();
 
+    private tokenExpirationSubject = new BehaviorSubject<void>(undefined);
+    tokenExpiration$ = this.tokenExpirationSubject.asObservable();
+
     constructor(
         private http: HttpClient,
         @Inject(PLATFORM_ID) private platformId: Object,
@@ -64,7 +67,7 @@ export class AuthService {
         return this.http.post(`${this.baseUrl}register/`, formData);
     }
 
-    login(username: string, password: string): Observable<any> {
+    login(username: string, password: string, rememberMe: boolean): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
             tap(response => {
                 if (!response || !response.access) {
@@ -77,7 +80,9 @@ export class AuthService {
                     throw new Error('Username not provided in token');
                 }
                 this.setItem('token', response.access);
-                this.setItem('refresh_token', response.refresh);
+                if (rememberMe) {
+                    this.setItem('refresh_token', response.refresh);
+                }
                 this.setItem('username', username);
                 this._isLoggedIn.next(true); // Update login state
                 this.username.next(decodedToken.username);
@@ -91,7 +96,7 @@ export class AuthService {
         );
     }
 
-    loginForModal(username: string, password: string): Observable<any> {
+    loginForModal(username: string, password: string, rememberMe: boolean): Observable<any> {
         const loginPayload = { username, password };
         const headers = new HttpHeaders({
             'Content-Type': 'application/json'
@@ -239,19 +244,31 @@ export class AuthService {
             if (expirationDate) {
                 const expiresIn = expirationDate.getTime() - Date.now();
                 this.tokenExpirationTimer = setTimeout(() => {
-                    this.ngZone.run(() => {
-                        this.clearLocalStorageAndRefresh();
-                    });
+                    this.tokenExpirationSubject.next();
                 }, expiresIn);
             }
         }
     }
 
-    private clearLocalStorageAndRefresh() {
+    private clearLocalStorage() {
         if (isPlatformBrowser(this.platformId)) {
-            localStorage.clear();
+            localStorage.removeItem('token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('username');
         }
-        alert('Token expired. Please login again.');
+    }
+
+    logout(): Observable<any> {
+        return of(null).pipe(
+            tap(() => {
+                this.clearLocalStorage();
+                this._isLoggedIn.next(false);
+                this.username.next('');
+                if (this.tokenExpirationTimer) {
+                    clearTimeout(this.tokenExpirationTimer);
+                }
+            })
+        );
     }
 
     validateUser(data: { username: string; email: string }): Observable<any> {
@@ -280,16 +297,6 @@ export class AuthService {
 
     getUsername(): Observable<string> {
         return this.username.asObservable();
-    }
-
-    logout(): Observable<void> {
-        if (isPlatformBrowser(this.platformId)) {
-            localStorage.clear();
-            this._isLoggedIn.next(false);
-            this.username.next('');
-            this.router.navigate(['/homepage']);
-        }
-        return of();
     }
 
     createSuperUser(data: { username: string; email: string; password: string }): Observable<any> {

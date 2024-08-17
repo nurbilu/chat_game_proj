@@ -1,26 +1,22 @@
 ### what to fix and errors : 
 1. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
 
+2. add a check for refresh token - if not refresh token - login regular and logout also when access token expired - if refresh token - login with refresh token ()
 
 3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
 3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
-   - remove empty columns values from library tables - ? 
+   - change classes display on spells table - 
    - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , 
    - add sorting to the tables - 
    - try to fix the search result in the library - name is first , and adjust array and objects to strings . 
    - try to adjust all arrays and objects to strings - 
 
 4. implement chracter create completely + fix Gemini integration : ()
-   - implenent character create prompt - 
-   - fix Gemini integration - 
-   = fix that chat will work  simple and easy - 
-   = fix that chat will work with the library - (optional)
+   = fix that chat will work  simple and easy - suposedly done - check if not - (too slow for first prompt , dont hold on that though )
+   - make a template for the character creation - 
 
-6. add/fix/adjust/modify when reload from browser display the current component instead to homepage()
+5. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
 
-7. make django framework more efficient - too many debug messages and many calls to each endpoints ()
-
-7. 
 
 ### best for last : 
 1. async problem - Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received - seems to show in all components few moments after reload(only if presists in the future ( )) 
@@ -32,6 +28,9 @@
 3. [DOM] Found 2 elements with non-unique id #password: (More info: https://goo.gl/9p2vKq) 
    super-profile:1 [DOM] Found 2 elements with non-unique id #username: (More info: https://goo.gl/9p2vKq)  - check if this warning presists in the future and fix.
 
+check again but not that important: 
+1. 9. 6. add/fix/adjust/modify when reload from browser display the current component instead to homepage(done?)
+2. 
 
 DONE LIST : 
 
@@ -49,3 +48,8 @@ DONE LIST :
 
 7. 2. create a search component that will be used to search for the library - to fix search bar in the library - (done)
 
+8. 4. implement chracter create completely + fix Gemini integration : ()
+   - implenent character create prompt - done
+   - fix Gemini integration - done .
+
+9. 6. add/fix/adjust/modify when reload from browser display the current component instead to homepage(done?)
