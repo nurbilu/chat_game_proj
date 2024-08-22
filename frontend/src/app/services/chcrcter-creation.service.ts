@@ -13,6 +13,7 @@ interface Race {
 }
 
 export interface Character {
+  _id: string;
   username: string;
   prompt: any;
 }

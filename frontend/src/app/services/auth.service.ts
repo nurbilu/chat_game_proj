@@ -312,4 +312,15 @@ export class AuthService {
             catchError(error => throwError(() => new Error('Error creating superuser: ' + error.message)))
         );
     }
+
+    getCharacterByIdAndUsername(_id: string, username: string): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}profile_display/characters/${_id}/${username}/`).pipe(
+            catchError(error => {
+                if (error.status === 404) {
+                    return throwError(() => new Error('Character not found'));
+                }
+                return throwError(() => new Error('Error fetching character: ' + error.message));
+            })
+        );
+    }
 }

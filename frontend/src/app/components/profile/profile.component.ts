@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   showUserData: boolean = true;
   characters: Character[] = []; // Use Character type
   profilePictureUrl: string = '';  // Initialize to an empty string
+  selectedCharacter: Character | null = null;
 
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
 
@@ -145,5 +146,19 @@ export class ProfileComponent implements OnInit {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/homepage']);
     });
+  }
+
+  selectCharacter(character: Character): void {
+    this.selectedCharacter = character;
+    // Fetch character details by _id and username
+    this.authService.getCharacterByIdAndUsername(character._id, character.username).subscribe(
+      (data) => {
+        this.selectedCharacter = data;
+        // Additional logic if needed
+      },
+      (error) => {
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
   }
 }

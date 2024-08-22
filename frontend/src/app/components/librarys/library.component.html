@@ -24,14 +24,14 @@
           <div class="col" *ngFor="let item of getPaginatedItems(); let i = index">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title">{{ item.Name }}</h5>
+                <h5 class="card-title">{{ item.name }}</h5>
               </div>
               <div class="card-body">
                 <!-- Grid layout for collapse buttons, skipping the first key -->
                 <div class="row row-cols-3">
                   <ng-container *ngFor="let key of getKeys(item); let k = index">
                     <div class="col"
-                      *ngIf="k !== 0 && key !== 'url' && key !== 'name' && key !== 'index' && key !== '_id' && key !== 'Name'">
+                      *ngIf="k !== 0 && key !== 'url' && key !== 'name' && key !== 'index' && key !== '_id' && key !== 'rowNumber'">
                       <button (click)="toggleTextVisibility(getTextVisibilityIndex(i, key))"
                         class="btn btn-outline-secondary btn-sm"
                         [attr.aria-expanded]="textVisibility[getTextVisibilityIndex(i, key)]"

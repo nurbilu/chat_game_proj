@@ -1,21 +1,23 @@
 ### what to fix and errors : 
 1. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
 
-2.if not refresh token - login regular and logout also when access token expired - check if expire ()
+2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration 
 
-3.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
-3.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
+3.adjust the classes displayment in character create to fetch some data to explain the user a bit more about classes and what is the best class for user to choose ()
+
+4.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
+4.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
    - change classes display on spells table - done
-   - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , 
+   - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , for doing so i need to make functions that read/use only name if {dict} but if there is more than just name and url , only dont display url .
    - add sorting to the tables - 
    - try to fix the search result in the library - name is first , and adjust array and objects to strings . 
    - try to adjust all arrays and objects to strings - 
 
-4. implement chracter create completely + fix Gemini integration : ()
+5. implement chracter create completely + fix Gemini integration : ()
    = fix that chat will work  simple and easy - suposedly done - check if not - (too slow for first prompt , dont hold on that though )
    - make a template for the character creation - 
 
-5. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
+6. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
 
 
 ### best for last : 

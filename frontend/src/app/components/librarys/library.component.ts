@@ -153,10 +153,9 @@ export class LibraryComponent implements OnInit {
     return i * 1000 + this.getKeys(this.collections[this.selectedCollection][0]).indexOf(key);
   }
 
-  handleSearchResults(results: { [key: string]: any }): void {
+  handleSearchResults(results: any[]): void {
     console.log('Handling search results:', results);
-    // Transform the results object into an array
-    this.searchResult = Object.values(results).flatMap((category: any) => Object.values(category));
+    this.searchResult = results;
     this.showSearchResults = true;
   }
 
@@ -172,7 +171,7 @@ export class LibraryComponent implements OnInit {
         .subscribe({
           next: (results: { [key: string]: any }) => {
             console.log('Received results:', results);
-            this.searchResult = Object.values(results).flatMap((category: any) => Object.values(category));
+            this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
             this.showSearchResults = true;
           },
           error: (error) => {

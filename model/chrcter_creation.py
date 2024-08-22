@@ -325,6 +325,19 @@ def get_character_prompt(username):
         app.logger.error(f"Failed to fetch character prompt: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
+@character_blueprint.route('/profile_display/characters/<username>/', methods=['GET'])
+def get_character_by_id_and_username(username):
+    try:
+        character = db.character_creation_users.find_one({"username": username})
+        if character:
+            return jsonify(json.loads(json_util.dumps(character))), 200
+        else:
+            return jsonify({'error': 'Character not found'}), 404
+    except Exception as e:
+        app.logger.error(f"Failed to fetch character: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+
 # Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():
     response = make_response()

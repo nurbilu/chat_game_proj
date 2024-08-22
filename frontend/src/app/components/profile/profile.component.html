@@ -59,12 +59,16 @@
         </div>
         <div *ngIf="characters.length > 0" class="characters-list mt-4">
             <h3>Your Characters</h3>
-            <ul class="list-group">
-                <li *ngFor="let character of characters" class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ character.prompt }}</span>
-                    <button (click)="deleteCharacter(userProfile.username, character.prompt)" class="btn btn-danger btn-sm">Delete</button>
-                </li>
-            </ul>
+            <div ngbDropdown class="d-inline-block">
+                <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" ngbDropdownToggle>
+                    Select Character
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                    <button *ngFor="let character of characters" class="dropdown-item" (click)="selectCharacter(character)">
+                        {{ character.prompt }}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -7,12 +7,14 @@ import { SearchService } from '../../search.service';
   styleUrls: ['./lib-search.component.css']
 })
 export class LibSearchComponent {
+[x: string]: any;
   @Input() searchResult: any[] = [];
   @Output() searchCompleted = new EventEmitter<any[]>();
   @Output() searchCleared = new EventEmitter<void>();
 
   searchQuery: string = '';
   showSearchResults: boolean = false;
+entry: any;
 
   constructor(private searchService: SearchService) {}
 
@@ -23,7 +25,7 @@ export class LibSearchComponent {
         .subscribe({
           next: (results: { [key: string]: any }) => {
             console.log('Received results:', results);
-            this.searchResult = Object.values(results).flatMap((category: any) => Object.values(category));
+            this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
             this.showSearchResults = true;
             this.searchCompleted.emit(this.searchResult);
           },
