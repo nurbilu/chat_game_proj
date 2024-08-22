@@ -36,8 +36,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         if profile_picture:
             user.profile_picture = profile_picture
         else:
-            user.profile_picture = 'profile_pictures/default-profile-pic/no_profile_pic.png'  
-        user.save()
+            user.profile_picture = 'profile_pictures/default-profile-pic/no_profile_pic.png'
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):

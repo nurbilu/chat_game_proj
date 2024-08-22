@@ -269,7 +269,7 @@ def get_draft(username):
         if draft:
             return jsonify(json.loads(json_util.dumps(draft))), 200
         else:
-            return jsonify({'error': 'Draft not found'}), 404
+            return jsonify({'prompt': ''}), 200  # Return an empty prompt if no draft is found
     except Exception as e:
         app.logger.error(f"Failed to get draft: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500

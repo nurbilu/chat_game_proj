@@ -79,7 +79,17 @@ export class ChrcterCreationComponent implements OnInit {
   spells: any[] = [];
 
   userMessage: string = '';
-  characterPrompt: string = '';
+  characterPrompt: string = `
+  <div style="text-align: left;">character name:&nbsp;</div>
+  <div style="text-align: left;"><br></div>
+  <div style="text-align: left;">race:&nbsp;<br><br>class:&nbsp;<br><br>subclass:&nbsp;<br><br>level:&nbsp;<br><br>spells:&nbsp;<br></div>
+  <div style="text-align: left;"><br></div>
+  <div style="text-align: left;">
+    <a class="nav-item nav-link active" style="padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x); font-size: 16px; font-weight: 400; border-color: var(--bs-nav-tabs-link-active-border-color); --bs-link-color-rgb: var(--bs-link-hover-color-rgb); margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width)); border-top-left-radius: var(--bs-nav-tabs-border-radius); border-top-right-radius: var(--bs-nav-tabs-border-radius); isolation: isolate;">
+      equipment:&nbsp;
+    </a>
+  </div>
+`;
   chatMessages: any[] = [];
 
   ngOnInit(): void {
@@ -114,7 +124,21 @@ export class ChrcterCreationComponent implements OnInit {
     this.authService.getUsername().subscribe((username: string) => {
       this.chcrcterCreationService.getDraft(username).subscribe({
         next: (response) => {
-          this.characterPrompt = response.prompt || '';
+          if (response.prompt) {
+            this.characterPrompt = response.prompt;
+          } else {
+            this.characterPrompt = `
+              <div style="text-align: left;">character name:&nbsp;</div>
+              <div style="text-align: left;"><br></div>
+              <div style="text-align: left;">race:&nbsp;<br><br>class:&nbsp;<br><br>subclass:&nbsp;<br><br>level:&nbsp;<br><br>spells:&nbsp;<br></div>
+              <div style="text-align: left;"><br></div>
+              <div style="text-align: left;">
+                <a class="nav-item nav-link active" style="padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x); font-size: 16px; font-weight: 400; border-color: var(--bs-nav-tabs-link-active-border-color); --bs-link-color-rgb: var(--bs-link-hover-color-rgb); margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width)); border-top-left-radius: var(--bs-nav-tabs-border-radius); border-top-right-radius: var(--bs-nav-tabs-border-radius); isolation: isolate;">
+                  equipment:&nbsp;
+                </a>
+              </div>
+            `;
+          }
         },
         error: (error: any) => {
           console.error('Failed to load draft:', error);
@@ -127,7 +151,21 @@ export class ChrcterCreationComponent implements OnInit {
     this.authService.getUsername().subscribe((username: string) => {
       this.chcrcterCreationService.getDraft(username).subscribe({
         next: (response) => {
-          this.characterPrompt = response.prompt || '';
+          if (response.prompt) {
+            this.characterPrompt = response.prompt;
+          } else {
+            this.characterPrompt = `
+              <div style="text-align: left;">character name:&nbsp;</div>
+              <div style="text-align: left;"><br></div>
+              <div style="text-align: left;">race:&nbsp;<br><br>class:&nbsp;<br><br>subclass:&nbsp;<br><br>level:&nbsp;<br><br>spells:&nbsp;<br></div>
+              <div style="text-align: left;"><br></div>
+              <div style="text-align: left;">
+                <a class="nav-item nav-link active" style="padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x); font-size: 16px; font-weight: 400; border-color: var(--bs-nav-tabs-link-active-border-color); --bs-link-color-rgb: var(--bs-link-hover-color-rgb); margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width)); border-top-left-radius: var(--bs-nav-tabs-border-radius); border-top-right-radius: var(--bs-nav-tabs-border-radius); isolation: isolate;">
+                  equipment:&nbsp;
+                </a>
+              </div>
+            `;
+          }
         },
         error: (error: any) => {
           console.error('Failed to load draft:', error);

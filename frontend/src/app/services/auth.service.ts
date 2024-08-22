@@ -97,29 +97,34 @@ export class AuthService {
     }
 
     loginForModal(username: string, password: string, rememberMe: boolean): Observable<any> {
-        const loginPayload = { username, password };
+        const loginPayload = { username, password ,rememberMe};
         const headers = new HttpHeaders({
             'Content-Type': 'application/json'
         });
 
-        return this.http.post(`${this.baseUrl}login/`, loginPayload, { headers }).pipe(
-            tap((response: any) => {
+        return this.http.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
+            tap(response => {
                 if (!response || !response.access) {
                     console.error('Invalid response structure:', response);
-                    throw new Error('Access token not provided');
+                    throw new Error('Token not provided');
                 }
-                this.setItem('token', response.access);
-                this.setItem('refresh_token', response.refresh);
-                this.setItem('username', username);
-                this._isLoggedIn.next(true);
                 const decodedToken = this.jwtHelper.decodeToken(response.access);
                 if (!decodedToken || !decodedToken.username) {
                     console.error('Username not provided in token:', decodedToken);
                     throw new Error('Username not provided in token');
                 }
+                this.setItem('token', response.access);
+                if (rememberMe) {
+                    this.setItem('refresh_token', response.refresh);
+                }
+                this.setItem('username', username);
+                this._isLoggedIn.next(true); // Update login state
                 this.username.next(decodedToken.username);
+                this.startTokenExpirationTimer();
             }),
-            catchError(error => throwError(() => new Error('Login failed: ' + error.message)))
+            catchError(error => {
+                return throwError(() => new Error('Login failed: ' + error.message));
+            })
         );
     }
 

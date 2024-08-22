@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
     this.authService.getUserProfile().subscribe(
       (data) => {
         this.userProfile = data;
-        this.profilePictureUrl = `http://127.0.0.1:8000${data.profile_picture}`;
+        this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/images/default-profile-pic/no_profile_pic.png';  // Use default image if profile picture is not set
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
