@@ -1,23 +1,26 @@
 ### what to fix and errors : 
-1. fix that register without profile picture will use no_profile_pic.png as a profile picture ()
+1.
 
-2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration 
+2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes , need to fix that - ()
 
-3.adjust the classes displayment in character create to fetch some data to explain the user a bit more about classes and what is the best class for user to choose ()
+3.fix spell slot levels table duplication displayment in character create ()
 
-4.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !
+4.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !(done?)
 4.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
    - change classes display on spells table - done
    - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , for doing so i need to make functions that read/use only name if {dict} but if there is more than just name and url , only dont display url .
    - add sorting to the tables - 
-   - try to fix the search result in the library - name is first , and adjust array and objects to strings . 
+   - try to fix the search result in the library - name is first(done) , and adjust array and objects to strings . ()
    - try to adjust all arrays and objects to strings - 
 
 5. implement chracter create completely + fix Gemini integration : ()
    = fix that chat will work  simple and easy - suposedly done - check if not - (too slow for first prompt , dont hold on that though )
-   - make a template for the character creation - 
-
+   - make a template for the character creation - done.
+   - fix Gemini integration - done.
+   - make 5 templates for chat to make game gen quicker - 
+   
 6. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
+6. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" ()
 
 
 ### best for last : 
@@ -57,3 +60,7 @@ DONE LIST :
 9. 6. add/fix/adjust/modify when reload from browser display the current component instead to homepage(done?)
 
 10. 2. add a check for refresh token - if not refresh token - login regular and logout also when access token expired - if refresh token - login with refresh token (done)
+
+11. 1. fix that register without profile picture will use no_profile_pic.png as a profile picture (removed)
+
+12. 1. a. adjust gen logger as other flasks (done)

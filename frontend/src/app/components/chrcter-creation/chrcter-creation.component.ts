@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
@@ -50,7 +51,8 @@ export class ChrcterCreationComponent implements OnInit {
     private router: Router,
     private toastService: ToastService,
     private chatService: ChatService,
-    private cdr: ChangeDetectorRef // Add ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private http: HttpClient
   ) { }
 
   character = {
@@ -72,6 +74,11 @@ export class ChrcterCreationComponent implements OnInit {
     { name: 'Warlock', description: 'A wielder of magic that is derived from a bargain with an extraplanar entity.', spells: [] },
     { name: 'Wizard', description: 'A scholarly magic-user capable of manipulating the structures of reality.', spells: [] }
   ];
+  spellSlotLevels: any;
+  levels = Array.from({ length: 20 }, (_, i) => i + 1); // Define levels from 1 to 20
+
+
+
   nonSpellClasses = ['Barbarian', 'Fighter', 'Monk', 'Rogue'];
   spellClasses = this.classes.filter(classItem => !this.nonSpellClasses.includes(classItem.name));
   nonSpellClassList = this.classes.filter(classItem => this.nonSpellClasses.includes(classItem.name));
@@ -101,6 +108,12 @@ export class ChrcterCreationComponent implements OnInit {
       this.loadDraft();
       this.fetchRaces();
       this.fetchAllSpells();
+      this.loadSpellSlotLevels();
+    });
+  }
+  loadSpellSlotLevels(): void {
+    this.http.get('/assets/spellSlotLevels.json').subscribe(data => {
+      this.spellSlotLevels = data;
     });
   }
   saveDraft() {
@@ -203,7 +216,26 @@ export class ChrcterCreationComponent implements OnInit {
         console.error(`Error fetching spells for class ${classItem.name}:`, error);
       });
     });
-}
+  }
+
+  getSpellSlotLevels(className: string, characterLevel: number): { level: string, slots: string }[] {
+    const classLevels = this.spellSlotLevels?.[className];
+    if (!classLevels) {
+      return [{ level: "0", slots: "0" }];
+    }
+  
+    const levels = classLevels?.[characterLevel];
+    if (!levels) {
+      return [{ level: "0", slots: "0" }];
+    }
+  
+    const slots = Object.keys(levels).map(level => ({
+      level: `Level ${level}`,
+      slots: levels[+level].length ? levels[+level].join(', ') : "0"
+    }));
+    return slots.length ? slots : [{ level: "0", slots: "0" }];
+  }
+
 
   fetchRaces(): void {
     this.chcrcterCreationService.fetchRaces().subscribe((races: any[]) => {

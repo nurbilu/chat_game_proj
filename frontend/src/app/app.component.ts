@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   isSuperUser: boolean = false;
   username: string | null = null;
   password: string = '';
-  rememberMe: boolean = false; // Added this line
+  rememberMe: boolean = false;
   private modalRef: NgbModalRef | undefined;
   isNavbarSticky: boolean = false;
 
@@ -49,12 +49,6 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // Automatically logout when access token expires
-    this.authService.tokenExpiration$.subscribe(() => {
-      if (!localStorage.getItem('refresh_token')) {
-        this.onLogout();
-      }
-    });
   }
 
   @HostListener('window:scroll', [])

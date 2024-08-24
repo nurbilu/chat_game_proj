@@ -11,14 +11,21 @@ import logging
 from logging import FileHandler, Filter
 from flask import Flask, Blueprint, request, jsonify
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 import json
 from flask_cors import CORS
 import sys
 import traceback
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+MONGO_ATLAS = os.getenv("MONGO_ATLAS")
+DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
 
 # Initialize MongoDB client
-client = MongoClient('mongodb://localhost:27017/mike')
-db = client.NEW_DATA_DND
+client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
+db = client[DB_NAME_MONGO]
 
 class FilterRemoveDateFromWerkzeugLogs(Filter):
     # Regex pattern to remove the date/time from Werkzeug logs
@@ -105,7 +112,7 @@ def fetch_data_from_db(collection_name):
             formatted_data.append(formatted_item)
 
         app.logger.info(f"Fetched {collection_name}")
-        return jsonify(json.loads(json.dumps(formatted_data)))  # Convert to JSON
+        return jsonify(formatted_data)  # Directly jsonify the list
 
     except Exception as e:
         app.logger.error(f"Error in fetch_{collection_name}", exc_info=True)

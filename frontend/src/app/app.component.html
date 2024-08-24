@@ -44,7 +44,7 @@
   <div>Welcome {{ username }}, let's play!</div>
 </ng-template>
 
-<ng-template #failureTemplate let-message="message">
+<ng-template #errorTemplate let-message="message">
   <div class="toast-body">
     {{ message }}
   </div>
@@ -97,7 +97,7 @@
     </ul>
   </div>
 </ng-template>
-<app-toasts-container></app-toasts-container>
+<app-toasts-container [errorTemplate]="errorTemplate"></app-toasts-container>
 <router-outlet></router-outlet>
 
 <footer class="footer bg-dark text-white text-center py-3">

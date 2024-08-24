@@ -34,7 +34,7 @@
           </div>
           <div class="mb-3">
             <label for="profilePicture" class="form-label">Upload Profile Picture</label>
-            <input type="file" class="form-control" id="profilePicture" (change)="onFileSelected($event)">
+            <input type="file" class="form-control" id="profilePicture" (change)="onFileSelected($event)" required>
             <img id="previewHolder" src="https://via.placeholder.com/150" class="img-thumbnail mt-3" alt="Profile Picture Preview">
           </div>
           <div class="d-grid">

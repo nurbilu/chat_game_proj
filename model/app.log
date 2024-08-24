@@ -1,0 +1,23 @@
+2024-08-24 23:19:10,102 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f30"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,103 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f30"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,103 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f30"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,107 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f31"}, "message": "Connection pool created", "serverHost": "localhost", "serverPort": 27017}
+2024-08-24 23:19:10,110 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f31"}, "message": "Connection pool ready", "serverHost": "localhost", "serverPort": 27017}
+2024-08-24 23:19:10,115 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-24 23:19:10,115 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-24 23:19:10,115 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-08-24 23:19:10,115 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-08-24 23:19:10,128 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2d"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,134 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2d"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,135 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2d"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,177 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2e"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,177 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2e"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,201 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2e"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,205 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2f"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,220 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2f"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,244 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403daf344948f3d90f2f"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,376 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f30"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,394 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f30"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-08-24 23:19:10,398 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66ca403eaf344948f3d90f30"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}

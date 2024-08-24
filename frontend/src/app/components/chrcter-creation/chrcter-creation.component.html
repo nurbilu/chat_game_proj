@@ -33,18 +33,6 @@
       </div>
     </div>
 
-    <div class="text-frame chat-container">
-      <h3>Character Creation Advisor</h3>
-      <div *ngFor="let message of chatMessages" [ngClass]="message.role" class="chat-bubble">
-        {{ message.content }}
-      </div>
-      <div class="input-container">
-        <input type="text" [(ngModel)]="userMessage" placeholder="Type your message here" required
-          (keydown.enter)="sendChatMessage()">
-        <button (click)="sendChatMessage()" class="btn btn-success">Send</button>
-      </div>
-    </div>
-
     <div class="text-frame">
       <h3>Spells for Each Class</h3>
       <div *ngFor="let classItem of classes">
@@ -74,61 +62,88 @@
       </p>
     </div>
 
-    
-
-<div class="text-frame">
-  <h3>Classes Description</h3>
-  <div ngbAccordion>
-    <div ngbAccordionItem *ngFor="let class of classes">
-      <h2 ngbAccordionHeader>
-        <button ngbAccordionButton>{{ class.name }}</button>
-      </h2>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
-          <p>{{ class.description }}</p>
+    <div class="text-frame">
+      <h3>Classes Description</h3>
+      <div ngbAccordion>
+        <div ngbAccordionItem *ngFor="let class of classes">
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>{{ class.name }}</button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <p>{{ class.description }}</p>
+              <div *ngIf="spellSlotLevels[class.name]">
+                <h5>Spell Slot Levels:</h5>
+                <div class="table-responsive">
+                  <table class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Character Level</th>
+                        <th scope="col">Spell Slots</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let level of levels">
+                        <td>Character Level {{ level }}</td>
+                        <td>
+                          <table class="table table-sm">
+                            <tbody>
+                              <tr *ngFor="let slot of getSpellSlotLevels(class.name, level)">
+                                <td>{{ slot.level }}</td>
+                                <td>{{ slot.slots }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div>
-    <p>
-      For more information on classes, visit 
-      <a href="https://rpgbot.net/dnd5/characters/classes/" target="_blank">RPGBot</a>.
-    </p>
-  </div>
-</div>
-<div class="text-frame">
-  <h3>Race Descriptions</h3>
-  <div ngbAccordion>
-    <div ngbAccordionItem *ngFor="let race of races">
-      <h2 ngbAccordionHeader>
-        <button ngbAccordionButton>{{ race.name }}</button>
-      </h2>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
-          <p><strong>Alignment:</strong> {{ race.alignment }}</p>
-          <p><strong>Age:</strong> {{ race.age }}</p>
-          <p><strong>Size:</strong> {{ race.size_description }}</p>
-          <p><strong>Languages:</strong> {{ race.language_desc }}</p>
-        </div>
+      <div>
+        <p>
+          For more information on classes, visit
+          <a href="https://rpgbot.net/dnd5/characters/classes/" target="_blank">RPGBot</a>.
+        </p>
       </div>
     </div>
-  </div>
-  <div>
-    <p>
-      For more information on races, visit 
-      <a href="https://rpgbot.net/dnd5/characters/races/" target="_blank">RPGBot</a>.
-    </p>
+    <div class="text-frame">
+      <h3>Race Descriptions</h3>
+      <div ngbAccordion>
+        <div ngbAccordionItem *ngFor="let race of races">
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>{{ race.name }}</button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <p><strong>Alignment:</strong> {{ race.alignment }}</p>
+              <p><strong>Age:</strong> {{ race.age }}</p>
+              <p><strong>Size:</strong> {{ race.size_description }}</p>
+              <p><strong>Languages:</strong> {{ race.language_desc }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p>
+          For more information on races, visit
+          <a href="https://rpgbot.net/dnd5/characters/races/" target="_blank">RPGBot</a>.
+        </p>
+      </div>
+    </div>
+
+    <ng-template #successTemplate>
+      <div>Character created successfully!</div>
+    </ng-template>
+    <ng-template #errorTemplate>
+      <div>Failed to create character</div>
+    </ng-template>
+    <ng-template #fillFieldsTemplate>
+      <div>Please fill all fields</div>
+    </ng-template>
   </div>
 </div>
-
-
-<ng-template #successTemplate>
-  <div>Character created successfully!</div>
-</ng-template>
-<ng-template #errorTemplate>
-  <div>Failed to create character</div>
-</ng-template>
-<ng-template #fillFieldsTemplate>
-  <div>Please fill all fields</div>
-</ng-template>

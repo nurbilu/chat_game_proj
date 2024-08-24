@@ -16,7 +16,7 @@ interface Collection {
 })
 export class LibraryComponent implements OnInit {
   collections: Collection = {};
-  collectionKeys: string[] = ['races', 'classes', 'equipment', 'spells', 'monsters'];
+  collectionKeys: string[] = ['Races', 'Classes', 'Equipment', 'Spells', 'Monsters'];
   selectedCollection: string = '';
   page: number = 1;
   pageSize: number = 6;
@@ -43,19 +43,19 @@ export class LibraryComponent implements OnInit {
     let fetchObservable: Observable<any>;
 
     switch (collection) {
-      case 'races':
+      case 'Races':
         fetchObservable = this.libraryService.fetchRaces();
         break;
-      case 'classes':
+      case 'Classes':
         fetchObservable = this.libraryService.fetchClasses();
         break;
-      case 'equipment':
+      case 'Equipment':
         fetchObservable = this.libraryService.fetchEquipment();
         break;
-      case 'spells':
+      case 'Spells':
         fetchObservable = this.libraryService.fetchSpells();
         break;
-      case 'monsters':
+      case 'Monsters':
         fetchObservable = this.libraryService.fetchMonsters();
         break;
       default:
@@ -124,6 +124,7 @@ export class LibraryComponent implements OnInit {
   }
 
   getKeys(item: { [key: string]: any }): string[] {
+    // Update this method to return the correct keys from the Equipment collection
     return Object.keys(item).filter(key => key !== '_id' && key !== 'index');
   }
 
@@ -145,7 +146,7 @@ export class LibraryComponent implements OnInit {
   }
 
   isCardCollection(collection: string): boolean {
-    return ['classes', 'races'].includes(collection);
+    return ['Classes', 'Races'].includes(collection);
   }
 
   getTextVisibilityIndex(i: number, key: string): number {

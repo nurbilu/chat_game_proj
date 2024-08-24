@@ -24,6 +24,11 @@ export class RegisterComponent {
     constructor(private authService: AuthService, private router: Router, private toastService: ToastService) { }
 
     register() {
+        if (!this.profilePicture) {
+            this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+            return;
+        }
+
         const formData = new FormData();
         formData.append('username', this.username);
         formData.append('password', this.password);
@@ -32,9 +37,7 @@ export class RegisterComponent {
         formData.append('birthdate', this.birthdate);
         formData.append('first_name', this.firstName);
         formData.append('last_name', this.lastName);
-        if (this.profilePicture) {
-            formData.append('profile_picture', this.profilePicture);
-        }
+        formData.append('profile_picture', this.profilePicture);
 
         this.authService.register(formData).subscribe(
             data => {

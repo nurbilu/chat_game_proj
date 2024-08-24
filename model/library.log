@@ -1,0 +1,26 @@
+ * Serving Flask app 'lib_srvr'
+ * Debug mode: off
+2024-08-24 23:19:05,150 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:7625
+2024-08-24 23:19:05,151 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-08-24 23:19:13,915 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_classes HTTP/1.1" 200 -
+2024-08-24 23:19:25,764 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_races HTTP/1.1" 200 -
+2024-08-24 23:19:26,161 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_classes HTTP/1.1" 200 -
+2024-08-24 23:19:26,371 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_equipment HTTP/1.1" 200 -
+2024-08-24 23:19:26,469 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_spells HTTP/1.1" 200 -
+2024-08-24 23:19:27,103 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_monsters HTTP/1.1" 200 -
+2024-08-24 23:19:41,871 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_races HTTP/1.1" 200 -
+2024-08-24 23:19:41,883 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_classes HTTP/1.1" 200 -
+2024-08-24 23:19:42,200 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_equipment HTTP/1.1" 200 -
+2024-08-24 23:19:42,409 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_spells HTTP/1.1" 200 -
+2024-08-24 23:19:42,790 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_monsters HTTP/1.1" 200 -
+2024-08-24 23:19:43,452 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_classes HTTP/1.1" 200 -
+2024-08-24 23:19:43,460 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_races HTTP/1.1" 200 -
+2024-08-24 23:19:43,874 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_equipment HTTP/1.1" 200 -
+2024-08-24 23:19:44,105 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_spells HTTP/1.1" 200 -
+2024-08-24 23:19:44,236 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_monsters HTTP/1.1" 200 -
+2024-08-24 23:19:44,710 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_races HTTP/1.1" 200 -
+2024-08-24 23:19:44,711 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_classes HTTP/1.1" 200 -
+2024-08-24 23:19:44,962 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_equipment HTTP/1.1" 200 -
+2024-08-24 23:19:45,188 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_spells HTTP/1.1" 200 -
+2024-08-24 23:19:45,346 - werkzeug - INFO - 127.0.0.1 - "GET /api/fetch_monsters HTTP/1.1" 200 -

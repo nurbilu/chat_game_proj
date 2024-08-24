@@ -1,6 +1,6 @@
 .chrcter-creation-container {
     max-width: 2100px;
-    max-height: 3400px;
+    max-height: 40000px;
     padding: 5px;
     background: rgba(255, 255, 255, 0.8) url('/assets/imgs/magic_plains.jpg') no-repeat center center;
     background-size: cover;
@@ -92,6 +92,7 @@ button {
 
 .ngb-accordion .card {
     margin-bottom: 10px;
+
 }
 
 .st-editor-toolbar button {
@@ -101,14 +102,24 @@ button {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    border: none; /* Ensure no border is applied */
-    background-color: transparent; /* Ensure background is transparent */
+    border: none;
+    /* Ensure no border is applied */
+    background-color: transparent;
+    /* Ensure background is transparent */
 }
+
 .no-spells {
     color: rgb(248, 242, 242);
     font-style: italic;
     margin-top: 10px;
 }
 
+.horizontal-list {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+}
 
-
+.horizontal-list li {
+    margin-right: 10px;
+}

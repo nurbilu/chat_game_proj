@@ -1,10 +1,16 @@
 from flask import Blueprint, request, jsonify
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+
+# Load environment variables from .env file
+load_dotenv()
 
 logout_user_blueprint = Blueprint('logout_user', __name__)
 
-client = MongoClient('mongodb://localhost:27017/mike')
-db = client.DnD_AI_DB
+client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
+db = client[os.getenv('DB_NAME_MONGO')]
 
 @logout_user_blueprint.route('/logout', methods=['POST'])
 def logout_user():

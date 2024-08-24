@@ -1,13 +1,19 @@
 from flask import Blueprint, request, jsonify, current_app as app
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 import json
 from bson import json_util
 from .GEM_cnnction import generate_gemini_response
 
+# Load environment variables from .env file
+load_dotenv()
+
 handle_data_blueprint = Blueprint('handle_data', __name__)
 
-client = MongoClient('mongodb://localhost:27017/mike')
-db = client.DnD_AI_DB
+client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
+db = client[os.getenv('DB_NAME_MONGO')]
 
 @handle_data_blueprint.route('/fetch_game_data', methods=['POST'])
 def fetch_game_data():
@@ -31,10 +37,6 @@ def generate_text():
         prompt = data.get('prompt', '').strip()
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
-        
-        # Connect to the database
-        client = MongoClient('mongodb://localhost:27017/mike')
-        db = client.DnD_AI_DB
         
         # Assuming a simplified session handling and response generation
         session_data = db.sessions.find_one({"username": data.get('username', 'Anonymous')}) or {}

@@ -33,10 +33,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             pwd_user_str=password
         )
         user.set_password(password)
-        if profile_picture:
-            user.profile_picture = profile_picture
-        else:
-            user.profile_picture = 'profile_pictures/default-profile-pic/no_profile_pic.png'
+        user.save()
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):

@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 export class ToastService {
   private toasts: any[] = [];  // Array to store toast messages
 
+  errorTemplate!: TemplateRef<any>;  // Ensure this is initialized
+
   constructor(private toastr: ToastrService) {}
 
   success(message: string) {

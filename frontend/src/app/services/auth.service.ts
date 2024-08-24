@@ -1,10 +1,11 @@
 import { Injectable, Inject, PLATFORM_ID, NgZone } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpBackend } from '@angular/common/http';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, switchMap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { ToastService } from './toast.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,23 +15,33 @@ export class AuthService {
     private _isLoggedIn = new BehaviorSubject<boolean>(false);
     private username = new BehaviorSubject<string>('');
     private tokenExpirationTimer: any;
+    private refreshTokenExpirationTimer: any;
     private jwtHelper = new JwtHelperService();
+    private httpClient: HttpClient;
 
     private tokenExpirationSubject = new BehaviorSubject<void>(undefined);
     tokenExpiration$ = this.tokenExpirationSubject.asObservable();
 
     constructor(
         private http: HttpClient,
+        private httpBackend: HttpBackend,
         @Inject(PLATFORM_ID) private platformId: Object,
         private router: Router,
-        private ngZone: NgZone
+        private ngZone: NgZone,
+        private toastService: ToastService
     ) {
+        this.httpClient = new HttpClient(this.httpBackend);
         if (isPlatformBrowser(this.platformId)) {
             const token = localStorage.getItem('token');
-            this._isLoggedIn.next(!!token);
+            const refreshToken = localStorage.getItem('refresh_token');
             if (token) {
+                this._isLoggedIn.next(true);
                 const decodedToken = this.jwtHelper.decodeToken(token);
                 this.username.next(decodedToken.username);
+                this.startTokenExpirationTimer();
+                if (refreshToken) {
+                    this.startRefreshTokenExpirationTimer();
+                }
             }
         }
     }
@@ -40,7 +51,7 @@ export class AuthService {
         if (isPlatformBrowser(this.platformId)) {
             return localStorage.getItem('token') || null;
         }
-        return null;  // Return null if not in browser environment
+        return null;
     }
 
     setItem(key: string, value: string): void {
@@ -64,11 +75,11 @@ export class AuthService {
     }
 
     register(formData: FormData): Observable<any> {
-        return this.http.post(`${this.baseUrl}register/`, formData);
+        return this.httpClient.post(`${this.baseUrl}register/`, formData);
     }
 
     login(username: string, password: string, rememberMe: boolean): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
+        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
             tap(response => {
                 if (!response || !response.access) {
                     console.error('Invalid response structure:', response);
@@ -82,6 +93,7 @@ export class AuthService {
                 this.setItem('token', response.access);
                 if (rememberMe) {
                     this.setItem('refresh_token', response.refresh);
+                    this.startRefreshTokenExpirationTimer();
                 }
                 this.setItem('username', username);
                 this._isLoggedIn.next(true); // Update login state
@@ -97,12 +109,7 @@ export class AuthService {
     }
 
     loginForModal(username: string, password: string, rememberMe: boolean): Observable<any> {
-        const loginPayload = { username, password ,rememberMe};
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json'
-        });
-
-        return this.http.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
+        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
             tap(response => {
                 if (!response || !response.access) {
                     console.error('Invalid response structure:', response);
@@ -116,6 +123,7 @@ export class AuthService {
                 this.setItem('token', response.access);
                 if (rememberMe) {
                     this.setItem('refresh_token', response.refresh);
+                    this.startRefreshTokenExpirationTimer();
                 }
                 this.setItem('username', username);
                 this._isLoggedIn.next(true); // Update login state
@@ -250,8 +258,35 @@ export class AuthService {
                 const expiresIn = expirationDate.getTime() - Date.now();
                 this.tokenExpirationTimer = setTimeout(() => {
                     this.tokenExpirationSubject.next();
+                    this.clearLocalStorage();
+                    this.toastService.show({
+                        template: this.toastService.errorTemplate,
+                        classname: 'bg-danger text-light',
+                        delay: 15000,
+                        context: { message: 'Your session has expired. Please log in again.' }
+                    });
+                    this.router.navigate(['/homepage']);
                 }, expiresIn);
             }
+        }
+    }
+
+    private startRefreshTokenExpirationTimer() {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+            const decodedToken = this.jwtHelper.decodeToken(refreshToken);
+            const expirationDate = new Date(decodedToken.exp * 1000000);
+            const expiresIn = expirationDate.getTime() - Date.now();
+            this.refreshTokenExpirationTimer = setTimeout(() => {
+                this.clearLocalStorage();
+                this.toastService.show({
+                    template: this.toastService.errorTemplate,
+                    classname: 'bg-danger text-light',
+                    delay: 15000,
+                    context: { message: 'Your session has expired. Please log in again.' }
+                });
+                this.router.navigate(['/homepage']);
+            }, expiresIn);
         }
     }
 
@@ -271,6 +306,9 @@ export class AuthService {
                 this.username.next('');
                 if (this.tokenExpirationTimer) {
                     clearTimeout(this.tokenExpirationTimer);
+                }
+                if (this.refreshTokenExpirationTimer) {
+                    clearTimeout(this.refreshTokenExpirationTimer);
                 }
             })
         );

@@ -10,6 +10,7 @@ from flask_caching.backends.base import BaseCache
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from bson.json_util import dumps, loads
 from datetime import datetime
 import random
@@ -20,6 +21,12 @@ from chatbot.GEM_cnnction import GEM_cnnction
 from flask.logging import default_handler
 import google.generativeai as genai
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+MONGO_ATLAS = os.getenv("MONGO_ATLAS")
+DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
 
 def configure_logging():
     log_file = 'app.log'
@@ -72,24 +79,8 @@ def clear_log_file(log_file):
         pass
 
 def handle_exit(signum, frame):
-    sys.exit(0)
-
-app = Flask(__name__)
-CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200") 
-
-# Register blueprints
-app.register_blueprint(handle_data_blueprint)
-app.register_blueprint(game_mchnics_blueprint)
-app.register_blueprint(logout_user_blueprint)
-app.register_blueprint(GEM_cnnction)
-
-# Connect to MongoDB
-client = MongoClient('mongodb://localhost:27017/mike')
-db = client['NEW_DATA_DND']
-
-# Fetch fireball prompts
-fireball_prompts = list(db.fireball.find({}))
+    clear_log_file('app.log')
+    os._exit(0)
 
 # Define the MongoDB cache class
 class MongoDBCache(BaseCache):
@@ -115,60 +106,81 @@ class MongoDBCache(BaseCache):
     def clear(self):
         self.collection.delete_many({})
 
-# Configure Flask to use the custom MongoDB cache
-app.config['CACHE_TYPE'] = __name__ + '.MongoDBCache'
-cache = Cache(app)
+def create_app():
+    app = Flask(__name__)
+    CORS(app)
+    socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200")
 
-@socketio.on('connect')
-def handle_connect():
-    emit('response', {'message': 'Connected to the chat server!'})
+    # Configure logging
+    app.logger = configure_logging()
 
-@socketio.on('send_message')
-def handle_message(data):
-    try:
-        player_name = data.get('username', 'Anonymous')
-        user_input = data.get('prompt', '').strip()
+    # Register blueprints
+    app.register_blueprint(handle_data_blueprint)
+    app.register_blueprint(game_mchnics_blueprint)
+    app.register_blueprint(logout_user_blueprint)
+    app.register_blueprint(GEM_cnnction)
 
-        # Assuming a simplified session handling and response generation
-        session_data = db.sessions.find_one({"username": player_name}) or {}
-        enriched_prompt = f"{user_input}\n\nSession Data:\n{json.dumps(session_data)}"
+    # Connect to MongoDB
+    client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
+    db = client[DB_NAME_MONGO]
+
+    # Configure Flask to use the custom MongoDB cache
+    app.config['CACHE_TYPE'] = __name__ + '.MongoDBCache'
+    cache = Cache(app)
+
+    @socketio.on('connect')
+    def handle_connect():
+        emit('response', {'message': 'Connected to the chat server!'})
+
+    @socketio.on('send_message')
+    def handle_message(data):
+        try:
+            player_name = data.get('username', 'Anonymous')
+            user_input = data.get('prompt', '').strip()
+
+            # Assuming a simplified session handling and response generation
+            session_data = db.sessions.find_one({"username": player_name}) or {}
+            enriched_prompt = f"{user_input}\n\nSession Data:\n{json.dumps(session_data)}"
+            
+            # Generate response using genai
+            response_text = generate_gemini_response(enriched_prompt, db)
+
+            emit('response', {'text': response_text, 'username': player_name})
+            db.sessions.update_one({"username": player_name}, {"$set": session_data}, upsert=True)  # Ensure session is saved after handling
+        except Exception as e:
+            app.logger.exception("Error handling message")
+            emit('error', {'error': str(e)})
+
+    def _build_cors_preflight_response():
+        response = make_response()
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+        response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+        return response
+
+    @app.route('/generate_text/character_prompt/<username>', methods=['GET', 'OPTIONS'])
+    @cross_origin()
+    def get_character_prompt(username):
+        if request.method == 'OPTIONS':
+            return _build_cors_preflight_response()
         
-        # Generate response using genai
-        response_text = generate_gemini_response(enriched_prompt, db)
+        try:
+            character = db.characters.find_one({"username": username})
+            if character:
+                raw_prompt = character.get("characterPrompt", "")
+                # Clean the HTML to plain text
+                soup = BeautifulSoup(raw_prompt, "html.parser")
+                cleaned_prompt = soup.get_text(separator="\n").strip()
+                return jsonify({"characterPrompt": cleaned_prompt}), 200
+            else:
+                return jsonify({'error': 'Character not found'}), 404
+        except Exception as e:
+            app.logger.error(f"Failed to fetch character prompt: {str(e)}")
+            return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
-        emit('response', {'text': response_text, 'username': player_name})
-        db.sessions.update_one({"username": player_name}, {"$set": session_data}, upsert=True)  # Ensure session is saved after handling
-    except Exception as e:
-        app.logger.exception("Error handling message")
-        emit('error', {'error': str(e)})
-
-def _build_cors_preflight_response():
-    response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-    return response
-
-@app.route('/generate_text/character_prompt/<username>', methods=['GET', 'OPTIONS'])
-@cross_origin()
-def get_character_prompt(username):
-    if request.method == 'OPTIONS':
-        return _build_cors_preflight_response()
-    
-    try:
-        character = db.characters.find_one({"username": username})
-        if character:
-            raw_prompt = character.get("characterPrompt", "")
-            # Clean the HTML to plain text
-            soup = BeautifulSoup(raw_prompt, "html.parser")
-            cleaned_prompt = soup.get_text(separator="\n").strip()
-            return jsonify({"characterPrompt": cleaned_prompt}), 200
-        else:
-            return jsonify({'error': 'Character not found'}), 404
-    except Exception as e:
-        app.logger.error(f"Failed to fetch character prompt: {str(e)}")
-        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+    return app, socketio
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, handle_exit)
+    app, socketio = create_app()
     socketio.run(app, debug=False, use_reloader=False)

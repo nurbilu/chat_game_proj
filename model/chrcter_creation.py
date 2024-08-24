@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify, make_response, Blueprint
 from flask_caching import Cache
 from flask_caching.backends.base import BaseCache
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from bson import json_util
 from bson.json_util import dumps, loads
 from flask_cors import CORS, cross_origin
@@ -20,6 +21,8 @@ from bs4 import BeautifulSoup
 # Load environment variables from .env file
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY_USE")
+MONGO_ATLAS = os.getenv("MONGO_ATLAS")
+DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
 
 # Print the API key to verify it's loaded correctly (remove this in production)
 print(f"Loaded OpenAI API Key: {OPENAI_API_KEY}")
@@ -29,6 +32,10 @@ if not OPENAI_API_KEY:
 
 # Configure OpenAI API key
 openai.api_key = OPENAI_API_KEY
+
+# Initialize MongoDB client
+client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
+db = client[DB_NAME_MONGO]
 
 class MongoDBCache(BaseCache):
     def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='NEW_DATA_DND', collection='cache'):
@@ -124,8 +131,6 @@ def create_app():
     return app
 
 character_blueprint = Blueprint('character', __name__)
-mongo_client = MongoClient('mongodb://localhost:27017/mike')
-db = mongo_client['NEW_DATA_DND']
 spells_collection = db['Spells']
 
 # Find all spells where `classes` is stored as a string

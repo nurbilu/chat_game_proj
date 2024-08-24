@@ -5,6 +5,7 @@ import random
 from dotenv import load_dotenv
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 import google.generativeai as genai
 from google.api_core.exceptions import ResourceExhausted
 
@@ -13,6 +14,10 @@ load_dotenv()
 
 # Configure Google Generative AI
 genai.configure(api_key=os.getenv('GEMINI_API_KEY1'))
+
+# Initialize MongoDB client
+client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
+db = client[os.getenv('DB_NAME_MONGO')]
 
 def generate_gemini_response(prompt, db):
     collections = ['Races', 'Spells', 'Equipment', 'Monsters', 'Classes']
@@ -40,10 +45,7 @@ GEM_cnnction = Blueprint('GEM_cnnction', __name__)
 #         prompt = data.get('prompt', '')
 #         if not prompt:
 #             return jsonify({'error': 'Prompt is required'}), 400
-        
-#         client = MongoClient(os.getenv('MONGO_URI'))
-#         db = client[os.getenv('DB_NAME')]
-        
+#         
 #         response_text = generate_gemini_response(prompt, db)
 #         return jsonify({'response': response_text})
 #     except Exception as e:
