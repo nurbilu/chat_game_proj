@@ -291,4 +291,14 @@ export class ChrcterCreationComponent implements OnInit {
       });
     });
   }
+
+  hasSpells(className: string): boolean {
+    const spellSlotLevels = this.spellSlotLevels[className];
+    if (!spellSlotLevels) {
+      return false;
+    }
+    return Object.values(spellSlotLevels).some(levels => 
+      Object.values(levels as Record<string, number[]>).some(slot => slot.length > 0)
+    );
+  }
 }
