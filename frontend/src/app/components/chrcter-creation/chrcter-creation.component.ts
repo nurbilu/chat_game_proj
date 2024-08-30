@@ -220,22 +220,27 @@ export class ChrcterCreationComponent implements OnInit {
 
   getSpellSlotLevels(className: string, characterLevel: number): { level: string, slots: string }[] {
     const classLevels = this.spellSlotLevels?.[className];
-    if (!classLevels) {
-      return [{ level: "0", slots: "0" }];
-    }
-  
     const levels = classLevels?.[characterLevel];
     if (!levels) {
-      return [{ level: "0", slots: "0" }];
+      return [];
     }
   
     const slots = Object.keys(levels).map(level => ({
       level: `Level ${level}`,
       slots: levels[+level].length ? levels[+level].join(', ') : "0"
     }));
-    return slots.length ? slots : [{ level: "0", slots: "0" }];
+    return slots.length ? slots : [];
   }
 
+  isSpellCaster(className: string): boolean {
+    const classLevels = this.spellSlotLevels?.[className];
+    if (!classLevels) {
+      return false;
+    }
+    return Object.values(classLevels).some(levels => 
+      Object.values(levels as Record<string, number[]>).some(slot => slot.length > 0)
+    );
+  }
 
   fetchRaces(): void {
     this.chcrcterCreationService.fetchRaces().subscribe((races: any[]) => {
@@ -290,15 +295,5 @@ export class ChrcterCreationComponent implements OnInit {
         }
       });
     });
-  }
-
-  hasSpells(className: string): boolean {
-    const spellSlotLevels = this.spellSlotLevels[className];
-    if (!spellSlotLevels) {
-      return false;
-    }
-    return Object.values(spellSlotLevels).some(levels => 
-      Object.values(levels as Record<string, number[]>).some(slot => slot.length > 0)
-    );
   }
 }

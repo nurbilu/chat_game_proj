@@ -76,7 +76,7 @@ export class ChatComponent implements OnInit {
     pasteTemplate(): void {
         this.chatService.getCharacterPrompt(this.username).subscribe({
             next: (response) => {
-                this.message = response.characterPrompt;
+                this.message = `I want to create a character, you choose all options I mention as so: ${response.characterPrompt}`;
             },
             error: (error) => {
                 console.error('Error fetching character prompt:', error);

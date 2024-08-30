@@ -84,10 +84,10 @@ def handle_exit(signum, frame):
 
 # Define the MongoDB cache class
 class MongoDBCache(BaseCache):
-    def __init__(self, default_timeout=300, host='localhost', port=27017, db_name='NEW_DATA_DND', collection='cache'):
+    def __init__(self, default_timeout=300, host=None, port=None, db_name=None, collection='cache'):
         self.default_timeout = default_timeout
-        self.client = MongoClient(host, port)
-        self.db = self.client[db_name]
+        self.client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
+        self.db = self.client[os.getenv('DB_NAME_MONGO')]
         self.collection = self.db[collection]
         super(MongoDBCache, self).__init__(default_timeout)
 
@@ -120,9 +120,12 @@ def create_app():
     app.register_blueprint(logout_user_blueprint)
     app.register_blueprint(GEM_cnnction)
 
-    # Connect to MongoDB
-    client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
-    db = client[DB_NAME_MONGO]
+    try:
+        client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
+        db = client[DB_NAME_MONGO]
+    except Exception as e:
+        app.logger.error(f"Failed to connect to MongoDB: {str(e)}")
+        raise e
 
     # Configure Flask to use the custom MongoDB cache
     app.config['CACHE_TYPE'] = __name__ + '.MongoDBCache'
@@ -140,8 +143,8 @@ def create_app():
 
             # Assuming a simplified session handling and response generation
             session_data = db.sessions.find_one({"username": player_name}) or {}
-            enriched_prompt = f"{user_input}\n\nSession Data:\n{json.dumps(session_data)}"
-            
+            enriched_prompt = f"{user_input}\n\nSession Data:\n{json.dumps(session_data, cls=JSONEncoder)}"
+
             # Generate response using genai
             response_text = generate_gemini_response(enriched_prompt, db)
 

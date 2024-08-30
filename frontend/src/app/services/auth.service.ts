@@ -108,6 +108,34 @@ export class AuthService {
         );
     }
 
+    rememberMe(): void {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+            this.httpClient.post<any>(`${this.baseUrl}refresh/`, { refresh: refreshToken }).pipe(
+                tap(response => {
+                    if (!response || !response.access) {
+                        console.error('Invalid response structure:', response);
+                        throw new Error('Token not provided');
+                    }
+                    const decodedToken = this.jwtHelper.decodeToken(response.access);
+                    if (!decodedToken || !decodedToken.username) {
+                        console.error('Username not provided in token:', decodedToken);
+                        throw new Error('Username not provided in token');
+                    }
+                    this.setItem('token', response.access);
+                    this._isLoggedIn.next(true); // Update login state
+                    this.username.next(decodedToken.username);
+                    this.startTokenExpirationTimer();
+                }),
+                catchError(error => {
+                    console.error('Failed to refresh token:', error);
+                    this.logout();
+                    return throwError(() => new Error('Failed to refresh token: ' + error.message));
+                })
+            ).subscribe();
+        }
+    }
+
     loginForModal(username: string, password: string, rememberMe: boolean): Observable<any> {
         return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
             tap(response => {
@@ -275,7 +303,7 @@ export class AuthService {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
             const decodedToken = this.jwtHelper.decodeToken(refreshToken);
-            const expirationDate = new Date(decodedToken.exp * 1000000);
+            const expirationDate = new Date(decodedToken.exp * 1000);
             const expiresIn = expirationDate.getTime() - Date.now();
             this.refreshTokenExpirationTimer = setTimeout(() => {
                 this.clearLocalStorage();

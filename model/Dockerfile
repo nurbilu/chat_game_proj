@@ -1,5 +1,5 @@
 # Use an official TensorFlow runtime as a parent image
-FROM tensorflow/tensorflow:latest
+FROM python:3.11.12-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -11,8 +11,8 @@ COPY . /app
 RUN pip install -r requirements.txt
 
 # Make port 5000 available to the world outside this container
-EXPOSE 5000
+EXPOSE 5000 6500 7652
 
 # Run the training script when the container launches
-CMD ["python", "train_model.py"]
+CMD ["python", "gen_txt_chat_srvr.py", "chrcter_creation.py", "lib_srvr.py"]
 

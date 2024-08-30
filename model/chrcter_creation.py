@@ -342,6 +342,17 @@ def get_character_by_id_and_username(username):
         app.logger.error(f"Failed to fetch character: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
+@character_blueprint.route('/classes', methods=['GET'])
+def get_classes():
+    try:
+        classes = list(db.classes.find({}, {"_id": 0, "name": 1, "description": 1, "spells": 1}))
+        for class_item in classes:
+            if class_item['name'] in ['Barbarian', 'Fighter', 'Monk', 'Rogue']:
+                class_item.pop('spells', None)  # Remove spells key for non-spellcaster classes
+        return jsonify(classes), 200
+    except Exception as e:
+        app.logger.error(f"Failed to fetch classes: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 # Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():

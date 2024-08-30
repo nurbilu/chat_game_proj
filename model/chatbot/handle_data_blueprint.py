@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import json
-from bson import json_util
+from bson import json_util, ObjectId
 from .GEM_cnnction import generate_gemini_response
 
 # Load environment variables from .env file
@@ -12,8 +12,18 @@ load_dotenv()
 
 handle_data_blueprint = Blueprint('handle_data', __name__)
 
-client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
-db = client[os.getenv('DB_NAME_MONGO')]
+try:
+    client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
+    db = client[os.getenv('DB_NAME_MONGO')]
+except Exception as e:
+    app.logger.error(f"Failed to connect to MongoDB: {str(e)}")
+    raise e
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
 
 @handle_data_blueprint.route('/fetch_game_data', methods=['POST'])
 def fetch_game_data():
@@ -40,7 +50,7 @@ def generate_text():
         
         # Assuming a simplified session handling and response generation
         session_data = db.sessions.find_one({"username": data.get('username', 'Anonymous')}) or {}
-        enriched_prompt = f"{prompt}\n\nSession Data:\n{json.dumps(session_data)}"
+        enriched_prompt = f"{prompt}\n\nSession Data:\n{json.dumps(session_data, cls=JSONEncoder)}"
         
         response_text = generate_gemini_response(enriched_prompt, db)
         return jsonify({'response': response_text})

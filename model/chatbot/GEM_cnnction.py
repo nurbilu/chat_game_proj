@@ -8,6 +8,7 @@ from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import google.generativeai as genai
 from google.api_core.exceptions import ResourceExhausted
+from bson import ObjectId
 
 # Load environment variables from .env file
 load_dotenv()
@@ -16,13 +17,23 @@ load_dotenv()
 genai.configure(api_key=os.getenv('GEMINI_API_KEY1'))
 
 # Initialize MongoDB client
-client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
-db = client[os.getenv('DB_NAME_MONGO')]
+try:
+    client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
+    db = client[os.getenv('DB_NAME_MONGO')]
+except Exception as e:
+    print(f"Failed to connect to MongoDB: {str(e)}")
+    raise e
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
 
 def generate_gemini_response(prompt, db):
     collections = ['Races', 'Spells', 'Equipment', 'Monsters', 'Classes']
     additional_data = {collection: list(db[collection].find()) for collection in collections}
-    enriched_prompt = f"{prompt}\n\nAdditional Data:\n{json.dumps(additional_data)}"
+    enriched_prompt = f"{prompt}\n\nAdditional Data:\n{json.dumps(additional_data, cls=JSONEncoder)}"
 
     model = genai.GenerativeModel('gemini-1.5-pro')
     chat = model.start_chat(history=[])

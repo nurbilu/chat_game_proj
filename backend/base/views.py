@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated , IsAdminUser
 from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer, UserProfileSerializer, ChangePasswordSerializer, ValidateUserSerializer, ResetPasswordSerializer, CreateSuperUserSerializer
 from django.contrib.auth import get_user_model
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 import logging
 from django.http import JsonResponse, Http404
 from .utils import get_gemini_response
@@ -218,3 +218,6 @@ class CreateSuperUserView(APIView):
             user = serializer.save()
             return Response({'message': 'Superuser created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CustomTokenRefreshView(TokenRefreshView):
+    permission_classes = [AllowAny]

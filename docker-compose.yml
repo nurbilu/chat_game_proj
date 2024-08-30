@@ -8,11 +8,19 @@ services:
     ports:
       - "8000:8000"
     command: python manage.py runserver 0.0.0.0:8000
-    depends_on:
-      - tensorflow 
-      # flask and not tensorflow ? for project submission keep flask after change to tensorflow or try with the a fuller
-      # or more expensive model that i can use . 
-
+  
+  model:
+    build: ./model
+    volumes:
+      - ./model:/app
+    ports:
+      - "5000:5000"
+      - "6500:6500"
+      - "7652:7652"
+    command: python gen_txt_chat_srvr.py
+    command1: python chrcter_creation.py 
+    command2: python lib_srvr.py
+    
   frontend:
     build: ./frontend
     volumes:
@@ -25,14 +33,7 @@ services:
       - API_URL=http://backend:8000
       - API_URL1=http://model:5000
       - API_URL2=http://model:6500
-      - API_URL3=http://model:7625
-# not sure if this is needed
-  tensorflow:
-    build: ./tensorflow
-    container_name: tensorflow
-    volumes:
-      - ./tensorflow:/app
-    command: python train_model.py
+      - API_URL3=http://model:7652
 
 networks:
   default:

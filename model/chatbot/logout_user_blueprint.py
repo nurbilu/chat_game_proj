@@ -9,8 +9,12 @@ load_dotenv()
 
 logout_user_blueprint = Blueprint('logout_user', __name__)
 
-client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
-db = client[os.getenv('DB_NAME_MONGO')]
+try:
+    client = MongoClient(os.getenv('MONGO_ATLAS'), server_api=ServerApi('1'))
+    db = client[os.getenv('DB_NAME_MONGO')]
+except Exception as e:
+    print(f"Failed to connect to MongoDB: {str(e)}")
+    raise e
 
 @logout_user_blueprint.route('/logout', methods=['POST'])
 def logout_user():
