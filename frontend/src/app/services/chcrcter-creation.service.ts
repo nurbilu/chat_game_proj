@@ -39,6 +39,7 @@ export class ChcrcterCreationService {
       })
     );
   }
+
   fetchSpellsByClass(className: string): Observable<Spell[]> {
     return this.http.get<Spell[]>(`${this.apiUrl}/spells/${className}`).pipe(
       catchError(error => {
@@ -132,8 +133,8 @@ export class ChcrcterCreationService {
   getCharacterPrompt(username: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/character_prompt/${username}`).pipe(
       catchError(error => {
-        console.error('Failed to fetch character prompt:', error);
-        return throwError(() => new Error('Error fetching character prompt: ' + error.message));
+        console.error('Failed to fetch character prompts:', error);
+        return throwError(() => new Error('Error fetching character prompts: ' + error.message));
       })
     );
   }

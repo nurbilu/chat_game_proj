@@ -8,6 +8,10 @@ import { NgbAccordionItem } from '@ng-bootstrap/ng-bootstrap';
 import { EditorConfig } from 'ngx-simple-text-editor';
 import { ChatService } from '../../services/chat.service';
 
+interface ChatbotResponse {
+  reply: string;
+  characterPrompt?: string; // Add this line to define the characterPrompt property
+}
 
 @Component({
   selector: 'app-chrcter-creation',

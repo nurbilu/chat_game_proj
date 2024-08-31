@@ -1,5 +1,5 @@
 ### what to fix and errors : 
-1.
+1.display user character prompts in user profile ()
 
 2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes( :-/ ) , need to fix that - now refresh token is not working at all - login fails(done) - getting closer - login works but life is not -is according to access token.(:-/)
 

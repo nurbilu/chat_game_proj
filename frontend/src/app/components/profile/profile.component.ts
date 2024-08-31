@@ -21,6 +21,8 @@ export class ProfileComponent implements OnInit {
   characters: Character[] = []; // Use Character type
   profilePictureUrl: string = '';  // Initialize to an empty string
   selectedCharacter: Character | null = null;
+  characterPrompts: any[] = []; // Store character prompts
+  characterPrompt: string = ''; // Store the character prompt
 
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
 
@@ -38,6 +40,8 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['/super-profile']);
       } else {
         this.loadUserCharacters(decodedToken.username); // Ensure this is called correctly
+        this.loadCharacterPrompts(decodedToken.username); // Load character prompts
+        this.loadCharacterPrompt(decodedToken.username); // Load character prompt
       }
     }).catch(error => console.error('Error decoding token:', error));
   }
@@ -50,6 +54,28 @@ export class ProfileComponent implements OnInit {
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
+  }
+
+  loadCharacterPrompts(username: string): void {
+    this.characterService.getCharacterPrompt(username).subscribe(
+      (prompts) => {
+        this.characterPrompts = prompts;
+      },
+      (error) => {
+        console.error('Failed to load character prompts:', error);
+      }
+    );
+  }
+
+  loadCharacterPrompt(username: string): void {
+    this.characterService.getCharacterPrompt(username).subscribe(
+      (response) => {
+        this.characterPrompt = response.characterPrompt;
+      },
+      (error) => {
+        console.error('Failed to load character prompt:', error);
       }
     );
   }

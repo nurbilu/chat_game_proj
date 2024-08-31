@@ -70,6 +70,14 @@
                 </div>
             </div>
         </div>
+        <div *ngIf="characterPrompt" class="character-prompt mt-4">
+            <h3>Character Prompt</h3>
+            <table class="table table-striped">
+                <tbody>
+                    <tr><th>Prompt</th><td>{{ characterPrompt }}</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
