@@ -117,6 +117,30 @@ def handle_exit(signum, frame):
     clear_log_file('chrcter_creation.log')
     os._exit(0)
 
+def fix_spell_classes(app):
+    spells_collection = db['Spells']
+
+    # Find all spells where `classes` is stored as a string
+    spells = spells_collection.find({"classes": {"$type": "string"}})
+
+    for spell in spells:
+        classes_str = spell['classes']
+        if classes_str:  # Check if the string is not empty
+            try:
+                # Convert the string to a list of dictionaries
+                classes_list = json.loads(classes_str)
+                # Update the document with the correct structure
+                spells_collection.update_one(
+                    {"_id": spell["_id"]},
+                    {"$set": {"classes": classes_list}}
+                )
+            except json.JSONDecodeError:
+                app.logger.error(f"Invalid JSON in 'classes' field for spell: {spell['name']}")
+        else:
+            app.logger.warning(f"Empty 'classes' field for spell: {spell['name']}")
+
+    print("Data structure fixed.")
+
 def create_app():
     app = Flask(__name__)
     app.url_map.strict_slashes = False
@@ -128,25 +152,13 @@ def create_app():
     app.logger = configure_logging()
     app.logger.handlers = []
     
+    # Fix spell classes
+    fix_spell_classes(app)
+    
     return app
 
 character_blueprint = Blueprint('character', __name__)
 spells_collection = db['Spells']
-
-# Find all spells where `classes` is stored as a string
-spells = spells_collection.find({"classes": {"$type": "string"}})
-
-for spell in spells:
-    # Convert the string to a list of dictionaries
-    classes_list = ast.literal_eval(spell['classes'])
-
-    # Update the document with the correct structure
-    spells_collection.update_one(
-        {"_id": spell["_id"]},
-        {"$set": {"classes": classes_list}}
-    )
-
-print("Data structure fixed.")
 
 @character_blueprint.route('/characters/<username>', methods=['GET', 'OPTIONS'])
 def get_character_by_username(username):
@@ -303,13 +315,23 @@ def save_character():
 @character_blueprint.route('/spells/<class_name>', methods=['GET'])
 def fetch_spells_by_class(class_name):
     try:
-        # Project only the 'name' field
-        projection = {'_id': 0, 'name': 1}
-        spells = spells_collection.find({"classes.name": class_name}, projection)
+        # Project only the 'name' and 'classes' fields
+        projection = {'_id': 0, 'name': 1, 'classes': 1}
+        spells = spells_collection.find({}, projection)
         spell_list = list(spells)
-        if not spell_list:
-            return jsonify({"error": "No spells found for the given class"}), 404
-        return jsonify(spell_list), 200
+        
+        # Filter and format the data
+        filtered_spells = []
+        for spell in spell_list:
+            if class_name in spell['classes']:
+                filtered_spells.append({
+                    'name': spell['name'],
+                    'classes': [cls for cls in spell['classes'] if isinstance(cls, str)]
+                })
+        
+        if not filtered_spells:
+            return jsonify({"message": "No spells found for the given class"}), 404
+        return jsonify(filtered_spells), 200
     except Exception as e:
         app.logger.error(f"Failed to fetch spells for class {class_name}: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500

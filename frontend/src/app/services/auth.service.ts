@@ -79,7 +79,12 @@ export class AuthService {
     }
 
     login(username: string, password: string, rememberMe: boolean): Observable<any> {
-        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
+        const payload = {
+            username: username,
+            password: password,
+            remember_me: rememberMe
+        };
+        return this.httpClient.post<any>(`${this.baseUrl}login/`, payload).pipe(
             tap(response => {
                 if (!response || !response.access) {
                     console.error('Invalid response structure:', response);
@@ -103,15 +108,37 @@ export class AuthService {
                 this.router.navigate([targetRoute]);
             }),
             catchError(error => {
+                console.error('Login failed', error);
                 return throwError(() => new Error('Login failed: ' + error.message));
             })
         );
     }
 
+    private startRefreshTokenExpirationTimer() {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+            const decodedToken = this.jwtHelper.decodeToken(refreshToken);
+            const expirationDate = new Date(decodedToken.exp * 1000);
+            const expiresIn = expirationDate.getTime() - Date.now();
+            this.refreshTokenExpirationTimer = setTimeout(() => {
+                this.clearLocalStorage();
+                this.toastService.show({
+                    template: this.toastService.errorTemplate,
+                    classname: 'bg-danger text-light',
+                    delay: 15000,
+                    context: { message: 'Your session has expired. Please log in again.' }
+                });
+                window.location.reload();
+                this.router.navigate(['/homepage']);
+                
+            }, expiresIn);
+        }
+    }
+
     rememberMe(): void {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
-            this.httpClient.post<any>(`${this.baseUrl}refresh/`, { refresh: refreshToken }).pipe(
+            this.httpClient.post<any>(`${this.baseUrl}login/`, { refresh: refreshToken }).pipe(
                 tap(response => {
                     if (!response || !response.access) {
                         console.error('Invalid response structure:', response);
@@ -296,25 +323,6 @@ export class AuthService {
                     this.router.navigate(['/homepage']);
                 }, expiresIn);
             }
-        }
-    }
-
-    private startRefreshTokenExpirationTimer() {
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (refreshToken) {
-            const decodedToken = this.jwtHelper.decodeToken(refreshToken);
-            const expirationDate = new Date(decodedToken.exp * 1000);
-            const expiresIn = expirationDate.getTime() - Date.now();
-            this.refreshTokenExpirationTimer = setTimeout(() => {
-                this.clearLocalStorage();
-                this.toastService.show({
-                    template: this.toastService.errorTemplate,
-                    classname: 'bg-danger text-light',
-                    delay: 15000,
-                    context: { message: 'Your session has expired. Please log in again.' }
-                });
-                this.router.navigate(['/homepage']);
-            }, expiresIn);
         }
     }
 

@@ -11,7 +11,7 @@ import { ToastService } from '../../services/toast.service';
 export class LoginComponent {
     username: string = '';
     password: string = '';
-    rememberMe: boolean = false; // Added this line
+    rememberMe: boolean = false;
 
     @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
     @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
@@ -27,7 +27,9 @@ export class LoginComponent {
     login() {
         this.authService.login(this.username, this.password, this.rememberMe).subscribe({
             next: () => {
-                // Success handled by AuthService
+                if (this.rememberMe) {
+                    this.authService.rememberMe();
+                }
             },
             error: (err) => {
                 console.error('Login failed', err);

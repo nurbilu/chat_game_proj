@@ -39,7 +39,7 @@
         <ng-container *ngIf="!['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(classItem.name)">
           <h4>{{ classItem?.name }}</h4>
           <select *ngIf="classItem.spells.length > 0" class="form-select">
-            <option *ngFor="let spell of classItem?.spells" [value]="spell?.name">{{ spell?.name }}</option>
+            <option *ngFor="let spell of classItem?.spells" [value]="spell">{{ spell }}</option>
           </select>
           <p *ngIf="classItem?.spells?.length === 0" class="no-spells">
             No spells available for {{ classItem?.name }}.
@@ -87,7 +87,7 @@
                         <td>Character Level {{ level }}</td>
                         <td>
                           <ng-container *ngFor="let slot of getSpellSlotLevels(class.name, level)">
-                            <div>{{ slot.level }}: {{ slot.slots }}</div>
+                            <div *ngIf="slot.slots.length > 0">{{ slot.level }}: {{ slot.slots }}</div>
                           </ng-container>
                         </td>
                       </tr>

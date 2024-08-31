@@ -209,12 +209,12 @@ export class ChrcterCreationComponent implements OnInit {
   
   fetchAllSpells(): void {
     this.classes.forEach(classItem => {
-      this.chcrcterCreationService.fetchSpellsByClass(classItem.name).subscribe((spells: any[]) => {
-        classItem.spells = spells;
-        this.cdr.detectChanges(); // Manually trigger change detection
-      }, error => {
-        console.error(`Error fetching spells for class ${classItem.name}:`, error);
-      });
+        this.chcrcterCreationService.fetchSpellsByClass(classItem.name).subscribe((spells: any[]) => {
+            classItem.spells = spells.map(spell => spell.name); // Extract only the spell names
+            this.cdr.detectChanges(); // Manually trigger change detection
+        }, error => {
+            console.error(`Error fetching spells for class ${classItem.name}:`, error);
+        });
     });
   }
 
@@ -229,7 +229,13 @@ export class ChrcterCreationComponent implements OnInit {
       level: `Level ${level}`,
       slots: levels[+level].length ? levels[+level].join(', ') : "0"
     }));
-    return slots.length ? slots : [];
+
+    // Ensure unique spell slot levels
+    return slots.filter((slot, index, self) =>
+      index === self.findIndex((s) => (
+        s.level === slot.level && s.slots === slot.slots
+      ))
+    );
   }
 
   isSpellCaster(className: string): boolean {
@@ -250,9 +256,9 @@ export class ChrcterCreationComponent implements OnInit {
 }
   onClassChange(className: string) {
     this.chcrcterCreationService.fetchSpellsByClass(className).subscribe((spells: any[]) => {
-      this.spells = spells;
-      console.log('Spells fetched:', this.spells); // Debugging line
-      this.cdr.detectChanges(); // Manually trigger change detection
+        this.spells = spells.map(spell => spell.name); // Extract only the spell names
+        console.log('Spells fetched:', this.spells); // Debugging line
+        this.cdr.detectChanges(); // Manually trigger change detection
     });
   }
 

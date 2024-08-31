@@ -116,6 +116,9 @@ export class AppComponent implements OnInit {
           this.password = '';
           this.isLoggedIn = true;
           this.isSuperUser = this.authService.isSuperUser();
+          if (this.rememberMe) {
+            this.authService.rememberMe();
+          }
         },
         error: (error) => {
           this.toastService.show({
