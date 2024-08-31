@@ -1,15 +1,15 @@
 ### what to fix and errors : 
-1.fix with all bugs form new DB collections.( )
+1.
 
 2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes( :-/ ) , need to fix that - now refresh token is not working at all - login fails(done) - getting closer - login works but life is not -is according to access token.(:-/)
 
-3.fix spell slot levels table duplication displayment in character create (done) 
+3.fix spell slot levels table duplication displayment in character create () 
 - next is non spell casting classes will not display the spell slot levels table - ()
 
-4.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !(done?)
-4.b. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
-   *|- change classes display on spells table - done
-   - tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , for doing so i need to make functions that read/use only name if {dict} but if there is more than just name and url , only dont display url .| * 
+
+4. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
+   - make also search in library by partly name
+   *|- tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , for doing so i need to make functions that read/use only name if {dict} but if there is more than just name and url , only dont display url .| * 
    *|all refer the fact that all DB values are under "string" so need to change the way to display the data by considerong this| *
    - add sorting to the tables - 
    - try to fix the search result in the library - name is first(done) , *|and adjust array and objects to strings . ()| *
@@ -66,3 +66,8 @@ DONE LIST :
 11. 1. fix that register without profile picture will use no_profile_pic.png as a profile picture (removed)
 
 12. 1. a. adjust gen logger as other flasks (done)
+
+13. 1.fix with all bugs form new DB collections.(done)
+
+14. 4.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !(done) - done way before last serctions dont know which one before.
+

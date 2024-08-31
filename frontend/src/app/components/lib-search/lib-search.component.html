@@ -1,11 +1,18 @@
 <div *ngIf="searchResult && searchResult.length > 0">
   <ul>
     <li *ngFor="let item of searchResult">
-      <h5>{{ item.value.name }}</h5>
+      <h5>{{ item.key }}</h5>
       <ul>
-        <ng-container *ngFor="let entry of (item.value | keyvalue)">
-          <li *ngIf="entry.key !== 'name'">
-            <strong>{{ entry.key }}:</strong> {{ formatItem(entry.value) }}
+        <ng-container *ngFor="let entry of item.value">
+          <li>
+            <strong>{{ entry.name }}</strong>
+            <ul>
+              <ng-container *ngFor="let subEntry of (entry | keyvalue)">
+                <li *ngIf="subEntry.key !== 'name'">
+                  <strong>{{ subEntry.key }}:</strong> {{ formatItem(subEntry.value) }}
+                </li>
+              </ng-container>
+            </ul>
           </li>
         </ng-container>
       </ul>

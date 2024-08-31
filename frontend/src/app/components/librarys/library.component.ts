@@ -20,7 +20,7 @@ export class LibraryComponent implements OnInit {
   selectedCollection: string = '';
   page: number = 1;
   pageSize: number = 6;
-  maxPages: number = 25;
+  maxPages: number = 40;
   textVisibility: { [key: number]: boolean } = {};
   displayItems: any[] = [];
   searchQuery: string = '';
@@ -89,6 +89,11 @@ export class LibraryComponent implements OnInit {
   }
 
   loadPageItems(): void {
+    if (this.isCardCollection(this.selectedCollection)) {
+      this.pageSize = 6;
+    } else {
+      this.pageSize = 17;
+    }
     const endIndex = this.page * this.pageSize;
     const startIndex = endIndex - this.pageSize;
     this.displayItems = this.collections[this.selectedCollection]?.slice(startIndex, endIndex) || [];

@@ -7,14 +7,12 @@ import { SearchService } from '../../search.service';
   styleUrls: ['./lib-search.component.css']
 })
 export class LibSearchComponent {
-[x: string]: any;
   @Input() searchResult: any[] = [];
   @Output() searchCompleted = new EventEmitter<any[]>();
   @Output() searchCleared = new EventEmitter<void>();
 
   searchQuery: string = '';
   showSearchResults: boolean = false;
-entry: any;
 
   constructor(private searchService: SearchService) {}
 

@@ -17,6 +17,7 @@ from flask_cors import CORS
 import sys
 import traceback
 from dotenv import load_dotenv
+from fuzzywuzzy import process
 
 # Load environment variables from .env file
 load_dotenv()
@@ -143,10 +144,29 @@ def search_item_by_name(name):
     projection = {'_id': 0, 'index': 0}
     regex = re.compile(f'^{re.escape(name)}$', re.IGNORECASE)  # Exact match, case-insensitive
     results = {}
+    exact_match_found = False
+
     for collection in ['Spells', 'Classes', 'Races', 'Monsters', 'Equipment']:
         data = db[collection].find_one({"name": regex}, projection)
         if data:
-            results[collection] = data
+            results[collection] = [data]
+            exact_match_found = True
+
+    if not exact_match_found:
+        # Perform fuzzy search if exact match is not found
+        for collection in ['Spells', 'Classes', 'Races', 'Monsters', 'Equipment']:
+            data = db[collection].find({}, projection)
+            items = list(data)
+            matches = process.extract(name, [item['name'] for item in items], limit=10)
+            for match in matches:
+                if 85 <= match[1] <= 100:  # Filter matches with a ratio between 90% and 100%
+                    for item in items:
+                        if item['name'] == match[0]:
+                            if collection not in results:
+                                results[collection] = []
+                            results[collection].append(item)
+                            break
+
     if results:
         return jsonify(results)
     else:

@@ -48,6 +48,7 @@ Flask-SocketIO==5.3.6
 Flask-SQLAlchemy==3.1.1
 fonttools==4.51.0
 frozenlist==1.4.1
+fuzzywuzzy==0.18.0
 ggshield==1.24.0
 google-ai-generativelanguage==0.6.6
 google-api-core==2.19.0
@@ -85,6 +86,7 @@ kivy-deps.sdl2==0.7.0
 Kivy-Garden==0.1.5
 kiwisolver==1.4.5
 klib==1.1.2
+Levenshtein==0.25.1
 Mako==1.3.0
 MarkupSafe==2.1.3
 marshmallow==3.18.0
@@ -117,10 +119,12 @@ pypiwin32==223
 python-dateutil==2.8.2
 python-dotenv==0.21.1
 python-engineio==4.9.0
+python-Levenshtein==0.25.1
 python-socketio==5.11.2
 pytz==2024.1
 pywin32==306
 PyYAML==6.0.1
+rapidfuzz==3.9.6
 requests==2.31.0
 requests-oauthlib==2.0.0
 rich==12.5.1

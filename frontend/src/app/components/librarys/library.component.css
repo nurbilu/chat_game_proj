@@ -52,7 +52,7 @@ pre {
     display: flex;
     justify-content: center; /* Center pagination horizontally */
     position: fixed;
-    bottom: 90px; /* Adjust this value based on your footer's height */
+    bottom: 50px; /* Adjust this value based on your footer's height */
     right: 0;
     left: calc(50% - 50vw); /* Adjust this value to align with your table */
     background: white;
