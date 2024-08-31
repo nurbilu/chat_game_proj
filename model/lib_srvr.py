@@ -159,7 +159,7 @@ def search_item_by_name(name):
             items = list(data)
             matches = process.extract(name, [item['name'] for item in items], limit=10)
             for match in matches:
-                if 85 <= match[1] <= 100:  # Filter matches with a ratio between 90% and 100%
+                if 85 <= match[1] <= 100:  # Filter matches with a ratio 
                     for item in items:
                         if item['name'] == match[0]:
                             if collection not in results:
@@ -170,7 +170,7 @@ def search_item_by_name(name):
     if results:
         return jsonify(results)
     else:
-        return jsonify({"error": "Item not found"}), 404
+        return jsonify({"error": "No results found"}), 404
 
 def create_app():
     app = Flask(__name__)

@@ -123,3 +123,7 @@ button {
 .horizontal-list li {
     margin-right: 10px;
 }
+
+.progress-container {
+    margin-bottom: 20px;
+}

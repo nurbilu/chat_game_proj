@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component'; // Ensure this path is correct
+import { LoginComponent } from './components/login/login.component'; 
 import { RegisterComponent } from './components/register/register.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { AuthService } from './services/auth.service';
@@ -18,25 +18,25 @@ import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-
 import { HttpClientModule } from '@angular/common/http';
 import { EnvironmentsModule } from './environments.module';
 import { SuperProfileComponent } from './components/super-profile/super-profile.component';
-import { RouterModule } from '@angular/router'; // Import RouterModule
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModule
-import { ToastsContainerComponent } from './components/toasts-container/toasts-container.component'; // Added this line
+import { RouterModule } from '@angular/router'; 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
+import { ToastsContainerComponent } from './components/toasts-container/toasts-container.component'; 
 import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Required for animations
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component';
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
-import { LibraryComponent } from './components/librarys/library.component'; // Import LibraryComponent
-import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor'; // Import NgxSimpleTextEditorModule
-import { CleanTextPipe } from './clean-text.pipe'; // Import CleanTextPipe
-import { SearchService } from './search.service'; // Import SearchService
-import { LibSearchComponent } from './components/lib-search/lib-search.component'; // Import LibSearchComponent
+import { LibraryComponent } from './components/librarys/library.component'; 
+import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor'; 
+import { CleanTextPipe } from './clean-text.pipe'; 
+import { SearchService } from './search.service'; 
+import { LibSearchComponent } from './components/lib-search/lib-search.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent, // Ensure LoginComponent is listed here
+    LoginComponent, 
     RegisterComponent,
     ChatComponent,
     ProfileComponent,
@@ -45,29 +45,29 @@ import { LibSearchComponent } from './components/lib-search/lib-search.component
     ChangePasswordComponent,
     ChrcterCreationComponent,
     SuperProfileComponent,
-    ToastsContainerComponent, // Added this line
+    ToastsContainerComponent, 
     ForgetPwdComponent,
     ResetPwdComponent,
-    LibraryComponent, // Declare LibraryComponent
-    CleanTextPipe, // Declare CleanTextPipe
-    LibSearchComponent // Declare LibSearchComponent
+    LibraryComponent, 
+    CleanTextPipe, 
+    LibSearchComponent 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule, // Import FormsModule
+    FormsModule, 
     ReactiveFormsModule,
     HttpClientModule,
     EnvironmentsModule,
-    RouterModule.forRoot([]), // Ensure RouterModule is imported
-    NgbModule, // Add NgbModule here
-    BrowserAnimationsModule, // Add BrowserAnimationsModule
+    RouterModule.forRoot([]), 
+    NgbModule, 
+    BrowserAnimationsModule, 
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
-    }), // Initialize ToastrModule
-    NgxSimpleTextEditorModule // Import NgxSimpleTextEditorModule
+    }), 
+    NgxSimpleTextEditorModule 
   ],
   providers: [
     AuthService,
@@ -80,9 +80,9 @@ import { LibSearchComponent } from './components/lib-search/lib-search.component
       useClass: AuthInterceptor,
       multi: true
     },
-    SearchService // Add SearchService to providers
+    SearchService 
   ],
   bootstrap: [AppComponent],
-  schemas: [NO_ERRORS_SCHEMA] // Add this line
+  schemas: [NO_ERRORS_SCHEMA] 
 })
 export class AppModule { }

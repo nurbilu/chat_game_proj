@@ -7,13 +7,7 @@
 - next is non spell casting classes will not display the spell slot levels table - ()
 
 
-4. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
-   - make also search in library by partly name
-   *|- tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , for doing so i need to make functions that read/use only name if {dict} but if there is more than just name and url , only dont display url .| * 
-   *|all refer the fact that all DB values are under "string" so need to change the way to display the data by considerong this| *
-   - add sorting to the tables - 
-   - try to fix the search result in the library - name is first(done) , *|and adjust array and objects to strings . ()| *
-   *|- try to adjust all arrays and objects to strings - | *
+4. resolve the progress bar problem in character create ()
 
 5. implement chracter create completely + fix Gemini integration : ()
    = fix that chat will work  simple and easy - suposedly done - check if not - (too slow for first prompt , dont hold on that though )
@@ -24,6 +18,12 @@
 6. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
 6. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" ()
 
+7. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
+(   *|- tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , for doing so i need to make functions that read/use only name if {dict} but if there is more than just name and url , only dont display url .| * 
+   *|all refer the fact that all DB values are under "string" so need to change the way to display the data by considerong this| *
+   - add sorting to the tables - 
+   - try to fix the search result in the library - name is first(done) , *|and adjust array and objects to strings . ()| *
+   *|- try to adjust all arrays and objects to strings - | *) - maybe later
 
 ### best for last : 
 1. async problem - Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received - seems to show in all components few moments after reload(only if presists in the future ( )) 

@@ -11,6 +11,10 @@
       to see the classes and races descriptions and spells:
     </p>
 
+    <div *ngIf="isLoading" class="progress-container">
+      <ngb-progressbar type="info" [value]="progressValue" [animated]="true" [striped]="true"></ngb-progressbar>
+    </div>
+
     <div class="text-frame">
       <h3>Character Creation Prompt</h3>
       <div class="text-editor-container">

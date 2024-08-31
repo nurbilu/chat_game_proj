@@ -98,6 +98,8 @@ export class ChrcterCreationComponent implements OnInit {
   </div>
 `;
   chatMessages: any[] = [];
+  isLoading: boolean = false;
+  progressValue: number = 0;
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
@@ -110,12 +112,25 @@ export class ChrcterCreationComponent implements OnInit {
       this.fetchAllSpells();
       this.loadSpellSlotLevels();
     });
+
+    // Simulate loading process
+    this.isLoading = true;
+    this.progressValue = 0;
+    const interval = setInterval(() => {
+      this.progressValue += 10;
+      if (this.progressValue >= 100) {
+        clearInterval(interval);
+        this.isLoading = false;
+      }
+    }, 500);
   }
+
   loadSpellSlotLevels(): void {
     this.http.get('/assets/spellSlotLevels.json').subscribe(data => {
       this.spellSlotLevels = data;
     });
   }
+
   saveDraft() {
     this.authService.getUsername().subscribe((username: string) => {
       const draft = {
@@ -210,6 +225,7 @@ export class ChrcterCreationComponent implements OnInit {
   fetchAllSpells(): void {
     this.classes.forEach(classItem => {
         this.chcrcterCreationService.fetchSpellsByClass(classItem.name).subscribe((spells: any[]) => {
+          this.isLoading = true;
             classItem.spells = spells.map(spell => spell.name); // Extract only the spell names
             this.cdr.detectChanges(); // Manually trigger change detection
         }, error => {

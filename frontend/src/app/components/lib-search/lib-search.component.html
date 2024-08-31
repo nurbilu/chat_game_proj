@@ -1,3 +1,8 @@
+<div *ngIf="isLoading" class="spinner-container">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
 <div *ngIf="searchResult && searchResult.length > 0">
   <ul>
     <li *ngFor="let item of searchResult">
@@ -19,6 +24,6 @@
     </li>
   </ul>
 </div>
-<div *ngIf="!searchResult || searchResult.length === 0">
+<div *ngIf="noResultsFound">
   No results found.
 </div>

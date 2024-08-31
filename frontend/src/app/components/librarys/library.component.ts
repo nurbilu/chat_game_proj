@@ -26,6 +26,7 @@ export class LibraryComponent implements OnInit {
   searchQuery: string = '';
   searchResult: any[] = [];
   showSearchResults: boolean = false;
+  isLoading: boolean = false;
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -171,19 +172,21 @@ export class LibraryComponent implements OnInit {
   }
 
   onSearch(): void {
-    console.log('LibraryComponent onSearch triggered with query:', this.searchQuery); // Ensure this is logged
+    console.log('LibraryComponent onSearch triggered with query:', this.searchQuery);
     if (this.searchQuery) {
+      this.isLoading = true;
       this.searchService.searchItemByName(this.searchQuery)
         .subscribe({
           next: (results: { [key: string]: any }) => {
-            console.log('Received results:', results);
             this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
             this.showSearchResults = true;
+            this.isLoading = false;
           },
           error: (error) => {
             console.error('Search error:', error);
             this.searchResult = [];
             this.showSearchResults = false;
+            this.isLoading = false;
           }
         });
     } else {

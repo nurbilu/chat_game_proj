@@ -1,28 +1,37 @@
 nav {
   display: flex;
-  align-items: center; /* Center items vertically */
-  background-color: #333740; /* Darker shade for a more subtle look */
+  align-items: center;
+  /* Center items vertically */
+  background-color: #333740;
+  /* Darker shade for a more subtle look */
   padding: 10px 20px;
-  border-bottom: 2px solid #c9a66b; /* Gold color accent */
+  border-bottom: 2px solid #c9a66b;
+  /* Gold color accent */
 }
 
 .navbar-collapse {
   display: flex;
-  justify-content: space-between; /* Space out the items */
-  align-items: center; /* Center items vertically */
+  justify-content: space-between;
+  /* Space out the items */
+  align-items: center;
+  /* Center items vertically */
   width: 100%;
 }
 
 .navbar-nav {
   display: flex;
-  align-items: center; /* Center items vertically */
-  margin-left: auto; /* Push the nav items to the right */
+  align-items: center;
+  /* Center items vertically */
+  margin-left: auto;
+  /* Push the nav items to the right */
 }
 
 .navbar-nav .btn-group {
   display: flex;
-  align-items: center; /* Center buttons vertically */
-  margin-left: auto; /* Push the button group to the right */
+  align-items: center;
+  /* Center buttons vertically */
+  margin-left: auto;
+  /* Push the button group to the right */
 }
 
 .navbar-brand img {
@@ -33,7 +42,8 @@ nav {
 
 .navbar-toggler {
   border: none;
-  background-color: #c9a66b; /* Gold color */
+  background-color: #c9a66b;
+  /* Gold color */
   padding: 5px 10px;
   border-radius: 5px;
 }
@@ -44,12 +54,14 @@ nav {
 
 .offcanvas-header {
   background-color: #333740;
-  color: #f4eee8; /* Parchment white */
+  color: #f4eee8;
+  /* Parchment white */
 }
 
 .offcanvas-body {
   background-color: #333740;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
 }
 
 .offcanvas-body ul {
@@ -62,16 +74,33 @@ nav {
 }
 
 .offcanvas-body ul li a {
-  color: #f4eee8; /* Parchment white */
+  color: #f4eee8;
+  /* Parchment white */
   font-size: 18px;
   text-decoration: none;
 }
 
 .offcanvas-body ul li a:hover {
-  color: #c9a66b; /* Gold color */
+  color: #c9a66b;
+  /* Gold color */
   text-decoration: underline;
 }
 
 body.offcanvas-open {
   overflow: hidden;
+}
+
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #299437;
+  z-index: 9999;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3rem;
 }

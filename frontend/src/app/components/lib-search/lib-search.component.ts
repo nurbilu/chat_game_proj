@@ -13,28 +13,42 @@ export class LibSearchComponent {
 
   searchQuery: string = '';
   showSearchResults: boolean = false;
+  noResultsFound: boolean = false;
+  isLoading: boolean = false;
 
   constructor(private searchService: SearchService) {}
 
   onSearch(): void {
     console.log('LibSearchComponent onSearch triggered with query:', this.searchQuery);
     if (this.searchQuery) {
+      this.isLoading = true;
       this.searchService.searchItemByName(this.searchQuery)
         .subscribe({
           next: (results: { [key: string]: any }) => {
-            console.log('Received results:', results);
+            // console.log('Received results:', results);
             this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
             this.showSearchResults = true;
+            this.noResultsFound = false;
+            this.isLoading = false;
             this.searchCompleted.emit(this.searchResult);
           },
           error: (error) => {
-            console.error('Search error:', error);
+            if (error.status === 404) {
+              console.error('No results found:', error);
+              this.noResultsFound = true;
+            } else {
+              console.error('Search error:', error);
+            }
+            this.searchResult = [];
             this.showSearchResults = false;
+            this.isLoading = false;
             this.searchCleared.emit();
           }
         });
     } else {
       this.showSearchResults = false;
+      this.noResultsFound = false;
+      this.isLoading = false;
       this.searchCleared.emit();
     }
   }
