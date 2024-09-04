@@ -1,15 +1,12 @@
 ### what to fix and errors : 
-1.display user character prompts in user profile ()
+1.
 
 2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes( :-/ ) , need to fix that - now refresh token is not working at all - login fails(done) - getting closer - login works but life is not -is according to access token.(:-/)
 
 3.fix spell slot levels table duplication displayment in character create () 
 - next is non spell casting classes will not display the spell slot levels table - ()
 
-
-4. resolve the progress bar problem in character create ()
-
-5. implement chracter create completely + fix Gemini integration : ()
+5. implement chracter create completely + fix Gemini integration : (?)
    = fix that chat will work  simple and easy - suposedly done - check if not - (too slow for first prompt , dont hold on that though )
    - make a template for the character creation - done.
    - fix Gemini integration - done.
@@ -70,4 +67,8 @@ DONE LIST :
 13. 1.fix with all bugs form new DB collections.(done)
 
 14. 4.a. fix lib = make sure data is written the right format - each time i shut my laptop - table are not displayed properly + flask framework error 500 !(done) - done way before last serctions dont know which one before.
+
+15. 4. resolve the progress bar problem in character create (resolved)
+
+16. 1.display user character prompts in user profile (done)
 

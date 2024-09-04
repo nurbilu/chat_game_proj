@@ -64,19 +64,19 @@ export class ChrcterCreationComponent implements OnInit {
     prompt: ''
   };
   races: any[] = [];
-  classes: { name: string, description: string, spells: any[] }[] = [
-    { name: 'Barbarian', description: 'A fierce warrior of primitive background who can enter a battle rage.', spells: [] },
-    { name: 'Bard', description: 'An inspiring magician whose power echoes the music of creation.', spells: [] },
-    { name: 'Cleric', description: 'A priestly champion who wields divine magic in service of a higher power.', spells: [] },
-    { name: 'Druid', description: 'A priest of the Old Faith, wielding the powers of nature and adopting animal forms.', spells: [] },
-    { name: 'Fighter', description: 'A master of martial combat, skilled with a variety of weapons and armor.', spells: [] },
-    { name: 'Monk', description: 'A master of martial arts, harnessing the power of the body in pursuit of physical and spiritual perfection.', spells: [] },
-    { name: 'Paladin', description: 'A holy warrior bound to a sacred oath.', spells: [] },
-    { name: 'Ranger', description: 'A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.', spells: [] },
-    { name: 'Rogue', description: 'A scoundrel who uses stealth and trickery to overcome obstacles and enemies.', spells: [] },
-    { name: 'Sorcerer', description: 'A spellcaster who draws on inherent magic from a gift or bloodline.', spells: [] },
-    { name: 'Warlock', description: 'A wielder of magic that is derived from a bargain with an extraplanar entity.', spells: [] },
-    { name: 'Wizard', description: 'A scholarly magic-user capable of manipulating the structures of reality.', spells: [] }
+  classes: { name: string, description: string, spells: any[], isSpellCaster: boolean }[] = [
+    { name: 'Barbarian', description: 'A fierce warrior of primitive background who can enter a battle rage.', spells: [], isSpellCaster: false },
+    { name: 'Bard', description: 'An inspiring magician whose power echoes the music of creation.', spells: [], isSpellCaster: true },
+    { name: 'Cleric', description: 'A priestly champion who wields divine magic in service of a higher power.', spells: [], isSpellCaster: true },
+    { name: 'Druid', description: 'A priest of the Old Faith, wielding the powers of nature and adopting animal forms.', spells: [], isSpellCaster: true },
+    { name: 'Fighter', description: 'A master of martial combat, skilled with a variety of weapons and armor.', spells: [], isSpellCaster: false },
+    { name: 'Monk', description: 'A master of martial arts, harnessing the power of the body in pursuit of physical and spiritual perfection.', spells: [], isSpellCaster: false },
+    { name: 'Paladin', description: 'A holy warrior bound to a sacred oath.', spells: [], isSpellCaster: true },
+    { name: 'Ranger', description: 'A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.', spells: [], isSpellCaster: true },
+    { name: 'Rogue', description: 'A scoundrel who uses stealth and trickery to overcome obstacles and enemies.', spells: [], isSpellCaster: false },
+    { name: 'Sorcerer', description: 'A spellcaster who draws on inherent magic from a gift or bloodline.', spells: [], isSpellCaster: true },
+    { name: 'Warlock', description: 'A wielder of magic that is derived from a bargain with an extraplanar entity.', spells: [], isSpellCaster: true },
+    { name: 'Wizard', description: 'A scholarly magic-user capable of manipulating the structures of reality.', spells: [], isSpellCaster: true }
   ];
   spellSlotLevels: any;
   levels = Array.from({ length: 20 }, (_, i) => i + 1); // Define levels from 1 to 20
@@ -242,9 +242,9 @@ export class ChrcterCreationComponent implements OnInit {
     const classLevels = this.spellSlotLevels?.[className];
     const levels = classLevels?.[characterLevel];
     if (!levels) {
-      return [];
+      return Array(9).fill({ level: '', slots: '0' });
     }
-  
+
     const slots = Object.keys(levels).map(level => ({
       level: `Level ${level}`,
       slots: levels[+level].length ? levels[+level].join(', ') : "0"

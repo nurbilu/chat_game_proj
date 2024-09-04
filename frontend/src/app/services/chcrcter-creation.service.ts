@@ -31,14 +31,6 @@ export class ChcrcterCreationService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  fetchCharactersByUsername(username: string): Observable<Character[]> {
-    return this.http.get<Character[]>(`${this.apiUrl}/characters/${username}`).pipe(
-      catchError(error => {
-        console.error('Failed to fetch characters by username:', error);
-        return throwError(() => new Error('Error fetching characters by username: ' + error.message));
-      })
-    );
-  }
 
   fetchSpellsByClass(className: string): Observable<Spell[]> {
     return this.http.get<Spell[]>(`${this.apiUrl}/spells/${className}`).pipe(

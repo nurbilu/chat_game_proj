@@ -104,7 +104,6 @@ export class AppComponent implements OnInit {
 
   loginWithModal(modal: any) {
     if (this.username && this.password) {
-      this.isLoading = true;
       this.authService.loginForModal(this.username, this.password, this.rememberMe).subscribe({
         next: (response) => {
           this.toastService.show({
@@ -121,7 +120,6 @@ export class AppComponent implements OnInit {
           if (this.rememberMe) {
             this.authService.rememberMe();
           }
-          this.isLoading = false;
         },
         error: (error) => {
           this.toastService.show({
@@ -130,7 +128,6 @@ export class AppComponent implements OnInit {
             delay: 15000,
             context: { message: error.message }
           });
-          this.isLoading = false;
         }
       });
     } else {

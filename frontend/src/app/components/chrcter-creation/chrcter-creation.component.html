@@ -12,7 +12,8 @@
     </p>
 
     <div *ngIf="isLoading" class="progress-container">
-      <ngb-progressbar type="info" [value]="progressValue" [animated]="true" [striped]="true"></ngb-progressbar>
+      <ngb-progressbar type="info" [value]="progressValue" [animated]="true"
+        [striped]="true">{{progressValue}}%</ngb-progressbar>
     </div>
 
     <div class="text-frame">
@@ -61,8 +62,8 @@
         </ul>
       </div>
       <p>
-        For more information on spells, visit 
-        <a href="https://rpgbot.net/dnd5/characters/spells/" target="_blank">RPGBot</a>.
+        For more information on spells, visit
+        <a href="https://rpgbot.net/dnd5/characters/spells/" target="_blank">RPGBot spells</a>.
       </p>
     </div>
 
@@ -76,28 +77,26 @@
           <div ngbAccordionCollapse>
             <div ngbAccordionBody>
               <p>{{ class.description }}</p>
-              <div *ngIf="getSpellSlotLevels(class.name, 1).length > 0">
+              <div class="table-responsive">
                 <h5>Spell Slot Levels:</h5>
-                <div class="table-responsive">
-                  <table class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">Character Level</th>
-                        <th scope="col">Spell Slots</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let level of levels">
-                        <td>Character Level {{ level }}</td>
-                        <td>
-                          <ng-container *ngFor="let slot of getSpellSlotLevels(class.name, level)">
-                            <div *ngIf="slot.slots.length > 0">{{ slot.level }}: {{ slot.slots }}</div>
-                          </ng-container>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th *ngFor="let slotLevel of [1,2,3,4,5,6,7,8,9]">Spell Slot Level {{slotLevel}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let level of levels">
+                      <td>{{level}}</td>
+                      <td *ngFor="let slotLevel of [1,2,3,4,5,6,7,8,9]">
+                        <ng-container *ngIf="getSpellSlotLevels(class.name, level)[slotLevel - 1]">
+                          {{ getSpellSlotLevels(class.name, level)[slotLevel - 1].slots }}
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -106,7 +105,7 @@
       <div>
         <p>
           For more information on classes, visit
-          <a href="https://rpgbot.net/dnd5/characters/classes/" target="_blank">RPGBot</a>.
+          <a href="https://rpgbot.net/dnd5/characters/classes/" target="_blank">RPGBot classes</a>.
         </p>
       </div>
     </div>
@@ -130,7 +129,7 @@
       <div>
         <p>
           For more information on races, visit
-          <a href="https://rpgbot.net/dnd5/characters/races/" target="_blank">RPGBot</a>.
+          <a href="https://rpgbot.net/dnd5/characters/races/" target="_blank">RPGBot races</a>.
         </p>
       </div>
     </div>

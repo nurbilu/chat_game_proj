@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
       if (this.isSuperuser) {
         this.router.navigate(['/super-profile']);
       } else {
-        this.loadUserCharacters(decodedToken.username); // Ensure this is called correctly
         this.loadCharacterPrompts(decodedToken.username); // Load character prompts
         this.loadCharacterPrompt(decodedToken.username); // Load character prompt
       }
@@ -80,16 +79,6 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  loadUserCharacters(username: string): void {
-    this.characterService.fetchCharactersByUsername(username).subscribe(
-      (characters) => {
-        this.characters = characters;
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
-    );
-  }
 
   deleteCharacter(username: string, characterPrompt: string): void {
     this.characterService.deleteCharacter(username, characterPrompt).subscribe(

@@ -46,6 +46,8 @@ export class AuthService {
         }
     }
 
+
+
     // Method to retrieve the token
     getToken(): string | null {
         if (isPlatformBrowser(this.platformId)) {
@@ -71,6 +73,64 @@ export class AuthService {
             } catch (e) {
                 // Handle error if localStorage is not available
             }
+        }
+    }
+    decodeToken(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const token = this.getToken();
+            if (token) {
+                try {
+                    const decoded = this.jwtHelper.decodeToken(token);
+                    resolve(decoded);
+                } catch (error) {
+                    reject('Error decoding token');
+                }
+            } else {
+                reject('Token not found');
+            }
+        });
+    }
+
+    private startTokenExpirationTimer() {
+        const token = this.getToken();
+        if (token) {
+            const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
+            if (expirationDate) {
+                const expiresIn = expirationDate.getTime() - Date.now();
+                this.tokenExpirationTimer = setTimeout(() => {
+                    this.tokenExpirationSubject.next();
+                    this.clearLocalStorage();
+                    this.toastService.show({
+                        template: this.toastService.errorTemplate,
+                        classname: 'bg-danger text-light',
+                        delay: 15000,
+                        context: { message: 'Your session has expired. Please log in again.' }
+                    });
+                    // window.location.reload();
+                    this.router.navigate(['/homepage']);
+                }, expiresIn);
+            }
+        }
+    }
+
+    private startRefreshTokenExpirationTimer() {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+            const decodedToken = this.jwtHelper.decodeToken(refreshToken);
+            const expirationDate = new Date(decodedToken.exp);
+            const expiresIn = expirationDate.getTime() - Date.now();
+            this.refreshTokenExpirationTimer = setTimeout(() => {
+                this.clearLocalStorage();
+                this.toastService.show({
+                    template: this.toastService.errorTemplate,
+                    classname: 'bg-danger text-light',
+                    delay: 15000,
+                    context: { message: 'Your session has expired. Please log in again.' }
+                });
+                window.location.reload();
+                this.router.navigate(['/homepage']);
+
+            }, expiresIn);
         }
     }
 
@@ -114,45 +174,25 @@ export class AuthService {
         );
     }
 
-    private startRefreshTokenExpirationTimer() {
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (refreshToken) {
-            const decodedToken = this.jwtHelper.decodeToken(refreshToken);
-            const expirationDate = new Date(decodedToken.exp * 1000);
-            const expiresIn = expirationDate.getTime() - Date.now();
-            this.refreshTokenExpirationTimer = setTimeout(() => {
-                this.clearLocalStorage();
-                this.toastService.show({
-                    template: this.toastService.errorTemplate,
-                    classname: 'bg-danger text-light',
-                    delay: 15000,
-                    context: { message: 'Your session has expired. Please log in again.' }
-                });
-                window.location.reload();
-                this.router.navigate(['/homepage']);
-                
-            }, expiresIn);
-        }
-    }
 
     rememberMe(): void {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
             this.httpClient.post<any>(`${this.baseUrl}login/`, { refresh: refreshToken }).pipe(
                 tap(response => {
-                    if (!response || !response.access) {
+                    if (!response || !response.refresh) {
                         console.error('Invalid response structure:', response);
                         throw new Error('Token not provided');
                     }
-                    const decodedToken = this.jwtHelper.decodeToken(response.access);
+                    const decodedToken = this.jwtHelper.decodeToken(response.refresh);
                     if (!decodedToken || !decodedToken.username) {
                         console.error('Username not provided in token:', decodedToken);
                         throw new Error('Username not provided in token');
                     }
-                    this.setItem('token', response.access);
+                    this.setItem('refresh_token', response.refresh);
                     this._isLoggedIn.next(true); // Update login state
                     this.username.next(decodedToken.username);
-                    this.startTokenExpirationTimer();
+                    this.startRefreshTokenExpirationTimer();
                 }),
                 catchError(error => {
                     console.error('Failed to refresh token:', error);
@@ -164,7 +204,7 @@ export class AuthService {
     }
 
     loginForModal(username: string, password: string, rememberMe: boolean): Observable<any> {
-        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
+        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password, remember_me: rememberMe }).pipe(
             tap(response => {
                 if (!response || !response.access) {
                     console.error('Invalid response structure:', response);
@@ -247,21 +287,6 @@ export class AuthService {
         return this.http.put(`${this.baseUrl}upload-profile-picture/`, profilePicture, { headers });
     }
 
-    decodeToken(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const token = this.getToken();
-            if (token) {
-                try {
-                    const decoded = this.jwtHelper.decodeToken(token);
-                    resolve(decoded);
-                } catch (error) {
-                    reject('Error decoding token');
-                }
-            } else {
-                reject('Token not found');
-            }
-        });
-    }
 
     changePassword(data: { oldPassword: string; newPassword: string; confirmPassword: string }): Observable<any> {
         const headers = new HttpHeaders({
@@ -305,26 +330,6 @@ export class AuthService {
         return isPlatformBrowser(this.platformId) && !!localStorage.getItem('token');
     }
 
-    private startTokenExpirationTimer() {
-        const token = this.getToken();
-        if (token) {
-            const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
-            if (expirationDate) {
-                const expiresIn = expirationDate.getTime() - Date.now();
-                this.tokenExpirationTimer = setTimeout(() => {
-                    this.tokenExpirationSubject.next();
-                    this.clearLocalStorage();
-                    this.toastService.show({
-                        template: this.toastService.errorTemplate,
-                        classname: 'bg-danger text-light',
-                        delay: 15000,
-                        context: { message: 'Your session has expired. Please log in again.' }
-                    });
-                    this.router.navigate(['/homepage']);
-                }, expiresIn);
-            }
-        }
-    }
 
     private clearLocalStorage() {
         if (isPlatformBrowser(this.platformId)) {

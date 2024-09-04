@@ -1,0 +1,39 @@
+2024-09-04 18:52:51,805 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fb"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,806 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fb"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,806 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fb"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,812 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075f8"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,819 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075f8"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,822 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075f9"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,823 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075f9"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,824 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fa"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,824 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075f9"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,832 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075f8"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,875 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fa"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,896 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fc"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,897 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fc"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,897 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fc"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:51,904 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-09-04 18:52:51,904 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-09-04 18:52:51,904 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-09-04 18:52:51,904 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-09-04 18:52:52,018 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fb"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:52,026 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fb"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:52,054 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fb"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:52,121 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fc"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:52,121 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fc"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:52,123 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fc"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:52:52,168 - pymongo.connection - DEBUG - {"clientId": {"$oid": "66d882531736b8b4570075fa"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-09-04 18:55:42,877 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:55:42] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-09-04 18:55:42,877 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:55:42] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-09-04 18:55:42,886 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:55:42] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-09-04 18:55:42,886 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:55:42] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-09-04 18:56:31,828 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:31] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-09-04 18:56:31,828 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:31] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-09-04 18:56:31,831 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:31] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-09-04 18:56:31,831 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:31] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-09-04 18:56:44,101 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:44] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-09-04 18:56:44,101 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:44] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-09-04 18:56:44,111 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:44] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-09-04 18:56:44,111 - werkzeug - INFO - 127.0.0.1 - - [04/Sep/2024 18:56:44] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
