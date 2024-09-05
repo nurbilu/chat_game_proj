@@ -29,7 +29,10 @@
           <div class="col" *ngFor="let item of getPaginatedItems(); let i = index">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title">{{ item.name }}</h5>
+                <h5>{{item.name}}</h5>
+              </div>
+              <div class="card-img-top">
+                <img [src]="'/assets/Lib-Imgs-Cards/' + item.name + '.jpg'" class="card-img-top" alt="Image">
               </div>
               <div class="card-body">
                 <!-- Grid layout for collapse buttons, skipping the first key -->

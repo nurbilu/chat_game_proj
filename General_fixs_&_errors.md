@@ -3,14 +3,13 @@
 
 2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes( :-/ ) , need to fix that - now refresh token is not working at all - login fails(done) - getting closer - login works but life is not -is according to access token.(:-/)
 
-3.fix spell slot levels table duplication displayment in character create () 
+3. - fix spell slot levels table duplication displayment in character create (done) - display header twice - fix()
+- the cause of this is the implemnation of the spell slot table for non spell casting classes - NEED TO BLOCK DISPLAY of non spell casting classes ()
 - next is non spell casting classes will not display the spell slot levels table - ()
 
-5. implement chracter create completely + fix Gemini integration : (?)
-   = fix that chat will work  simple and easy - suposedly done - check if not - (too slow for first prompt , dont hold on that though )
-   - make a template for the character creation - done.
-   - fix Gemini integration - done.
-   - make 5 templates for chat to make game gen quicker - 
+5. implement chracter create completely + fix Gemini integration : ()
+   - change the intagration so API does not use the DB collection ()
+   - add more templates for chat to make game gen quicker ()
    
 6. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
 6. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" ()

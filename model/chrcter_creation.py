@@ -370,7 +370,10 @@ def get_classes():
         classes = list(db.classes.find({}, {"_id": 0, "name": 1, "description": 1, "spells": 1}))
         for class_item in classes:
             if class_item['name'] in ['Barbarian', 'Fighter', 'Monk', 'Rogue']:
+                class_item['isSpellCaster'] = False
                 class_item.pop('spells', None)  # Remove spells key for non-spellcaster classes
+            else:
+                class_item['isSpellCaster'] = True
         return jsonify(classes), 200
     except Exception as e:
         app.logger.error(f"Failed to fetch classes: {str(e)}")

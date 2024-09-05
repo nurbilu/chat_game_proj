@@ -2,15 +2,10 @@ body {
   width: 100%;
   max-width: 1200px;
   max-height: 1000px;
-  /* Adjust the maximum width as needed */
   margin: 0 auto;
-  /* Center the page content */
-  padding: 150px;
-  /* Add some padding around the content */
+  padding: 50px; /* Adjusted padding */
   font-size: 16px;
-  /* Adjust base font size */
   background-color: #f4f4f4;
-  /* Optional: background color of the page */
 }
 
 .scrollspy-example {
@@ -23,14 +18,12 @@ body {
 .table {
   margin-bottom: 40rem;
   width: 100%;
-  /* Ensure table uses full container width */
 }
 
 span[data-full-text] {
   cursor: pointer;
   display: inline-block;
   width: 100%;
-  /* Allow span to fill the cell */
 }
 
 pre {
@@ -43,46 +36,36 @@ pre {
 
 .table tr {
   height: auto;
-  /* Default height, can be overridden by ngStyle */
 }
 
 .table td {
   min-width: 250px;
-  /* Minimum width for table cells */
   white-space: normal;
-  /* Allow text to wrap */
   overflow: visible;
-  /* Allow text to overflow */
 }
 
 .table tr.long-text-row {
   height: auto;
-  /* Let height grow as needed */
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  /* Center pagination horizontally */
   position: fixed;
   bottom: 50px;
-  /* Adjust this value based on your footer's height */
   right: 0;
   left: calc(50% - 50vw);
-  /* Adjust this value to align with your table */
   background: white;
   padding: 2px 0;
   border-top: 1px solid #ccc;
   width: 100vw;
-  /* This will make the pagination bar extend full viewport width */
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-  /* Optional: adds shadow for better visibility */
   z-index: 100;
-  /* Ensure it's above other content */
 }
 
 .card {
   margin-bottom: 1rem;
+  
 }
 
 .spinner-container {
@@ -98,4 +81,114 @@ pre {
   width: 3rem;
   height: 3rem;
   border-width: 0.3rem;
+}
+
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
+  position: sticky;
+  width: 100%;
+  background: white;
+}
+
+.nav-link {
+  padding: 10px 20px;
+}
+
+.card-img-top {
+  width: 100%; /* Adjusted width to fit the card */
+  height: auto; /* Maintain aspect ratio */
+}
+
+img.race1, img.race2, img.race3, img.race4, img.race5, img.race6, img.race7, img.race8, img.race9,
+img.class1, img.class2, img.class3, img.class4, img.class5, img.class6, img.class7, img.class8, img.class9, img.class10, img.class11, img.class12 {
+  width: 100%; /* Adjusted width to fit the card */
+  height: auto; /* Maintain aspect ratio */
+}
+
+img.race1 {
+  content: url('/assets/Lib-Imgs-Cards/Dragonborn.jpg');
+  width: 100px;
+  height: 20px;
+}
+
+img.race2 {
+  content: url('/assets/Lib-Imgs-Cards/Dwarf.jpg');
+}
+
+img.race3 {
+  content: url('/assets/Lib-Imgs-Cards/Elf.jpg');
+}
+
+img.race4 {
+  content: url('/assets/Lib-Imgs-Cards/Gnome.jpg');
+}
+
+img.race5 {
+  content: url('/assets/Lib-Imgs-Cards/Half-Elf.jpg');
+}
+
+img.race6 {
+  content: url('/assets/Lib-Imgs-Cards/Half-Orc.jpg');
+}
+
+img.race7 {
+  content: url('/assets/Lib-Imgs-Cards/Halfling.jpg');
+}
+
+img.race8 {
+  content: url('/assets/Lib-Imgs-Cards/Human.jpg');
+}
+
+img.race9 {
+  content: url('/assets/Lib-Imgs-Cards/Tiefling.jpg');
+}
+
+img.class1 {
+  content: url('/assets/Lib-Imgs-Cards/Barbarian.jpg');
+}
+
+img.class2 {
+  content: url('/assets/Lib-Imgs-Cards/Bard.jpg');
+}
+
+img.class3 {
+  content: url('/assets/Lib-Imgs-Cards/Cleric.jpg');
+}
+
+img.class4 {
+  content: url('/assets/Lib-Imgs-Cards/Druid.jpg');
+}
+
+img.class5 {
+  content: url('/assets/Lib-Imgs-Cards/Fighter.jpg');
+}
+
+img.class6 {
+  content: url('/assets/Lib-Imgs-Cards/Monk.jpg');
+}
+
+img.class7 {
+  content: url('/assets/Lib-Imgs-Cards/Paladin.jpg');
+}
+
+img.class8 {
+  content: url('/assets/Lib-Imgs-Cards/Ranger.jpg');
+}
+
+img.class9 {
+  content: url('/assets/Lib-Imgs-Cards/Rogue.jpg');
+}
+
+img.class10 {
+  content: url('/assets/Lib-Imgs-Cards/Sorcerer.jpg');
+}
+
+img.class11 {
+  content: url('/assets/Lib-Imgs-Cards/Warlock.jpg');
+}
+
+img.class12 {
+  content: url('/assets/Lib-Imgs-Cards/Wizard.jpg');
 }

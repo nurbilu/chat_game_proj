@@ -244,6 +244,9 @@ export class ChrcterCreationComponent implements OnInit {
     if (!levels) {
       return Array(9).fill({ level: '', slots: '0' });
     }
+    if (!this.isSpellCaster(className)) {
+      return [];
+    }
 
     const slots = Object.keys(levels).map(level => ({
       level: `Level ${level}`,
@@ -259,13 +262,7 @@ export class ChrcterCreationComponent implements OnInit {
   }
 
   isSpellCaster(className: string): boolean {
-    const classLevels = this.spellSlotLevels?.[className];
-    if (!classLevels) {
-      return false;
-    }
-    return Object.values(classLevels).some(levels => 
-      Object.values(levels as Record<string, number[]>).some(slot => slot.length > 0)
-    );
+    return !['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(className);
   }
 
   fetchRaces(): void {
