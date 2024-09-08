@@ -6,30 +6,47 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Garamond', serif;
-  text-align: center; /* Center the text */
-  line-height: 1.1; /* Adjust line height for better appearance */
-  position: absolute; /* Position the button */
-  top: 68%; /* Align vertically in the middle */
-  left: 50%; /* Align horizontally in the middle */
-  transform: translate(-50%, -50%); /* Center the button precisely */
-  font-size: 20px;
 }
 
 button:hover {
   background-color: #5a6268; /* Darker shade for hover */
 }
 
-.login-container {
-    max-width: 2150px; /* Matched width */ 
-    max-height: 900px;
-    padding: 304px; /* Increased padding */
-    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/powerful_battle.jpg') no-repeat center center;
-    background-size: cover;
-    border: 2px solid #d3c29d; /* Old paper style border */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: rgb(219, 78, 42); /* Ensure text is readable on potentially dark background */
-    text-align: center; /* Center the text */
-    font-size: 20px;
+.card {
+  max-width: 400px;
+  max-height: 1000px;
+  width: 100%;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+}
+
+.card-body {
+  padding: 30px;
+  padding: 5rem;
+}
+
+.form-outline {
+  position: relative;
+}
+
+.form-outline i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
 }
 
 input[type="text"],
@@ -49,16 +66,29 @@ input[type="password"]::placeholder {
     color: #555; /* Change placeholder text color */
 }
 
-.reset-link {
-  display: block;
-  padding: 10px;
-  margin: 10px auto; /* Center the link */
-  font-size: 20px;
-  color: #63239e; /* Match button color */
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .submit-link:hover {
   color: #5a6268; /* Darker shade for hover */
+  
+}
+
+.background-custom {
+  background-image: url('/assets/imgs/powerful_battle.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100px;
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff;
+  color: #000;
 }

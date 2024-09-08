@@ -11,6 +11,9 @@ import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+togglePasswordVisibility(arg0: string,arg1: string) {
+throw new Error('Method not implemented.');
+}
   title = 'DeMe - pick your story';
   isSuperUser: boolean = false;
   username: string | null = null;

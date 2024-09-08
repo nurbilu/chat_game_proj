@@ -41,4 +41,18 @@ export class LoginComponent {
     navigateToForgotPassword(): void {
         this.router.navigate(['/forget-password']);
     }
+
+    togglePasswordVisibility(passwordFieldId: string, toggleIconId: string): void {
+        const passwordField = document.getElementById(passwordFieldId) as HTMLInputElement;
+        const toggleIcon = document.getElementById(toggleIconId) as HTMLElement;
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('bi-eye-slash');
+            toggleIcon.classList.add('bi-eye');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('bi-eye');
+            toggleIcon.classList.add('bi-eye-slash');
+        }
+    }
 }

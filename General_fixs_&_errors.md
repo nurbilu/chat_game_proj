@@ -1,7 +1,7 @@
 ### what to fix and errors : 
 1.
 
-2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes( :-/ ) , need to fix that - now refresh token is not working at all - login fails(done) - getting closer - login works but life is not -is according to access token.(:-/)
+2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes( :-/ ) , need to fix that - now refresh token is not working at all - login fails(done) - getting closer - login works but life is not -is according to access token.(done) - might be fixed now - need to check later again ()
 
 3. - fix spell slot levels table duplication displayment in character create (done) - display header twice - fix()
 - the cause of this is the implemnation of the spell slot table for non spell casting classes - NEED TO BLOCK DISPLAY of non spell casting classes ()
