@@ -160,26 +160,6 @@ def create_app():
 character_blueprint = Blueprint('character', __name__)
 spells_collection = db['Spells']
 
-# @character_blueprint.route('/characters/<username>', methods=['GET', 'OPTIONS'])
-# def get_character_by_username(username):
-#     if request.method == 'OPTIONS':
-#         return build_cors_preflight_response()
-#     elif request.method == 'GET':
-#         try:
-#             characters = list(db.character_creation_users.find({"username": username}))
-#             if characters:
-#                 # Use json_util.dumps() to handle MongoDB-specific types
-#                 return jsonify(json.loads(json_util.dumps(characters))), 200
-#             else:
-#                 return jsonify({'error': 'Character not found'}), 404
-#         except Exception as e:
-#             app.logger.error(f"Failed to fetch characters: {str(e)}")
-#             return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
-
-# @character_blueprint.route('/characters/<username>', methods=['OPTIONS'])
-# def character_options(username):
-#     return build_cors_preflight_response()
-
 @character_blueprint.route('/races', methods=['GET', 'OPTIONS'])
 def get_races():
     if request.method == 'OPTIONS':
@@ -200,21 +180,6 @@ def get_races():
         except Exception as e:
             return jsonify({'error': str(e)}), 500
     return jsonify({'error': 'Method not allowed'}), 405
-
-# @character_blueprint.route('/characters/<username>/<character_name>', methods=['DELETE', 'OPTIONS'])
-# def delete_character(username, character_name):
-#     if request.method == 'OPTIONS':
-#         return build_cors_preflight_response()
-#     elif request.method == 'DELETE':
-#         try:
-#             result = db.character_creation_users.delete_one({"username": username, "name": character_name})
-#             if result.deleted_count > 0:
-#                 return jsonify({"message": f"Character '{character_name}' deleted successfully"}), 200
-#             else:
-#                 return jsonify({"error": "Character not found"}), 404
-#         except Exception as e:
-#             app.logger.error(f"Failed to delete character: {str(e)}")
-#             return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 @character_blueprint.route('/chatbot', methods=['POST'])
 def chatbot_interaction():
@@ -379,7 +344,6 @@ def get_classes():
         app.logger.error(f"Failed to fetch classes: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
-# Ensure the preflight response is adequate for all methods
 def build_cors_preflight_response():
     response = make_response()
     response.headers.set("Access-Control-Allow-Origin", "*")

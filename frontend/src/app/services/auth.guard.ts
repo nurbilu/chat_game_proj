@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from './auth.service';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,19 @@ export class AuthGuard implements CanActivate {
       if (this.authService.isLoggedIn()) {
         return of(true);
       } else {
-        this.router.navigate(['/homepage']);
-        return of(false);
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (refreshToken) {
+          return this.authService.refreshToken().pipe(
+            switchMap(() => of(true)),
+            catchError(() => {
+              this.router.navigate(['/homepage']);
+              return of(false);
+            })
+          );
+        } else {
+          this.router.navigate(['/homepage']);
+          return of(false);
+        }
       }
     } else {
       console.error('Local storage is not available');

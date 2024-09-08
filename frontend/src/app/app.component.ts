@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   isSuperUser: boolean = false;
   username: string | null = null;
   password: string = '';
-  rememberMe: boolean = false;
+  rememberMe: boolean = false;  // Add this line
   private modalRef: NgbModalRef | undefined;
   isNavbarSticky: boolean = false;
   isLoading: boolean = false;
@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
 
   loginWithModal(modal: any) {
     if (this.username && this.password) {
-      this.authService.loginForModal(this.username, this.password, this.rememberMe).subscribe({
+      this.authService.login(this.username, this.password, this.rememberMe).subscribe({
         next: (response) => {
           this.toastService.show({
             template: this.welcomeTemplate,
@@ -117,9 +117,6 @@ export class AppComponent implements OnInit {
           this.password = '';
           this.isLoggedIn = true;
           this.isSuperUser = this.authService.isSuperUser();
-          if (this.rememberMe) {
-            this.authService.rememberMe();
-          }
         },
         error: (error) => {
           this.toastService.show({

@@ -69,14 +69,10 @@ class UserLoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        remember_me = request.data.get('remember_me', False)  # Get the remember me option
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             refresh = RefreshToken.for_user(user)
-            
-            if remember_me:
-                refresh.set_exp(lifetime=timedelta(days=14))  # Extend refresh token lifetime if remember me is checked
             
             return Response({
                 'refresh': str(refresh),

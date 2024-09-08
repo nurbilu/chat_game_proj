@@ -99,15 +99,20 @@ export class AuthService {
                 const expiresIn = expirationDate.getTime() - Date.now();
                 this.tokenExpirationTimer = setTimeout(() => {
                     this.tokenExpirationSubject.next();
-                    this.clearLocalStorage();
-                    this.toastService.show({
-                        template: this.toastService.errorTemplate,
-                        classname: 'bg-danger text-light',
-                        delay: 15000,
-                        context: { message: 'Your session has expired. Please log in again.' }
+                    this.refreshToken().subscribe({
+                        next: () => {
+                        },
+                        error: () => {
+                            this.clearLocalStorage();
+                            this.toastService.show({
+                                template: this.toastService.errorTemplate,
+                                classname: 'bg-danger text-light',
+                                delay: 15000,
+                                context: { message: 'Your session has expired. Please log in again.' }
+                            });
+                            this.router.navigate(['/homepage']);
+                        }
                     });
-                    // window.location.reload();
-                    this.router.navigate(['/homepage']);
                 }, expiresIn);
             }
         }
@@ -117,7 +122,7 @@ export class AuthService {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
             const decodedToken = this.jwtHelper.decodeToken(refreshToken);
-            const expirationDate = new Date(decodedToken.exp);
+            const expirationDate = new Date(decodedToken.exp * 1000); // Convert to milliseconds
             const expiresIn = expirationDate.getTime() - Date.now();
             this.refreshTokenExpirationTimer = setTimeout(() => {
                 this.clearLocalStorage();
@@ -127,24 +132,18 @@ export class AuthService {
                     delay: 15000,
                     context: { message: 'Your session has expired. Please log in again.' }
                 });
-                window.location.reload();
                 this.router.navigate(['/homepage']);
-
             }, expiresIn);
         }
     }
+
 
     register(formData: FormData): Observable<any> {
         return this.httpClient.post(`${this.baseUrl}register/`, formData);
     }
 
     login(username: string, password: string, rememberMe: boolean): Observable<any> {
-        const payload = {
-            username: username,
-            password: password,
-            remember_me: rememberMe
-        };
-        return this.httpClient.post<any>(`${this.baseUrl}login/`, payload).pipe(
+        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password, remember_me: rememberMe }).pipe(
             tap(response => {
                 if (!response || !response.access) {
                     console.error('Invalid response structure:', response);
@@ -174,37 +173,31 @@ export class AuthService {
         );
     }
 
-
-    rememberMe(): void {
+    refreshToken(): Observable<any> {
         const refreshToken = localStorage.getItem('refresh_token');
-        if (refreshToken) {
-            this.httpClient.post<any>(`${this.baseUrl}login/`, { refresh: refreshToken }).pipe(
-                tap(response => {
-                    if (!response || !response.refresh) {
-                        console.error('Invalid response structure:', response);
-                        throw new Error('Token not provided');
-                    }
-                    const decodedToken = this.jwtHelper.decodeToken(response.refresh);
-                    if (!decodedToken || !decodedToken.username) {
-                        console.error('Username not provided in token:', decodedToken);
-                        throw new Error('Username not provided in token');
-                    }
-                    this.setItem('refresh_token', response.refresh);
-                    this._isLoggedIn.next(true); // Update login state
-                    this.username.next(decodedToken.username);
-                    this.startRefreshTokenExpirationTimer();
-                }),
-                catchError(error => {
-                    console.error('Failed to refresh token:', error);
-                    this.logout();
-                    return throwError(() => new Error('Failed to refresh token: ' + error.message));
-                })
-            ).subscribe();
+        if (!refreshToken) {
+            return throwError(() => new Error('No refresh token found'));
         }
+        return this.httpClient.post<any>(`${this.baseUrl}refresh/`, { refresh: refreshToken }).pipe(
+            tap(response => {
+                if (!response || !response.access) {
+                    console.error('Invalid response structure:', response);
+                    throw new Error('Token not provided');
+                }
+                this.setItem('token', response.access);
+                this.startTokenExpirationTimer();
+                this.startRefreshTokenExpirationTimer(); // Restart refresh token timer as well
+            }),
+            catchError(error => {
+                console.error('Token refresh failed', error);
+                this.logout();
+                return throwError(() => new Error('Token refresh failed: ' + error.message));
+            })
+        );
     }
 
-    loginForModal(username: string, password: string, rememberMe: boolean): Observable<any> {
-        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password, remember_me: rememberMe }).pipe(
+    loginForModal(username: string, password: string): Observable<any> {
+        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
             tap(response => {
                 if (!response || !response.access) {
                     console.error('Invalid response structure:', response);
@@ -216,10 +209,6 @@ export class AuthService {
                     throw new Error('Username not provided in token');
                 }
                 this.setItem('token', response.access);
-                if (rememberMe) {
-                    this.setItem('refresh_token', response.refresh);
-                    this.startRefreshTokenExpirationTimer();
-                }
                 this.setItem('username', username);
                 this._isLoggedIn.next(true); // Update login state
                 this.username.next(decodedToken.username);
@@ -345,12 +334,13 @@ export class AuthService {
                 this.clearLocalStorage();
                 this._isLoggedIn.next(false);
                 this.username.next('');
-                if (this.tokenExpirationTimer) {
-                    clearTimeout(this.tokenExpirationTimer);
-                }
                 if (this.refreshTokenExpirationTimer) {
                     clearTimeout(this.refreshTokenExpirationTimer);
                 }
+                else {
+                    clearTimeout(this.tokenExpirationTimer);
+                }
+                
             })
         );
     }

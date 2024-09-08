@@ -255,8 +255,14 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'  # Django collects static files here
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
-CSRF_COOKIE_NAME = "csrftoken"
+CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins for simplicity, restrict in production
+CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be included in cross-site HTTP requests
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Function to clear the log file
 def clear_log():

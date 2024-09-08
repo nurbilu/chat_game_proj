@@ -26,11 +26,7 @@ export class LoginComponent {
 
     login() {
         this.authService.login(this.username, this.password, this.rememberMe).subscribe({
-            next: () => {
-                if (this.rememberMe) {
-                    this.authService.rememberMe();
-                }
-            },
+            next: () => {},
             error: (err) => {
                 console.error('Login failed', err);
                 this.toastService.show({
