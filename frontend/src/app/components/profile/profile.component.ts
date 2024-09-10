@@ -79,63 +79,9 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-
-  deleteCharacter(username: string, characterPrompt: string): void {
-    this.characterService.deleteCharacter(username, characterPrompt).subscribe(
-      () => {
-        this.characters = this.characters.filter(character => character.prompt !== characterPrompt);
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
-    );
-  }
-
-  updateUserProfile(): void {
-    const userProfileData = {
-      username: this.userProfile.username,
-      first_name: this.userProfile.first_name,
-      last_name: this.userProfile.last_name,
-      email: this.userProfile.email,
-      address: this.userProfile.address,
-      birthdate: this.userProfile.birthdate
-    };
-
-    this.authService.updateUserProfile(userProfileData).subscribe(
-      (data) => {
-        this.userProfile = data;
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-        this.showUpdateForm = false;
-        this.showUserData = true;  // Switch back to readable table
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
-    );
-  }
-
-  updateProfilePicture(): void {
-    const formData = new FormData();
-    if (this.userProfile.profile_picture instanceof File) {
-        formData.append('profile_picture', this.userProfile.profile_picture);
-    }
-
-    this.authService.updateUserProfilePicture(formData).subscribe(
-        (data) => {
-            this.userProfile.profile_picture = data.profile_picture;  // Update only the profile picture URL
-            this.profilePictureUrl = `http://127.0.0.1:8000${data.profile_picture}`;
-            this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-        },
-        (error) => {
-            this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-        }
-    );
-  }
-
   toggleEditMode(): void {
     this.showUpdateForm = !this.showUpdateForm;
-    this.showUserData = false;
+    this.showUserData = !this.showUpdateForm;
   }
 
   toggleUserDataDisplay(): void {
@@ -144,7 +90,14 @@ export class ProfileComponent implements OnInit {
   }
 
   confirmUpdate(): void {
-    this.updateUserProfile();
+    this.authService.updateUserProfile(this.userProfile).subscribe(
+      (data) => {
+        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+      },
+      (error) => {
+        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+      }
+    );
   }
 
   onFileSelected(event: any): void {

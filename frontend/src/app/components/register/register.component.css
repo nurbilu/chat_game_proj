@@ -1,6 +1,6 @@
 .register-container {
   max-width: 100%; /* Full width */
-  min-height: 93vh; /* Full viewport height */
+  min-height: 80vh; /* Reduced height */
   padding: 20px; /* Reduced padding */
   background: rgba(255, 255, 255, 0.8) url('/assets/imgs/frost-battle.png') no-repeat center center;
   background-size: cover; /* Ensure background covers the entire container */
@@ -13,6 +13,19 @@
 }
 
 .img-thumbnail {
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.custom-img {
+  width: 50%; /* Adjust width as needed */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 300px; /* Adjust max height as needed */
+  border-top-left-radius: .3rem;
+  border-top-right-radius: .3rem;
+}
+
+.custom-card {
+  max-width: 80%; /* Adjust card width as needed */
+  margin: auto; /* Center the card */
 }

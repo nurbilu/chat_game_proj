@@ -1,50 +1,82 @@
-<div class="register-container">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h2 class="text-center mb-4">Register</h2>
-        <form (ngSubmit)="register()" class="g-3">
-          <div class="mb-3">
-            <label for="username" class="form-label">Username:</label>
-            <input type="text" class="form-control" id="username" [(ngModel)]="username" name="username" required>
+<section class="h-100 h-custom" style="background-color: #e6a161;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-6 col-xl-12"> <!-- Adjusted width -->
+        <div class="card rounded-3 custom-card"> <!-- Added custom-card class -->
+          <img src="/assets/imgs/Reg-img.jpg" class="w-100 custom-img" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;" alt="Sample photo">
+          <div class="card-body p-8 p-md-8">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Registration Info</h3>
+
+            <form (ngSubmit)="register()" class="px-md-2">
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="text" id="username" class="form-control" [(ngModel)]="username" name="username" required />
+                    <label class="form-label" for="username">Username</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required />
+                    <label class="form-label" for="password">Password</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" required />
+                    <label class="form-label" for="email">Email</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="text" id="first_name" class="form-control" [(ngModel)]="firstName" name="first_name" required />
+                    <label class="form-label" for="first_name">First Name</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="text" id="last_name" class="form-control" [(ngModel)]="lastName" name="last_name" required />
+                    <label class="form-label" for="last_name">Last Name</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="text" id="address" class="form-control" [(ngModel)]="address" name="address" />
+                    <label class="form-label" for="address">Address</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="date" id="birthdate" class="form-control" [(ngModel)]="birthdate" name="birthdate" required />
+                    <label class="form-label" for="birthdate">Birthdate</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="file" id="profilePicture" class="form-control" (change)="onFileSelected($event)" required />
+                    <label class="form-label" for="profilePicture">Upload Profile Picture</label>
+                    <img id="previewHolder" src="https://via.placeholder.com/150" class="img-thumbnail mt-3" alt="Profile Picture Preview">
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-lg mb-1">Submit</button>
+
+            </form>
+
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required>
-          </div>
-          <div class="mb-3">
-            <label for="first_name" class="form-label">First Name:</label>
-            <input type="text" class="form-control" id="first_name" [(ngModel)]="firstName" name="first_name" required>
-          </div>
-          <div class="mb-3">
-            <label for="last_name" class="form-label">Last Name:</label>
-            <input type="text" class="form-control" id="last_name" [(ngModel)]="lastName" name="last_name" required>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" required>
-          </div>
-          <div class="mb-3">
-            <label for="address" class="form-label">Address:</label>
-            <input type="text" class="form-control" id="address" [(ngModel)]="address" name="address">
-          </div>
-          <div class="mb-3">
-            <label for="birthdate" class="form-label">Birthdate:</label>
-            <input type="date" class="form-control" id="birthdate" [(ngModel)]="birthdate" name="birthdate" required>
-          </div>
-          <div class="mb-3">
-            <label for="profilePicture" class="form-label">Upload Profile Picture</label>
-            <input type="file" class="form-control" id="profilePicture" (change)="onFileSelected($event)" required>
-            <img id="previewHolder" src="https://via.placeholder.com/150" class="img-thumbnail mt-3" alt="Profile Picture Preview">
-          </div>
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Register</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <ng-template #successTemplate>
   <div>Registration successful</div>

@@ -1,0 +1,46 @@
+<h2>Edit Profile</h2>
+
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" formControlName="firstName">
+    <div *ngIf="profileForm.get('firstName')!.invalid && profileForm.get('firstName')!.touched">
+      <small *ngIf="profileForm.get('firstName')!.errors?.['required']">First Name is required</small>
+    </div>
+  </div>
+  <div>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" formControlName="lastName">
+    <div *ngIf="profileForm.get('lastName')!.invalid && profileForm.get('lastName')!.touched">
+      <small *ngIf="profileForm.get('lastName')!.errors?.['required']">Last Name is required</small>
+    </div>
+  </div>
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" formControlName="email">
+    <div *ngIf="profileForm.get('email')!.invalid && profileForm.get('email')!.touched">
+      <small *ngIf="profileForm.get('email')!.errors?.['required']">Email is required</small>
+      <small *ngIf="profileForm.get('email')!.errors?.['email']">Invalid email format</small>
+    </div>
+  </div>
+  <div>
+    <label for="address">Address:</label>
+    <input type="text" id="address" formControlName="address">
+  </div>
+  <div>
+    <label for="birthdate">Birthdate:</label>
+    <input type="date" id="birthdate" formControlName="birthdate">
+  </div>
+  <div>
+    <label for="profilePicture">Profile Picture:</label>
+    <input type="file" id="profilePicture" (change)="onFileSelected($event)">
+  </div>
+  <button type="submit" [disabled]="profileForm.invalid">Save</button>
+</form>
+
+<ng-template #successTemplate>
+  <div>Profile updated successfully</div>
+</ng-template>
+<ng-template #errorTemplate>
+  <div>Failed to update profile</div>
+</ng-template>

@@ -46,12 +46,11 @@ https://johnbryce.echo.timetoknow.com/index.html#/$/library/%/notifications/isIn
 
 8. finish design part two/second edition or more , make it responsive as it can be and some git additions( ) : 
     - using ng-bootstrap+bootstrap to finish the responsiveness of the website : 
-        1. make the toast messages more responsive , display the username when login(half done) .
+        1. make the toast messages more responsive , display the username when login(done) .
             also , customize toast messages of the other components
         2. angular : incrypt pwd_user_str data that only when superuser is logged in and ask for a password to decrypt the pwd_user_str data and display for superuser .
-        3. make login button modal be a dropdown form , all redirect for un-auth click instead of redirecting to the login page will to modal , after reset password will be redirected to the login page or when click on login from navbar or from homepage menu.
-        4. add Scrollspy/Pagination in table of the website : profile tables (profile and character) , library (when created) and if there is more tables add to them too . 
-        5. add more design to login page - more like a real mmo game login page . 
+        4. add Scrollspy/Pagination in table of the website : profile tables (profile and character) , library (when created) and if there is more tables add to them too (done)
+        5. add more design to login page - more like a real mmo game login page . (almost done)
         6. add more design to the chat page - more like a real mmo game chat page . 
         7.add more design to the homepage - more like a real mmo game homepage - add more relavent text.
         8. "" add more if have any"" 

@@ -32,6 +32,7 @@ import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 import { CleanTextPipe } from './clean-text.pipe'; 
 import { SearchService } from './search.service'; 
 import { LibSearchComponent } from './components/lib-search/lib-search.component'; 
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component'; // Ensure EditProfileComponent is declared here
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { LibSearchComponent } from './components/lib-search/lib-search.component
     ResetPwdComponent,
     LibraryComponent, 
     CleanTextPipe, 
-    LibSearchComponent 
+    LibSearchComponent,
+    EditProfileComponent // Ensure EditProfileComponent is declared here
   ],
   imports: [
     BrowserModule,

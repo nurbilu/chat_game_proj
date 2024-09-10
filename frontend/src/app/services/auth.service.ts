@@ -256,14 +256,18 @@ export class AuthService {
         );
     }
 
-    updateUserProfile(userProfile: any): Observable<any> {
+    updateUserProfile(formData: FormData): Observable<any> {
         const token = this.getToken();
         if (!token) {
-            console.error('No token found');
             return throwError(() => new Error('Authentication token not found'));
         }
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Content-Type', 'application/json');
-        return this.http.put(`${this.baseUrl}person/data/update/`, userProfile, { headers });
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+            // Do not set 'Content-Type' here, let the browser set it to 'multipart/form-data'
+        });
+        return this.httpClient.put(`${this.baseUrl}person/data/update/`, formData, { headers }).pipe(
+            catchError(error => throwError(() => new Error('Error updating profile: ' + error.message)))
+        );
     }
 
     updateUserProfilePicture(profilePicture: FormData): Observable<any> {

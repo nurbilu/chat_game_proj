@@ -160,17 +160,17 @@ class ProfilePictureUploadView(APIView):
 class UserProfileUpdateView(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    parser_classes = [JSONParser]  # Only JSONParser for user data update
+    parser_classes = [MultiPartParser, FormParser]
 
     def put(self, request):
         user = request.user
-        logger.debug(f"Received data: {request.data}")  # Add logging
+        logger.debug(f"Received data: {request.data}")
         serializer = UserProfileSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            logger.debug(f"Updated user: {serializer.data}")  # Add logging
+            logger.debug(f"Updated user: {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
-        logger.debug(f"Errors: {serializer.errors}")  # Add logging
+        logger.debug(f"Errors: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ValidateUserView(APIView):
