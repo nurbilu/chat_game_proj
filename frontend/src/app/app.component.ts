@@ -11,14 +11,11 @@ import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-togglePasswordVisibility(arg0: string,arg1: string) {
-throw new Error('Method not implemented.');
-}
   title = 'DeMe - pick your story';
   isSuperUser: boolean = false;
   username: string | null = null;
   password: string = '';
-  rememberMe: boolean = false;  // Add this line
+  rememberMe: boolean = false;
   private modalRef: NgbModalRef | undefined;
   isNavbarSticky: boolean = false;
   isLoading: boolean = false;
@@ -52,7 +49,6 @@ throw new Error('Method not implemented.');
         });
       }
     });
-
   }
 
   @HostListener('window:scroll', [])
@@ -137,6 +133,20 @@ throw new Error('Method not implemented.');
         delay: 15000,
         context: { message: 'Username and password are required.' }
       });
+    }
+  }
+
+  togglePasswordVisibility(passwordFieldId: string, toggleIconId: string): void {
+    const passwordField = document.getElementById(passwordFieldId) as HTMLInputElement;
+    const toggleIcon = document.getElementById(toggleIconId) as HTMLElement;
+    if (passwordField.type === 'password') {
+      passwordField.type = 'text';
+      toggleIcon.classList.remove('bi-eye-slash');
+      toggleIcon.classList.add('bi-eye');
+    } else {
+      passwordField.type = 'password';
+      toggleIcon.classList.remove('bi-eye');
+      toggleIcon.classList.add('bi-eye-slash');
     }
   }
 
