@@ -1,7 +1,7 @@
 ### what to fix and errors : 
 1.complete edit profile form - first name , last name enable to PUT()
 
-2.openai assistent - fix or delete. ()
+2.
 
 3. - fix cards padding and - fix collapse for tables ,but not for the cards. (done?)
 
@@ -71,3 +71,5 @@ DONE LIST :
 17.2.if not refresh token - login regular and logout also when access token expired - check if expire (ck) - add toast message for token expiration does not work as expected , refresh token lifetime is 14 days but instead in the angular it expires in 6 minutes( :-/ ) , need to fix that - now refresh token is not working at all - login fails(done) - getting closer - login works but life is not -is according to access token.(done) - might be fixed now - need to check later again (done i hope)
 
 18.2.fix/continue implementing pwd toggle(done)
+
+19. 2.openai assistent - fix or delete. (X) - been deleted.

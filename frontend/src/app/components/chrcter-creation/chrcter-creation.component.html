@@ -1,8 +1,9 @@
-<div class="g-col-8 text-frame">
+<div class="g-col-8 text-frame1">
   <h3>Library Search</h3>
   <div class="input-group">
     <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
     <button (click)="onSearch()" class="btn btn-primary">Search</button>
+    <button (click)="clearSearchResults()" class="btn btn-secondary">Clear</button>
   </div>
   <div *ngIf="isLoading" class="spinner-container">
     <div class="spinner-border" role="status">
