@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
+import { ProfileComponent } from '../profile/profile.component';
 
 @Component({
   selector: 'app-edit-profile',
@@ -13,6 +14,8 @@ export class EditProfileComponent implements OnInit {
 
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
   @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
+  showUpdateForm: boolean = false;
+  showUserData: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,5 +83,10 @@ export class EditProfileComponent implements OnInit {
         }
       );
     }
+  } 
+
+  cancelEdit(): void {
+    this.showUpdateForm = false;
+    this.showUserData = true;
   }
 }

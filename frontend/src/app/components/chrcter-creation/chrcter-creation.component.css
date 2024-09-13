@@ -8,6 +8,20 @@
     resize: vertical;
 }
 
+.progress-container {
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1em;
+}
+
+.g-col-8 {
+    grid-column: span 2;
+}
+
 /* ... existing code ... */
 button {
     margin: 5px;
@@ -19,9 +33,9 @@ button {
 .text-frame {
     margin-bottom: 20px;
     padding: 20px;
-    background: rgba(107, 107, 107, 0.678);
+    background: rgba(24, 24, 24, 0.678);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
 }
 
 .large-textarea {
@@ -35,54 +49,6 @@ button {
     overflow-y: auto;
 }
 
-.chat-container {
-    margin-top: 20px;
-}
-
-.chat-bubble {
-    max-width: 60%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    position: relative;
-    background: #f1f0f0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.chat-bubble.assistant {
-    background: #e0f7fa;
-    align-self: flex-start;
-}
-
-.chat-bubble.user {
-    background: #c8e6c9;
-    align-self: flex-end;
-}
-
-.chat-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-}
-
-.chat-bubble.assistant::after {
-    left: 10px;
-    border-bottom-color: #e0f7fa;
-    border-top: 0;
-    margin-left: -10px;
-    margin-bottom: -10px;
-}
-
-.chat-bubble.user::after {
-    right: 10px;
-    border-bottom-color: #c8e6c9;
-    border-top: 0;
-    margin-right: -10px;
-    margin-bottom: -10px;
-}
 
 .input-container {
     display: flex;
@@ -98,7 +64,6 @@ button {
 
 .ngb-accordion .card {
     margin-bottom: 10px;
-
 }
 
 .st-editor-toolbar button {
@@ -134,78 +99,30 @@ button {
     margin-bottom: 20px;
 }
 
-#chat1 .form-outline .form-control~.form-notch div {
-    pointer-events: none;
-    border: 1px solid;
-    border-color: #eee;
-    box-sizing: border-box;
-    background: transparent;
+.text-frame h2,
+.text-frame h3,
+.text-frame h4,
+.text-frame h5 {
+    color: white;
+}
+.text-frame1 {
+    color: rgb(248, 248, 248);
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(24, 24, 24, 0.678);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
 }
 
-#chat1 .form-outline .form-control~.form-notch .form-notch-leading {
-    left: 0;
-    top: 0;
-    height: 100%;
-    border-right: none;
-    border-radius: .65rem 0 0 .65rem;
+.select-container {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-#chat1 .form-outline .form-control~.form-notch .form-notch-middle {
-    flex: 0 0 auto;
-    max-width: calc(100% - 1rem);
-    height: 100%;
-    border-right: none;
-    border-left: none;
-}
-
-#chat1 .form-outline .form-control~.form-notch .form-notch-trailing {
-    flex-grow: 1;
-    height: 100%;
-    border-left: none;
-    border-radius: 0 .65rem .65rem 0;
-}
-
-#chat1 .form-outline .form-control:focus~.form-notch .form-notch-leading {
-    border-top: 0.125rem solid #39c0ed;
-    border-bottom: 0.125rem solid #39c0ed;
-    border-left: 0.125rem solid #39c0ed;
-}
-
-#chat1 .form-outline .form-control:focus~.form-notch .form-notch-leading,
-#chat1 .form-outline .form-control.active~.form-notch .form-notch-leading {
-    border-right: none;
-    transition: all 0.2s linear;
-}
-
-#chat1 .form-outline .form-control:focus~.form-notch .form-notch-middle {
-    border-bottom: 0.125rem solid;
-    border-color: #39c0ed;
-}
-
-#chat1 .form-outline .form-control:focus~.form-notch .form-notch-middle,
-#chat1 .form-outline .form-control.active~.form-notch .form-notch-middle {
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    transition: all 0.2s linear;
-}
-
-#chat1 .form-outline .form-control:focus~.form-notch .form-notch-trailing {
-    border-top: 0.125rem solid #39c0ed;
-    border-bottom: 0.125rem solid #39c0ed;
-    border-right: 0.125rem solid #39c0ed;
-}
-
-#chat1 .form-outline .form-control:focus~.form-notch .form-notch-trailing,
-#chat1 .form-outline .form-control.active~.form-notch .form-notch-trailing {
-    border-left: none;
-    transition: all 0.2s linear;
-}
-
-#chat1 .form-outline .form-control:focus~.form-label {
-    color: #39c0ed;
-}
-
-#chat1 .form-outline .form-control~.form-label {
-    color: #bfbfbf;
+.copy-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    cursor: pointer;
 }

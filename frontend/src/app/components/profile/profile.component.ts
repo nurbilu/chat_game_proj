@@ -84,9 +84,9 @@ export class ProfileComponent implements OnInit {
     this.showUserData = !this.showUpdateForm;
   }
 
-  toggleUserDataDisplay(): void {
-    this.showUserData = !this.showUserData;
+  cancelEdit(): void {
     this.showUpdateForm = false;
+    this.showUserData = true;
   }
 
   confirmUpdate(): void {

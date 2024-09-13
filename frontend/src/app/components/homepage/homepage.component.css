@@ -1,18 +1,17 @@
 .homepage-container {
     position: relative;
     max-width: 100%;
-    min-height: 400px;
-    padding: 195px;
-    border: 2px solid #d3c29d;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-height: 100vh;
+    padding: 50px;
+    border: none;
+    background: url('/assets/imgs/magical_valley.jpg') no-repeat center center;
+    background-size: cover;
     color: white;
-    overflow: hidden;
-    
-    /* Add these properties to center the text */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    overflow: hidden;
 }
 
 .homepage-container::before {
@@ -22,32 +21,58 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('/assets/imgs/magical_valley.jpg') no-repeat center center;
-    background-size: cover;
-    filter: brightness(0.5);
+    background: rgba(0, 0, 0, 0.6); /* Dark overlay for better contrast */
     z-index: -1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
 }
 
 .text-container {
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.8); /* Darker overlay for text */
+    border-radius: 12px;
+    max-width: 800px;
 }
 
-.card {
-    background-color: #71b1f0;
+.text-container h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #f8c45b; /* Highlighted title */
+}
+
+.text-container p {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.btn-group .btn {
+    margin: 10px;
+    padding: 15px 30px;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #6c757d;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #f8c45b;
     color: #000;
 }
 
-.card-header {
-    background-color: #343a40;
+.card {
+    background-color: #222;
+    border-radius: 12px;
     color: #fff;
 }
 
-.dropdown-menu {
-    background-color: #f8f9fa;
+.collapse .card-body {
+    background-color: #444;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.collapse.show .card-body {
+    background-color: #71b1f0;
 }

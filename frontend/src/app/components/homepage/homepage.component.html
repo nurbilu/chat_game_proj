@@ -2,15 +2,18 @@
     <div class="text-container">
         <h1>DeMe - a DnD Game Manager</h1>
         <p>Welcome to DeMe, the ultimate platform for mastering your DnD adventures!</p>
-        <p>Embark on epic quests, forge alliances, and conquer dungeons. To begin your journey, <a href="/register" class="link-warning">create your account</a> or <a href="/login" class="link-warning">log in</a> now!</p>
+        <p>Embark on epic quests, forge alliances, and conquer dungeons. To begin your journey, <a href="/register"
+                class="link-warning">create your account</a> or <a href="/login" class="link-warning">log in</a> now!
+        </p>
         <p>Choose your path wisely, for destiny awaits the brave!</p>
         <p>Explore the realms of magic and mystery, where every decision shapes your fate.</p>
         <p>Unleash your inner hero and write your legend in the annals of DeMe!</p>
         <p>Join the adventure today and let the saga begin!</p>
-        
+
         <!-- Bootstrap Button Groups for Menu -->
         <div class="btn-group mt-4" role="group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 User Application
             </button>
             <ul class="dropdown-menu">
@@ -20,9 +23,22 @@
                 <li><a class="dropdown-item" routerLink="/change-password">Change Password</a></li>
             </ul>
         </div>
+        <div class="btn-group mt-4" role="group" aria-label="Explanation Sections">
+            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                data-bs-target="#userApplicationInfo" aria-expanded="false" aria-controls="userApplicationInfo">
+                User Application Info
+            </button>
+        </div>
+        <div class="collapse mt-4" id="userApplicationInfo">
+            <div class="card card-body">
+                <p>The User Application section allows users to log in, register, view their profile, and change their
+                    password.</p>
+            </div>
+        </div>
 
         <div class="btn-group mt-4" role="group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 Game Interface
             </button>
             <ul class="dropdown-menu">
@@ -30,61 +46,52 @@
                 <li><a class="dropdown-item" routerLink="/chat">Chat</a></li>
                 <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
             </ul>
+
+            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                data-bs-target="#gameInterfaceInfo" aria-expanded="false" aria-controls="gameInterfaceInfo">
+                Game Interface Info
+            </button>
+        </div>
+        <div class="collapse mt-4" id="gameInterfaceInfo">
+            <div class="card card-body">
+                <p>The Game Interface section includes options to create a character, play the game with the chatbot,
+                    and view profiles.</p>
+            </div>
         </div>
 
         <div class="btn-group mt-4" role="group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 Bestiary / Info
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" routerLink="/about">About</a></li>
                 <li><a class="dropdown-item" routerLink="/library">Library</a></li>
             </ul>
-        </div>
-
-        <div class="btn-group mt-4" role="group" *ngIf="isSuperUser">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Superuser
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" routerLink="/super-profile">Super Profile</a></li>
-            </ul>
-        </div>
-
-        <!-- Explanation Sections -->
-        <div class="btn-group mt-4" role="group" aria-label="Explanation Sections">
-            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#userApplicationInfo" aria-expanded="false" aria-controls="userApplicationInfo">
-                User Application Info
-            </button>
-            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#gameInterfaceInfo" aria-expanded="false" aria-controls="gameInterfaceInfo">
-                Game Interface Info
-            </button>
-            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#aboutInfo" aria-expanded="false" aria-controls="aboutInfo">
-                About Info
-            </button>
-            <button class="btn btn-secondary" *ngIf="isSuperUser" type="button" data-bs-toggle="collapse" data-bs-target="#superuserInfo" aria-expanded="false" aria-controls="superuserInfo">
-                Superuser Info
+            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#aboutInfo"
+                aria-expanded="false" aria-controls="aboutInfo">
+                Bestiary and Info Info
             </button>
         </div>
-
-        <div class="collapse mt-4" id="userApplicationInfo">
-            <div class="card card-body">
-                <p>The User Application section allows users to log in, register, view their profile, and change their password.</p>
-            </div>
-        </div>
-
-        <div class="collapse mt-4" id="gameInterfaceInfo">
-            <div class="card card-body">
-                <p>The Game Interface section includes options to create a character, play the game with the chatbot, and view profiles.</p>
-            </div>
-        </div>
-
         <div class="collapse mt-4" id="aboutInfo">
             <div class="card card-body">
                 <p>The About section provides information about the DeMe platform and its features.</p>
             </div>
         </div>
 
+        <div class="btn-group mt-4" role="group" *ngIf="isSuperUser">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Superuser
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" routerLink="/super-profile">Super Profile</a></li>
+            </ul>
+            <button class="btn btn-secondary" *ngIf="isSuperUser" type="button" data-bs-toggle="collapse"
+                data-bs-target="#superuserInfo" aria-expanded="false" aria-controls="superuserInfo">
+                Superuser Info
+            </button>
+        </div>
         <div class="collapse mt-4" id="superuserInfo" *ngIf="isSuperUser">
             <div class="card card-body">
                 <p>The Superuser section is for administrative tasks and managing the platform at a higher level.</p>

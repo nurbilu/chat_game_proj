@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { AuthService } from '../../services/auth.service';
@@ -7,6 +7,8 @@ import { ToastService } from '../../services/toast.service';
 import { NgbAccordionItem } from '@ng-bootstrap/ng-bootstrap';
 import { EditorConfig } from 'ngx-simple-text-editor';
 import { ChatService } from '../../services/chat.service';
+import { SearchService } from '../../services/search.service';
+
 
 interface ChatbotResponse {
   reply: string;
@@ -21,6 +23,10 @@ interface ChatbotResponse {
 export class ChrcterCreationComponent implements OnInit {
   content = '';
   title = 'ck-text-editor';
+  @Input() searchResult: any[] = [];
+  @Output() searchCompleted = new EventEmitter<any[]>();
+  @Output() searchCleared = new EventEmitter<void>();
+
 
   config = {
     toolbar: [
@@ -48,6 +54,7 @@ export class ChrcterCreationComponent implements OnInit {
   @ViewChild('fillFieldsTemplate', { static: true }) fillFieldsTemplate!: TemplateRef<any>;
   @ViewChild('acc', { static: true }) accordion!: NgbAccordionItem;
   characterPromptEditor: any;
+  @ViewChild('spellSelect') spellSelect: ElementRef<HTMLSelectElement> | any;
 
   constructor(
     private chcrcterCreationService: ChcrcterCreationService,
@@ -56,7 +63,8 @@ export class ChrcterCreationComponent implements OnInit {
     private toastService: ToastService,
     private chatService: ChatService,
     private cdr: ChangeDetectorRef,
-    private http: HttpClient
+    private http: HttpClient,
+    private searchService: SearchService
   ) { }
 
   character = {
@@ -78,10 +86,9 @@ export class ChrcterCreationComponent implements OnInit {
     { name: 'Warlock', description: 'A wielder of magic that is derived from a bargain with an extraplanar entity.', spells: [], isSpellCaster: true },
     { name: 'Wizard', description: 'A scholarly magic-user capable of manipulating the structures of reality.', spells: [], isSpellCaster: true }
   ];
+  filteredClasses: { name: string, description: string, spells: any[], isSpellCaster: boolean }[] = this.classes;
   spellSlotLevels: any;
   levels = Array.from({ length: 20 }, (_, i) => i + 1); // Define levels from 1 to 20
-
-
 
   nonSpellClasses = ['Barbarian', 'Fighter', 'Monk', 'Rogue'];
   spellClasses = this.classes.filter(classItem => !this.nonSpellClasses.includes(classItem.name));
@@ -104,6 +111,10 @@ export class ChrcterCreationComponent implements OnInit {
   chatMessages: any[] = [];
   isLoading: boolean = false;
   progressValue: number = 0;
+
+  searchQuery: string = '';
+  showSearchResults: boolean = false;
+  noResultsFound: boolean = false;
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
@@ -219,13 +230,10 @@ export class ChrcterCreationComponent implements OnInit {
     });
   }
 
-
-
   ngAfterViewInit(): void {
     // No need for manual collapsible logic as we are using ng-bootstrap Accordion
   }
 
-  
   fetchAllSpells(): void {
     this.classes.forEach(classItem => {
         this.chcrcterCreationService.fetchSpellsByClass(classItem.name).subscribe((spells: any[]) => {
@@ -279,44 +287,94 @@ export class ChrcterCreationComponent implements OnInit {
     });
   }
 
-  sendMessage() {
-    this.authService.getUsername().subscribe((username: string) => {
-      const message = {
-        username: username,
-        characterPrompt: this.characterPrompt
-      };
-      this.chcrcterCreationService.saveCharacter(message).subscribe({
-        next: () => {
-          this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 5000 });
-        },
-        error: (error: any) => {
-          this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-        }
-      });
-    });
+
+
+  handleSearchResults(results: any[]): void {
+    this.searchResult = results;
+    this.showSearchResults = true;
   }
 
-  clearEditor() {
+  clearSearchResults(): void {
+    this.searchResult = [];
+    this.showSearchResults = false;
+  }
+
+  copySelectedSpell(selectElement: ElementRef<HTMLSelectElement>) {
+    const selectedSpell = selectElement.nativeElement.options[selectElement.nativeElement.selectedIndex].text;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(selectedSpell).then(() => {
+        console.log('Selected spell copied to clipboard');
+        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 3000 });
+      }).catch(err => {
+        console.error('Failed to copy selected spell: ', err);
+      });
+    } else {
+      console.error('Clipboard API not available');
+    }
+  }
+
+  clearEditor(): void {
     this.characterPrompt = '';
   }
 
+  sendMessage(): void {
+    // Implement the sendMessage logic here
+  }
 
-  sendChatMessage() {
-    this.authService.getUsername().subscribe((username: string) => {
-      const message = {
-        username: username,
-        message: this.userMessage
-      };
-      this.chcrcterCreationService.sendMessageToChatbot(message).subscribe({
-        next: (response) => {
-          this.chatMessages.push({ role: 'user', content: this.userMessage });
-          this.chatMessages.push({ role: 'bot', content: response.reply });
-          this.userMessage = '';
-        },
-        error: (error: any) => {
-          console.error('Failed to send message:', error);
-        }
-      });
-    });
+  onSearch(): void {
+    console.log('CharacterCreationComponent onSearch triggered with query:', this.searchQuery);
+    if (this.searchQuery) {
+      this.isLoading = true;
+      this.searchService.searchItemByName(this.searchQuery)
+        .subscribe({
+          next: (results: { [key: string]: any }) => {
+            this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
+            this.showSearchResults = true;
+            this.noResultsFound = false;
+            this.isLoading = false;
+            this.searchCompleted.emit(this.searchResult);
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              console.error('No results found:', error);
+              this.noResultsFound = true;
+            } else {
+              console.error('Search error:', error);
+            }
+            this.searchResult = [];
+            this.showSearchResults = false;
+            this.isLoading = false;
+            this.searchCleared.emit();
+          }
+        });
+    } else {
+      this.showSearchResults = false;
+      this.noResultsFound = false;
+      this.isLoading = false;
+      this.searchCleared.emit();
+    }
+  }
+
+  formatItem(item: any): string {
+    if (Array.isArray(item) && item.length === 0) {
+      return 'empty';
+    }
+    if (typeof item === 'object' && item !== null && Object.keys(item).length === 0) {
+      return 'empty';
+    }
+    if (typeof item === 'string') {
+      return item;
+    }
+    if (Array.isArray(item)) {
+      return item.map(i => i.name || i).join(', ');
+    }
+    if (typeof item === 'object' && item !== null) {
+      return Object.values(item)
+        .filter((value): value is string => typeof value === 'string' && value.trim() !== '')
+        .map(value => value.trim())
+        .join(', ');
+    }
+    return String(item);
   }
 }
+

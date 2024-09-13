@@ -1,22 +1,39 @@
-<div class="chrcter-creation-container container">
-  <div class="text-frame">
-    <h2>Welcome to Character Creation </h2>
-    <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat
-      style do you desire? There are many classes and races to choose from in DnD 5e. create a prompt to paste at the
-      chat!
-      <br>
-      use this Text Editor to create your character creation prompt , also use the chat to ask me questions about your
-      character , dont
-      forget to use our library and the accordions
-      to see the classes and races descriptions and spells:
-    </p>
+<div class="g-col-8 text-frame">
+  <h3>Library Search</h3>
+  <div class="input-group">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
+    <button (click)="onSearch()" class="btn btn-primary">Search</button>
+  </div>
+  <div *ngIf="isLoading" class="spinner-container">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <div *ngIf="showSearchResults && !isLoading">
+    <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)" (searchCleared)="clearSearchResults()"></app-lib-search>
+  </div>
+</div>
 
-    <div *ngIf="isLoading" class="progress-container">
-      <ngb-progressbar type="info" [value]="progressValue" [animated]="true"
-        [striped]="true">{{progressValue}}% please wait - loading</ngb-progressbar>
+<div class="chrcter-creation-container container">
+  <div *ngIf="isLoading" class="progress-container">
+    <ngb-progressbar type="info" [value]="progressValue" [animated]="true"
+      [striped]="true">{{progressValue}}% please wait - loading</ngb-progressbar>
+  </div>
+  <div class="grid">
+    <div class="g-col-4 text-frame1">
+      <h2>Welcome to Character Creation </h2>
+      <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat
+        style do you desire? There are many classes and races to choose from in DnD 5e. create a prompt to paste at the
+        chat!
+        <br>
+        use this Text Editor to create your character creation prompt , also use the chat to ask me questions about your
+        character , dont
+        forget to use our library and the accordions
+        to see the classes and races descriptions and spells:
+      </p>
     </div>
 
-    <div class="text-frame">
+    <div class="g-col-8 text-frame">
       <h3>Character Creation Prompt</h3>
       <div class="text-editor-container">
         <st-editor [(ngModel)]="characterPrompt" [Config]="config"></st-editor>
@@ -26,28 +43,17 @@
       <button (click)="pasteDraft()">Paste Draft</button>
     </div>
 
-    <div class="text-frame chat-container">
-      <h3>Character Creation Advisor</h3>
-      <div *ngFor="let message of chatMessages" [ngClass]="message.role" class="chat-bubble">
-        {{ message.content }}
-      </div>
-      <div class="input-container">
-        <input type="text" [(ngModel)]="userMessage" placeholder="Type your message here" required
-          (keydown.enter)="sendChatMessage()">
-        <button (click)="sendChatMessage()" class="btn btn-success">
-          <i class="bi bi-chat"></i> Send
-        </button>
-      </div>
-    </div>
-
-    <div class="text-frame">
+    <div class="g-col-4 text-frame1">
       <h3>Spells for Each Class</h3>
       <div *ngFor="let classItem of classes">
         <ng-container *ngIf="!['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(classItem.name)">
           <h4>{{ classItem?.name }}</h4>
-          <select *ngIf="classItem.spells.length > 0" class="form-select">
-            <option *ngFor="let spell of classItem?.spells" [value]="spell">{{ spell }}</option>
-          </select>
+          <div class="select-container">
+            <select *ngIf="classItem.spells.length > 0" class="form-select" #spellSelect>
+              <option *ngFor="let spell of classItem?.spells" [value]="spell">{{ spell }}</option>
+            </select>
+            <img src="/assets/imgs/icons/copy.png" class="copy-icon" (click)="copySelectedSpell(spellSelect)">
+          </div>
           <p *ngIf="classItem?.spells?.length === 0" class="no-spells">
             No spells available for {{ classItem?.name }}.
           </p>
@@ -69,7 +75,7 @@
       </p>
     </div>
 
-    <div class="text-frame">
+    <div class="g-col-4 text-frame">
       <h3>Classes Description</h3>
       <div ngbAccordion>
         <div ngbAccordionItem *ngFor="let class of classes">
@@ -111,7 +117,8 @@
         </p>
       </div>
     </div>
-    <div class="text-frame">
+
+    <div class="g-col-4 text-frame">
       <h3>Race Descriptions</h3>
       <div ngbAccordion>
         <div ngbAccordionItem *ngFor="let race of races">
@@ -135,15 +142,6 @@
         </p>
       </div>
     </div>
-
-    <ng-template #successTemplate>
-      <div>Character created successfully!</div>
-    </ng-template>
-    <ng-template #errorTemplate>
-      <div>Failed to create character</div>
-    </ng-template>
-    <ng-template #fillFieldsTemplate>
-      <div>Please fill all fields</div>
-    </ng-template>
   </div>
 </div>
+

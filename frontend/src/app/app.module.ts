@@ -30,7 +30,7 @@ import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
 import { LibraryComponent } from './components/librarys/library.component'; 
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor'; 
 import { CleanTextPipe } from './clean-text.pipe'; 
-import { SearchService } from './search.service'; 
+import { SearchService } from './services/search.service'; 
 import { LibSearchComponent } from './components/lib-search/lib-search.component'; 
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component'; // Ensure EditProfileComponent is declared here
 

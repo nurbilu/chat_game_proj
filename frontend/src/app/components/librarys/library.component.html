@@ -26,15 +26,16 @@
       <h4>{{selectedCollection}}</h4>
       <div *ngIf="isCardCollection(selectedCollection)">
         <div class="articles row justify-content-center">
-          <div class="col-12 col-md-6" *ngFor="let item of getPaginatedItems(); let i = index">
+          <div class="col-16 col-md-9 col-lg-4" *ngFor="let item of getPaginatedItems(); let i = index">
             <div class="flip-card">
               <div class="flip-card-inner">
                 <div class="flip-card-front">
+                  <h2 class="card-title">{{item.name}}</h2> <!-- Moved here -->
                   <figure>
                     <img [src]="'/assets/Lib-Imgs-Cards/' + item.name + '.jpg'" alt="{{item.name}}" class="card-img-top">
                   </figure>
                   <div class="card-body">
-                    <h2 class="card-title">{{item.name}}</h2>
+                    <!-- Removed h2 from here -->
                   </div>
                 </div>
                 <div class="flip-card-back">

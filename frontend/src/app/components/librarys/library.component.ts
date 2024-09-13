@@ -3,7 +3,7 @@ import { LibraryService } from '../../services/library.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CleanTextPipe } from '../../clean-text.pipe';
-import { SearchService } from '../../search.service';
+import { SearchService } from '../../services/search.service';
 
 interface Collection {
   [key: string]: any[];
@@ -94,7 +94,7 @@ item: { [key: string]: any; } = {};
 
   loadPageItems(): void {
     if (this.isCardCollection(this.selectedCollection)) {
-      this.pageSize = 1;
+      this.pageSize = 2;
     } else {
       this.pageSize = 17;
     }

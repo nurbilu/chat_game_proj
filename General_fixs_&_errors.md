@@ -3,7 +3,7 @@
 
 2.openai assistent - fix or delete. ()
 
-3. - fix cards padding and - fix collapse for tables ,but not for the cards. ()
+3. - fix cards padding and - fix collapse for tables ,but not for the cards. (done?)
 
 4. - fix table displayment in character create ()
 4.b.maybe need one terminal command to run all the flask apps for docker ()
@@ -16,11 +16,7 @@
 6. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" ()
 
 7. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
-(   *|- tranform the data in tables to be more user friendly : remove ({[]}) from the data , organize data in ({[]}) for user to understand , for doing so i need to make functions that read/use only name if {dict} but if there is more than just name and url , only dont display url .| * 
-   *|all refer the fact that all DB values are under "string" so need to change the way to display the data by considerong this| *
-   - add sorting to the tables - 
-   - try to fix the search result in the library - name is first(done) , *|and adjust array and objects to strings . ()| *
-   *|- try to adjust all arrays and objects to strings - | *) - maybe later
+- adjust data , even in DB to drop/delete all 'url:'api/sdfsd/.sdsdf/'' , not understandable data for user.()
 
 ### best for last : 
 1. async problem - Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received - seems to show in all components few moments after reload(only if presists in the future ( )) 
