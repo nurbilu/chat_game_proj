@@ -185,9 +185,8 @@ def get_races():
 def chatbot_interaction():
     try:
         user_message = request.json.get('message')
-        username = request.json.get('username')
-        if not user_message or not username:
-            return jsonify({'error': 'Message and username are required'}), 400
+        if not user_message:
+            return jsonify({'error': 'Message is required'}), 400
 
         # Send the message to the OpenAI API
         response = openai.Completion.create(
@@ -198,8 +197,6 @@ def chatbot_interaction():
 
         if response and response.choices:
             reply = response.choices[0].text.strip()
-            # Save the JSON file to the database
-            db.game_styles.insert_one({'username': username, 'content': reply})
             return jsonify({'reply': reply}), 200
         else:
             return jsonify({'error': 'Failed to get response from AI Gemini bot'}), 500

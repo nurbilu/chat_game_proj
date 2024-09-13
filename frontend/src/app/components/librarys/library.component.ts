@@ -27,6 +27,9 @@ export class LibraryComponent implements OnInit {
   searchResult: any[] = [];
   showSearchResults: boolean = false;
   isLoading: boolean = false;
+  expandedRows: { [key: number]: boolean } = {};
+i: any;
+item: { [key: string]: any; } = {};
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -91,7 +94,7 @@ export class LibraryComponent implements OnInit {
 
   loadPageItems(): void {
     if (this.isCardCollection(this.selectedCollection)) {
-      this.pageSize = 6;
+      this.pageSize = 1;
     } else {
       this.pageSize = 17;
     }
@@ -116,15 +119,6 @@ export class LibraryComponent implements OnInit {
     return selectedCollectionItems.slice(startIndex, startIndex + this.pageSize);
   }
 
-  isLongText(value: unknown): boolean {
-    if (typeof value !== 'string') {
-      return false;
-    }
-    const maxCharsPerLine = 30;
-    const maxLines = 5;
-    return value.length > maxCharsPerLine * maxLines;
-  }
-
   isString(value: any): boolean {
     return typeof value === 'string';
   }
@@ -147,8 +141,17 @@ export class LibraryComponent implements OnInit {
     }
   }
 
-  toggleTextVisibility(index: number): void {
-    this.textVisibility[index] = !this.textVisibility[index];
+  toggleTextVisibility(index: number, key: string): void {
+    const visibilityIndex = this.getTextVisibilityIndex(index, key);
+    this.textVisibility[visibilityIndex] = !this.textVisibility[visibilityIndex];
+  }
+
+  isLongText(value: unknown): boolean {
+    if (typeof value !== 'string') {
+      return false;
+    }
+    const maxChars = 30;
+    return value.length > maxChars;
   }
 
   isCardCollection(collection: string): boolean {
@@ -158,6 +161,11 @@ export class LibraryComponent implements OnInit {
   getTextVisibilityIndex(i: number, key: string): number {
     // Ensure unique index for each collapsible element
     return i * 1000 + this.getKeys(this.collections[this.selectedCollection][0]).indexOf(key);
+  }
+
+  isTextVisible(index: number, key: string): boolean {
+    const visibilityIndex = this.getTextVisibilityIndex(index, key);
+    return this.textVisibility[visibilityIndex];
   }
 
   handleSearchResults(results: any[]): void {
@@ -201,5 +209,9 @@ export class LibraryComponent implements OnInit {
       return value.map(item => item.name || item).join(', ');
     }
     return String(value);
+  }
+
+  toggleRowExpansion(index: number): void {
+    this.expandedRows[index] = !this.expandedRows[index];
   }
 }

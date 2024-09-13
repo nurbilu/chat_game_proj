@@ -34,7 +34,9 @@
       <div class="input-container">
         <input type="text" [(ngModel)]="userMessage" placeholder="Type your message here" required
           (keydown.enter)="sendChatMessage()">
-        <button (click)="sendChatMessage()" class="btn btn-success">Send</button>
+        <button (click)="sendChatMessage()" class="btn btn-success">
+          <i class="bi bi-chat"></i> Send
+        </button>
       </div>
     </div>
 

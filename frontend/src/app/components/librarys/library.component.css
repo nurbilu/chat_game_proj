@@ -1,11 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;600&display=swap');
+
 body {
-  width: 100%;
+  font-family: 'Oswald', sans-serif;
+  background-color: #212121;
+}
+
+section {
+  width: 90%;
   max-width: 1200px;
-  max-height: 1000px;
   margin: 0 auto;
-  padding: 50px; /* Adjusted padding */
-  font-size: 16px;
-  background-color: #f4f4f4;
+}
+
+.row {
+  display: flex;
+  justify-content: center; /* Center the cards */
+  flex-wrap: wrap; /* Allow wrapping of cards */
+  gap: 20px; /* Space between cards */
+  height: 250vh;
+  width: 250vh;
+}
+
+
+body {
+  margin: 0;
+  padding: 15px 0;
+  font-family: "Figtree", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  background-image: linear-gradient(45deg, #7c9885, #b5b682);
+  min-height: 100vh;
+}
+
+.sr-only:not(:focus):not(:active) {
+  clip: rect(0 0 0 0); 
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap; 
+  width: 1px;
 }
 
 .scrollspy-example {
@@ -16,8 +49,13 @@ body {
 }
 
 .table {
-  margin-bottom: 40rem;
+  margin: 0;
   width: 100%;
+}
+
+.table th, .table td {
+  padding: 5px;
+  font-size: 0.9em;
 }
 
 span[data-full-text] {
@@ -26,13 +64,6 @@ span[data-full-text] {
   width: 100%;
 }
 
-pre {
-  background-color: #f8f9fa;
-  border: 1px solid #ccc;
-  padding: 5px;
-  overflow: auto;
-  max-height: 200px;
-}
 
 .table tr {
   height: auto;
@@ -50,22 +81,9 @@ pre {
 
 .pagination {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   position: fixed;
   bottom: 50px;
-  right: 0;
-  left: calc(50% - 50vw);
-  background: white;
-  padding: 2px 0;
-  border-top: 1px solid #ccc;
-  width: 100vw;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 100;
-}
-
-.card {
-  margin-bottom: 1rem;
-  
 }
 
 .spinner-container {
@@ -96,99 +114,67 @@ pre {
   padding: 10px 20px;
 }
 
-.card-img-top {
-  width: 100%; /* Adjusted width to fit the card */
-  height: auto; /* Maintain aspect ratio */
+.flip-card {
+  background-color: transparent;
+  width: 100%;
+  height: 400px;
+  perspective: 1000px;
 }
 
-img.race1, img.race2, img.race3, img.race4, img.race5, img.race6, img.race7, img.race8, img.race9,
-img.class1, img.class2, img.class3, img.class4, img.class5, img.class6, img.class7, img.class8, img.class9, img.class10, img.class11, img.class12 {
-  width: 100%; /* Adjusted width to fit the card */
-  height: auto; /* Maintain aspect ratio */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-img.race1 {
-  content: url('/assets/Lib-Imgs-Cards/Dragonborn.jpg');
-  width: 100px;
-  height: 20px;
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
 }
 
-img.race2 {
-  content: url('/assets/Lib-Imgs-Cards/Dwarf.jpg');
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
 }
 
-img.race3 {
-  content: url('/assets/Lib-Imgs-Cards/Elf.jpg');
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
 }
 
-img.race4 {
-  content: url('/assets/Lib-Imgs-Cards/Gnome.jpg');
+.flip-card-back {
+  background-color: #2980b9;
+  color: white;
+  transform: rotateY(180deg);
 }
 
-img.race5 {
-  content: url('/assets/Lib-Imgs-Cards/Half-Elf.jpg');
+.card-body {
+  padding: 20px;
+  
 }
 
-img.race6 {
-  content: url('/assets/Lib-Imgs-Cards/Half-Orc.jpg');
+.card-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-img.race7 {
-  content: url('/assets/Lib-Imgs-Cards/Halfling.jpg');
+figure {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 200px; /* Adjust height to fit the table size */
+  overflow: hidden;
 }
 
-img.race8 {
-  content: url('/assets/Lib-Imgs-Cards/Human.jpg');
-}
-
-img.race9 {
-  content: url('/assets/Lib-Imgs-Cards/Tiefling.jpg');
-}
-
-img.class1 {
-  content: url('/assets/Lib-Imgs-Cards/Barbarian.jpg');
-}
-
-img.class2 {
-  content: url('/assets/Lib-Imgs-Cards/Bard.jpg');
-}
-
-img.class3 {
-  content: url('/assets/Lib-Imgs-Cards/Cleric.jpg');
-}
-
-img.class4 {
-  content: url('/assets/Lib-Imgs-Cards/Druid.jpg');
-}
-
-img.class5 {
-  content: url('/assets/Lib-Imgs-Cards/Fighter.jpg');
-}
-
-img.class6 {
-  content: url('/assets/Lib-Imgs-Cards/Monk.jpg');
-}
-
-img.class7 {
-  content: url('/assets/Lib-Imgs-Cards/Paladin.jpg');
-}
-
-img.class8 {
-  content: url('/assets/Lib-Imgs-Cards/Ranger.jpg');
-}
-
-img.class9 {
-  content: url('/assets/Lib-Imgs-Cards/Rogue.jpg');
-}
-
-img.class10 {
-  content: url('/assets/Lib-Imgs-Cards/Sorcerer.jpg');
-}
-
-img.class11 {
-  content: url('/assets/Lib-Imgs-Cards/Warlock.jpg');
-}
-
-img.class12 {
-  content: url('/assets/Lib-Imgs-Cards/Wizard.jpg');
+figure img {
+  width: 500px; /* Adjust width as needed */
+  height: 500px; /* Adjust height as needed */
+  object-fit: contain; /* Ensure the image covers the entire figure */
 }

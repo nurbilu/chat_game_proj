@@ -25,33 +25,33 @@
     <div class="tab-pane fade show active" role="tabpanel">
       <h4>{{selectedCollection}}</h4>
       <div *ngIf="isCardCollection(selectedCollection)">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col" *ngFor="let item of getPaginatedItems(); let i = index">
-            <div class="card">
-              <div class="card-header">
-                <h5>{{item.name}}</h5>
-              </div>
-              <div class="card-img-top">
-                <img [src]="'/assets/Lib-Imgs-Cards/' + item.name + '.jpg'" class="card-img-top" alt="Image">
-              </div>
-              <div class="card-body">
-                <!-- Grid layout for collapse buttons, skipping the first key -->
-                <div class="row row-cols-3">
-                  <ng-container *ngFor="let key of getKeys(item); let k = index">
-                    <div class="col"
-                      *ngIf="k !== 0 && key !== 'url' && key !== 'name' && key !== 'index' && key !== '_id' && key !== 'rowNumber'">
-                      <button (click)="toggleTextVisibility(getTextVisibilityIndex(i, key))"
-                        class="btn btn-outline-secondary btn-sm"
-                        [attr.aria-expanded]="textVisibility[getTextVisibilityIndex(i, key)]"
-                        [attr.aria-controls]="'collapse' + getTextVisibilityIndex(i, key)">
-                        {{ key }}
-                      </button>
-                      <div id="collapse{{getTextVisibilityIndex(i, key)}}"
-                        [ngbCollapse]="!textVisibility[getTextVisibilityIndex(i, key)]">
-                        <span>{{ $any(item[key]) }}</span>
-                      </div>
-                    </div>
-                  </ng-container>
+        <div class="articles row justify-content-center">
+          <div class="col-12 col-md-6" *ngFor="let item of getPaginatedItems(); let i = index">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <figure>
+                    <img [src]="'/assets/Lib-Imgs-Cards/' + item.name + '.jpg'" alt="{{item.name}}" class="card-img-top">
+                  </figure>
+                  <div class="card-body">
+                    <h2 class="card-title">{{item.name}}</h2>
+                  </div>
+                </div>
+                <div class="flip-card-back">
+                  <table class="table table-striped table-hover table-responsive">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let key of getKeys(item)">
+                        <td>{{ key }}</td>
+                        <td>{{ formatArray($any(item[key])) }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -76,20 +76,14 @@
               <td>{{ item.name }}</td>
               <ng-container *ngFor="let key of getKeys(item); let k = index">
                 <td *ngIf="key !== 'url' && key !== 'name' && key !== 'rowNumber'">
-                  <div *ngIf="isString($any(item[key])) && isLongText($any(item[key]))">
-                    <button (click)="toggleTextVisibility(getTextVisibilityIndex(i, key))"
-                      class="btn btn-outline-secondary btn-sm">
-                      <img
-                        [src]="textVisibility[getTextVisibilityIndex(i, key)] ? 'assets/imgs/icons/collapnd-btn.png' : 'assets/imgs/icons/collapnd-btn.png'"
-                        alt="Toggle">
-                    </button>
-                    <div [ngbCollapse]="!textVisibility[getTextVisibilityIndex(i, key)]">
-                      <span>{{ $any(item[key]) }}</span>
-                    </div>
-                  </div>
-                  <div *ngIf="!isString($any(item[key])) || !isLongText($any(item[key]))">
-                    <span>{{ formatArray($any(item[key])) }}</span>
-                  </div>
+                  <span *ngIf="isLongText(item[key])">
+                    <span (click)="toggleTextVisibility(i, key)" style="cursor: pointer;">
+                      {{ isTextVisible(i, key) ? item[key] : (item[key] | slice:0:30) + '...' }}
+                    </span>
+                  </span>
+                  <span *ngIf="!isLongText(item[key])">
+                    {{ formatArray($any(item[key])) }}
+                  </span>
                 </td>
               </ng-container>
             </tr>
