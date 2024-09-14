@@ -126,3 +126,34 @@ button {
     margin-left: 10px;
     cursor: pointer;
 }
+.search-icon{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: url('/assets/imgs/icons/srch-icon.png') no-repeat center center;
+    border: none;
+    outline: none;
+}
+.clear-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: url('/assets/imgs/icons/clear-srch.png') no-repeat center center;
+    border: none;
+    outline: none;
+}
+
+.clear-results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: url('/assets/imgs/icons/clr-rslt.png') no-repeat center center;
+    border: none;
+    outline: none;
+}

@@ -2,7 +2,9 @@
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <div class="input-group">
       <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
-      <button (click)="onSearch()" class="btn btn-primary">Search</button>
+      <button (click)="onSearch()" class="search-icon" alt="Search"></button>
+      <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input"></button>
+      <button class="clear-results" (click)="clearSearchResults()" alt="clear-results"></button>
     </div>
 
     <a class="nav-item nav-link" *ngFor="let collection of collectionKeys"

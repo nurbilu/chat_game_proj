@@ -176,3 +176,34 @@ figure img {
   height: 100%; /* Adjust height as needed */
   object-fit: c; /* Ensure the image covers the entire figure */
 }
+.search-icon{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/srch-icon.png') no-repeat center center;
+  border: none;
+  outline: none;
+}
+.clear-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/clear-srch.png') no-repeat center center;
+  border: none;
+  outline: none;
+}
+
+.clear-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/back-to-lib.png') no-repeat center center;
+  border: none;
+  outline: none;
+}

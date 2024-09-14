@@ -179,6 +179,10 @@ item: { [key: string]: any; } = {};
     this.showSearchResults = false;
   }
 
+  clearSearchQuery(): void {
+    this.searchQuery = '';
+  }
+
   onSearch(): void {
     console.log('LibraryComponent onSearch triggered with query:', this.searchQuery);
     if (this.searchQuery) {
@@ -215,3 +219,4 @@ item: { [key: string]: any; } = {};
     this.expandedRows[index] = !this.expandedRows[index];
   }
 }
+
