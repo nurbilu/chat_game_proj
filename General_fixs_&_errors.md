@@ -1,24 +1,25 @@
 ### what to fix and errors : 
-1.complete edit profile form - first name , last name enable to PUT()
+   1.complete edit profile form - first name , last name enable to PUT()
 
-2.
+   2.fix spell select copy in character create (done)
 
-3. - fix cards padding and - fix collapse for tables ,but not for the cards. (done?)
+   3.clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links ()
 
-4. - fix table displayment in character create ()
-4.b.maybe need one terminal command to run all the flask apps for docker ()
+   4.a. - fix table displayment in character create ()
+   4.b.  maybe need one terminal command to run all the flask apps for docker ()
 
-5. implement chracter create completely + fix Gemini integration : ()
-   - change the intagration so API does not use the DB collection ()
-   - add more templates for chat to make game gen quicker ()
+   5.
    
-6. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
-6. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" ()
+   6. implement chracter create completely + fix Gemini integration : ()
+         - change the intagration so API does not use the DB collection ()
+         - add more templates for chat to make game gen quicker ()
 
-7. set library - is set but needed to be properly worknig - check if make any errors or working unproperly - if so fix () :
-- adjust data , even in DB to drop/delete all 'url:'api/sdfsd/.sdsdf/'' , not understandable data for user.()
+###keep one before last : 
 
-### best for last : 
+   7.a. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
+   7. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" ()
+
+### best for last - check if still relevant/exists : 
 1. async problem - Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received - seems to show in all components few moments after reload(only if presists in the future ( )) 
 
 2.  ▲ [WARNING] Polyfill for "@angular/localize/init" was added automatically. [plugin angular-polyfills]
@@ -73,3 +74,5 @@ DONE LIST :
 18.2.fix/continue implementing pwd toggle(done)
 
 19. 2.openai assistent - fix or delete. (X) - been deleted.
+
+20. 3.fix cards padding and - fix collapse for tables ,but not for the cards. (done)

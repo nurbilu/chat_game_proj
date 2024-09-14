@@ -48,8 +48,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.first_name = validated_data.get('first_name', instance.first_name)  # Allow updating first name
+        instance.last_name = validated_data.get('last_name', instance.last_name)  # Allow updating last name
         instance.email = validated_data.get('email', instance.email)
         instance.address = validated_data.get('address', instance.address)
         instance.birthdate = validated_data.get('birthdate', instance.birthdate)

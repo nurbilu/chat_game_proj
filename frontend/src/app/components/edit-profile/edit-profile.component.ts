@@ -84,9 +84,10 @@ export class EditProfileComponent implements OnInit {
       );
     }
   } 
-
+  
   cancelEdit(): void {
     this.showUpdateForm = false;
     this.showUserData = true;
+    this.loadUserProfile();
   }
 }

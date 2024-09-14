@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { AuthService } from '../../services/auth.service';
@@ -54,8 +54,7 @@ export class ChrcterCreationComponent implements OnInit {
   @ViewChild('fillFieldsTemplate', { static: true }) fillFieldsTemplate!: TemplateRef<any>;
   @ViewChild('acc', { static: true }) accordion!: NgbAccordionItem;
   characterPromptEditor: any;
-  @ViewChild('spellSelect') spellSelect: ElementRef<HTMLSelectElement> | any;
-
+  @ViewChildren('spellSelect') spellSelects!: QueryList<ElementRef<HTMLSelectElement>>;
   constructor(
     private chcrcterCreationService: ChcrcterCreationService,
     private authService: AuthService,
@@ -115,6 +114,8 @@ export class ChrcterCreationComponent implements OnInit {
   searchQuery: string = '';
   showSearchResults: boolean = false;
   noResultsFound: boolean = false;
+
+  selectedSpell: string = '';
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
@@ -299,11 +300,16 @@ export class ChrcterCreationComponent implements OnInit {
     this.showSearchResults = false;
   }
 
-  copySelectedSpell(selectElement: ElementRef<HTMLSelectElement>) {
-    const selectedSpell = selectElement.nativeElement.options[selectElement.nativeElement.selectedIndex].text;
+  onSpellSelectChange(event: Event, className: string): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedSpell = selectElement.value;
+    console.log(`Selected spell for ${className}: ${this.selectedSpell}`);
+  }
+
+  copySelectedSpell(spell: string): void {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(selectedSpell).then(() => {
-        console.log('Selected spell copied to clipboard');
+      navigator.clipboard.writeText(spell).then(() => {
+        console.log('Selected spell copied to clipboard', spell);
         this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 3000 });
       }).catch(err => {
         console.error('Failed to copy selected spell: ', err);
@@ -375,6 +381,10 @@ export class ChrcterCreationComponent implements OnInit {
         .join(', ');
     }
     return String(item);
+  }
+
+  clearSearchQuery(): void {
+    this.searchQuery = '';
   }
 }
 

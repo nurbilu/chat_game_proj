@@ -36,7 +36,6 @@
     <input type="file" id="profilePicture" (change)="onFileSelected($event)">
   </div>
   <button type="submit" [disabled]="profileForm.invalid">Save</button>
-  <button type="button" (click)="cancelEdit()">Cancel</button>
 </form>
 
 <ng-template #successTemplate>

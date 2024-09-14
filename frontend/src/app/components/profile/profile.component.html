@@ -44,6 +44,7 @@
         </div>
     </div>
     <div *ngIf="showUpdateForm">
+        <button type="button" id="close-button" (click)="cancelEdit()" class="btn-close float-end" aria-label="Close"></button>
         <app-edit-profile></app-edit-profile>
     </div>
 </div>
