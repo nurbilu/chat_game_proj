@@ -207,3 +207,18 @@ figure img {
   border: none;
   outline: none;
 }
+
+.collapse-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/sreach-cllpse.png') no-repeat center center;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  top: 100px;
+  right: 5px;
+}

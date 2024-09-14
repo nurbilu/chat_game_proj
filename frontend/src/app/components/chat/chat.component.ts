@@ -13,6 +13,7 @@ export class ChatComponent implements OnInit {
     message: string = '';
     responses: any[] = [];
     username: string = '';
+selectedTemplate: any;
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
@@ -74,14 +75,28 @@ export class ChatComponent implements OnInit {
     }
 
     pasteTemplate(): void {
-        this.chatService.getCharacterPrompt(this.username).subscribe({
-            next: (response) => {
-                this.message = `I want to create a character, you choose all options I mention as so: ${response.characterPrompt}`;
-            },
-            error: (error) => {
-                console.error('Error fetching character prompt:', error);
-                this.responses.push({ text: 'Error: Could not fetch character prompt', from: 'bot' });
-            }
-        });
+        let templateMessage = '';
+        switch (this.selectedTemplate) {
+            case 'template1':
+                templateMessage = `Hello, my name is ${this.username}. I want to start a game. If you want me to give you information for creating a character, I'll gladly send you my pre-made character prompt.`;
+                break;
+            case 'template2':
+                this.chatService.getCharacterPrompt(this.username).subscribe({
+                    next: (response) => {
+                        this.message = `Character Prompt: ${response.characterPrompt}`;
+                    },
+                    error: (error) => {
+                        console.error('Error fetching character prompt:', error);
+                        this.responses.push({ text: 'Error: Could not fetch character prompt', from: 'bot' });
+                    }
+                });
+                return; // Exit the function to avoid setting the message again
+            case 'template3':
+                templateMessage = 'Save last prompt to know from where to continue.';
+                break;
+            default:
+                templateMessage = '';
+        }
+        this.message = templateMessage;
     }
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CleanTextPipe } from '../../clean-text.pipe';
 import { SearchService } from '../../services/search.service';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap'; // Add this import
 
 interface Collection {
   [key: string]: any[];
@@ -28,8 +29,8 @@ export class LibraryComponent implements OnInit {
   showSearchResults: boolean = false;
   isLoading: boolean = false;
   expandedRows: { [key: number]: boolean } = {};
-i: any;
-item: { [key: string]: any; } = {};
+  isSearchExpanded: boolean = false; // Add this line
+  isCollapsed: boolean = false; // Ensure this line is present
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -217,6 +218,17 @@ item: { [key: string]: any; } = {};
 
   toggleRowExpansion(index: number): void {
     this.expandedRows[index] = !this.expandedRows[index];
+  }
+
+  toggleSearch(): void {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.classList.toggle('show');
+    }
+  }
+
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
   }
 }
 

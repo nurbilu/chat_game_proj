@@ -4,15 +4,22 @@
   </div>
   <div *ngIf="username">
     <div class="chat-window">
-      <div *ngFor="let response of responses" [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
+      <div *ngFor="let response of responses"
+        [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
         <p>{{ response.text }}</p>
       </div>
     </div>
     <div class="input-container">
       <span>{{ username }}: </span>
-      <input type="text" [(ngModel)]="message" placeholder="Type your message here" required (keydown)="onEnter($event)">
+      <input type="text" [(ngModel)]="message" placeholder="Type your message here" required
+        (keydown)="onEnter($event)">
       <button (click)="sendMessage()" class="btn btn-success">Send</button>
-      <button (click)="pasteTemplate()" class="btn btn-info">Paste Template</button>
+      <select [(ngModel)]="selectedTemplate" (change)="pasteTemplate()" aria-label="Default select example">
+        <option value="" disabled selected>Select a template</option>
+        <option value="template1">Lets Start a Game</option>
+        <option value="template2">Character Prompt</option>
+        <option value="template3">Save Last Prompt</option>
+      </select>
     </div>
   </div>
   <div style="text-align: right; margin-top: 10px;">

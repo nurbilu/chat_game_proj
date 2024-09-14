@@ -38,6 +38,18 @@ button {
     box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
 }
 
+.text-frame h2,
+.text-frame h3,
+.text-frame h4,
+.text-frame h5 {
+    color: white;
+}
+
+/* Add this new class for consistency */
+.text-frame .table-responsive {
+    margin-top: 20px;
+}
+
 .large-textarea {
     width: 100%;
     height: 150px;
@@ -99,12 +111,6 @@ button {
     margin-bottom: 20px;
 }
 
-.text-frame h2,
-.text-frame h3,
-.text-frame h4,
-.text-frame h5 {
-    color: white;
-}
 .text-frame1 {
     color: rgb(248, 248, 248);
     margin-bottom: 20px;
@@ -156,4 +162,13 @@ button {
     background: url('/assets/imgs/icons/clr-rslt.png') no-repeat center center;
     border: none;
     outline: none;
+}
+
+/* Apply the same styles to Classes Description */
+.classes-description {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(24, 24, 24, 0.678);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
 }

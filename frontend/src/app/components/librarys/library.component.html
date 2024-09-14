@@ -1,25 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <div class="input-group">
-      <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
-      <button (click)="onSearch()" class="search-icon" alt="Search"></button>
-      <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input"></button>
-      <button class="clear-results" (click)="clearSearchResults()" alt="clear-results"></button>
-    </div>
-
     <a class="nav-item nav-link" *ngFor="let collection of collectionKeys"
       [class.active]="collection === selectedCollection && !showSearchResults" (click)="selectCollection(collection)">
       {{collection}}
     </a>
   </div>
 </nav>
+<div class="search-container" [ngClass]="{'collapsed': isCollapsed}">
+  <div class="input-group" [ngClass]="{'collapsed': isCollapsed}" [ngbCollapse]="!isCollapsed">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
+    <button (click)="onSearch()" class="search-icon" alt="Search"></button>
+    <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input"></button>
+    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results"></button>
+  </div>
+  <div class="collapse-area">
+    <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}"></button>
+  </div>
+</div>
 <div *ngIf="isLoading" class="spinner-container">
   <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
 <div *ngIf="showSearchResults && !isLoading">
-  <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)" (searchCleared)="clearSearchResults()"></app-lib-search>
+  <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)"
+    (searchCleared)="clearSearchResults()"></app-lib-search>
 </div>
 <div *ngIf="!showSearchResults && !isLoading">
   <div class="tab-content scrollspy-example" id="nav-tabContent" data-bs-spy="scroll" data-bs-target="#nav-tab"
@@ -34,7 +39,8 @@
                 <div class="flip-card-front">
                   <h2 class="card-title">{{item.name}}</h2> <!-- Moved here -->
                   <figure>
-                    <img [src]="'/assets/Lib-Imgs-Cards/' + item.name + '.jpg'" alt="{{item.name}}" class="card-img-top">
+                    <img [src]="'/assets/Lib-Imgs-Cards/' + item.name + '.jpg'" alt="{{item.name}}"
+                      class="card-img-top">
                   </figure>
                   <div class="card-body">
                     <!-- Removed h2 from here -->
