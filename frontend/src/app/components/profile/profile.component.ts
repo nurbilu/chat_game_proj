@@ -129,4 +129,8 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+
+  onProfileUpdated(): void {
+    this.loadUserProfile();  // Reload the profile data
+  }
 }

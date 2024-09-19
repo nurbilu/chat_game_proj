@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
@@ -10,6 +10,8 @@ import { ProfileComponent } from '../profile/profile.component';
   styleUrls: ['./edit-profile.component.css']
 })
 export class EditProfileComponent implements OnInit {
+  @Output() profileUpdated = new EventEmitter<void>();  // Ensure this line is present
+
   profileForm: FormGroup;
 
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
@@ -76,6 +78,7 @@ export class EditProfileComponent implements OnInit {
       this.authService.updateUserProfile(formData).subscribe(
         (data) => {
           this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
+          this.profileUpdated.emit();  // Emit the event here
           this.loadUserProfile();  // Reload the user profile after successful update
         },
         (error) => {

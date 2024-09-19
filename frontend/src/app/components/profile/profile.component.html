@@ -45,7 +45,7 @@
     </div>
     <div *ngIf="showUpdateForm">
         <button type="button" id="close-button" (click)="cancelEdit()" class="btn-close float-end" aria-label="Close"></button>
-        <app-edit-profile></app-edit-profile>
+        <app-edit-profile (profileUpdated)="onProfileUpdated()"></app-edit-profile>  <!-- Add event binding here -->
     </div>
 </div>
 

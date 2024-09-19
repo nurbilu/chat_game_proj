@@ -1,7 +1,7 @@
 ### what to fix and errors : 
-   1.complete edit profile form - first name , last name enable to PUT()
+   1.complete edit profile form - first name , last name enable to PUT(done)
 
-   2.clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links ()
+   2.clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable)
 
    3.a. - fix table displayment in character create ()
    3.b.  maybe need one terminal command to run all the flask apps for docker ()
