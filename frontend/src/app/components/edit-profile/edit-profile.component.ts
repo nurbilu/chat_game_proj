@@ -23,8 +23,8 @@ export class EditProfileComponent implements OnInit {
     private toastService: ToastService
   ) {
     this.profileForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      first_name: ['', Validators.required],  // Ensure keys match backend
+      last_name: ['', Validators.required],   // Ensure keys match backend
       email: ['', [Validators.required, Validators.email]],
       address: [''],
       birthdate: [''],
@@ -40,8 +40,8 @@ export class EditProfileComponent implements OnInit {
     this.authService.getUserProfile().subscribe(
       (data) => {
         this.profileForm.patchValue({
-          firstName: data.first_name,
-          lastName: data.last_name,
+          first_name: data.first_name,
+          last_name: data.last_name,
           email: data.email,
           address: data.address,
           birthdate: data.birthdate

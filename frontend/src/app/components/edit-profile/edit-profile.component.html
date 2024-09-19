@@ -2,17 +2,17 @@
 
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
   <div>
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" formControlName="firstName">
-    <div *ngIf="profileForm.get('firstName')!.invalid && profileForm.get('firstName')!.touched">
-      <small *ngIf="profileForm.get('firstName')!.errors?.['required']">First Name is required</small>
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" formControlName="first_name">
+    <div *ngIf="profileForm.get('first_name')!.invalid && profileForm.get('first_name')!.touched">
+      <small *ngIf="profileForm.get('first_name')!.errors?.['required']">First Name is required</small>
     </div>
   </div>
   <div>
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" formControlName="lastName">
-    <div *ngIf="profileForm.get('lastName')!.invalid && profileForm.get('lastName')!.touched">
-      <small *ngIf="profileForm.get('lastName')!.errors?.['required']">Last Name is required</small>
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" formControlName="last_name">
+    <div *ngIf="profileForm.get('last_name')!.invalid && profileForm.get('last_name')!.touched">
+      <small *ngIf="profileForm.get('last_name')!.errors?.['required']">Last Name is required</small>
     </div>
   </div>
   <div>
@@ -32,8 +32,8 @@
     <input type="date" id="birthdate" formControlName="birthdate">
   </div>
   <div>
-    <label for="profilePicture">Profile Picture:</label>
-    <input type="file" id="profilePicture" (change)="onFileSelected($event)">
+    <label for="profile_picture">Profile Picture:</label>
+    <input type="file" id="profile_picture" (change)="onFileSelected($event)">
   </div>
   <button type="submit" [disabled]="profileForm.invalid">Save</button>
 </form>

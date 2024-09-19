@@ -11,27 +11,14 @@ from flask_cors import CORS, cross_origin
 import logging
 from logging import FileHandler  # Corrected import
 import json
-import requests
 from flask.logging import default_handler
 from dotenv import load_dotenv
-import openai
-import ast
 from bs4 import BeautifulSoup
 
 # Load environment variables from .env file
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY_USE")
 MONGO_ATLAS = os.getenv("MONGO_ATLAS")
 DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
-
-# Print the API key to verify it's loaded correctly (remove this in production)
-print(f"Loaded OpenAI API Key: {OPENAI_API_KEY}")
-
-if not OPENAI_API_KEY:
-    raise ValueError("No API key provided. Please set the OPENAI_API_KEY_USE environment variable.")
-
-# Configure OpenAI API key
-openai.api_key = OPENAI_API_KEY
 
 # Initialize MongoDB client
 client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
@@ -180,29 +167,6 @@ def get_races():
         except Exception as e:
             return jsonify({'error': str(e)}), 500
     return jsonify({'error': 'Method not allowed'}), 405
-
-@character_blueprint.route('/chatbot', methods=['POST'])
-def chatbot_interaction():
-    try:
-        user_message = request.json.get('message')
-        if not user_message:
-            return jsonify({'error': 'Message is required'}), 400
-
-        # Send the message to the OpenAI API
-        response = openai.Completion.create(
-            model="gpt-4o-mini",  # Use gpt-4o-mini model
-            prompt=user_message,
-            max_tokens=250
-        )
-
-        if response and response.choices:
-            reply = response.choices[0].text.strip()
-            return jsonify({'reply': reply}), 200
-        else:
-            return jsonify({'error': 'Failed to get response from AI Gemini bot'}), 500
-    except Exception as e:
-        app.logger.error(f"Failed to interact with chatbot: {str(e)}")
-        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 @character_blueprint.route('/save_draft', methods=['POST'])
 def save_draft():

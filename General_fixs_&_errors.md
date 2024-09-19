@@ -1,16 +1,14 @@
 ### what to fix and errors : 
    1.complete edit profile form - first name , last name enable to PUT()
 
-   2.fix spell select copy in character create (done)
+   2.clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links ()
 
-   3.clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links ()
+   3.a. - fix table displayment in character create ()
+   3.b.  maybe need one terminal command to run all the flask apps for docker ()
 
-   4.a. - fix table displayment in character create ()
-   4.b.  maybe need one terminal command to run all the flask apps for docker ()
-
-   5.
+   4.make sure remember me checkbox is working also in the login component not just on the modal ()
    
-   6. implement chracter create completely + fix Gemini integration : ()
+   5. implement chracter create completely + fix Gemini integration : ()
          - change the intagration so API does not use the DB collection ()
          - add more templates for chat to make game gen quicker ()
 
@@ -76,3 +74,5 @@ DONE LIST :
 19. 2.openai assistent - fix or delete. (X) - been deleted.
 
 20. 3.fix cards padding and - fix collapse for tables ,but not for the cards. (done)
+
+21. 2.fix spell select copy in character create (done)

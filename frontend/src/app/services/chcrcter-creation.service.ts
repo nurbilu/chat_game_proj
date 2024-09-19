@@ -76,19 +76,6 @@ export class ChcrcterCreationService {
     );
   }
 
-  sendMessageToChatbot(payload: { message: string, username: string }): Observable<any> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`,
-      'Content-Type': 'application/json'
-    });
-    return this.http.post(`${this.apiUrl}/chatbot`, payload, { headers }).pipe(
-      catchError(error => {
-        console.error('Failed to send message to chatbot:', error);
-        return throwError(() => new Error('Error sending message to chatbot: ' + error.message));
-      })
-    );
-  }
-
   getDraft(username: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/draft/${username}`).pipe(
       catchError(error => {
@@ -110,6 +97,7 @@ export class ChcrcterCreationService {
       })
     );
   }
+
   saveCharacter(character: any): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.getToken()}`,
@@ -122,6 +110,7 @@ export class ChcrcterCreationService {
       })
     );
   }
+
   getCharacterPrompt(username: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/character_prompt/${username}`).pipe(
       catchError(error => {
