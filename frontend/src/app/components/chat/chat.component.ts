@@ -13,7 +13,7 @@ export class ChatComponent implements OnInit {
     message: string = '';
     responses: any[] = [];
     username: string = '';
-selectedTemplate: any;
+    selectedTemplate: any;
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
@@ -98,5 +98,9 @@ selectedTemplate: any;
                 templateMessage = '';
         }
         this.message = templateMessage;
+    }
+
+    clearChatInput(): void {
+        this.message = '';
     }
 }

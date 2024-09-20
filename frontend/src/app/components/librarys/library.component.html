@@ -46,8 +46,8 @@
                     <!-- Removed h2 from here -->
                   </div>
                 </div>
-                <div class="flip-card-back">
-                  <table class="table table-striped table-hover table-responsive">
+                <div class="flip-card-back" >
+                  <table class="table table-striped table-hover table-responsive" *ngIf="item.name !== 'url' && item.name !== 'name' && item.name !== 'rowNumber'">
                     <thead class="table-dark">
                       <tr>
                         <th>Key</th>

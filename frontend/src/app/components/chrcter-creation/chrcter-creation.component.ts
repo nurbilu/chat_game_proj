@@ -271,7 +271,7 @@ export class ChrcterCreationComponent implements OnInit {
   }
 
   isSpellCaster(className: string): boolean {
-    return !['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(className);
+    return !this.nonSpellClasses.includes(className);
   }
 
   fetchRaces(): void {

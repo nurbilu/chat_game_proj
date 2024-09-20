@@ -26,7 +26,11 @@ export class LoginComponent {
 
     login() {
         this.authService.login(this.username, this.password, this.rememberMe).subscribe({
-            next: () => {},
+            next: () => {
+                if (this.rememberMe) {
+                    localStorage.setItem('rememberMe', 'true');
+                }
+            },
             error: (err) => {
                 console.error('Login failed', err);
                 this.toastService.show({
