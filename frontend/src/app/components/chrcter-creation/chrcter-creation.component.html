@@ -20,9 +20,9 @@
   <h3>Library Search</h3>
   <div class="input-group">
     <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
-    <button (click)="onSearch()" class="search-icon" alt="Search"></button>
-    <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input"></button>
-    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results"></button>
+    <button (click)="onSearch()" class="search-icon" alt="Search" ngbPopover="Click to search" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
+    <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input" ngbPopover="Clear search query" triggers="mouseenter:mouseleave" popoverTitle="Clear"></button>
+    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results" triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
   </div>
   <div *ngIf="isLoading" class="spinner-container">
     <div class="spinner-border" role="status">
@@ -40,9 +40,9 @@
       <div class="text-editor-container">
         <st-editor [(ngModel)]="characterPrompt" [Config]="config"></st-editor>
       </div>
-      <button (click)="sendMessage()">Send</button>
-      <button (click)="saveDraft()">Save Draft</button>
-      <button (click)="pasteDraft()">Paste Draft</button>
+      <button (click)="sendMessage()" ngbPopover="Click to save your prompt to the chat" triggers="mouseenter:mouseleave" popoverTitle="Send">Send</button>
+      <button (click)="saveDraft()" ngbPopover="Click to save draft not as a prompt" triggers="mouseenter:mouseleave" popoverTitle="Save Draft">Save Draft</button>
+      <button (click)="pasteDraft()" ngbPopover="Click to paste your draft" triggers="mouseenter:mouseleave" popoverTitle="Paste Draft">Paste Draft</button>
     </div>
 
     <div class="g-col-4 text-frame1">
@@ -55,7 +55,7 @@
               <option value="">Select a spell</option>
               <option *ngFor="let spell of classItem?.spells" [value]="spell">{{ spell }}</option>
             </select>
-            <img src="/assets/imgs/icons/copy.png" class="copy-icon" (click)="copySelectedSpell(selectedSpell)">
+            <img src="/assets/imgs/icons/copy.png" class="copy-icon" (click)="copySelectedSpell(selectedSpell) " ngbPopover="Click to copy the selected spell" triggers="mouseenter:mouseleave" popoverTitle="Copy">
           </div>
           <p *ngIf="classItem?.spells?.length === 0" class="no-spells">
             No spells available for {{ classItem?.name }}.

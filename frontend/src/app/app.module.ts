@@ -33,6 +33,7 @@ import { CleanTextPipe } from './clean-text.pipe';
 import { SearchService } from './services/search.service'; 
 import { LibSearchComponent } from './components/lib-search/lib-search.component'; 
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component'; // Ensure EditProfileComponent is declared here
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }), 
-    NgxSimpleTextEditorModule 
+    NgxSimpleTextEditorModule,
+    NgbPopoverModule
   ],
   providers: [
     AuthService,

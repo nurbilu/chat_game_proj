@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CleanTextPipe } from '../../clean-text.pipe';
 import { SearchService } from '../../services/search.service';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap'; // Add this import
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 interface Collection {
   [key: string]: any[];
@@ -29,8 +30,8 @@ export class LibraryComponent implements OnInit {
   showSearchResults: boolean = false;
   isLoading: boolean = false;
   expandedRows: { [key: number]: boolean } = {};
-  isSearchExpanded: boolean = false; // Add this line
-  isCollapsed: boolean = false; // Ensure this line is present
+  isSearchExpanded: boolean = false;
+  isCollapsed: boolean = false;
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -125,13 +126,12 @@ export class LibraryComponent implements OnInit {
   }
 
   getKeys(item: { [key: string]: any }): string[] {
-    // Update this method to return the correct keys from the Equipment collection
     return Object.keys(item).filter(key => key !== '_id' && key !== 'index');
   }
 
   selectCollection(collection: string): void {
     this.selectedCollection = collection;
-    this.showSearchResults = false; // Set to false to show the collection data
+    this.showSearchResults = false;
     console.log("Selected Collection:", collection);
     if (!this.collections[collection]) {
       console.log("Loading data for collection:", collection);
@@ -160,7 +160,6 @@ export class LibraryComponent implements OnInit {
   }
 
   getTextVisibilityIndex(i: number, key: string): number {
-    // Ensure unique index for each collapsible element
     return i * 1000 + this.getKeys(this.collections[this.selectedCollection][0]).indexOf(key);
   }
 

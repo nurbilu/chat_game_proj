@@ -56,17 +56,17 @@
   <a class="navbar-brand" href="#">
     <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px;">
   </a>
-  <button class="navbar-toggler" type="button" (click)="openOffcanvas()">
+  <button class="navbar-toggler" type="button" (click)="openOffcanvas()" ngbPopover="Click to open Navbar Menu" triggers="mouseenter:mouseleave" popoverTitle="Menu">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <div class="btn-group" role="group" aria-label="homepage, Login and Logout">
-        <button class="btn btn-outline-success" (click)="openLoginModal(loginTemplate)">Login</button>
-        <button class="btn btn-outline-info" routerLink="/homepage">Homepage</button>
-        <button class="btn btn-outline-primary" routerLink="/register">Register</button>
-        <button class="btn btn-outline-light" *ngIf="isSuperUser" routerLink="/super-profile">Super Profile</button>
-        <button class="btn btn-outline-warning" (click)="openLogoutModal(logoutTemplate)">Logout</button>
+        <button class="btn btn-outline-success" (click)="openLoginModal(loginTemplate)" ngbPopover="Click to open Login Modal" triggers="mouseenter:mouseleave" popoverTitle="Login">Login</button>
+        <button class="btn btn-outline-info" routerLink="/homepage" ngbPopover="Click to open Homepage" triggers="mouseenter:mouseleave" popoverTitle="Homepage">Homepage</button>
+        <button class="btn btn-outline-primary" routerLink="/register" ngbPopover="Click to open Register" triggers="mouseenter:mouseleave" popoverTitle="Register">Register</button>
+        <button class="btn btn-outline-light" *ngIf="isSuperUser" routerLink="/super-profile" ngbPopover="Click to open Super Profile" triggers="mouseenter:mouseleave" popoverTitle="Super Profile">Super Profile</button>
+        <button class="btn btn-outline-warning" (click)="openLogoutModal(logoutTemplate)" ngbPopover="Click to open Logout Modal" triggers="mouseenter:mouseleave" popoverTitle="Logout">Logout</button>
       </div>
       <div>
         <li class="nav-item d-flex align-items-center">
