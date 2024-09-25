@@ -1,25 +1,27 @@
 ### what to fix and errors : 
+   1. 
+
+   2.a. change /adjust /fix /add toasts messages in all components ()
+   2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button ()
+   2.c. add popover/tooltip to all the key / colomn names in all tables to explain the data inside them if needed  ()
+
+   3. fix table displayment in character create (in some way done not perfect but mostly good)
 
 
-   2.clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable)
-
-   3.a. - fix table displayment in character create (in some way done not perfect but mostly good)
-
-   4.make sure remember me checkbox is working also in the login component not just on the modal ()
+   4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal () 
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
 
-   5. implement chracter create completely + fix Gemini integration : ()
-         - change the intagration so API does not use the DB collection ()
-         - add more templates for chat to make game gen quicker - elaborate on implementation and better design / displayment ()
+   5. maybe need one terminal command to run all the flask apps for docker ()
+      make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command () 
 
-   6.  maybe need one terminal command to run all the flask apps for docker ()
+   6. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable)
 
 ###keep one before last : 
 
    7.a. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
-   7. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" ()
+   <!-- 7. b. change toast messages if error so toast contect "wrong action" or "wrong data" or "wrong username or password" or "wrong email or password" or "wrong username or email" or "wrong username or email or password" or "wrong username or email or password or address" or "wrong username or email or password or address or birthdate" or "wrong username or email or password or address or birthdate or first name or last name" or "wrong username or email or password or address or birthdate or first name or last name or profile picture" , if success toast message "action done successfully" or "data saved successfully" or "username or password correct" or "email or password correct" or "username or email correct" or "username or email or password correct" or "username or email or password or address correct" or "username or email or password or address or birthdate correct" or "username or email or password or address or birthdate or first name or last name correct" or "username or email or password or address or birthdate or first name or last name or profile picture correct" () -->
 
 ### best for last - check if still relevant/exists : 
 1. async problem - Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received - seems to show in all components few moments after reload(only if presists in the future ( )) 

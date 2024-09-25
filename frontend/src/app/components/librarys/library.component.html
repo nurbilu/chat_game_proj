@@ -14,7 +14,7 @@
     <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results" triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
   </div>
   <div class="collapse-area">
-    <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}"></button>
+    <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}" ngbPopover="Search for items in the library" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
   </div>
 </div>
 <div *ngIf="isLoading" class="spinner-container">

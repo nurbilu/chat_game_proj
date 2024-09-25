@@ -22,8 +22,10 @@
                 <input class="form-check-input" type="checkbox" id="togglePassword" (click)="togglePasswordVisibility('password', 'togglePassword')">
                 <label for="togglePassword">Toggle Password Visibility</label>
                 <br>
-                <input class="form-check-input" type="checkbox" value="" id="form1Example3"/>
-                <label class="form-check-label" for="form1Example3"> Remember Me </label>
+                <div>
+                  <input type="checkbox" id="rememberMeModal" [(ngModel)]="rememberMe" name="rememberMe">
+                  <label for="rememberMeModal">Remember Me</label>
+                </div>
               </div>
               <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="javascript:void(0)" (click)="navigateToForgotPassword()">Forgot password?</a></p>
 

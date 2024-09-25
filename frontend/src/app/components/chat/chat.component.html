@@ -14,7 +14,7 @@
       <input type="text" [(ngModel)]="message" placeholder="Type your message here" required
         (keydown)="onEnter($event)">
       <button (click)="sendMessage()" class="btn btn-success">Send</button>
-      <button (click)="clearChatInput()" class="clear-icon" alt="clear-input"></button>
+      <button (click)="clearChatInput()" class="clear-icon" alt="clear-input" ngbPopover="Clear the chat input" triggers="mouseenter:mouseleave" popoverTitle="Clear Chat Input"></button>
       <select [(ngModel)]="selectedTemplate" (change)="pasteTemplate()" aria-label="Default select example">
         <option value="" disabled selected>Select a template</option>
         <option value="template1">Lets Start a Game</option>

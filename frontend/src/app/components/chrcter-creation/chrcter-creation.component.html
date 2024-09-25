@@ -4,16 +4,21 @@
       [striped]="true">{{progressValue}}% please wait - loading</ngb-progressbar>
   </div>
   <div class="grid">
-    <div class="g-col-4 text-frame1">
-      <h2>Welcome to Character Creation </h2>
-      <p>Hello there, traveler! My name is DeMe, and I'll be your chat-like adventure guide and Game Manager. What combat
-        style do you desire? There are many classes and races to choose from in DnD 5e. create a prompt to paste at the
-        chat!
+    <div class="g-col-4 text-frame">
+      <h2>Welcome to Character Creation</h2>
+      <p>Greetings, adventurer! In this section, you can create and customize your DnD 5e character. Follow these steps to get started:
         <br>
-        use this Text Editor to create your character creation prompt , also use the chat to ask me questions about your
-        character , dont
-        forget to use our library and the accordions
-        to see the classes and races descriptions and spells:
+        1. Library Search: Use the search bar to find information about classes, races, and spells. Enter your query and click the search icon. Clear your search or results using the respective buttons.
+        <br>
+        2. Character Creation Prompt: Use the text editor to create your character's prompt. Fill in details like name, race, class, subclass, level, and spells. Save your draft, paste a saved draft, or send your prompt to the chat.
+        <br>
+        3. Spells for Each Class: Select a class to view available spells. Choose a spell from the dropdown and click the copy icon to copy it to your clipboard.
+        <br>
+        4. Classes Description: Expand the accordions to read detailed descriptions of each class, including spell slot levels for spellcasters.
+        <br>
+        5. Race Descriptions: Expand the accordions to read detailed descriptions of each race, including alignment, age, size, and languages.
+        <br>
+        For more information, visit the provided links to RPGBot for comprehensive guides on spells, classes, and races.
       </p>
     </div>
     <div class="g-col-8 text-frame1">
@@ -32,7 +37,7 @@
   <div *ngIf="showSearchResults && !isLoading">
     <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)" (searchCleared)="clearSearchResults()"></app-lib-search>
   </div>
-  <button class="clear-results" (click)="clearSearchResults()" alt="clear-results"></button>
+  <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results" triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
 </div>
 
     <div class="g-col-8 text-frame">
@@ -45,7 +50,7 @@
       <button (click)="pasteDraft()" ngbPopover="Click to paste your draft" triggers="mouseenter:mouseleave" popoverTitle="Paste Draft">Paste Draft</button>
     </div>
 
-    <div class="g-col-4 text-frame1">
+    <div class="g-col-4 text-frame">
       <h3>Spells for Each Class</h3>
       <div *ngFor="let classItem of classes">
         <ng-container *ngIf="!['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(classItem.name)">
@@ -78,7 +83,7 @@
       </p>
     </div>
 
-    <div class="g-col-8 text-frame1 classes-description">
+    <div class="g-col-8 text-frame classes-description">
       <h3>Classes Description</h3>
       <div ngbAccordion>
         <div ngbAccordionItem *ngFor="let class of classes">
@@ -86,7 +91,7 @@
             <button ngbAccordionButton>{{ class.name }}</button>
           </h2>
           <div ngbAccordionCollapse>
-            <div ngbAccordionBody >
+            <div ngbAccordionBody class="accordion-body">
               <p>{{ class.description }}</p>
               <h5 *ngIf="isSpellCaster(class.name)"></h5>
               <div class="table-responsive" *ngIf="isSpellCaster(class.name)">
@@ -122,7 +127,7 @@
       </div>
     </div>
 
-    <div class="g-col-4 text-frame1">
+    <div class="g-col-4 text-frame race-description">
       <h3>Race Descriptions</h3>
       <div ngbAccordion>
         <div ngbAccordionItem *ngFor="let race of races">
