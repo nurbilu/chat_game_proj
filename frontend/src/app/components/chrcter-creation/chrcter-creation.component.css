@@ -184,13 +184,25 @@ button {
 .classes-description p{
     color: black;
 }
-
+.classes-description p1{
+    color: white;
+}
+.classes-description li{
+    color: black;
+}
+.classes-description h5{
+    color: black;
+}
 .race-description{
     color: black;
 }
 .race-description p{
     color: black;
 }
+.race-description p1{
+    color: white;
+}
+
 
 .popoverTitle {
     color: rgb(0, 0, 0);

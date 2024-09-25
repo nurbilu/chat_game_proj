@@ -1,14 +1,20 @@
 ### what to fix and errors : 
-   1. 
+   ** ask some friends if they know any good on the docker - better then you (docker((((()))))) ** 
+
+
+   1.a. better design home page ()
+   1.b. add cursor marking for accordions of character create ()
 
    2.a. change /adjust /fix /add toasts messages in all components ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button ()
    2.c. add popover/tooltip to all the key / colomn names in all tables to explain the data inside them if needed  ()
 
-   3. fix table displayment in character create (in some way done not perfect but mostly good)
+   3. adjust chat grid displayment , and add a DnD Dices div to the chat grid ()
+   - find a good DnD dice app to integrate to the chat grid / template ()
+   - design the DnD dice app to be integrated to the chat grid if a template - check if design is good and functional ()
+   - "add more if needed" ()
 
-
-   4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal () 
+   4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal (done?check()) 
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
@@ -84,3 +90,5 @@ DONE LIST :
 21. 2.fix spell select copy in character create (done)
 
 22. 1.complete edit profile form - first name , last name enable to PUT(done)
+
+23. 3. fix table displayment in character create (done)
