@@ -48,14 +48,10 @@ body {
   overflow: auto;
 }
 
-.table {
-  margin: 0;
-  width: 100%;
-}
 
 .table th, .table td {
-  padding: 5px;
-  font-size: 0.9em;
+  padding: 3px; /* Reduced padding */
+  font-size: 0.8em; /* Smaller font size */
 }
 
 span[data-full-text] {
@@ -78,6 +74,36 @@ span[data-full-text] {
 
 .table tr.long-text-row {
   height: auto;
+}
+.table {
+  width: 800px;
+  border-collapse: collapse;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 15px;
+  background-color: rgba(115, 156, 202, 0.2);
+  color: #050505;
+}
+
+thead th {
+  background-color: #55608f;
+}
+
+tbody tr:hover {
+  background-color: rgba(142, 71, 223, 0.144);
+}
+
+td:hover:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  z-index: -1;
 }
 
 .pagination {
@@ -222,4 +248,46 @@ figure img {
   position: absolute;
   top: 100px;
   right: 5px;
+}
+
+.card-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+.card-table tr {
+  height: auto;
+  width: 100%;
+  
+}
+
+.card-table td {
+  min-width: 250px;
+  white-space: normal;
+  overflow: visible;
+}
+
+.card-table th, .card-table td {
+  padding: 3px; /* Reduced padding */
+  font-size: 0.7em; /* Smaller font size */
+  width: 100%;
+}
+
+.card-table thead th {
+  background-color: #55608f;
+}
+
+.card-table tbody tr:hover {
+  background-color: rgba(142, 71, 223, 0.144);
+}
+
+.card-table td:hover:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  z-index: -1;
 }

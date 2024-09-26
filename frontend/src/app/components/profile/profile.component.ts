@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit {
   selectedCharacter: Character | null = null;
   characterPrompts: any[] = []; // Store character prompts
   characterPrompt: string = ''; // Store the character prompt
+  showEditProfile: boolean = false;
 
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
 
@@ -132,5 +133,13 @@ export class ProfileComponent implements OnInit {
 
   onProfileUpdated(): void {
     this.loadUserProfile();  // Reload the profile data
+  }
+
+  toggleEditProfile(): void {
+    this.showEditProfile = !this.showEditProfile;
+  }
+
+  hideEditProfile(): void {
+    this.showEditProfile = false;
   }
 }

@@ -1,5 +1,6 @@
 /* profile.component.css */
 .profile-container {
+    position: relative;
     max-width: 2000px;
     padding: 2px;
     background: rgba(116, 139, 136, 0.8);
@@ -36,3 +37,51 @@
     background-color: rgba(123, 194, 184, 0.8);
     position: relative;
 }
+.btn-cls {
+    border: 2px solid;
+    font-size: 1.5rem;
+    background-color: rgba(14, 78, 34, 0.562);
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    color: rgb(2, 51, 26);
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn-cls:hover {
+    background-color:#297d92; /* Remove background color on hover */
+    color: #050505; /* Change text color to match Bootstrap's primary color */
+    border-color: #005f20; /* Change border color to match Bootstrap's primary color */
+}
+
+.profile-content {
+    /* ... existing styles ... */
+}
+
+.edit-profile-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.edit-profile-overlay.show-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Remove or comment out this hover effect */
+/*
+.profile-container:hover .edit-profile-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+*/

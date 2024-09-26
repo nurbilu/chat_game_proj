@@ -211,3 +211,21 @@ button {
 .popover-title-custom {
     color: black;
 }
+
+/* Add these styles to your existing CSS file */
+
+.accordion-button {
+    cursor: pointer;
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+}
+
+.accordion-button::after {
+    content: none;
+}
+
+.accordion-button:not(.collapsed)::after {
+    content: none;
+}

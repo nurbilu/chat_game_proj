@@ -2,8 +2,7 @@
    ** ask some friends if they know any good on the docker - better then you (docker((((()))))) ** 
 
 
-   1.a. better design home page (?)
-   1.b. add cursor marking for accordions of character create ()
+   1.a. finish lib table design ()
 
    2.a. change /adjust /fix /add toasts messages in all components ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button ()
@@ -22,7 +21,10 @@
    5. maybe need one terminal command to run all the flask apps for docker ()
       make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command () 
 
-   6. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable)
+   6.a. add more visual effects to the website ()
+   6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable)
+
+   7.a. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
 
 ###keep one before last : 
 
@@ -92,3 +94,8 @@ DONE LIST :
 22. 1.complete edit profile form - first name , last name enable to PUT(done)
 
 23. 3. fix table displayment in character create (done)
+
+24. 1.a. better design home page (done)
+
+25. 1.b. add cursor marking for accordions of character create (done)
+

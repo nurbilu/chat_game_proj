@@ -1,15 +1,11 @@
 .about-container {
     position: relative;
-    max-width: 2200px;
-    min-height: 200px;
-    padding: 200px;
-    border-width: 400px; /* Set left and right border to maximum webpage limit */
-    border-color: #ac7549; /* Keep the border color */
-    border-style: solid; /* Ensure solid border style */
-    border-top-width: 0; /* Set top border to 0 */
-    border-bottom-width: 0; /* Set bottom border to 0 */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: rgb(245, 244, 248);
+    max-width: 100%;
+    padding: 100px 50px;
+    margin: 0 auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: #f5f4f8;
+    text-align: center;
     overflow: hidden;
 }
 
@@ -22,11 +18,58 @@
     bottom: 0;
     background: url('/assets/imgs/desert-castle.jpg') no-repeat center center;
     background-size: cover;
-    filter: brightness(0.7);
+    filter: brightness(0.5) blur(3px);
     z-index: -1;
 }
 
 .text-container {
-    z-index: 1; /* Ensure text is above the background image */
-    font-size: 18px;
+    z-index: 1;
+    font-size: 17px;
+    max-width: 1000px;
+    margin: 0 auto;
+    line-height: 1.6;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #ffcc00;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+.image-gallery-menu {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.image-gallery-menu img {
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-gallery-menu img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+
+.custom-popover .popover-body {
+    background-color: #ffcc00; /* Change this to your desired color */
+    color: #000; /* Change text color if needed */
+}
+
+.custom-popover .popover-header {
+    background-color: #ffcc00; /* Change this to your desired color */
+    color: #000; /* Change text color if needed */
 }

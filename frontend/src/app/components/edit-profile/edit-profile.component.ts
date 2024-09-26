@@ -11,6 +11,7 @@ import { ProfileComponent } from '../profile/profile.component';
 })
 export class EditProfileComponent implements OnInit {
   @Output() profileUpdated = new EventEmitter<void>();  // Ensure this line is present
+  @Output() closeEdit = new EventEmitter<void>();
 
   profileForm: FormGroup;
 
@@ -92,5 +93,9 @@ export class EditProfileComponent implements OnInit {
     this.showUpdateForm = false;
     this.showUserData = true;
     this.loadUserProfile();
+  }
+
+  closeEditProfile(): void {
+    this.closeEdit.emit();
   }
 }

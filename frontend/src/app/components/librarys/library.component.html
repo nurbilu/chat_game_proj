@@ -12,7 +12,7 @@
     <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
     <button (click)="onSearch()" class="search-icon" alt="Search" ngbPopover="Click to search" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
     <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input" ngbPopover="Clear search query" triggers="mouseenter:mouseleave" popoverTitle="Clear"></button>
-    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results" triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
+    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Return to Library" triggers="mouseenter:mouseleave" popoverTitle="Return"></button>
   </div>
   <div class="collapse-area">
     <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}" ngbPopover="Search for items in the library" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
@@ -48,7 +48,7 @@
                   </div>
                 </div>
                 <div class="flip-card-back" >
-                  <table class="table table-striped table-hover table-responsive" *ngIf="item.name !== 'url' && item.name !== 'name' && item.name !== 'rowNumber'">
+                  <table class="card-table table-striped table-hover table-responsive" *ngIf="item.name !== 'url' && item.name !== 'name' && item.name !== 'rowNumber'">
                     <thead class="table-dark">
                       <tr>
                         <th>Key</th>
@@ -70,7 +70,7 @@
       </div>
       <div *ngIf="!isCardCollection(selectedCollection)">
         <table class="table table-striped table-hover table-responsive">
-          <thead class="table-dark">
+          <thead>
             <tr>
               <th>#</th>
               <th>Name</th>
@@ -80,8 +80,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of getPaginatedItems(); let i = index"
-              [ngClass]="{'long-text-row': isLongText(item.name)}">
+            <tr *ngFor="let item of getPaginatedItems(); let i = index" [ngClass]="{'long-text-row': isLongText(item.name)}">
               <td>{{ item.rowNumber }}</td>
               <td>{{ item.name }}</td>
               <ng-container *ngFor="let key of getKeys(item); let k = index">
