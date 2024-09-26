@@ -1,3 +1,4 @@
+<link href="https://fonts.googleapis.com/css2?family=Almendra:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link" *ngFor="let collection of collectionKeys"
@@ -85,12 +86,12 @@
               <td>{{ item.name }}</td>
               <ng-container *ngFor="let key of getKeys(item); let k = index">
                 <td *ngIf="key !== 'url' && key !== 'name' && key !== 'rowNumber'">
-                  <span *ngIf="isLongText(item[key])">
+                  <span *ngIf="isLongText(item[key]) || isArray(item[key])">
                     <span (click)="toggleTextVisibility(i, key)" style="cursor: pointer;">
-                      {{ isTextVisible(i, key) ? item[key] : (item[key] | slice:0:30) + '...' }}
+                      {{ isTextVisible(i, key) ? formatArray($any(item[key])) : (item[key] | slice:0:30) + '...' }}
                     </span>
                   </span>
-                  <span *ngIf="!isLongText(item[key])">
+                  <span *ngIf="!isLongText(item[key]) && !isArray(item[key])">
                     {{ formatArray($any(item[key])) }}
                   </span>
                 </td>

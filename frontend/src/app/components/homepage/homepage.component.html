@@ -1,3 +1,5 @@
+<link href="https://fonts.googleapis.com/css2?family=Almendra:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
 <div class="homepage-container">
     <div class="text-container">
         <h1>DeMe - a DnD Game Manager</h1>
@@ -13,7 +15,7 @@
         <!-- Bootstrap Button Groups for Menu -->
         <div class="btn-group mt-4" role="group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false">
+                aria-expanded="false" ngbPopover="User Application" triggers="mouseenter:mouseleave" popoverTitle="User Application" [ngbPopover]="userApplicationInfo">
                 User Application
             </button>
             <ul class="dropdown-menu">
@@ -23,22 +25,10 @@
                 <li><a class="dropdown-item" routerLink="/change-password">Change Password</a></li>
             </ul>
         </div>
-        <div class="btn-group mt-4" role="group" aria-label="Explanation Sections">
-            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
-                data-bs-target="#userApplicationInfo" aria-expanded="false" aria-controls="userApplicationInfo">
-                User Application Info
-            </button>
-        </div>
-        <div class="collapse mt-4" id="userApplicationInfo">
-            <div class="card card-body">
-                <p>The User Application section allows users to log in, register, view their profile, and change their
-                    password.</p>
-            </div>
-        </div>
 
         <div class="btn-group mt-4" role="group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false">
+                aria-expanded="false" ngbPopover="Game Interface" triggers="mouseenter:mouseleave" popoverTitle="Game Interface" [ngbPopover]="gameInterfaceInfo">
                 Game Interface
             </button>
             <ul class="dropdown-menu">
@@ -46,56 +36,54 @@
                 <li><a class="dropdown-item" routerLink="/chat">Chat</a></li>
                 <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
             </ul>
-
-            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
-                data-bs-target="#gameInterfaceInfo" aria-expanded="false" aria-controls="gameInterfaceInfo">
-                Game Interface Info
-            </button>
-        </div>
-        <div class="collapse mt-4" id="gameInterfaceInfo">
-            <div class="card card-body">
-                <p>The Game Interface section includes options to create a character, play the game with the chatbot,
-                    and view profiles.</p>
-            </div>
         </div>
 
         <div class="btn-group mt-4" role="group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false">
+                aria-expanded="false" ngbPopover="Bestiary / Info" triggers="mouseenter:mouseleave" popoverTitle="Bestiary / Info" [ngbPopover]="bestiaryInfo">
                 Bestiary / Info
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" routerLink="/about">About</a></li>
                 <li><a class="dropdown-item" routerLink="/library">Library</a></li>
             </ul>
-            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#aboutInfo"
-                aria-expanded="false" aria-controls="aboutInfo">
-                Bestiary and Info Info
-            </button>
-        </div>
-        <div class="collapse mt-4" id="aboutInfo">
-            <div class="card card-body">
-                <p>The About section provides information about the DeMe platform and its features.</p>
-            </div>
         </div>
 
         <div class="btn-group mt-4" role="group" *ngIf="isSuperUser">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false">
+                aria-expanded="false" ngbPopover="Superuser" triggers="mouseenter:mouseleave" popoverTitle="Superuser" [ngbPopover]="superuserInfo">
                 Superuser
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" routerLink="/super-profile">Super Profile</a></li>
             </ul>
-            <button class="btn btn-secondary" *ngIf="isSuperUser" type="button" data-bs-toggle="collapse"
-                data-bs-target="#superuserInfo" aria-expanded="false" aria-controls="superuserInfo">
-                Superuser Info
-            </button>
-        </div>
-        <div class="collapse mt-4" id="superuserInfo" *ngIf="isSuperUser">
-            <div class="card card-body">
-                <p>The Superuser section is for administrative tasks and managing the platform at a higher level.</p>
-            </div>
         </div>
     </div>
 </div>
+
+<!-- Popover Content Templates -->
+<ng-template #userApplicationInfo>
+    <div class="ApplicationInfo">
+        <p>The User Application section allows users to log in, register, view their profile, and change their
+            password.</p>
+    </div>
+</ng-template>
+
+<ng-template #gameInterfaceInfo>
+    <div class="GameInterfaceInfo">
+        <p>The Game Interface section includes options to create a character, play the game with the chatbot,
+            and view profiles.</p>
+    </div>
+</ng-template>
+
+<ng-template #bestiaryInfo>
+    <div class="BestiaryInfo">
+        <p>The About section provides information about the DeMe platform and its features.</p>
+    </div>
+</ng-template>
+
+<ng-template #superuserInfo>
+    <div class="SuperuserInfo">
+        <p>The Superuser section is for administrative tasks and managing the platform at a higher level.</p>
+    </div>
+</ng-template>

@@ -142,16 +142,12 @@ export class LibraryComponent implements OnInit {
     }
   }
 
-  toggleTextVisibility(index: number, key: string): void {
-    const visibilityIndex = this.getTextVisibilityIndex(index, key);
-    this.textVisibility[visibilityIndex] = !this.textVisibility[visibilityIndex];
-  }
 
   isLongText(value: unknown): boolean {
     if (typeof value !== 'string') {
       return false;
     }
-    const maxChars = 30;
+    const maxChars = 15;
     return value.length > maxChars;
   }
 
@@ -163,10 +159,16 @@ export class LibraryComponent implements OnInit {
     return i * 1000 + this.getKeys(this.collections[this.selectedCollection][0]).indexOf(key);
   }
 
+  toggleTextVisibility(index: number, key: string): void {
+    const visibilityIndex = this.getTextVisibilityIndex(index, key);
+    this.textVisibility[visibilityIndex] = !this.textVisibility[visibilityIndex];
+  }
+
   isTextVisible(index: number, key: string): boolean {
     const visibilityIndex = this.getTextVisibilityIndex(index, key);
     return this.textVisibility[visibilityIndex];
   }
+
 
   handleSearchResults(results: any[]): void {
     console.log('Handling search results:', results);
@@ -228,6 +230,10 @@ export class LibraryComponent implements OnInit {
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  isArray(value: any): boolean {
+    return Array.isArray(value);
   }
 }
 

@@ -2,7 +2,7 @@
    ** ask some friends if they know any good on the docker - better then you (docker((((()))))) ** 
 
 
-   1.a. better design home page ()
+   1.a. better design home page (?)
    1.b. add cursor marking for accordions of character create ()
 
    2.a. change /adjust /fix /add toasts messages in all components ()

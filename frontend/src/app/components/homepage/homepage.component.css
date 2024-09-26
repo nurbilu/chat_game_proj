@@ -4,9 +4,8 @@
     min-height: 100vh;
     padding: 50px;
     border: none;
-    background: url('/assets/imgs/magical_valley.jpg') no-repeat center center;
+    background:url('/assets/imgs/magical_valley.jpg') no-repeat center center;
     background-size: cover;
-    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,65 +13,117 @@
     overflow: hidden;
 }
 
-.homepage-container::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6); /* Dark overlay for better contrast */
-    z-index: -1;
+.text-container {
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 850px;
+    animation: fadeInUp 1s ease-out;
 }
 
-.text-container {
-    padding: 30px;
-    background-color: rgba(0, 0, 0, 0.8); /* Darker overlay for text */
-    border-radius: 12px;
-    max-width: 800px;
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .text-container h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #f8c45b; /* Highlighted title */
+    font-family: 'Almendra', serif;
+    font-size: 3.5rem;
+    color: #ffdd57;
+    letter-spacing: 1px;
 }
 
 .text-container p {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    color: #ffffffcc;
 }
 
 .btn-group .btn {
-    margin: 10px;
-    padding: 15px 30px;
-    font-size: 1rem;
-    border-radius: 8px;
+    margin: 12px;
+    padding: 16px 36px;
+    font-size: 1.1rem;
+    border-radius: 10px;
     transition: all 0.3s ease-in-out;
 }
 
 .btn-primary {
+    background-color: #ffdd57;
+    color: #222;
+    box-shadow: 0 4px 15px rgba(255, 221, 87, 0.5);
+}
+
+.btn-primary:hover {
+    background-color: #ffd700;
+    color: #000;
+    box-shadow: 0 4px 25px rgba(255, 221, 87, 0.75);
+}
+
+.btn-secondary {
     background-color: #6c757d;
     border: none;
 }
 
-.btn-primary:hover {
+.btn-secondary:hover {
     background-color: #f8c45b;
     color: #000;
 }
 
-.card {
-    background-color: #222;
-    border-radius: 12px;
-    color: #fff;
+.card-body {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 850px;
+    animation: fadeInUp 1s ease-out;
 }
 
-.collapse .card-body {
-    background-color: #444;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+.ApplicationInfo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+.ApplicationInfo p {
+    color: #000;
 }
 
-.collapse.show .card-body {
-    background-color: #71b1f0;
+.GameInterfaceInfo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}  
+.GameInterfaceInfo p {
+    color: #000;
 }
+
+.BestiaryInfo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+.BestiaryInfo p {
+    color: #000;
+}
+
+.SuperuserInfo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+.SuperuserInfo p {
+    color: #000;
+}
+
+
