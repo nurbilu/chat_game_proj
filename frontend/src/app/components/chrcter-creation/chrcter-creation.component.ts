@@ -117,6 +117,8 @@ export class ChrcterCreationComponent implements OnInit {
 
   selectedSpell: string = '';
 
+  isSearching: boolean = false;
+
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
@@ -330,14 +332,14 @@ export class ChrcterCreationComponent implements OnInit {
   onSearch(): void {
     console.log('CharacterCreationComponent onSearch triggered with query:', this.searchQuery);
     if (this.searchQuery) {
-      this.isLoading = true;
+      this.isSearching = true; // Use isSearching instead of isLoading
       this.searchService.searchItemByName(this.searchQuery)
         .subscribe({
           next: (results: { [key: string]: any }) => {
             this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
             this.showSearchResults = true;
             this.noResultsFound = false;
-            this.isLoading = false;
+            this.isSearching = false; // Set isSearching to false when done
             this.searchCompleted.emit(this.searchResult);
           },
           error: (error) => {
@@ -349,14 +351,14 @@ export class ChrcterCreationComponent implements OnInit {
             }
             this.searchResult = [];
             this.showSearchResults = false;
-            this.isLoading = false;
+            this.isSearching = false; // Set isSearching to false on error
             this.searchCleared.emit();
           }
         });
     } else {
       this.showSearchResults = false;
       this.noResultsFound = false;
-      this.isLoading = false;
+      this.isSearching = false;
       this.searchCleared.emit();
     }
   }
@@ -387,4 +389,3 @@ export class ChrcterCreationComponent implements OnInit {
     this.searchQuery = '';
   }
 }
-

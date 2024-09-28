@@ -291,3 +291,18 @@ figure img {
   bottom: -9999px;
   z-index: -1;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tab-content,
+.articles,
+.table {
+  animation: fadeIn 0.5s ease-in-out;
+}
