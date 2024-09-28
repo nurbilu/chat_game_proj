@@ -14,6 +14,12 @@ export class ChatComponent implements OnInit {
     responses: any[] = [];
     username: string = '';
     selectedTemplate: any;
+    diceTypes: string[] = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
+    selectedDice: string = 'd20';
+    numDice: number = 1;
+    modifier: number = 0;
+    rollResults: number[] = [];
+    rollTotal: number = 0;
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
@@ -102,5 +108,19 @@ export class ChatComponent implements OnInit {
 
     clearChatInput(): void {
         this.message = '';
+    }
+
+    rollDice(): void {
+        this.chatService.rollDice(this.selectedDice, this.numDice, this.modifier).subscribe({
+            next: (response) => {
+                this.rollResults = response.results;
+                this.rollTotal = response.total;
+            },
+            error: (error) => {
+                console.error('Error rolling dice:', error);
+                this.rollResults = [];
+                this.rollTotal = 0;
+            }
+        });
     }
 }

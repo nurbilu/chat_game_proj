@@ -54,9 +54,6 @@
     border-color: #005f20; /* Change border color to match Bootstrap's primary color */
 }
 
-.profile-content {
-    /* ... existing styles ... */
-}
 
 .edit-profile-overlay {
     position: absolute;

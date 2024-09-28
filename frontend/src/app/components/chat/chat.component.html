@@ -1,29 +1,45 @@
 <div class="chat-container">
-  <h2>D&D Adventure Chat</h2>
-  <div *ngIf="!username">
-  </div>
-  <div *ngIf="username">
-    <div class="chat-window">
-      <div *ngFor="let response of responses"
-        [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
-        <p>{{ response.text }}</p>
+  <div class="chat-area">
+    <h2>D&D Adventure Chat</h2>
+    <div *ngIf="!username">
+    </div>
+    <div *ngIf="username">
+      <div class="chat-window">
+        <div *ngFor="let response of responses"
+          [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
+          <p>{{ response.text }}</p>
+        </div>
+      </div>
+      <div class="input-container">
+        <span>{{ username }}: </span>
+        <input type="text" [(ngModel)]="message" placeholder="Type your message here" required
+          (keydown)="onEnter($event)">
+        <button (click)="sendMessage()" class="btn btn-success">Send</button>
+        <button (click)="clearChatInput()" class="clear-icon" alt="clear-input" ngbPopover="Clear the chat input" triggers="mouseenter:mouseleave" popoverTitle="Clear Chat Input"></button>
+        <select [(ngModel)]="selectedTemplate" (change)="pasteTemplate()" aria-label="Default select example">
+          <option value="" disabled selected>Select a template</option>
+          <option value="template1">Lets Start a Game</option>
+          <option value="template2">Character Prompt</option>
+          <option value="template3">Save Last Prompt</option>
+        </select>
       </div>
     </div>
-    <div class="input-container">
-      <span>{{ username }}: </span>
-      <input type="text" [(ngModel)]="message" placeholder="Type your message here" required
-        (keydown)="onEnter($event)">
-      <button (click)="sendMessage()" class="btn btn-success">Send</button>
-      <button (click)="clearChatInput()" class="clear-icon" alt="clear-input" ngbPopover="Clear the chat input" triggers="mouseenter:mouseleave" popoverTitle="Clear Chat Input"></button>
-      <select [(ngModel)]="selectedTemplate" (change)="pasteTemplate()" aria-label="Default select example">
-        <option value="" disabled selected>Select a template</option>
-        <option value="template1">Lets Start a Game</option>
-        <option value="template2">Character Prompt</option>
-        <option value="template3">Save Last Prompt</option>
-      </select>
-    </div>
   </div>
-  <div style="text-align: right; margin-top: 10px;">
-    <span *ngIf="username">Logged in as: {{ username }}</span>
+  
+  <div class="dice-roller">
+    <h3>Dice Roller</h3>
+    <div class="dice-controls">
+      <select [(ngModel)]="selectedDice">
+        <option *ngFor="let dice of diceTypes" [value]="dice">{{dice}}</option>
+      </select>
+      <input type="number" [(ngModel)]="numDice" min="1" max="10">
+      <input type="number" [(ngModel)]="modifier" placeholder="Modifier">
+      <button (click)="rollDice()">Roll</button>
+    </div>
+    <div class="dice-results" *ngIf="rollResults.length">
+      <p>Dice: {{numDice}}{{selectedDice}} + {{modifier}}</p>
+      <p>Results: {{rollResults.join(', ')}} +( {{modifier}} )</p>
+      <p>Total with Modifier: {{rollTotal}}</p>
+    </div>
   </div>
 </div>

@@ -183,6 +183,8 @@ def create_app():
 
     return app, socketio
 
+
+
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, handle_exit)
     app, socketio = create_app()

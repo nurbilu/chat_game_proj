@@ -10,6 +10,7 @@ export class ChatService {
   private apiUrl = 'http://127.0.0.1:5000/generate_text';
   private apiUrl1 ='http://127.0.0.1:6500/api';
   private loginUrl = 'http://127.0.0.1:8000/login/';
+  private apiUrlRollDice = 'http://127.0.0.1:5000/roll_dice';
 
   constructor(private http: HttpClient) {}
 
@@ -36,6 +37,19 @@ export class ChatService {
       catchError(error => {
         console.error('HTTP error:', error);
         return throwError(() => new Error('Failed to fetch character prompt'));
+      })
+    );
+  }
+
+  rollDice(diceType: string, numDice: number, modifier: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    });
+    return this.http.post<any>(this.apiUrlRollDice, { dice_type: diceType, num_dice: numDice, modifier: modifier }, { headers }).pipe(
+      catchError(error => {
+        console.error('HTTP error:', error);
+        return throwError(() => new Error('Failed to roll dice'));
       })
     );
   }

@@ -1,17 +1,15 @@
 .chat-container {
+  display: grid;
+  grid-template-columns: 3fr 1fr; /* 3/4 for chat, 1/4 for dice roller */
+  gap: 20px;
   max-width: 2200px;
-  /* Matched width */
   padding: 18px;
-  /* Increased padding */
   background: rgba(255, 255, 255, 0.8) url('/assets/imgs/the_pinker_canyon.jpg') no-repeat center center;
   background-size: cover;
   border: 2px solid #d3c29d;
-  /* Old paper style border */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: white;
-  /* Ensure text is readable on potentially dark background */
   border-radius: 10px;
-  /* Rounded corners for the container */
 }
 
 .chat-window {
@@ -131,5 +129,45 @@
   height: 32px;
   background: url('/assets/imgs/icons/clear-srch.png') no-repeat center center;
   border: none;
-  outline: none;
-} 
+}
+
+.dice-roller {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.dice-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.dice-controls select,
+.dice-controls input,
+.dice-controls button {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.dice-results {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 15px;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.dice-results h4 {
+  margin-top: 0;
+  color: #ffd700;
+}
+
+.dice-results p {
+  margin: 5px 0;
+  color: #ffffff;
+}

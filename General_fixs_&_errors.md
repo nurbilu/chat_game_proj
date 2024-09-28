@@ -24,7 +24,6 @@
    6.a. add more visual effects to the website ()
    6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable)
 
-   7.a. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
 
 ###keep one before last : 
 

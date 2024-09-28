@@ -1,5 +1,6 @@
 # game_mchnics_blueprint.py
 from flask import Blueprint, request, jsonify
+import random
 
 game_mchnics_blueprint = Blueprint('game_mchnics', __name__)
 
@@ -18,14 +19,17 @@ def roll_dice():
     try:
         data = request.json
         dice_type = data.get('dice_type', 'd20')
-        result = roll_dice_logic(dice_type)
-        return jsonify({'result': result})
+        num_dice = data.get('num_dice', 1)
+        modifier = data.get('modifier', 0)
+        
+        dice_size = int(dice_type[1:])
+        results = [random.randint(1, dice_size) for _ in range(num_dice)]
+        total = sum(results) + modifier
+        
+        return jsonify({
+            'results': results,
+            'total': total,
+            'modifier': modifier
+        })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-def roll_dice_logic(dice_type):
-    import random
-    if dice_type == 'd20':
-        return random.randint(1, 20)
-    # Add more dice types if needed
-    return random.randint(1, 6)
