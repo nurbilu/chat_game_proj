@@ -54,7 +54,6 @@
     border-color: #005f20; /* Change border color to match Bootstrap's primary color */
 }
 
-
 .edit-profile-overlay {
     position: absolute;
     top: 0;
@@ -95,4 +94,13 @@
 
 .profile-container {
   animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Add the chat icon styles */
+.chat-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url('/assets/imgs/icons/chat-icon.png') no-repeat center center;
+    background-size: contain;
 }
