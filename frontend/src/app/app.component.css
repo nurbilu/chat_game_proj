@@ -104,3 +104,44 @@ body.offcanvas-open {
   height: 3rem;
   border-width: 0.3rem;
 }
+
+.modal-content {
+  background-color: #333740;
+  color: #f4eee8;
+  border: 1px solid #c9a66b;
+  border-radius: 8px;
+  width: 500px;
+  height: 400px;
+}
+
+.custom-modal {
+  width: 500px;
+  height: 300px;
+  max-width: 100%; /* Ensure it doesn't exceed the viewport width */
+  max-height: 100%; /* Ensure it doesn't exceed the viewport height */
+
+
+.form-control {
+  background-color: #444950;
+  color: #f4eee8;
+}
+
+.btn-close {
+  color: #f4eee8;
+  opacity: 0.8;
+}
+
+.btn-close:hover {
+  color: #c9a66b;
+  opacity: 1;
+}
+
+.btn-primary {
+  background-color: #c9a66b;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #b28954;
+}
+}

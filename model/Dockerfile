@@ -1,5 +1,5 @@
 # Use an official TensorFlow runtime as a parent image
-FROM python:3.11.12-slim
+FROM python:3.9-slim-bullseye
 
 # Set the working directory in the container
 WORKDIR /app

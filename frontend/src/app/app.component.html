@@ -13,32 +13,36 @@
 </ng-template>
 
 <ng-template #loginTemplate let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Login</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <form (ngSubmit)="loginWithModal(modal)" #loginForm="ngForm">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="usernameModal" [(ngModel)]="username" name="username" class="form-control" required>
+  <div class="modal-dialog modal-dialog-centered custom-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Login</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="passwordModal" [(ngModel)]="password" name="password" class="form-control" required>
-        <input type="checkbox" id="togglePasswordModal" (click)="togglePasswordVisibility('passwordModal', 'togglePasswordModal')">
-        <label for="togglePasswordModal">Toggle Password Visibility</label>
+      <div class="modal-body">
+        <form (ngSubmit)="loginWithModal(modal)" #loginForm="ngForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="usernameModal" [(ngModel)]="username" name="username" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="passwordModal" [(ngModel)]="password" name="password" class="form-control" required>
+            <input type="checkbox" id="togglePasswordModal" (click)="togglePasswordVisibility('passwordModal', 'togglePasswordModal')">
+            <label for="togglePasswordModal">Toggle Password Visibility</label>
+          </div>
+          <div>
+            <input type="checkbox" id="rememberMeModal" [(ngModel)]="rememberMe" name="rememberMe">
+            <label for="rememberMeModal">Remember Me</label>
+          </div>
+          <a href="javascript:void(0)" (click)="navigateToForgotPassword()" class="reset-link">Forgot Password?</a>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
       </div>
-      <div>
-        <input type="checkbox" id="rememberMeModal" [(ngModel)]="rememberMe" name="rememberMe">
-        <label for="rememberMeModal">Remember Me</label>
-      </div>
-      <a href="javascript:void(0)" (click)="navigateToForgotPassword()" class="reset-link">Forgot Password?</a>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
-        <button type="submit" class="btn btn-primary">Login</button>
-      </div>
-    </form>
+    </div>
   </div>
 </ng-template>
 

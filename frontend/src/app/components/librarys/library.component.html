@@ -17,6 +17,9 @@
   <div class="collapse-area">
     <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}" ngbPopover="Search for items in the library" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
   </div>
+  <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
+  [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
+  [ellipses]="true" class="pagination"></ngb-pagination>
 </div>
 <div *ngIf="isLoading" class="spinner-container">
   <div class="spinner-border" role="status">
@@ -32,7 +35,7 @@
     data-bs-offset="0" tabindex="0">
     <div class="tab-pane fade show active" role="tabpanel">
       <h4>{{selectedCollection}}</h4>
-      <div *ngIf="isCardCollection(selectedCollection)">
+ <div *ngIf="isCardCollection(selectedCollection)">
         <div class="articles row justify-content-center">
           <div class="col-16 col-md-9 col-lg-4" *ngFor="let item of getPaginatedItems(); let i = index">
             <div class="flip-card">
@@ -58,7 +61,16 @@
                     <tbody>
                       <tr *ngFor="let key of getKeys(item)">
                         <td>{{ key }}</td>
-                        <td>{{ formatArray($any(item[key])) }}</td>
+                        <td>
+                          <span *ngIf="isLongText(item[key]) || isArray(item[key])">
+                            <span (click)="toggleTextVisibility(i, key)" style="cursor: pointer;">
+                              {{ isTextVisible(i, key) ? formatArray($any(item[key])) : (item[key] | slice:0:30) + '...' }}
+                            </span>
+                          </span>
+                          <span *ngIf="!isLongText(item[key]) && !isArray(item[key])">
+                            {{ formatArray($any(item[key])) }}
+                          </span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -102,9 +114,6 @@
       <div *ngIf="!collections[selectedCollection] || collections[selectedCollection].length === 0">
         No data available.
       </div>
-      <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
-        [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
-        [ellipses]="true" class="pagination"></ngb-pagination>
     </div>
   </div>
 </div>

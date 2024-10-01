@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.8' 
 
 services:
   backend:
@@ -17,9 +17,8 @@ services:
       - "5000:5000"
       - "6500:6500"
       - "7652:7652"
-    command: python gen_txt_chat_srvr.py
-    command1: python chrcter_creation.py 
-    command2: python lib_srvr.py
+    command: >
+      sh -c "python gen_txt_chat_srvr.py & python chrcter_creation.py & python lib_srvr.py"
     
   frontend:
     build: ./frontend
@@ -29,7 +28,6 @@ services:
     ports:
       - "4200:4200"
     environment:
-    # check if this is the real APIS for the frameworks project
       - API_URL=http://backend:8000
       - API_URL1=http://model:5000
       - API_URL2=http://model:6500

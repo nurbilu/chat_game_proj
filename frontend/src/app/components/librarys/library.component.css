@@ -12,14 +12,13 @@ section {
 }
 
 .row {
-  display:flex;
+  display: flex;
   justify-content: center; /* Center the cards */
   flex-wrap: wrap; /* Allow wrapping of cards */
   gap: 200px; /* Space between cards */
-  height: 250vh;
-  width: 200vh;
+  height: 73vh;
+  width: 100%;
 }
-
 
 body {
   margin: 0;
@@ -48,7 +47,6 @@ body {
   overflow: auto;
 }
 
-
 .table th, .table td {
   padding: 3px; /* Reduced padding */
   font-size: 0.8em; /* Smaller font size */
@@ -60,11 +58,9 @@ span[data-full-text] {
   width: 100%;
 }
 
-
 .table tr {
   height: auto;
 }
-
 
 .table td {
   min-width: 250px;
@@ -108,9 +104,12 @@ td:hover:before {
 
 .pagination {
   display: flex;
-  justify-content: left;
-  position: fixed;
-  bottom: 50px;
+  margin: 10px 0;
+  position: sticky;
+  top: 50px; /* Adjust this value as needed */
+  left: 200px;
+  z-index: 1000; /* Ensure it stays above other content */
+  background-color: #fff;  /* Add some margin for spacing */
 }
 
 .spinner-container {
@@ -183,8 +182,6 @@ td:hover:before {
   transform: rotateY(180deg);
 }
 
-
-
 .card-title {
   font-size: 1.5em;
   text-align: center;
@@ -195,14 +192,14 @@ figure {
   padding: 0;
   width: 100%;
   height: 100%; /* Adjust height to fit the table size */
-
 }
 
 figure img {
   width: 100%; /* Adjust width as needed */
   height: 100%; /* Adjust height as needed */
-  object-fit: c; /* Ensure the image covers the entire figure */
+  object-fit: cover; /* Ensure the image covers the entire figure */
 }
+
 .search-icon{
   display:flex;
   align-items: center;
@@ -213,6 +210,7 @@ figure img {
   border: none;
   outline: none;
 }
+
 .clear-icon {
   display: flex;
   align-items: center;
@@ -256,10 +254,10 @@ figure img {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
+
 .card-table tr {
   height: auto;
   width: 100%;
-  
 }
 
 .card-table td {
@@ -287,9 +285,13 @@ figure img {
   position: absolute;
   left: 0;
   right: 0;
-  top: -9999px;
-  bottom: -9999px;
+  top: 0;
+  bottom: 0;
   z-index: -1;
+}
+
+.card-table tr.collapsed td {
+  display: none;
 }
 
 @keyframes fadeIn {

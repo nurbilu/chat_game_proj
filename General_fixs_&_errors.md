@@ -3,7 +3,7 @@
 
 
    1.a. finish lib table design ()
-   1.b. finish card tables design ()
+   1.b. finish card tables design (alomst x)
    1.c. finish total lib design (): 
       adjust the shades of colors of the webpage ? 
 
@@ -12,9 +12,9 @@
    2.c. add popover/tooltip to all the key / colomn names in all tables to explain the data inside them if needed  () maybe not needed as all data is visible? 
 
    3.a. adjust dice roller desisgn ()
-   3.b. adjust the login modal design ()
+   3.b. adjust the login modal design (done)
 
-   4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal (done?check()) 
+   4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal (done) 
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
