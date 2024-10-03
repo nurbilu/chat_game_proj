@@ -41,12 +41,14 @@ export class ChatService {
     );
   }
 
-  rollDice(diceType: string, numDice: number, modifier: number): Observable<any> {
+  rollDice(diceTypes: string[], numDice: number[], modifier: number): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     });
-    return this.http.post<any>(this.apiUrlRollDice, { dice_type: diceType, num_dice: numDice, modifier: modifier }, { headers }).pipe(
+    const payload = { dice_types: diceTypes, num_dice: numDice, modifier: modifier };
+    console.log('Rolling dice with payload:', payload); // Add logging
+    return this.http.post<any>(this.apiUrlRollDice, payload, { headers }).pipe(
       catchError(error => {
         console.error('HTTP error:', error);
         return throwError(() => new Error('Failed to roll dice'));

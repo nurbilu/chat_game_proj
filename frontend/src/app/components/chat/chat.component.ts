@@ -15,11 +15,12 @@ export class ChatComponent implements OnInit {
     username: string = '';
     selectedTemplate: any;
     diceTypes: string[] = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
-    selectedDice: string = 'd20';
-    numDice: number = 1;
+    selectedDice: string[] = ['d20'];
+    numDice: number[] = [1];
     modifier: number = 0;
     rollResults: number[] = [];
     rollTotal: number = 0;
+    additionalModifiers: number[] = [];
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
@@ -40,11 +41,10 @@ export class ChatComponent implements OnInit {
                     next: (response) => {
                         if (response.last_prompt) {
                             this.responses.push({ text: `Last prompt: ${response.last_prompt}`, from: 'bot' });
-                            this.responses.push({ text: `Last response: ${response.last_response}`, from: 'bot' });
                         }
                     },
                     error: (error) => {
-                        console.error('Error loading session:', error);
+                        console.error('Error fetching session data:', error);
                     }
                 });
             }
@@ -111,7 +111,8 @@ export class ChatComponent implements OnInit {
     }
 
     rollDice(): void {
-        this.chatService.rollDice(this.selectedDice, this.numDice, this.modifier).subscribe({
+        const totalModifier = this.modifier + this.additionalModifiers.reduce((acc, mod) => acc + mod, 0);
+        this.chatService.rollDice(this.selectedDice, this.numDice, totalModifier).subscribe({
             next: (response) => {
                 this.rollResults = response.results;
                 this.rollTotal = response.total;
@@ -122,5 +123,19 @@ export class ChatComponent implements OnInit {
                 this.rollTotal = 0;
             }
         });
+    }
+
+    addAdditionalModifier(): void {
+        this.additionalModifiers.push(0);
+    }
+
+    addDiceType(): void {
+        this.selectedDice.push('d20');
+        this.numDice.push(1);
+    }
+
+    clearRollResults(): void {
+        this.rollResults = [];
+        this.rollTotal = 0;
     }
 }

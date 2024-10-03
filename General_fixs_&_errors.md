@@ -23,7 +23,7 @@
       make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command () 
 
    6.a. add more visual effects to the website ()
-   6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable)
+   6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable in short term - necessary ?)
 
 
 ###keep one before last : 

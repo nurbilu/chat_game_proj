@@ -29,17 +29,27 @@
   <div class="dice-roller">
     <h3>Dice Roller</h3>
     <div class="dice-controls">
-      <select [(ngModel)]="selectedDice">
-        <option *ngFor="let dice of diceTypes" [value]="dice">{{dice}}</option>
-      </select>
-      <input type="number" [(ngModel)]="numDice" min="1" max="10">
-      <input type="number" [(ngModel)]="modifier" placeholder="Modifier">
+      <div *ngFor="let dice of selectedDice; let i = index">
+        <select [(ngModel)]="selectedDice[i]" ngbPopover="Select the type of dice to roll" triggers="mouseenter:mouseleave" popoverTitle="Select Dice Type">
+          <option *ngFor="let diceType of diceTypes" [value]="diceType">{{diceType}}</option>
+        </select>
+        <input type="number" [(ngModel)]="numDice[i]" min="1" max="10" ngbPopover="Select the number of dice to roll" triggers="mouseenter:mouseleave" popoverTitle="Select Number of Dice">
+      </div>
+      <button (click)="addDiceType()">Add Dice Type</button>
+      <input type="number" [(ngModel)]="modifier" placeholder="Modifier" ngbPopover="Select the modifier to add to the roll" triggers="mouseenter:mouseleave" popoverTitle="Select Modifier">
+      <div class="additional-modifiers">
+        <div *ngFor="let mod of additionalModifiers; let i = index">
+          <input type="number" [(ngModel)]="additionalModifiers[i]" placeholder="Additional Modifier {{i + 1}}" ngbPopover="Select an additional modifier to add to the roll" triggers="mouseenter:mouseleave" popoverTitle="Select Additional Modifier">
+        </div>
+      </div>
+      <button (click)="addAdditionalModifier()">Add Additional Modifier</button>
       <button (click)="rollDice()">Roll</button>
+      <button (click)="clearRollResults()">Clear Results</button>
     </div>
     <div class="dice-results" *ngIf="rollResults.length">
-      <p>Dice: {{numDice}}{{selectedDice}} + {{modifier}}</p>
-      <p>Results: {{rollResults.join(', ')}} +( {{modifier}} )</p>
-      <p>Total with Modifier: {{rollTotal}}</p>
+      <p>Dice: {{numDice.join(', ')}} {{selectedDice.join(', ')}}</p>
+      <p>Results: {{rollResults.join(', ')}} + ({{modifier}}) + ({{additionalModifiers.join(' + ')}})</p>
+      <p>Total with Modifiers: {{rollTotal}}</p>
     </div>
   </div>
 </div>

@@ -2,7 +2,8 @@
 
 body {
   font-family: 'Oswald', sans-serif;
-  background-color: #212121;
+  background-color: #1d0000;
+
 }
 
 section {
@@ -16,8 +17,14 @@ section {
   justify-content: center; /* Center the cards */
   flex-wrap: wrap; /* Allow wrapping of cards */
   gap: 200px; /* Space between cards */
-  height: 73vh;
+  height: 75vh;
   width: 100%;
+  margin: 0;
+  padding: 35px 0;
+  font-family: "Figtree", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  min-height: 85vh;
 }
 
 body {
@@ -26,7 +33,12 @@ body {
   font-family: "Figtree", sans-serif;
   font-size: 1.2rem;
   line-height: 1.6rem;
-  background-image: linear-gradient(45deg, #7c9885, #b5b682);
+  margin: 0;
+  padding: 15px 0;
+  font-family: "Figtree", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  background-image: linear-gradient(45deg, #ff8818,#faae66 , #462a53 , #d069ff );
   min-height: 100vh;
 }
 
@@ -45,11 +57,13 @@ body {
   top: 0;
   height: 100;
   overflow: auto;
+  background-image: linear-gradient(45deg, #ff8818,#faae66 ,#d069ff ,#462a53  );
 }
 
 .table th, .table td {
   padding: 3px; /* Reduced padding */
   font-size: 0.8em; /* Smaller font size */
+  
 }
 
 span[data-full-text] {
@@ -104,12 +118,32 @@ td:hover:before {
 
 .pagination {
   display: flex;
-  margin: 10px 0;
   position: sticky;
   top: 50px; /* Adjust this value as needed */
   left: 200px;
   z-index: 1000; /* Ensure it stays above other content */
-  background-color: #fff;  /* Add some margin for spacing */
+  background-image: linear-gradient(45deg, #eb8e38, #dba3f5);
+}
+.pagination li{
+  background: linear-gradient(45deg, #dba3f5, #eb8e38);
+}
+
+.pagination .page-item {
+  background-image: linear-gradient(45deg, #ff8818, #faae66, #462a53, #d069ff);
+  border-radius: 5px; /* Optional: Add some rounding to the corners */
+  margin: 0 5px; /* Optional: Add some spacing between items */
+}
+
+.pagination .page-item a {
+  color: white; /* Ensure text is readable */
+  text-decoration: none;
+  padding: 5px 10px; /* Adjust padding as needed */
+  display: block;
+}
+
+.pagination .page-item.active a {
+  background-color: rgba(0, 0, 0, 0.2); /* Highlight active page */
+  border-radius: 5px;
 }
 
 .spinner-container {
@@ -133,11 +167,18 @@ td:hover:before {
   font-size: 1rem;
   position: sticky;
   width: 100%;
-  background: white;
+  background: linear-gradient(45deg, #eb8e38, #dba3f5);
 }
 
 .nav-link {
   padding: 10px 20px;
+  
+}
+.nav-tabs .nav-link.active {
+  background: linear-gradient(45deg, #dba3f5, #eb8e38);
+}
+.navbar{
+  background: linear-gradient(45deg, #eb8e38, #dba3f5);
 }
 
 .flip-card {
@@ -145,6 +186,7 @@ td:hover:before {
   width: 100%;
   height: 700px;
   perspective: 5000px;
+  margin-bottom: 70px;
 }
 
 .flip-card-inner {
@@ -253,6 +295,7 @@ figure img {
   border-collapse: collapse;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  padding:auto;
 }
 
 .card-table tr {
