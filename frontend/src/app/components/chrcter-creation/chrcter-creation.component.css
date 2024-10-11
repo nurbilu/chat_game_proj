@@ -204,13 +204,20 @@ button {
 }
 
 
-.popoverTitle {
-    color: rgb(0, 0, 0);
+.text-frame-lib-search  {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(24, 24, 24, 0.678);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
+}
+.text-frame-lib-search h3{
+    color: rgb(250, 250, 250);
 }
 
-.popover-title-custom {
-    color: black;
-}
+
+
+
 
 /* Add these styles to your existing CSS file */
 
@@ -325,4 +332,12 @@ button {
   width: 3rem;
   height: 3rem;
   border-width: 0.25em;
+}
+
+app-lib-search {
+  --background-color: rgba(24, 24, 24, 0.678);
+  --card-background: rgba(24, 24, 24, 0.678);
+  --text-color: rgb(252, 252, 252);
+  --border-color: #ddd;
+  --shadow-color: rgba(248, 248, 248, 0.1);
 }

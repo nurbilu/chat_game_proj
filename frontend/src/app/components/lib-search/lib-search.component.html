@@ -3,26 +3,25 @@
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
-<div *ngIf="searchResult && searchResult.length > 0">
-  <ul>
-    <li *ngFor="let item of searchResult">
-      <h5>{{ item.key }}</h5>
-      <ul>
-        <ng-container *ngFor="let entry of item.value">
-          <li>
-            <strong>{{ entry.name }}</strong>
-            <ul>
-              <ng-container *ngFor="let subEntry of (entry | keyvalue)">
-                <li *ngIf="subEntry.key !== 'name'">
-                  <strong>{{ subEntry.key }}:</strong> {{ formatItem(subEntry.value) }}
-                </li>
-              </ng-container>
-            </ul>
-          </li>
-        </ng-container>
-      </ul>
-    </li>
-  </ul>
+<div *ngIf="searchResult && searchResult.length > 0" class="container mt-4 horizontal-card-container">
+  <div class="horizontal-card" *ngFor="let item of searchResult; let i = index" [attr.data-index]="i"
+       [ngClass]="{'single-subcard': item.value.length === 1, 'multiple-subcards': item.value.length > 1}">
+    <div class="horizontal-card-content">
+      <h5 class="horizontal-card-title">{{ item.key }}</h5>
+      <div class="subcard-grid">
+        <div class="subcard" *ngFor="let entry of item.value; let j = index" [attr.data-subindex]="j">
+          <strong>{{ entry.name }}</strong>
+          <ul class="list-unstyled">
+            <ng-container *ngFor="let subEntry of (entry | keyvalue)">
+              <li *ngIf="subEntry.key !== 'name'">
+                <strong>{{ subEntry.key }}:</strong> {{ formatItem(subEntry.value) }}
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div *ngIf="noResultsFound">
   No results found.

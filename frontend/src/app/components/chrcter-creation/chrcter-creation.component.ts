@@ -55,6 +55,7 @@ export class ChrcterCreationComponent implements OnInit {
   @ViewChild('acc', { static: true }) accordion!: NgbAccordionItem;
   characterPromptEditor: any;
   @ViewChildren('spellSelect') spellSelects!: QueryList<ElementRef<HTMLSelectElement>>;
+user: any;
   constructor(
     private chcrcterCreationService: ChcrcterCreationService,
     private authService: AuthService,

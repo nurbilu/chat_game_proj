@@ -1,12 +1,3 @@
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
 .about-container {
     position: relative;
     max-width: 100%;
@@ -16,7 +7,8 @@
     color: #f5f4f8;
     text-align: center;
     overflow: hidden;
-    animation: fadeIn 1.5s ease-in-out; /* Add this line */
+    animation: fadeIn 1.5s ease-in-out;
+    /* Add this line */
 }
 
 .about-container::before {
@@ -74,11 +66,30 @@ p {
 }
 
 .custom-popover .popover-body {
-    background-color: #ffcc00; /* Change this to your desired color */
-    color: #000; /* Change text color if needed */
+    background-color: #ffcc00;
+    /* Change this to your desired color */
+    color: #000;
+    /* Change text color if needed */
 }
 
 .custom-popover .popover-header {
-    background-color: #ffcc00; /* Change this to your desired color */
-    color: #000; /* Change text color if needed */
+    background-color: #ffcc00;
+    /* Change this to your desired color */
+    color: #000;
+    /* Change text color if needed */
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 1s ease-out;
 }

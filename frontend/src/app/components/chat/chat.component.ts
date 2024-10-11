@@ -21,6 +21,7 @@ export class ChatComponent implements OnInit {
     rollResults: number[] = [];
     rollTotal: number = 0;
     additionalModifiers: number[] = [];
+    profilePictureUrl: string = '/assets/imgs/default-profile.png'; // Default profile picture
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
@@ -48,6 +49,11 @@ export class ChatComponent implements OnInit {
                     }
                 });
             }
+        });
+
+        this.authService.getUserProfile().subscribe(profile => {
+            this.profilePictureUrl = profile.profilePictureUrl || '/assets/imgs/default-profile.png';
+            console.log('Profile Picture URL:', this.profilePictureUrl); // Debugging line
         });
     }
 
@@ -138,4 +144,10 @@ export class ChatComponent implements OnInit {
         this.rollResults = [];
         this.rollTotal = 0;
     }
+    GoToProfile(): void {
+        this.router.navigate(['/profile']);
+        this.username = localStorage.getItem('username')!;
+        this.profilePictureUrl = localStorage.getItem('profilePictureUrl')!;
+    }
 }
+

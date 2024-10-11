@@ -74,4 +74,25 @@ export class LibSearchComponent {
     }
     return String(item);
   }
+
+  highlightSubcard(event: MouseEvent) {
+    const subcard = (event.target as HTMLElement).closest('.subcard');
+    if (subcard) {
+      subcard.classList.add('highlighted');
+    }
+  }
+
+  removeHighlight(event: MouseEvent) {
+    const subcard = (event.target as HTMLElement).closest('.subcard');
+    if (subcard) {
+      subcard.classList.remove('highlighted');
+    }
+  }
+
+  toggleExpandText(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('adjustable-text')) {
+      target.classList.toggle('expanded-text');
+    }
+  }
 }

@@ -185,3 +185,16 @@
   margin: 5px 0;
   color: #ffffff;
 }
+
+
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  object-fit: cover; /* Ensures the image covers the entire area */
+  border: none; /* Remove border */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Optional: Add a shadow for depth */
+  background: url('/assets/Icons/GoToProf.png') no-repeat center center; /* Updated image path */
+  background-size: cover;
+}

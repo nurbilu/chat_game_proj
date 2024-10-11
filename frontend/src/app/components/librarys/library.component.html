@@ -26,7 +26,7 @@
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
-<div *ngIf="showSearchResults && !isLoading">
+<div *ngIf="showSearchResults && !isLoading" class="search-results">
   <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)"
     (searchCleared)="clearSearchResults()"></app-lib-search>
 </div>

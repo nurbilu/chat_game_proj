@@ -2,22 +2,27 @@
    ** ask some friends if they know any good on the docker - better then you (docker((((()))))) ** 
 
 
-   1.a. finish lib table design ()
-   1.b. finish card tables design (alomst x)
-   1.c. finish total lib design (): 
+   1.a. match the visual effect of rest of the website to as homepage , login and register ()
+   1.b. finish card tables design (almost done)
+   1.c. finish total lib design (almost done): 
       adjust the shades of colors of the webpage ? 
 
-   2.a. change /adjust /fix /add toasts messages in all components ()
-   2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more ())
-   2.c. add popover/tooltip to all the key / colomn names in all tables to explain the data inside them if needed  () maybe not needed as all data is visible? 
+   2.a. change /adjust /fix /add toasts messages in all components (almost done)
+   2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (almost done))
+   2.c. fix popover titles color to be black () : about , create character - lib-search , edit profile , 
+   2.d. add placeholder to all input fields in register / add popover to all input fields in register ()
 
-   3.a. adjust dice roller desisgn ()
+2.5 fix lib - search displayment design subcards dispalayment ()
+   3.a. adjust dice roller desisgn (half done)
    3.b. adjust the login modal design (done)
+   3.c. add border for header of chat bot ()
 
-   4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal (done) 
+   4.optional: to modify login - if not either remove or modify to something else()
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
+
+   4.b. fix docker hub GUI ()
 
    5. maybe need one terminal command to run all the flask apps for docker ()
       make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command () 
@@ -103,5 +108,7 @@ DONE LIST :
    - find a good DnD dice app to integrate to the chat grid / template (done)
    - design the DnD dice app to be integrated to the chat grid if a template - check if design is good and functional (done)
 
-27.
+27.   1.a. finish lib table design (done)
+
+28.4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal (done) 
 

@@ -1,20 +1,173 @@
 input[type="text"] {
-    margin-right: 10px;
-    width: 200px;
-    background-image: linear-gradient(45deg, #eb8e38, #dba3f5);
+    width: 100%;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+}
+
+input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .spinner-container {
-    position: fixed;
-    color: #302994;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
 }
 
 .spinner-border {
     width: 3rem;
     height: 3rem;
-    border-width: 0.3rem;
+    border-width: 0.25rem;
+    color: var(--text-color);
+}
+
+:host {
+    --background-color: transparent;
+    --card-background: white;
+    --text-color: black;
+    --border-color: #ddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item {
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    padding: 5px 0;
+}
+
+.list-group-item strong {
+    color: var(--text-color);
+}
+
+.horizontal-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.horizontal-card {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    overflow: hidden;
+    background: var(--card-background);
+}
+
+.horizontal-card-content {
+    padding: 15px;
+}
+
+.horizontal-card-title {
+    color: var(--text-color);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.subcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.subcard {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.subcard:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* New styles for single subcard */
+.single-subcard .subcard-grid {
+    display: block;
+}
+
+.single-subcard .subcard {
+    width: 100%;
+    height: 100%;
+}
+
+/* Adjustments for multiple subcards */
+.multiple-subcards .subcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.multiple-subcards .subcard {
+    height: 100%;
+}
+
+.font-size-control {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color);
+}
+
+.font-size-control input {
+    width: 100px;
+}
+
+.search-results-container {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.subcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.subcard {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.subcard h6 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.adjustable-text {
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Add a class for expanded text */
+.expanded-text {
+    -webkit-line-clamp: unset;
+}
+
+/* Media query for larger screens */
+@media (min-width: 992px) {
+    .adjustable-text {
+        font-size: 16px;
+    }
 }

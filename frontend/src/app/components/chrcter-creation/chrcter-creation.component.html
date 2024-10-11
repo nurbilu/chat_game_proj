@@ -25,9 +25,11 @@
       <br>
       For more information, visit the provided links to RPGBot for comprehensive guides on spells, classes, and races.
     </p>
+    <div class="profile-picture-container" ></div>
   </div>
+  
 
-  <div class="text-frame1 fade-in-delay" [class.fade-in-active]="!isLoading">
+  <div class="text-frame-lib-search fade-in-delay" [class.fade-in-active]="!isLoading">
     <h3 class="LibrarySearch" ngbPopover="Click to search for spells, classes, and races"
       triggers="mouseenter:mouseleave" popoverTitle="Library Search">Library Search</h3>
     <div class="input-group">
@@ -44,7 +46,7 @@
         <span class="visually-hidden">Searching...</span>
       </div>
     </div>
-    <div *ngIf="showSearchResults && !isSearching">
+    <div *ngIf="showSearchResults && !isSearching" class="search-results">
       <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)"
         (searchCleared)="clearSearchResults()"></app-lib-search>
     </div>
