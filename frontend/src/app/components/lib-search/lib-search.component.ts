@@ -25,7 +25,6 @@ export class LibSearchComponent {
       this.searchService.searchItemByName(this.searchQuery)
         .subscribe({
           next: (results: { [key: string]: any }) => {
-            // console.log('Received results:', results);
             this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
             this.showSearchResults = true;
             this.noResultsFound = false;

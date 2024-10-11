@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { LibraryService } from '../../services/library.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -32,6 +32,11 @@ export class LibraryComponent implements OnInit {
   expandedRows: { [key: number]: boolean } = {};
   isSearchExpanded: boolean = false;
   isCollapsed: boolean = false;
+  allRowsExpanded: boolean = false;
+  cardExpandedStates: { [cardIndex: number]: { [key: string]: boolean } } = {};
+  tableExpandedStates: { [rowIndex: number]: { [key: string]: boolean } } = {};
+  showBackToTop: boolean = false;
+  allCardValuesExpanded: { [cardIndex: number]: boolean } = {};
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -142,7 +147,6 @@ export class LibraryComponent implements OnInit {
     }
   }
 
-
   isLongText(value: unknown): boolean {
     if (typeof value !== 'string') {
       return false;
@@ -162,13 +166,13 @@ export class LibraryComponent implements OnInit {
   toggleTextVisibility(index: number, key: string): void {
     const visibilityIndex = this.getTextVisibilityIndex(index, key);
     this.textVisibility[visibilityIndex] = !this.textVisibility[visibilityIndex];
+    this.updateAllCardValuesExpandedState(index);
   }
 
   isTextVisible(index: number, key: string): boolean {
     const visibilityIndex = this.getTextVisibilityIndex(index, key);
     return this.textVisibility[visibilityIndex];
   }
-
 
   handleSearchResults(results: any[]): void {
     console.log('Handling search results:', results);
@@ -219,6 +223,11 @@ export class LibraryComponent implements OnInit {
 
   toggleRowExpansion(index: number): void {
     this.expandedRows[index] = !this.expandedRows[index];
+    this.updateAllRowsExpandedState();
+  }
+
+  updateAllRowsExpandedState(): void {
+    this.allRowsExpanded = Object.values(this.expandedRows).every(value => value === true);
   }
 
   toggleSearch(): void {
@@ -235,5 +244,61 @@ export class LibraryComponent implements OnInit {
   isArray(value: any): boolean {
     return Array.isArray(value);
   }
-}
 
+  toggleAllRows(): void {
+    this.allRowsExpanded = !this.allRowsExpanded;
+    this.displayItems.forEach((item, index) => {
+      this.expandedRows[index] = this.allRowsExpanded;
+    });
+  }
+
+  // Add a new method to collapse all values in a card
+  collapseAllCardValues(): void {
+    this.getPaginatedItems().forEach((item, index) => {
+      const keys = this.getKeys(item);
+      keys.forEach(key => {
+        const visibilityIndex = this.getTextVisibilityIndex(index, key);
+        this.textVisibility[visibilityIndex] = false;
+      });
+      this.allCardValuesExpanded[index] = false;
+    });
+  }
+
+  // Add a new method to collapse all values in the table
+  collapseAllTableValues(): void {
+    this.getPaginatedItems().forEach((item, index) => {
+      const keys = this.getKeys(item);
+      keys.forEach(key => {
+        if (key !== 'url' && key !== 'name' && key !== 'rowNumber') {
+          const visibilityIndex = this.getTextVisibilityIndex(index, key);
+          this.textVisibility[visibilityIndex] = false;
+        }
+      });
+    });
+  }
+
+  toggleAllCardValues(cardIndex: number): void {
+    this.allCardValuesExpanded[cardIndex] = !this.allCardValuesExpanded[cardIndex];
+    const keys = this.getKeys(this.getPaginatedItems()[cardIndex]);
+    keys.forEach(key => {
+      const visibilityIndex = this.getTextVisibilityIndex(cardIndex, key);
+      this.textVisibility[visibilityIndex] = this.allCardValuesExpanded[cardIndex];
+    });
+  }
+
+  updateAllCardValuesExpandedState(cardIndex: number): void {
+    const keys = this.getKeys(this.getPaginatedItems()[cardIndex]);
+    this.allCardValuesExpanded[cardIndex] = keys.every(key => 
+      this.isTextVisible(cardIndex, key)
+    );
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.showBackToTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) > 300;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}

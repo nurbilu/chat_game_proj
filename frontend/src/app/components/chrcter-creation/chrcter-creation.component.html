@@ -33,11 +33,10 @@
     <h3 class="LibrarySearch" ngbPopover="Click to search for spells, classes, and races"
       triggers="mouseenter:mouseleave" popoverTitle="Library Search">Library Search</h3>
     <div class="input-group">
-      <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control">
-      <button (click)="onSearch()" class="search-icon" alt="Search" ngbPopover="Click to search"
-        triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
-      <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input" ngbPopover="Clear search query"
-        triggers="mouseenter:mouseleave" popoverTitle="Clear"></button>
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control" (keyup.enter)="onSearch()">
+      <button (click)="onSearch()" class="search-icon" alt="Search" ngbPopover="Click to search" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
+      <button (click)="clearSearchQuery()" class="clear-icon" alt="Clear" ngbPopover="Clear search query" triggers="mouseenter:mouseleave" popoverTitle="Clear"></button>
+      <button (click)="pasteText()" class="paste-icon" alt="Paste" ngbPopover="Paste from clipboard" triggers="mouseenter:mouseleave" popoverTitle="Paste"></button>
       <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results"
         triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
     </div>

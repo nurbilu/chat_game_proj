@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { AuthService } from '../../services/auth.service';
@@ -18,7 +18,8 @@ interface ChatbotResponse {
 @Component({
   selector: 'app-chrcter-creation',
   templateUrl: './chrcter-creation.component.html',
-  styleUrls: ['./chrcter-creation.component.css']
+  styleUrls: ['./chrcter-creation.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ChrcterCreationComponent implements OnInit {
   content = '';
@@ -388,5 +389,15 @@ user: any;
 
   clearSearchQuery(): void {
     this.searchQuery = '';
+  }
+
+  async pasteText(): Promise<void> {
+    try {
+      const text = await navigator.clipboard.readText();
+      this.searchQuery += text;
+      console.log('Text pasted:', text);
+    } catch (error) {
+      console.error('Failed to read clipboard:', error);
+    }
   }
 }

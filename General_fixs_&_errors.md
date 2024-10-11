@@ -2,7 +2,7 @@
    ** ask some friends if they know any good on the docker - better then you (docker((((()))))) ** 
 
 
-   1.a. match the visual effect of rest of the website to as homepage , login and register ()
+   1.a. match the visual effect of rest of the website to as homepage , login and register (done?)
    1.b. finish card tables design (almost done)
    1.c. finish total lib design (almost done): 
       adjust the shades of colors of the webpage ? 

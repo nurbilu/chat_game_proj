@@ -341,3 +341,25 @@ app-lib-search {
   --border-color: #ddd;
   --shadow-color: rgba(248, 248, 248, 0.1);
 }
+
+/* Add this new rule at the end of the file */
+app-lib-search .subcard li {
+    color: white;
+}
+
+.paste-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: url('/assets/imgs/icons/paste-txt-srch.png') no-repeat center center;
+    border: none;
+    outline: none;
+}
+
+.chrcter-creation-container .subcard li {
+    color: rgb(0, 0, 0);
+}
+
+
