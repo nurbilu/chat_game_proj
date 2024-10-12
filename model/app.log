@@ -1,0 +1,113 @@
+2024-10-12 14:45:04,791 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac42"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:04,792 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac42"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:04,793 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac42"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:04,874 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac43"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:04,875 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac43"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:04,876 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac43"}, "message": "Connection pool created", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:04,884 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-12 14:45:04,884 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-12 14:45:04,884 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-10-12 14:45:04,884 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-10-12 14:45:05,012 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac42"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:05,034 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac42"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:05,048 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac42"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:05,097 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac43"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-00.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:05,103 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac43"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-01.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 14:45:05,105 - pymongo.connection - DEBUG - {"clientId": {"$oid": "670a6140fcd33ee1e347ac43"}, "message": "Connection pool ready", "serverHost": "ac-giilfec-shard-00-02.luomlfx.mongodb.net", "serverPort": 27017}
+2024-10-12 15:00:55,690 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:00:55] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:00:55,690 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:00:55] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:00:55,694 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:00:55] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:00:55,694 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:00:55] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:01:17,180 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:01:17] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:01:17,180 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:01:17] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:01:17,185 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd20', 'd20', 'd20'], 'num_dice': [1, 1, 1, 1], 'modifier': 0}
+2024-10-12 15:01:17,186 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:01:17] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:01:17,186 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:01:17] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:09:20,430 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:09:20] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:09:20,430 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:09:20] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:09:20,491 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:09:20] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:09:20,491 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:09:20] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:12:48,710 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:12:48] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:12:48,710 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:12:48] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:12:48,854 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:12:48] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:12:48,854 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:12:48] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:12:51,445 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:12:51] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:12:51,445 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:12:51] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:15:08,599 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:15:08] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:15:08,599 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:15:08] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:15:08,629 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:15:08] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:15:08,629 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:15:08] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:31:54,807 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:31:54] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:31:54,807 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:31:54] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:31:54,826 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:31:54] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:31:54,826 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:31:54] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:35:44,142 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:35:44] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:35:44,142 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:35:44] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:35:44,163 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:35:44] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:35:44,163 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:35:44] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:36:24,692 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:24] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:36:24,692 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:24] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:36:24,717 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:24] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:36:24,717 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:24] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:36:37,099 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:37] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:36:37,099 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:37] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:36:37,105 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd20'], 'num_dice': [1, 1], 'modifier': -1}
+2024-10-12 15:36:37,105 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:37] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:36:37,105 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:36:37] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:24,328 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:24] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:41:24,328 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:24] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:41:24,338 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:24] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:41:24,338 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:24] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:41:31,053 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:31] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:41:31,053 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:31] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:41:31,090 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:31] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:41:31,090 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:31] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:41:37,278 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:37] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:37,278 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:37] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:37,312 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd20'], 'num_dice': [1, 1], 'modifier': 0}
+2024-10-12 15:41:37,312 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:37] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:37,312 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:37] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:47,271 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:47] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:47,271 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:47] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:47,277 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd6', 'd20'], 'num_dice': [1, 1, 1], 'modifier': 2}
+2024-10-12 15:41:47,277 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:47] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:47,277 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:47] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:48,863 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd6', 'd20'], 'num_dice': [1, 1, 1], 'modifier': 2}
+2024-10-12 15:41:48,864 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:48] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:48,864 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:48] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:50,138 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd6', 'd20'], 'num_dice': [1, 1, 1], 'modifier': 2}
+2024-10-12 15:41:50,139 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:50] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:41:50,139 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:41:50] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:31,675 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:31] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:43:31,675 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:31] "OPTIONS /generate_text HTTP/1.1" 200 -
+2024-10-12 15:43:31,714 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:31] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:43:31,714 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:31] "[31m[1mPOST /generate_text HTTP/1.1[0m" 400 -
+2024-10-12 15:43:48,369 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:48] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:48,369 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:48] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:48,374 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd6', 'd6'], 'num_dice': [1, 1, 1], 'modifier': 3}
+2024-10-12 15:43:48,375 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:48] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:48,375 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:48] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:54,290 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:54] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:54,290 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:54] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:54,294 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20'], 'num_dice': [1], 'modifier': 0}
+2024-10-12 15:43:54,296 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:54] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:54,296 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:54] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:55,897 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20'], 'num_dice': [1], 'modifier': 0}
+2024-10-12 15:43:55,898 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:55] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:55,898 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:55] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:58,820 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20'], 'num_dice': [1], 'modifier': 0}
+2024-10-12 15:43:58,821 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:58] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:58,821 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:58] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:58,996 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20'], 'num_dice': [1], 'modifier': 0}
+2024-10-12 15:43:58,996 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:58] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:58,996 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:58] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:59,148 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20'], 'num_dice': [1], 'modifier': 0}
+2024-10-12 15:43:59,149 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:59] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:43:59,149 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:43:59] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:44:00,580 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:44:00] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:44:00,580 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:44:00] "OPTIONS /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:44:00,585 - root - INFO - Received roll_dice request with data: {'dice_types': ['d20', 'd20'], 'num_dice': [1, 1], 'modifier': 0}
+2024-10-12 15:44:00,585 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:44:00] "POST /roll_dice HTTP/1.1" 200 -
+2024-10-12 15:44:00,585 - werkzeug - INFO - 127.0.0.1 - - [12/Oct/2024 15:44:00] "POST /roll_dice HTTP/1.1" 200 -

@@ -362,4 +362,27 @@ app-lib-search .subcard li {
     color: rgb(0, 0, 0);
 }
 
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
 
+.back-to-top.show {
+  opacity: 1;
+}
+
+.back-to-top:hover {
+  background-color: #0056b3;
+}

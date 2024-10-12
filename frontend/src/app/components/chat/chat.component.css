@@ -145,18 +145,47 @@
   margin-bottom: 15px;
 }
 
-.dice-controls select,
-.dice-controls input,
+.dice-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.dice-row select,
+.dice-row input,
 .dice-controls button {
+  width: 100%;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
   background-color: #fff;
+  font-size: 0.9em;
+}
+
+.dice-type-controls {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px;
+  align-items: center;
+}
+
+.add-buttons {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.add-buttons button {
+  padding: 5px;
+  font-size: 0.8em; /* Further decrease font size for these buttons */
 }
 
 .additional-modifiers {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
 }
 

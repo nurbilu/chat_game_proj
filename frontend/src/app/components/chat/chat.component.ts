@@ -17,7 +17,7 @@ export class ChatComponent implements OnInit {
     diceTypes: string[] = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
     selectedDice: string[] = ['d20'];
     numDice: number[] = [1];
-    modifier: number = 0;
+    modifiers: number[] = [0];
     rollResults: number[] = [];
     rollTotal: number = 0;
     additionalModifiers: number[] = [];
@@ -116,8 +116,19 @@ export class ChatComponent implements OnInit {
         this.message = '';
     }
 
+    addDiceType(): void {
+        this.selectedDice.push('d20');
+        this.numDice.push(1);
+        this.modifiers.push(0);
+    }
+
+    clearRollResults(): void {
+        this.rollResults = [];
+        this.rollTotal = 0;
+    }
+
     rollDice(): void {
-        const totalModifier = this.modifier + this.additionalModifiers.reduce((acc, mod) => acc + mod, 0);
+        const totalModifier = this.modifiers.reduce((acc, mod) => acc + mod, 0);
         this.chatService.rollDice(this.selectedDice, this.numDice, totalModifier).subscribe({
             next: (response) => {
                 this.rollResults = response.results;
@@ -131,23 +142,18 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    addAdditionalModifier(): void {
-        this.additionalModifiers.push(0);
-    }
-
-    addDiceType(): void {
-        this.selectedDice.push('d20');
-        this.numDice.push(1);
-    }
-
-    clearRollResults(): void {
-        this.rollResults = [];
-        this.rollTotal = 0;
-    }
     GoToProfile(): void {
         this.router.navigate(['/profile']);
         this.username = localStorage.getItem('username')!;
         this.profilePictureUrl = localStorage.getItem('profilePictureUrl')!;
     }
-}
 
+    resetDiceRoller(): void {
+        this.selectedDice = ['d20'];
+        this.numDice = [1];
+        this.modifiers = [0];
+        this.rollResults = [];
+        this.rollTotal = 0;
+        this.additionalModifiers = [];
+    }
+}

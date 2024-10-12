@@ -4,8 +4,7 @@
 
    1.a. match the visual effect of rest of the website to as homepage , login and register (done?)
    1.b. finish card tables design (almost done)
-   1.c. finish total lib design (almost done): 
-      adjust the shades of colors of the webpage ? 
+   1.c. finish total lib design (almost done)
 
    2.a. change /adjust /fix /add toasts messages in all components (almost done)
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (almost done))

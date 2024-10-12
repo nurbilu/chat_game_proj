@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output, ViewEncapsulation, HostListener} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { AuthService } from '../../services/auth.service';
@@ -120,6 +120,8 @@ user: any;
   selectedSpell: string = '';
 
   isSearching: boolean = false;
+
+  showBackToTop: boolean = false;
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
@@ -399,5 +401,14 @@ user: any;
     } catch (error) {
       console.error('Failed to read clipboard:', error);
     }
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.showBackToTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) > 300;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
