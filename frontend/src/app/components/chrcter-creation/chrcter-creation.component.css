@@ -215,10 +215,6 @@ button {
     color: rgb(250, 250, 250);
 }
 
-
-
-
-
 /* Add these styles to your existing CSS file */
 
 .progress-container {
@@ -336,16 +332,62 @@ button {
 
 app-lib-search {
   --background-color: rgba(24, 24, 24, 0.678);
-  --card-background: rgba(24, 24, 24, 0.678);
-  --text-color: rgb(252, 252, 252);
+  --card-background: linear-gradient(45deg, #c99a6e, #71557e);
+  --text-color: rgb(253, 253, 253);
   --border-color: #ddd;
   --shadow-color: rgba(248, 248, 248, 0.1);
+  --h5-color: rgb(255, 253, 253);
+}
+
+
+.search-results {
+  background: linear-gradient(45deg, #00000069, #707070, #6e5f51, #dac4a4);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-results .horizontal-card {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: all 0.3s ease;
+}
+
+.search-results .horizontal-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(184, 229, 243, 0.4);
+  transform: translateY(-5px);
+}
+
+.search-results .horizontal-card-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.search-results .subcard {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.search-results .subcard strong,
+.search-results .subcard li {
+  color: white;
+}
+
+.search-results .subcard ul {
+  padding-left: 20px;
+}
+
+.search-results .subcard li {
+  margin-bottom: 5px;
 }
 
 /* Add this new rule at the end of the file */
-app-lib-search .subcard li {
-    color: white;
-}
 
 .paste-icon {
     display: flex;
@@ -358,9 +400,7 @@ app-lib-search .subcard li {
     outline: none;
 }
 
-.chrcter-creation-container .subcard li {
-    color: rgb(0, 0, 0);
-}
+
 
 .back-to-top {
   position: fixed;

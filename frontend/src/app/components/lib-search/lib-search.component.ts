@@ -15,6 +15,8 @@ export class LibSearchComponent {
   showSearchResults: boolean = false;
   noResultsFound: boolean = false;
   isLoading: boolean = false;
+  showHoverCard: boolean = false;
+  selectedEntry: any = null;
 
   constructor(private searchService: SearchService) {}
 
@@ -66,10 +68,7 @@ export class LibSearchComponent {
       return item.map(i => i.name || i).join(', ');
     }
     if (typeof item === 'object' && item !== null) {
-      return Object.values(item)
-        .filter((value): value is string => typeof value === 'string' && value.trim() !== '')
-        .map(value => value.trim())
-        .join(', ');
+      return JSON.stringify(item);
     }
     return String(item);
   }
@@ -94,4 +93,15 @@ export class LibSearchComponent {
       target.classList.toggle('expanded-text');
     }
   }
+
+  toggleHoverCard(entry: any): void {
+    this.selectedEntry = entry;
+    this.showHoverCard = true;
+  }
+
+  closeHoverCard(): void {
+    this.showHoverCard = false;
+    this.selectedEntry = null;
+  }
+
 }

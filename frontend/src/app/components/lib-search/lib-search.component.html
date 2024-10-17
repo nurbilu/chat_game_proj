@@ -11,13 +11,7 @@
       <div class="subcard-grid">
         <div class="subcard" *ngFor="let entry of item.value; let j = index" [attr.data-subindex]="j">
           <strong>{{ entry.name }}</strong>
-          <ul class="list-unstyled">
-            <ng-container *ngFor="let subEntry of (entry | keyvalue)">
-              <li *ngIf="subEntry.key !== 'name'">
-                <strong>{{ subEntry.key }}:</strong> {{ formatItem(subEntry.value) }}
-              </li>
-            </ng-container>
-          </ul>
+          <button (click)="toggleHoverCard(entry)" class="btn btn-primary btn-sm mt-2">Show Details</button>
         </div>
       </div>
     </div>
@@ -25,4 +19,20 @@
 </div>
 <div *ngIf="noResultsFound">
   No results found.
+</div>
+
+<!-- Backdrop and Centered Hovering Subcard -->
+<div *ngIf="showHoverCard" class="backdrop" (click)="closeHoverCard()"></div>
+<div *ngIf="showHoverCard" class="centered-hover-card">
+  <div class="hover-card-content">
+    <h5>{{ selectedEntry?.name }}</h5>
+    <button (click)="closeHoverCard()" class="close-btn">&times;</button>
+    <ul class="list-unstyled">
+      <ng-container *ngFor="let subEntry of (selectedEntry | keyvalue)">
+        <li *ngIf="subEntry.key !== 'name'">
+          <strong>{{ subEntry.key }}:</strong> {{ formatItem(subEntry.value) }}
+        </li>
+      </ng-container>
+    </ul>
+  </div>
 </div>

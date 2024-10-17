@@ -252,7 +252,6 @@ user: any;
         });
     });
   }
-
   getSpellSlotLevels(className: string, characterLevel: number): { level: string, slots: string }[] {
     const classLevels = this.spellSlotLevels?.[className];
     const levels = classLevels?.[characterLevel];
