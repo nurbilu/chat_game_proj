@@ -39,3 +39,8 @@
 .fade-in-up {
     animation: fadeInUp 1s ease-out;
 }
+
+::ng-deep .popover-header {
+  background-color: #c9c9c9; /* Set background color if needed */
+  color: #000; /* Change text color to black */
+}

@@ -139,7 +139,9 @@ export class AuthService {
 
 
     register(formData: FormData): Observable<any> {
-        return this.httpClient.post(`${this.baseUrl}register/`, formData);
+        return this.http.post(`${this.baseUrl}register/`, formData).pipe(
+            catchError(error => throwError(() => new Error('Error registering user: ' + error.message)))
+        );
     }
 
     login(username: string, password: string, rememberMe: boolean): Observable<any> {

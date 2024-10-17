@@ -5,31 +5,35 @@
    1.a. match the visual effect of rest of the website to as homepage , login and register (done?)
    1.b. finish card tables design (almost done)
    1.c. finish total lib design (almost done)
+   1.d. fix register picture upload (done)
 
    2.a. change /adjust /fix /add toasts messages in all components (almost done)
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (almost done))
-   2.c. fix popover titles color to be black () : about , create character - lib-search , edit profile , 
-   2.d. add placeholder to all input fields in register / add popover to all input fields in register ()
+   2.c. keep unity of desisgn for all navbar in app () - all navbar are the same but to the character create component ()
 
-2.5 fix lib - search displayment design subcards dispalayment ()
-   3.a. adjust dice roller desisgn (half done)
-   3.b. adjust the login modal design (done)
+   2.5. fix lib - search displayment design subcards dispalayment ()
+
+   3.a. adjust dice roller desisgn (almost done)
+   3.b. fix / insure refresh token is working as expected with the login Modal as login component ()
    3.c. add border for header of chat bot ()
+   3.d. adjsut nav to profile button in chat to be positioned or hover over ()
 
-   4.optional: to modify login - if not either remove or modify to something else()
+
+   4.fix login component to create a div for the login form to look as all other components using the same format ()
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
 
    4.b. fix docker hub GUI ()
 
-   5. maybe need one terminal command to run all the flask apps for docker ()
-      make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command () 
+   5. maybe need one terminal command to run all the flask apps for docker (? maybe its not needed? )
+      make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command ( maybe its not needed?) 
 
    6.a. add more visual effects to the website ()
+
+
+questionable tasks: 
    6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable in short term - necessary ?)
-
-
 ###keep one before last : 
 
    7.a. make django framework more efficient - too many debug messages and many calls to each endpoints (?)()
@@ -109,5 +113,17 @@ DONE LIST :
 
 27.   1.a. finish lib table design (done)
 
-28.4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal (done) 
+28 .4.make sure remember me checkbox is working also in the login component not just on the modal - fix refresh token login in login component as login modal (done) 
+
+29 .3.b. adjust the login modal design (done)
+
+30 .2.d. add placeholder to all input fields in register / add popover to all input fields in register (done)
+
+31.    2.c. fix popover titles color to be black (done) : about - done , create character - done , lib-search - done , edit profile - done 
+
+32.
+
+33.
+
+34.
 

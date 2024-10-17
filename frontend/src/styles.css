@@ -47,3 +47,22 @@ button:hover {
     box-sizing: border-box; /* Border and padding included in width */
   }
   
+.popover {
+    color: #000 !important;
+}
+
+.popover-header {
+    color: #000 !important;
+    background-color: #f8ab52 !important;
+    border-bottom: 1px solid #000 !important;
+}
+
+.popover-body {
+    color: #000 !important;
+    background-color: #e6d4af31 !important;
+}
+
+.bs-popover-top .arrow::after, 
+.bs-popover-auto[x-placement^="top"] .arrow::after {
+    border-top-color: #ffcc00 !important;
+}

@@ -59,7 +59,16 @@ export class RegisterComponent {
     }
 
     onFileSelected(event: any): void {
-        this.profilePicture = event.target.files[0];
+        const file = event.target.files[0];
+        if (file) {
+            this.profilePicture = file;
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                const previewHolder = document.getElementById('previewHolder') as HTMLImageElement;
+                previewHolder.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     logout(): void {

@@ -386,3 +386,19 @@ app-lib-search .subcard li {
 .back-to-top:hover {
   background-color: #0056b3;
 }
+
+/* Change popover title color to black */
+.popover-header {
+  color: black !important;
+}
+
+/* Ensure the popover body text is also black */
+.popover-body {
+  color: black !important;
+}
+
+/* If you want to change the background color of the popover title as well */
+.popover-header {
+  background-color: #f7f7f7 !important; /* Light gray background */
+  color: black !important;
+}

@@ -67,16 +67,21 @@ p {
 
 .custom-popover .popover-body {
     background-color: #ffcc00;
-    /* Change this to your desired color */
     color: #000;
-    /* Change text color if needed */
 }
 
 .custom-popover .popover-header {
     background-color: #ffcc00;
-    /* Change this to your desired color */
     color: #000;
-    /* Change text color if needed */
+    font-weight: bold;
+}
+
+.custom-popover .arrow::after {
+    border-top-color: #ffcc00;
+}
+
+.custom-popover {
+    border: 1px solid #000;
 }
 
 @keyframes fadeInUp {
