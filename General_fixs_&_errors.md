@@ -19,7 +19,8 @@
    3.d. adjsut nav to profile button in chat to be positioned or hover over ()
 
 
-   4.fix login component to create a div for the login form to look as all other components using the same format ()
+   4.fix login component to create a div for the login form to look as all other components using the same format (done?)
+   if not implement login by google and facebook and twitter , remove ()
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
