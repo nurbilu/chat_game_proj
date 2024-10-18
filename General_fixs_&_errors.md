@@ -5,17 +5,14 @@
    1.a. match the visual effect of rest of the website to as homepage , login and register (done?)
    1.b. finish card tables design (almost done)
    1.c. finish total lib design (almost done)
-   1.d. fix register picture upload (done)
+   1.d. design hover card close button ()
 
    2.a. change /adjust /fix /add toasts messages in all components (almost done)
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (almost done))
    2.c. keep unity of desisgn for all navbar in app () - all navbar are the same but to the character create component ()
 
-   2.5. fix lib - search displayment design subcards dispalayment ()
-
    3.a. adjust dice roller desisgn (almost done)
    3.b. fix / insure refresh token is working as expected with the login Modal as login component ()
-   3.c. add border for header of chat bot ()
    3.d. adjsut nav to profile button in chat to be positioned or hover over ()
 
 
@@ -120,11 +117,23 @@ DONE LIST :
 
 30 .2.d. add placeholder to all input fields in register / add popover to all input fields in register (done)
 
-31.    2.c. fix popover titles color to be black (done) : about - done , create character - done , lib-search - done , edit profile - done 
+31. 2.c. fix popover titles color to be black (done) : about - done , create character - done , lib-search - done , edit profile - done 
 
-32.
+32. 1.d. fix register picture upload (done)
 
-33.
+33. 2.5. fix lib - search displayment design subcards dispalayment (done)
 
-34.
+34. 1.d. fix so search result sub card hover will be displayed as static hover not active hover (done)
+
+35. 
+
+36.
+
+37.
+
+38.
+
+39.
+
+40. 
 

@@ -46,8 +46,11 @@
       </div>
     </div>
     <div *ngIf="showSearchResults && !isSearching" class="search-results">
-      <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)"
-        (searchCleared)="clearSearchResults()"></app-lib-search>
+      <app-lib-search 
+        [searchResult]="searchResult" 
+        (searchCompleted)="handleSearchResults($event)"
+        (searchCleared)="clearSearchResults()">
+      </app-lib-search>
     </div>
     <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results"
       triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
@@ -177,4 +180,17 @@
   <button class="back-to-top" (click)="scrollToTop()" [ngClass]="{'show': showBackToTop}">
     Back up top?
   </button>
+  <!-- Add this just before the closing </div> of the chrcter-creation-container -->
+  <div *ngIf="showStaticHoverCard" class="backdrop" (click)="closeStaticHoverCard()"></div>
+  <div *ngIf="showStaticHoverCard" class="static-hover-card">
+    <button (click)="closeStaticHoverCard()" class="close-btn">&times;</button>
+    <h5>{{ selectedEntry?.name }}</h5>
+    <ul class="list-unstyled">
+      <ng-container *ngFor="let subEntry of (selectedEntry | keyvalue)">
+        <li *ngIf="subEntry.key !== 'name'">
+          <strong>{{ subEntry.key }}:</strong> {{ formatItem(subEntry.value) }}
+        </li>
+      </ng-container>
+    </ul>
+  </div>
 </div>

@@ -374,3 +374,41 @@ app-lib-search {
 .back-to-top:hover {
   background-color: #0056b3;
 }
+
+.hover-card {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.hover-card.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.group-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.group-buttons button {
+  margin: 5px 0;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.group-buttons button:hover {
+  background-color: #0056b3;
+}

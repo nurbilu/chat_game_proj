@@ -21,12 +21,14 @@
   No results found.
 </div>
 
-<!-- Backdrop and Centered Hovering Subcard -->
+<!-- Backdrop and Centered Static Hover Card -->
 <div *ngIf="showHoverCard" class="backdrop" (click)="closeHoverCard()"></div>
-<div *ngIf="showHoverCard" class="centered-hover-card">
+<div *ngIf="showHoverCard" class="static-hover-card">
+  <div class="hover-card-header">
+    <button (click)="closeHoverCard()" class="close-btn">&times;</button>
+  </div>
   <div class="hover-card-content">
     <h5>{{ selectedEntry?.name }}</h5>
-    <button (click)="closeHoverCard()" class="close-btn">&times;</button>
     <ul class="list-unstyled">
       <ng-container *ngFor="let subEntry of (selectedEntry | keyvalue)">
         <li *ngIf="subEntry.key !== 'name'">

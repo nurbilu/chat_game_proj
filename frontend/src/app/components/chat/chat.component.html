@@ -1,53 +1,83 @@
-<div class="chat-container">
-  <div class="chat-area">
-    <img class="profile-picture" (click)="GoToProfile()" src="assets/Icons/GoToProf.png" alt="Go to Profile" ngbPopover="Go to Profile" triggers="mouseenter:mouseleave">
-    <h2>D&D Adventure Chat</h2>
-    <div *ngIf="!username">
-    </div>
-    <div *ngIf="username">
-      <div class="chat-window">
-        <div *ngFor="let response of responses"
-          [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
-          <p>{{ response.text }}</p>
+<div class=" chat-container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card chat-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="mb-0">D&D Adventure Chat</h2>
+          <img class="profile-picture" (click)="GoToProfile()" src="assets/Icons/GoToProf.png" alt="Go to Profile"
+            ngbPopover="Go to Profile" triggers="mouseenter:mouseleave">
+        </div>
+        <div class="card-body chat-window">
+          <div *ngFor="let response of responses"
+            [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
+            <p>{{ response.text }}</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="chat-input-grid">
+            <div class="input-area">
+              <div class="subcard input-container">
+                <span>{{ username }}: </span>
+                <textarea [(ngModel)]="message" placeholder="Type your message here" required
+                  (keydown)="onEnter($event)" class="form-control" rows="4"></textarea>
+              </div>
+            </div>
+            <div class="controls-area">
+              <div class="subcard controls-container">
+                <div class="custom-select">
+                  <button (click)="toggleDropup()" class="select-button" ngbPopover="Select a template" triggers="mouseenter:mouseleave" popoverTitle="Select Template">Select a template</button>
+                  <ul class="options" [class.show]="isDropupOpen">
+                    <li (click)="selectOption('template1')">Lets Start a Game</li>
+                    <li (click)="selectOption('template2')">Character Prompt</li>
+                    <li (click)="selectOption('template3')">Save Last Prompt</li>
+                  </ul>
+                </div>
+                <div class="button-group">
+                  <button (click)="sendMessage()" class="send-icon" ngbPopover="Send the message" triggers="mouseenter:mouseleave" popoverTitle="Send Message"></button>
+                  <button (click)="clearChatInput()" class="clear-icon"
+                    ngbPopover="Clear the chat input" triggers="mouseenter:mouseleave" popoverTitle="Clear Chat Input">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="input-container">
-        <span>{{ username }}: </span>
-        <input type="text" [(ngModel)]="message" placeholder="Type your message here" required
-          (keydown)="onEnter($event)">
-        <button (click)="sendMessage()" class="btn btn-success">Send</button>
-        <button (click)="clearChatInput()" class="clear-icon" alt="clear-input" ngbPopover="Clear the chat input" triggers="mouseenter:mouseleave" popoverTitle="Clear Chat Input"></button>
-        <select [(ngModel)]="selectedTemplate" (change)="pasteTemplate()" aria-label="Default select example">
-          <option value="" disabled selected>Select a template</option>
-          <option value="template1">Lets Start a Game</option>
-          <option value="template2">Character Prompt</option>
-          <option value="template3">Save Last Prompt</option>
-        </select>
+    </div>
+    <div class="col-md-4">
+      <div class="card dice-card">
+        <div class="card-header">
+          <h3 class="mb-0">Dice Roller</h3>
+        </div>
+        <div class="card-body">
+          <div class="dice-controls">
+            <div class="dice-row" *ngFor="let dice of selectedDice; let i = index">
+              <select [(ngModel)]="selectedDice[i]" class="form-control" ngbPopover="Select the type of dice to roll"
+                triggers="mouseenter:mouseleave" popoverTitle="Select Dice Type">
+                <option *ngFor="let diceType of diceTypes" [value]="diceType">{{diceType}}</option>
+              </select>
+              <input type="number" [(ngModel)]="numDice[i]" min="1" max="10" class="form-control ml-2"
+                ngbPopover="Select the number of dice to roll" triggers="mouseenter:mouseleave"
+                popoverTitle="Select Number of Dice">
+              <input type="number" [(ngModel)]="modifiers[i]" placeholder="Modifier" class="form-control ml-2"
+                ngbPopover="Select the modifier to add to the roll" triggers="mouseenter:mouseleave"
+                popoverTitle="Select Modifier">
+            </div>
+            <div class="add-buttons" style="display: flex; justify-content: space-between;">
+              <button (click)="addDiceType()" class="add-btn">Add Dice Type</button>
+              <button (click)="resetDiceRoller()" class="reset-btn">Reset Dice Roller</button>
+            </div>
+            <div class="roll-buttons">
+              <button (click)="rollDice()" class="roll-btn">Roll</button>
+              <button (click)="clearRollResults()" class="clear-btn">Clear Results</button>
+            </div>
+          </div>
+          <div class="card-footer dice-results" *ngIf="rollResults.length">
+            <p>Dice: {{numDice.join(', ')}} {{selectedDice.join(', ')}}</p>
+            <p>Results: {{rollResults.join(', ')}} + ({{modifiers.join(' + ')}})</p>
+            <p>Total with Modifiers: {{rollTotal}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  
-  <div class="dice-roller">
-    <h3>Dice Roller</h3>
-    <div class="dice-controls">
-      <div class="dice-row" *ngFor="let dice of selectedDice; let i = index">
-        <select [(ngModel)]="selectedDice[i]" ngbPopover="Select the type of dice to roll" triggers="mouseenter:mouseleave" popoverTitle="Select Dice Type">
-          <option *ngFor="let diceType of diceTypes" [value]="diceType">{{diceType}}</option>
-        </select>
-        <input type="number" [(ngModel)]="numDice[i]" min="1" max="10" ngbPopover="Select the number of dice to roll" triggers="mouseenter:mouseleave" popoverTitle="Select Number of Dice">
-        <input type="number" [(ngModel)]="modifiers[i]" placeholder="Modifier" ngbPopover="Select the modifier to add to the roll" triggers="mouseenter:mouseleave" popoverTitle="Select Modifier">
-      </div>
-      <div class="add-buttons">
-        <button (click)="addDiceType()">Add Dice Type</button>
-        <button (click)="resetDiceRoller()">Reset Dice Roller</button>
-      </div>
-      <button (click)="rollDice()">Roll</button>
-      <button (click)="clearRollResults()">Clear Results</button>
-    </div>
-    <div class="dice-results" *ngIf="rollResults.length">
-      <p>Dice: {{numDice.join(', ')}} {{selectedDice.join(', ')}}</p>
-      <p>Results: {{rollResults.join(', ')}} + ({{modifiers.join(' + ')}})</p>
-      <p>Total with Modifiers: {{rollTotal}}</p>
-    </div>
-  </div>
-</div>

@@ -22,6 +22,7 @@ export class ChatComponent implements OnInit {
     rollTotal: number = 0;
     additionalModifiers: number[] = [];
     profilePictureUrl: string = '/assets/imgs/default-profile.png'; // Default profile picture
+    isDropupOpen = false;
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
 
@@ -155,5 +156,15 @@ export class ChatComponent implements OnInit {
         this.rollResults = [];
         this.rollTotal = 0;
         this.additionalModifiers = [];
+    }
+
+    toggleDropup() {
+        this.isDropupOpen = !this.isDropupOpen;
+    }
+
+    selectOption(option: string) {
+        this.selectedTemplate = option;
+        this.isDropupOpen = false;
+        this.pasteTemplate();
     }
 }

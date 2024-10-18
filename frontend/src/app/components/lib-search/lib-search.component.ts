@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { SearchService } from '../../services/search.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class LibSearchComponent {
   showHoverCard: boolean = false;
   selectedEntry: any = null;
 
-  constructor(private searchService: SearchService) {}
+  constructor(private searchService: SearchService, private renderer: Renderer2) {}
 
   onSearch(): void {
     console.log('LibSearchComponent onSearch triggered with query:', this.searchQuery);
@@ -97,11 +97,13 @@ export class LibSearchComponent {
   toggleHoverCard(entry: any): void {
     this.selectedEntry = entry;
     this.showHoverCard = true;
+    this.renderer.addClass(document.body, 'modal-open');
   }
 
   closeHoverCard(): void {
     this.showHoverCard = false;
     this.selectedEntry = null;
+    this.renderer.removeClass(document.body, 'modal-open');
   }
 
 }

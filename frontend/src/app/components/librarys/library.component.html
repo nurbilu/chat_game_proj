@@ -121,7 +121,11 @@
     </div>
   </div>
 </div>
-<!-- Add this button at the end of your component's HTML, just before the closing </div> tag -->
-<button class="back-to-top" (click)="scrollToTop()" [ngClass]="{'show': showBackToTop}">
-  Back up top?
-</button>
+
+<!-- Replace the existing hover card and floating button with this -->
+<div class="hover-card" [ngClass]="{'show': showHoverCard}">
+  <div class="group-buttons">
+    <button (click)="scrollToTop()">Back to Top</button>
+    <button (click)="resetLocation()">Reset Location</button>
+  </div>
+</div>

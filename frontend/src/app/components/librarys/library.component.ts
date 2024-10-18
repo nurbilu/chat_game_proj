@@ -35,13 +35,23 @@ export class LibraryComponent implements OnInit {
   allRowsExpanded: boolean = false;
   cardExpandedStates: { [cardIndex: number]: { [key: string]: boolean } } = {};
   tableExpandedStates: { [rowIndex: number]: { [key: string]: boolean } } = {};
-  showBackToTop: boolean = false;
+  showNavigationButtons: boolean = false;
   allCardValuesExpanded: { [cardIndex: number]: boolean } = {};
+  showBackToStartButton: boolean = false;
+  isModalOpen: boolean = false;
+  showHoverCard: boolean = false;
+  isScrollbarVisible: boolean = false;
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.loadInitialData();
+    
+    if (typeof window !== 'undefined') {
+      this.checkScrollbarVisibility();
+      window.addEventListener('scroll', () => this.checkScrollbarVisibility());
+    }
+    this.checkScrollPosition();
   }
 
   loadInitialData(): void {
@@ -103,7 +113,7 @@ export class LibraryComponent implements OnInit {
     if (this.isCardCollection(this.selectedCollection)) {
       this.pageSize = 2;
     } else {
-      this.pageSize = 17;
+      this.pageSize = 20;
     }
     const endIndex = this.page * this.pageSize;
     const startIndex = endIndex - this.pageSize;
@@ -145,6 +155,13 @@ export class LibraryComponent implements OnInit {
       console.log("Data already loaded for collection:", collection);
       this.loadPageItems();
     }
+
+    this.selectedCollection = collection;
+    this.page = 1;
+    this.loadPageItems();
+
+    // Add this line to check scrollbar visibility when changing collections
+    setTimeout(() => this.checkScrollbarVisibility(), 0);
   }
 
   isLongText(value: unknown): boolean {
@@ -293,12 +310,45 @@ export class LibraryComponent implements OnInit {
     );
   }
 
-  @HostListener('window:scroll', [])
+  @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    this.showBackToTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) > 300;
+    this.checkScrollPosition();
+  }
+
+  checkScrollPosition() {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.showHoverCard = scrollPosition > 300;
+  }
+
+  scrollToStart() {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  resetLocation() {
+    const tableHeader = document.querySelector('.table thead') as HTMLElement;
+    if (tableHeader) {
+      tableHeader.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      this.scrollToTop();
+    }
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  shouldShowHoverCard(): boolean {
+    const allowedCollections = ['Equipment', 'Spells', 'Monsters'];
+    return allowedCollections.includes(this.selectedCollection) && this.isScrollbarVisible;
+  }
+
+  checkScrollbarVisibility(): void {
+    if (typeof window !== 'undefined') {
+      this.isScrollbarVisible = document.documentElement.scrollHeight > document.documentElement.clientHeight;
+    }
   }
 }

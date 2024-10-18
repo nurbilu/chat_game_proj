@@ -123,6 +123,9 @@ user: any;
 
   showBackToTop: boolean = false;
 
+  showStaticHoverCard: boolean = false;
+  selectedEntry: any = null;
+
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
@@ -296,6 +299,7 @@ user: any;
 
 
   handleSearchResults(results: any[]): void {
+    console.log('Handling search results:', results);
     this.searchResult = results;
     this.showSearchResults = true;
   }
@@ -367,25 +371,12 @@ user: any;
   }
 
   formatItem(item: any): string {
-    if (Array.isArray(item) && item.length === 0) {
-      return 'empty';
-    }
-    if (typeof item === 'object' && item !== null && Object.keys(item).length === 0) {
-      return 'empty';
-    }
-    if (typeof item === 'string') {
-      return item;
-    }
     if (Array.isArray(item)) {
-      return item.map(i => i.name || i).join(', ');
+      return item.join(', ');
+    } else if (typeof item === 'object' && item !== null) {
+      return JSON.stringify(item);
     }
-    if (typeof item === 'object' && item !== null) {
-      return Object.values(item)
-        .filter((value): value is string => typeof value === 'string' && value.trim() !== '')
-        .map(value => value.trim())
-        .join(', ');
-    }
-    return String(item);
+    return item.toString();
   }
 
   clearSearchQuery(): void {
@@ -409,5 +400,17 @@ user: any;
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  toggleStaticHoverCard(entry: any): void {
+    this.selectedEntry = entry;
+    this.showStaticHoverCard = true;
+    document.body.classList.add('modal-open');
+  }
+
+  closeStaticHoverCard(): void {
+    this.showStaticHoverCard = false;
+    this.selectedEntry = null;
+    document.body.classList.remove('modal-open');
   }
 }
