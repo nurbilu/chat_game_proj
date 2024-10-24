@@ -43,6 +43,27 @@ nav {
   padding-bottom: 5px;
 }
 
+.navbar-nav .btn-group12 {
+  display: flex;
+  align-items: center;
+  margin-left: 0; /* Align to the left */
+  margin-right: auto; /* Push to the left */
+  border: 2px solid white; 
+  border-radius: 5px; 
+  padding: 5px; 
+  position: absolute; /* Position it absolutely */
+  left: 75px; /* Adjust this value to position it near the logo */
+  top: 23px; /* Adjust this value to align vertically */
+}
+
+.navbar-nav .btn-group12 img {
+  margin-right: 10px; 
+  padding-right: 15px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;    
+}
+
 
 .navbar-brand {
   margin-right: 20px; /* Increase this value to create a bigger gap */
@@ -158,9 +179,5 @@ body.offcanvas-open {
 .btn-primary:hover {
   background-color: #b28954;
 }
-.go-to-home-icon {
-  width: 24px; /* Slightly larger icon */
-  height: 24px;
-  margin-left: 20px; /* Add left margin to increase gap */
-}
+
 }

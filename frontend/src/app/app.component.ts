@@ -11,6 +11,9 @@ import { ChrcterCreationComponent } from './components/chrcter-creation/chrcter-
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  navigateToLoginpage() {
+    this.router.navigate(['/login']);
+  }
   title = 'DeMe - pick your story';
   isSuperUser: boolean = false;
   username: string | null = null;

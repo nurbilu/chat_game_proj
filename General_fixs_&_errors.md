@@ -14,10 +14,9 @@ estimated total time frame: ~ 56 - 80+ hours
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
 
 (estimated time frame: ~ 9 hours)
-   3.a. adjust dice roller desisgn (almost done)
-   3.b. fix / insure refresh token is working as expected with the login Modal as login component () - fix the remember me that is cleared from local storage 
+   3.a. fix / insure refresh token is working as expected with the login Modal as login component () - fix the remember me that is cleared from local storage 
    when logout ()
-   3.c. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor ()
+   3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor ()
 
 (estimated time frame: ~ 2 - 7 hours)
 3.5.a. add 2-3 functions to super profile page [block user access and unblock user access , display user characters prompts , display user last message and 3 last 
@@ -27,7 +26,7 @@ sub-task : remove Super Profile or Profile and keep the other one {} ()
 
 
 (estimated time frame: ~ 3 - 12 hours)
-   4.fix login component to create a div for the login form to look as all other components using the same format (done?)
+   4.fix / implement / adjust login so save last un auth page in local storage / cookie / session storage ()
    if not implement login by google and facebook and twitter , remove ()
    - add google login (optional)
    - add facebook login (optional)
@@ -153,7 +152,7 @@ DONE LIST :
 
 37. 2.c. keep unity of desisgn for all navbar in app () - all navbar are the same but to the character create component (done)
 
-38.
+38. 3.a. adjust dice roller desisgn (done)
 
 39.
 
