@@ -51,8 +51,9 @@
 </section>
 
 <ng-template #welcomeTemplate let-username="username">
-  <div>Welcome {{ username }}, let's play!</div>
+  <div class="bg-light-blue text-dark-blue">Welcome {{ username }}, let's play!</div>
 </ng-template>
-<ng-template #errorTemplate>
-  <div>Login failed</div>
+
+<ng-template #errorTemplate let-message="message">
+  <div>{{ message }}</div>
 </ng-template>

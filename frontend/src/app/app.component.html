@@ -47,7 +47,7 @@
 </ng-template>
 
 <ng-template #welcomeTemplate let-username="username">
-  <div>Welcome {{ username }}, let's play!</div>
+  <div class="bg-light-blue">Welcome {{ username }}, let's play!</div>
 </ng-template>
 
 <ng-template #errorTemplate let-message="message">
@@ -56,21 +56,22 @@
   </div>
 </ng-template>
 
+<ng-template #logoutSuccessTemplate let-username="username" let-message="message">
+  <div>Goodbye, {{ username }}! {{ message }}</div>
+</ng-template>
+
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark" [class.sticky-top]="isNavbarSticky">
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" (click)="openOffcanvas()" ngbTooltip="Click to open Navbar Menu">
     <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px;">
   </a>
-  <button class="navbar-toggler" type="button" (click)="openOffcanvas()" ngbPopover="Click to open Navbar Menu" triggers="mouseenter:mouseleave" popoverTitle="Menu">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <img src="assets/imgs/icons/smllHomepage.png" alt="Go to Home" class="go-to-home-icon" (click)="navigateToHomepage()" ngbTooltip="Click to go to Homepage">
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <div class="btn-group" role="group" aria-label="homepage, Login and Logout">
-        <button class="btn btn-outline-success" (click)="openLoginModal(loginTemplate)" ngbPopover="Click to open Login Modal" triggers="mouseenter:mouseleave" popoverTitle="Login">Login</button>
-        <button class="btn btn-outline-info" routerLink="/homepage" ngbPopover="Click to open Homepage" triggers="mouseenter:mouseleave" popoverTitle="Homepage">Homepage</button>
-        <button class="btn btn-outline-primary" routerLink="/register" ngbPopover="Click to open Register" triggers="mouseenter:mouseleave" popoverTitle="Register">Register</button>
-        <button class="btn btn-outline-light" *ngIf="isSuperUser" routerLink="/super-profile" ngbPopover="Click to open Super Profile" triggers="mouseenter:mouseleave" popoverTitle="Super Profile">Super Profile</button>
-        <button class="btn btn-outline-warning" (click)="openLogoutModal(logoutTemplate)" ngbPopover="Click to open Logout Modal" triggers="mouseenter:mouseleave" popoverTitle="Logout">Logout</button>
+      <div class="btn-group" role="group" aria-label="Login and Logout">
+        <img src="assets/imgs/icons/login-modal-icon.png" alt="Login" (click)="openLoginModal(loginTemplate)" ngbTooltip="Click to open Login Modal" class="btn-icon">
+        <img src="assets/imgs/icons/register-smll-icon.png" alt="Register" routerLink="/register" ngbTooltip="Click to open Register" class="btn-icon">
+        <img src="assets/imgs/icons/super-profile-icon.png" alt="Super Profile" *ngIf="isSuperUser" routerLink="/super-profile" ngbTooltip="Click to open Super Profile" class="btn-icon">
+        <img src="assets/imgs/icons/logout-icon.png" alt="Logout" (click)="openLogoutModal(logoutTemplate)" ngbTooltip="Click to open Logout Modal" class="btn-icon">
       </div>
       <div>
         <li class="nav-item d-flex align-items-center">

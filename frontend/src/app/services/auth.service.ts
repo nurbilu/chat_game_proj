@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID, NgZone } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, NgZone, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpBackend } from '@angular/common/http';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { tap, catchError, switchMap } from 'rxjs/operators';
@@ -21,6 +21,8 @@ export class AuthService {
 
     private tokenExpirationSubject = new BehaviorSubject<void>(undefined);
     tokenExpiration$ = this.tokenExpirationSubject.asObservable();
+
+    logoutEvent = new EventEmitter<string>();
 
     constructor(
         private http: HttpClient,
@@ -336,16 +338,17 @@ export class AuthService {
     logout(): Observable<any> {
         return of(null).pipe(
             tap(() => {
+                const username = this.username.getValue(); // Get the current username
                 this.clearLocalStorage();
                 this._isLoggedIn.next(false);
                 this.username.next('');
                 if (this.refreshTokenExpirationTimer) {
                     clearTimeout(this.refreshTokenExpirationTimer);
                 }
-                else {
+                if (this.tokenExpirationTimer) {
                     clearTimeout(this.tokenExpirationTimer);
                 }
-                
+                this.logoutEvent.emit(username); // Emit the username with the logout event
             })
         );
     }

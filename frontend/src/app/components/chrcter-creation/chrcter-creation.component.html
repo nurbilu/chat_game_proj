@@ -30,15 +30,15 @@
   
 
   <div class="text-frame-lib-search fade-in-delay" [class.fade-in-active]="!isLoading">
-    <h3 class="LibrarySearch" ngbPopover="Click to search for spells, classes, and races"
-      triggers="mouseenter:mouseleave" popoverTitle="Library Search">Library Search</h3>
+    <h3 class="LibrarySearch" ngbTooltip="Click to search for spells, classes, and races"
+      triggers="mouseenter:mouseleave" tooltipTitle="Library Search">Library Search</h3>
     <div class="input-group">
       <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control" (keyup.enter)="onSearch()">
-      <button (click)="onSearch()" class="search-icon" alt="Search" ngbPopover="Click to search" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
-      <button (click)="clearSearchQuery()" class="clear-icon" alt="Clear" ngbPopover="Clear search query" triggers="mouseenter:mouseleave" popoverTitle="Clear"></button>
-      <button (click)="pasteText()" class="paste-icon" alt="Paste" ngbPopover="Paste from clipboard" triggers="mouseenter:mouseleave" popoverTitle="Paste"></button>
-      <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results"
-        triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
+      <button (click)="onSearch()" class="search-icon" alt="Search" ngbTooltip="Click to search" triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
+      <button (click)="clearSearchQuery()" class="clear-icon" alt="Clear" ngbTooltip="Clear search query" triggers="mouseenter:mouseleave" tooltipTitle="Clear"></button>
+      <button (click)="pasteText()" class="paste-icon" alt="Paste" ngbTooltip="Paste from clipboard" triggers="mouseenter:mouseleave" tooltipTitle="Paste"></button>
+      <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbTooltip="Clear search results"
+        triggers="mouseenter:mouseleave" tooltipTitle="Clear Results"></button>
     </div>
     <div *ngIf="isSearching" class="spinner-container">
       <div class="spinner-border" role="status">
@@ -52,8 +52,8 @@
         (searchCleared)="clearSearchResults()">
       </app-lib-search>
     </div>
-    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Clear search results"
-      triggers="mouseenter:mouseleave" popoverTitle="Clear Results"></button>
+    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbTooltip="Clear search results"
+      triggers="mouseenter:mouseleave" tooltipTitle="Clear Results"></button>
   </div>
   <div class="grid fade-in-delay" [class.fade-in-active]="!isLoading">
     <div class="g-col-8 text-frame">
@@ -62,12 +62,12 @@
       <div class="text-editor-container">
         <st-editor [(ngModel)]="characterPrompt" [Config]="config"></st-editor>
       </div>
-      <button (click)="sendMessage()" ngbPopover="Click to save your prompt to the chat"
-        triggers="mouseenter:mouseleave" popoverTitle="Send">Send</button>
-      <button (click)="saveDraft()" ngbPopover="Click to save draft not as a prompt" triggers="mouseenter:mouseleave"
-        popoverTitle="Save Draft">Save Draft</button>
-      <button (click)="pasteDraft()" ngbPopover="Click to paste your draft" triggers="mouseenter:mouseleave"
-        popoverTitle="Paste Draft">Paste Draft</button>
+      <button (click)="sendMessage()" ngbTooltip="Click to save your prompt to the chat"
+        triggers="mouseenter:mouseleave" tooltipTitle="Send">Send</button>
+      <button (click)="saveDraft()" ngbTooltip="Click to save draft not as a prompt" triggers="mouseenter:mouseleave"
+        tooltipTitle="Save Draft">Save Draft</button>
+      <button (click)="pasteDraft()" ngbTooltip="Click to paste your draft" triggers="mouseenter:mouseleave"
+        tooltipTitle="Paste Draft">Paste Draft</button>
     </div>
 
     <div class="g-col-4 text-frame">
@@ -82,8 +82,8 @@
               <option value="">Select a spell</option>
               <option *ngFor="let spell of classItem?.spells" [value]="spell">{{ spell }}</option>
             </select>
-            <img src="/assets/imgs/icons/copy.png" class="copy-icon" (click)="copySelectedSpell(selectedSpell) "
-              ngbPopover="Click to copy the selected spell" triggers="mouseenter:mouseleave" popoverTitle="Copy">
+            <img src="/assets/imgs/icons/copy.png" class="copy-icon" (click)="copySelectedSpell(selectedSpell)"
+              ngbTooltip="Click to copy the selected spell" triggers="mouseenter:mouseleave" tooltipTitle="Copy">
           </div>
           <p *ngIf="classItem?.spells?.length === 0" class="no-spells">
             No spells available for {{ classItem?.name }}.
@@ -152,8 +152,8 @@
     </div>
 
     <div class="g-col-4 text-frame race-description">
-      <h3 class="RaceDescriptions" ngbPopover="Click to view races description" triggers="mouseenter:mouseleave"
-        popoverTitle="Race Descriptions">Race Descriptions</h3>
+      <h3 class="RaceDescriptions" ngbTooltip="Click to view races description" triggers="mouseenter:mouseleave"
+        tooltipTitle="Race Descriptions">Race Descriptions</h3>
       <div ngbAccordion>
         <div ngbAccordionItem *ngFor="let race of races">
           <h2 ngbAccordionHeader>
@@ -194,3 +194,20 @@
     </ul>
   </div>
 </div>
+
+<!-- Add these toast templates at the top of your component template -->
+<ng-template #successToast let-message="message">
+  <div class="d-flex">
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #errorToast let-message="message">
+  <div class="d-flex">
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+</ng-template>

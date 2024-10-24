@@ -15,7 +15,7 @@
         <!-- Bootstrap Button Groups for Menu -->
         <div class="btn-group mt-4" role="group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false" ngbPopover="User Application" triggers="mouseenter:mouseleave" popoverTitle="User Application" [ngbPopover]="userApplicationInfo">
+                aria-expanded="false" ngbTooltip="User Application" triggers="mouseenter:mouseleave" tooltipTitle="User Application">
                 User Application
             </button>
             <ul class="dropdown-menu">
@@ -28,7 +28,7 @@
 
         <div class="btn-group mt-4" role="group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false" ngbPopover="Game Interface" triggers="mouseenter:mouseleave" popoverTitle="Game Interface" [ngbPopover]="gameInterfaceInfo">
+                aria-expanded="false" ngbTooltip="Game Interface" triggers="mouseenter:mouseleave" tooltipTitle="Game Interface">
                 Game Interface
             </button>
             <ul class="dropdown-menu">
@@ -40,7 +40,7 @@
 
         <div class="btn-group mt-4" role="group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false" ngbPopover="Bestiary / Info" triggers="mouseenter:mouseleave" popoverTitle="Bestiary / Info" [ngbPopover]="bestiaryInfo">
+                aria-expanded="false" ngbTooltip="Bestiary / Info" triggers="mouseenter:mouseleave" tooltipTitle="Bestiary / Info">
                 Bestiary / Info
             </button>
             <ul class="dropdown-menu">
@@ -51,7 +51,7 @@
 
         <div class="btn-group mt-4" role="group" *ngIf="isSuperUser">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false" ngbPopover="Superuser" triggers="mouseenter:mouseleave" popoverTitle="Superuser" [ngbPopover]="superuserInfo">
+                aria-expanded="false" ngbTooltip="Superuser" triggers="mouseenter:mouseleave" tooltipTitle="Superuser">
                 Superuser
             </button>
             <ul class="dropdown-menu">

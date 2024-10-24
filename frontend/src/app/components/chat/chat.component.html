@@ -5,7 +5,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <h2 class="mb-0">D&D Adventure Chat</h2>
           <img class="profile-picture" (click)="GoToProfile()" src="assets/Icons/GoToProf.png" alt="Go to Profile"
-            ngbPopover="Go to Profile" triggers="mouseenter:mouseleave">
+            ngbTooltip="Go to Profile" triggers="mouseenter:mouseleave">
         </div>
         <div class="card-body chat-window">
           <div *ngFor="let response of responses"
@@ -25,7 +25,7 @@
             <div class="controls-area">
               <div class="subcard controls-container">
                 <div class="custom-select">
-                  <button (click)="toggleDropup()" class="select-button" ngbPopover="Select a template" triggers="mouseenter:mouseleave" popoverTitle="Select Template">Select a template</button>
+                  <button (click)="toggleDropup()" class="select-button" ngbTooltip="Select a template" triggers="mouseenter:mouseleave" tooltipTitle="Select Template">Select a template</button>
                   <ul class="options" [class.show]="isDropupOpen">
                     <li (click)="selectOption('template1')">Lets Start a Game</li>
                     <li (click)="selectOption('template2')">Character Prompt</li>
@@ -52,16 +52,16 @@
         <div class="card-body">
           <div class="dice-controls">
             <div class="dice-row" *ngFor="let dice of selectedDice; let i = index">
-              <select [(ngModel)]="selectedDice[i]" class="form-control" ngbPopover="Select the type of dice to roll"
-                triggers="mouseenter:mouseleave" popoverTitle="Select Dice Type">
+              <select [(ngModel)]="selectedDice[i]" class="form-control" ngbTooltip="Select the type of dice to roll"
+                triggers="mouseenter:mouseleave" tooltipTitle="Select Dice Type">
                 <option *ngFor="let diceType of diceTypes" [value]="diceType">{{diceType}}</option>
               </select>
               <input type="number" [(ngModel)]="numDice[i]" min="1" max="10" class="form-control ml-2"
-                ngbPopover="Select the number of dice to roll" triggers="mouseenter:mouseleave"
-                popoverTitle="Select Number of Dice">
+                ngbTooltip="Select the number of dice to roll" triggers="mouseenter:mouseleave"
+                tooltipTitle="Select Number of Dice">
               <input type="number" [(ngModel)]="modifiers[i]" placeholder="Modifier" class="form-control ml-2"
-                ngbPopover="Select the modifier to add to the roll" triggers="mouseenter:mouseleave"
-                popoverTitle="Select Modifier">
+                ngbTooltip="Select the modifier to add to the roll" triggers="mouseenter:mouseleave"
+                tooltipTitle="Select Modifier">
             </div>
             <div class="add-buttons" style="display: flex; justify-content: space-between;">
               <button (click)="addDiceType()" class="add-btn">Add Dice Type</button>

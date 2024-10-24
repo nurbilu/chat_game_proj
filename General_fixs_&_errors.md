@@ -1,34 +1,55 @@
 ### what to fix and errors : 
    ** ask some friends if they know any good on the docker - better then you (docker((((()))))) ** 
 
+estimated total time frame: ~ 56 - 80+ hours
 
-   1.a. match the visual effect of rest of the website to as homepage , login and register (done?)
+(estimated time frame: 9-12 hours)
+   1.a. match the visual effect of rest of the website to as homepage , login and register (done)
    1.b. finish card tables design (almost done)
    1.c. finish total lib design (almost done)
-   1.d. design hover card close button ()
+   1.d. design hover card close button (done?)
 
+(estimated time frame: ~ 8 hours)
    2.a. change /adjust /fix /add toasts messages in all components (almost done)
-   2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (almost done))
-   2.c. keep unity of desisgn for all navbar in app () - all navbar are the same but to the character create component ()
+   2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
 
+(estimated time frame: ~ 9 hours)
    3.a. adjust dice roller desisgn (almost done)
-   3.b. fix / insure refresh token is working as expected with the login Modal as login component ()
-   3.d. adjsut nav to profile button in chat to be positioned or hover over ()
+   3.b. fix / insure refresh token is working as expected with the login Modal as login component () - fix the remember me that is cleared from local storage 
+   when logout ()
+   3.c. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor ()
+
+(estimated time frame: ~ 2 - 7 hours)
+3.5.a. add 2-3 functions to super profile page [block user access and unblock user access , display user characters prompts , display user last message and 3 last 
+searches]
+sub-task : remove Super Profile or Profile and keep the other one {} ()
+3.5.b. add 2-3 functions to user chat page - optional ()
 
 
+(estimated time frame: ~ 3 - 12 hours)
    4.fix login component to create a div for the login form to look as all other components using the same format (done?)
    if not implement login by google and facebook and twitter , remove ()
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
+   4.b. design change pwd or remove the component display or link component to profile and design it ()
 
+(estimated time frame: + 10 hours at least)
    4.b. fix docker hub GUI ()
 
+
+(if needed : estimated time frame: ~ 3 - 6 hours)
    5. maybe need one terminal command to run all the flask apps for docker (? maybe its not needed? )
       make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command ( maybe its not needed?) 
 
-   6.a. add more visual effects to the website ()
+(estimated time frame: ~ 2 - 7 hours)
+   6.a. add more visual effects to the website ():
+      - design the grid of character create component better ? 
+      - add visual effects to super profile page ()
+      - add visual effects to user chat page ()
 
+
+**++ lets try to deliver the project by the date 03/11/2024 , if not possible - deliver as soon as possible. (before my Bday) ++**
 
 questionable tasks: 
    6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable in short term - necessary ?)
@@ -50,6 +71,7 @@ questionable tasks:
 check again but not that important: 
 1. 9. 6. add/fix/adjust/modify when reload from browser display the current component instead to homepage(done?)
 2. 
+
 
 DONE LIST : 
 
@@ -125,15 +147,35 @@ DONE LIST :
 
 34. 1.d. fix so search result sub card hover will be displayed as static hover not active hover (done)
 
-35. 
+35. 3.d. adjsut nav to profile button in chat to be positioned or hover over (done)
 
-36.
+36. 1.a.1. change img favImg to be offcanvas menu instead of the current favImg (done)
 
-37.
+37. 2.c. keep unity of desisgn for all navbar in app () - all navbar are the same but to the character create component (done)
 
 38.
 
 39.
 
 40. 
+
+41.
+
+42.
+
+43.
+
+44.
+
+45.
+
+46.
+
+47.
+
+48.
+
+49.
+
+50.
 

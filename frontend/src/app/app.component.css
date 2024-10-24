@@ -29,9 +29,23 @@ nav {
 .navbar-nav .btn-group {
   display: flex;
   align-items: center;
-  /* Center buttons vertically */
   margin-left: auto;
-  /* Push the button group to the right */
+  border: 2px solid white; 
+  border-radius: 5px; 
+  padding: 5px; 
+}
+
+.navbar-nav .btn-group img {
+  margin-right: 10px; 
+  padding-right: 15px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+
+.navbar-brand {
+  margin-right: 20px; /* Increase this value to create a bigger gap */
 }
 
 .navbar-brand img {
@@ -143,5 +157,10 @@ body.offcanvas-open {
 
 .btn-primary:hover {
   background-color: #b28954;
+}
+.go-to-home-icon {
+  width: 24px; /* Slightly larger icon */
+  height: 24px;
+  margin-left: 20px; /* Add left margin to increase gap */
 }
 }

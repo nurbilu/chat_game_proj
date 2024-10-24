@@ -21,10 +21,10 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.checkLogin();
+    return this.checkLogin(state.url);
   }
 
-  private checkLogin(): Observable<boolean> {
+  private checkLogin(url: string): Observable<boolean> {
     if (isPlatformBrowser(this.platformId)) {
       if (this.authService.isLoggedIn()) {
         return of(true);

@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   username: string | null = null;
   password: string = '';
   rememberMe: boolean = false;
-  private modalRef: NgbModalRef | undefined;
+  private modalRef: NgbModalRef | null = null;
   isNavbarSticky: boolean = false;
   isLoading: boolean = false;
 
@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
   private offcanvasRef!: NgbOffcanvasRef;
   isLoggedIn: boolean = false;
   @ViewChild(ChrcterCreationComponent) chrcterCreationComponent!: ChrcterCreationComponent;
+  @ViewChild('logoutSuccessTemplate', { static: true }) logoutSuccessTemplate!: TemplateRef<any>;
 
   constructor(
     private router: Router,
@@ -71,18 +72,30 @@ export class AppComponent implements OnInit {
   }
 
   openLogoutModal(content: any) {
-    this.username = localStorage.getItem('username');
-    this.modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.modalRef.componentInstance) {
-      this.modalRef.componentInstance.username = this.username;
-    }
+    this.modalRef = this.modalService.open(content);
   }
 
   confirmLogout() {
-    if (this.modalRef) {
-      this.modalRef.close('Logout click');
-    }
-    this.logout();
+    const currentUsername = this.username; // Store the current username before logout
+    this.authService.logout().subscribe(() => {
+      console.log('User logged out');
+      this.isLoggedIn = false;
+      this.username = null;
+      this.isSuperUser = false;
+      this.router.navigate(['/homepage']);
+      
+      // Close the logout modal
+      if (this.modalRef) {
+        this.modalRef.close();
+      }
+
+      this.toastService.show({
+        template: this.logoutSuccessTemplate,
+        classname: 'bg-light-purple text-white',
+        delay: 5000,
+        context: { username: currentUsername, message: 'Bye for now , logout successful' }
+      });
+    });
   }
 
   cancelLogout() {
@@ -107,15 +120,20 @@ export class AppComponent implements OnInit {
         next: (response) => {
           this.toastService.show({
             template: this.welcomeTemplate,
-            classname: 'bg-success text-light',
+            classname: 'bg-light-blue text-dark-blue',
             delay: 10000,
             context: { username: this.username }
           });
+          if (this.rememberMe) {
+            localStorage.setItem('rememberMe', 'true');
+          }
           modal.close('Login click');
           this.username = localStorage.getItem('username');
           this.password = '';
           this.isLoggedIn = true;
           this.isSuperUser = this.authService.isSuperUser();
+          const targetRoute = this.isSuperUser ? '/super-profile' : '/#';
+          this.router.navigate([targetRoute]);
         },
         error: (error) => {
           this.toastService.show({
@@ -170,11 +188,26 @@ export class AppComponent implements OnInit {
       this.isLoggedIn = false;
       this.username = null;
       this.isSuperUser = false;
+      this.rememberMe = false;
       this.router.navigate(['/homepage']);
     });
   }
 
   navigateToForgotPassword(): void {
     this.router.navigate(['/forget-password']);
+  }
+
+  navigateToHomepage() {
+    this.router.navigate(['/homepage']);
+  }
+
+  navigateToRoute(route: string) {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate([route]);
+    } else {
+      // Save the route in session storage
+      sessionStorage.setItem('intendedRoute', route);
+      this.router.navigate(['/login']);
+    }
   }
 }

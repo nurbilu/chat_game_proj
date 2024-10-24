@@ -19,6 +19,10 @@ export class ToastService {
     this.toasts.push({ classname: 'bg-danger text-light', delay: 5000, message });
   }
 
+  warning(message: string) {
+    this.toasts.push({ classname: 'bg-warning text-dark', delay: 5000, message });
+  }
+
   show(toast: { template?: TemplateRef<any>, classname?: string, delay?: number, context?: any }) {
     this.toasts.push(toast);
 

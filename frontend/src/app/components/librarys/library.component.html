@@ -10,12 +10,12 @@
 <div class="search-container" [ngClass]="{'collapsed': isCollapsed}">
   <div class="input-group" [ngClass]="{'collapsed': isCollapsed}" [ngbCollapse]="!isCollapsed">
     <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control" (keyup.enter)="onSearch()">
-    <button (click)="onSearch()" class="search-icon" alt="Search" ngbPopover="Click to search" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
-    <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input" ngbPopover="Clear search query" triggers="mouseenter:mouseleave" popoverTitle="Clear"></button>
-    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbPopover="Return to Library" triggers="mouseenter:mouseleave" popoverTitle="Return"></button>
+    <button (click)="onSearch()" class="search-icon" alt="Search" ngbTooltip="Click to search" triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
+    <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input" ngbTooltip="Clear search query" triggers="mouseenter:mouseleave" tooltipTitle="Clear"></button>
+    <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbTooltip="Return to Library" triggers="mouseenter:mouseleave" tooltipTitle="Return"></button>
   </div>
   <div class="collapse-area">
-    <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}" ngbPopover="Search for items in the library" triggers="mouseenter:mouseleave" popoverTitle="Search"></button>
+    <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}" ngbTooltip="Search for items in the library" triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
   </div>
   <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
   [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"

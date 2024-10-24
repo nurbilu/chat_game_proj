@@ -66,3 +66,44 @@ button:hover {
 .bs-popover-auto[x-placement^="top"] .arrow::after {
     border-top-color: #ffcc00 !important;
 }
+
+.bg-light-purple {
+  background-color: #b06bdd !important;
+}
+
+.bg-green-blue {
+  background-color: #5F9EA0 !important;
+}
+
+.bg-purple {
+  background-color: #8a2be2 !important;
+}
+
+.bg-success-info {
+  background: linear-gradient(to right, #28a745, #17a2b8) !important;
+}
+
+/* Existing toast styles */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1200;
+}
+
+.toast {
+  min-width: 200px;
+}
+
+.bg-light-blue {
+  background-color: #8bc7ff; /* Light blue background */
+  border: 1px solid #3533c5; /* Dark blue border */
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-dark-blue {
+  color: #3533c5; /* Dark blue text */
+}

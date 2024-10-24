@@ -57,6 +57,9 @@ export class ChrcterCreationComponent implements OnInit {
   characterPromptEditor: any;
   @ViewChildren('spellSelect') spellSelects!: QueryList<ElementRef<HTMLSelectElement>>;
 user: any;
+  @ViewChild('successToast', { static: true }) successToast!: TemplateRef<any>;
+  @ViewChild('errorToast', { static: true }) errorToast!: TemplateRef<any>;
+
   constructor(
     private chcrcterCreationService: ChcrcterCreationService,
     private authService: AuthService,
@@ -164,10 +167,20 @@ user: any;
       };
       this.chcrcterCreationService.saveDraft(draft).subscribe({
         next: () => {
-          this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 5000 });
+          this.toastService.show({
+            template: this.successToast,
+            classname: 'bg-success text-light',
+            delay: 3000,
+            context: { message: 'Draft saved successfully' }
+          });
         },
         error: (error: any) => {
-          this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to save draft' }
+          });
         }
       });
     });
@@ -179,6 +192,12 @@ user: any;
         next: (response) => {
           if (response.prompt) {
             this.characterPrompt = response.prompt;
+            this.toastService.show({
+              template: this.successToast,
+              classname: 'bg-success text-light',
+              delay: 3000,
+              context: { message: 'Draft pasted successfully' }
+            });
           } else {
             this.characterPrompt = `
               <div style="text-align: left;">character name:&nbsp;</div>
@@ -191,10 +210,22 @@ user: any;
                 </a>
               </div>
             `;
+            this.toastService.show({
+              template: this.errorToast,
+              classname: 'bg-warning text-dark',
+              delay: 3000,
+              context: { message: 'No saved draft found' }
+            });
           }
         },
         error: (error: any) => {
           console.error('Failed to load draft:', error);
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to load draft' }
+          });
         }
       });
     });
@@ -206,6 +237,12 @@ user: any;
         next: (response) => {
           if (response.prompt) {
             this.characterPrompt = response.prompt;
+            this.toastService.show({
+              template: this.successToast,
+              classname: 'bg-success text-light',
+              delay: 3000,
+              context: { message: 'Draft pasted successfully' }
+            });
           } else {
             this.characterPrompt = `
               <div style="text-align: left;">character name:&nbsp;</div>
@@ -218,10 +255,22 @@ user: any;
                 </a>
               </div>
             `;
+            this.toastService.show({
+              template: this.errorToast,
+              classname: 'bg-warning text-dark',
+              delay: 3000,
+              context: { message: 'No saved draft found' }
+            });
           }
         },
         error: (error: any) => {
           console.error('Failed to load draft:', error);
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to load draft' }
+          });
         }
       });
     });
@@ -319,12 +368,29 @@ user: any;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(spell).then(() => {
         console.log('Selected spell copied to clipboard', spell);
-        this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 3000 });
+        this.toastService.show({
+          template: this.successToast,
+          classname: 'bg-success text-light',
+          delay: 3000,
+          context: { message: 'Spell copied to clipboard' }
+        });
       }).catch(err => {
         console.error('Failed to copy selected spell: ', err);
+        this.toastService.show({
+          template: this.errorToast,
+          classname: 'bg-danger text-light',
+          delay: 3000,
+          context: { message: 'Failed to copy spell' }
+        });
       });
     } else {
       console.error('Clipboard API not available');
+      this.toastService.show({
+        template: this.errorToast,
+        classname: 'bg-danger text-light',
+        delay: 3000,
+        context: { message: 'Clipboard API not available' }
+      });
     }
   }
 
@@ -334,6 +400,13 @@ user: any;
 
   sendMessage(): void {
     // Implement the sendMessage logic here
+    // After successful sending:
+    this.toastService.show({
+      template: this.successToast,
+      classname: 'bg-success text-light',
+      delay: 3000,
+      context: { message: 'Character prompt sent successfully' }
+    });
   }
 
   onSearch(): void {
