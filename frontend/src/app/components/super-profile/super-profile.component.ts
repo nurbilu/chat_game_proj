@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ScrollSpyService } from '../../services/scroll-spy.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../../services/toast.service';
 
 interface UserProfile {
   username: string;
@@ -13,6 +15,7 @@ interface UserProfile {
   pwd_user_str?: string;
   first_name?: string;
   last_name?: string;
+  is_blocked?: boolean;
 }
 
 @Component({
@@ -32,7 +35,9 @@ export class SuperProfileComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private scrollSpyService: ScrollSpyService
+    private scrollSpyService: ScrollSpyService,
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) {
     this.superUserForm = this.fb.group({
       username: ['', Validators.required],
@@ -93,5 +98,67 @@ export class SuperProfileComponent implements OnInit {
       },
       error: (error: any) => console.error('Logout failed:', error)
     });
+  }
+
+  blockUser(user: UserProfile): void {
+    this.authService.blockUser(user.username).subscribe({
+      next: () => {
+        if (this.selectedProfile && this.selectedProfile.username === user.username) {
+          this.selectedProfile.is_blocked = true;  // Update local state
+        }
+        user.is_blocked = true;  // Update in the profiles list
+        this.toastService.success(`User ${user.username} has been blocked`);
+      },
+      error: (error) => {
+        console.error('Failed to block user:', error);
+        this.toastService.error('Failed to block user');
+      }
+    });
+  }
+
+  unblockUser(user: UserProfile): void {
+    this.authService.unblockUser(user.username).subscribe({
+      next: () => {
+        if (this.selectedProfile && this.selectedProfile.username === user.username) {
+          this.selectedProfile.is_blocked = false;  // Update local state
+        }
+        user.is_blocked = false;  // Update in the profiles list
+        this.toastService.success(`User ${user.username} has been unblocked`);
+      },
+      error: (error) => {
+        console.error('Failed to unblock user:', error);
+        this.toastService.error('Failed to unblock user');
+      }
+    });
+  }
+
+  getUserStatus(user: UserProfile): string {
+    return user.is_blocked ? 'Blocked' : 'Active';
+  }
+
+  openBlockConfirmationModal(content: any, user: UserProfile): void {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        if (result === 'block') {
+          this.blockUser(user);
+        }
+      },
+      (reason) => {
+        // Modal dismissed
+      }
+    );
+  }
+
+  openUnblockConfirmationModal(content: any, user: UserProfile): void {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        if (result === 'unblock') {
+          this.unblockUser(user);
+        }
+      },
+      (reason) => {
+        // Modal dismissed
+      }
+    );
   }
 }

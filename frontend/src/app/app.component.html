@@ -61,7 +61,7 @@
 </ng-template>
 
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark" [class.sticky-top]="isNavbarSticky">
-  <a class="navbar-brand" (click)="openOffcanvas()" ngbTooltip="Click to open Navbar Menu">
+  <a class="navbar-brand" (click)="handleLogoClick()" ngbTooltip="Click to open Navbar Menu, Double click to reset position">
     <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px;">
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
@@ -96,25 +96,36 @@
   </div>
 </div>
 
+
 <ng-template #offcanvasContent let-offcanvas="offcanvas">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">NavBar Menu :</h5>
     <button type="button" class="btn-close text-reset" aria-label="Close" (click)="closeOffcanvas()"></button>
   </div>
-  <div class="offcanvas-body">
+  <div class="offcanvas-body" id="draggableOffcanvas">
     <ul class="navbar-nav">
-      <!-- <li class="nav-item"><a class="nav-link" routerLink="/homepage">Homepage</a></li> -->
-      <!-- <li class="nav-item"><a class="nav-link" routerLink="/login">Login Page</a></li> -->
-      <!-- <li class="nav-item"><a class="nav-link" routerLink="/register">Register</a></li> -->
       <li class="nav-item"><a class="nav-link" routerLink="/character-creation">Create Character</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/chat">Chat</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/library">Library</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/about">About</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/profile">Profile</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/change-password">Change Password</a></li>
-      <li class="nav-item" *ngIf="isSuperUser"><a class="nav-link" routerLink="/super-profile">Super Profile</a></li>
-      <!-- <li class="nav-item"><a class="nav-link" (click)="openLogoutModal(logoutTemplate)" style="cursor: pointer;">Logout</a></li> -->
     </ul>
+  </div>
+  <div class="offcanvas-footer">
+    <div id="navMap" (mousedown)="startDragging($event)">
+      <img src="assets/imgs/icons/toggle-offCanvas.png" 
+           [class]="'toggle-offcanvas-icon ' + currentOffcanvasPosition"
+           alt="Toggle Offcanvas" 
+           id="toggleOffcanvas"
+           ngbTooltip="Instructions:
+           1. Click to toggle offcanvas menu
+           2. Click and drag to change position
+           3. Release to open in new position"
+           tooltipClass="custom-tooltip"
+           [openDelay]="300"
+           placement="auto"/>
+    </div>
   </div>
 </ng-template>
 <app-toasts-container [errorTemplate]="errorTemplate"></app-toasts-container>

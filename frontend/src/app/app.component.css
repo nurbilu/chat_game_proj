@@ -180,4 +180,73 @@ body.offcanvas-open {
   background-color: #b28954;
 }
 
+#draggableOffcanvas {
+  cursor: move; /* Indicate that the element is draggable */
+}
+
+.toggle-offcanvas-icon {
+  cursor: grab;
+  transition: transform 0.3s ease;
+  user-select: none;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.toggle-offcanvas-icon.dragging {
+  cursor: grabbing;
+  background-color: rgba(201, 166, 107, 0.2);
+}
+
+.toggle-offcanvas-icon.start {
+  transform: rotate(180deg);
+}
+
+.toggle-offcanvas-icon.end {
+  transform: rotate(0deg);
+}
+
+.toggle-offcanvas-icon.top {
+  transform: rotate(270deg);
+}
+
+.toggle-offcanvas-icon.bottom {
+  transform: rotate(90deg);
+}
+
+.toggle-offcanvas-icon:hover {
+  transform: scale(1.1);
+  background-color: rgba(201, 166, 107, 0.1);
+}
+
+.offcanvas-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #333740;
+}
+
+#navMap {
+  padding: 8px;
+  border-radius: 4px;
+  cursor: grab;
+}
+
+#navMap:active {
+  cursor: grabbing;
+}
+
+::ng-deep .custom-tooltip {
+  max-width: 300px;
+  white-space: pre-line;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
 }

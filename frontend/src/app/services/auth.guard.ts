@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from './auth.service';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,18 @@ export class AuthGuard implements CanActivate {
   private checkLogin(url: string): Observable<boolean> {
     if (isPlatformBrowser(this.platformId)) {
       if (this.authService.isLoggedIn()) {
-        return of(true);
+        return this.authService.getCurrentUser().pipe(
+          map(user => {
+            if (user && user.is_blocked) {
+              if (url === '/login' || url === '/homepage') {
+                return true;
+              }
+              this.router.navigate(['/access-denied']);
+              return false;
+            }
+            return true;
+          })
+        );
       } else {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {

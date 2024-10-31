@@ -33,6 +33,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             pwd_user_str=password
         )
         user.set_password(password)
+        if profile_picture:
+            user.profile_picture = profile_picture
         user.save()
         return user
 
@@ -41,15 +43,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'address', 'birthdate', 'profile_picture', 'pwd_user_str']
+        fields = ['username', 'first_name', 'last_name', 'email', 'address', 'birthdate', 'profile_picture', 'pwd_user_str', 'is_blocked']
         extra_kwargs = {
             'pwd_user_str': {'read_only': True}
         }
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
-        instance.first_name = validated_data.get('first_name', instance.first_name)  # Allow updating first name
-        instance.last_name = validated_data.get('last_name', instance.last_name)  # Allow updating last name
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.email = validated_data.get('email', instance.email)
         instance.address = validated_data.get('address', instance.address)
         instance.birthdate = validated_data.get('birthdate', instance.birthdate)

@@ -13,26 +13,27 @@ import { SuperProfileComponent } from './components/super-profile/super-profile.
 import { ForgetPwdComponent } from './components/forget-pwd/forget-pwd.component';
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
 import { LibraryComponent } from './components/librarys/library.component';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 
 const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
+    { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
     { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-    { path: 'about', component: AboutComponent },
-    { path: 'library', component: LibraryComponent }, 
-    // { path: '', redirectTo: '/chat', pathMatch: 'full' },
+    { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
+    { path: 'library', component: LibraryComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: '/homepage', pathMatch: 'full' },
     { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
     { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] },
     { path: 'super-profile', component: SuperProfileComponent, canActivate: [AuthGuard] },
-    { path: 'forget-password', component: ForgetPwdComponent },
-    { path: 'reset-password', component: ResetPwdComponent },
+    { path: 'forget-password', component: ForgetPwdComponent, canActivate: [AuthGuard] },
+    { path: 'reset-password', component: ResetPwdComponent, canActivate: [AuthGuard] },
+    { path: 'access-denied', component: AccessDeniedComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

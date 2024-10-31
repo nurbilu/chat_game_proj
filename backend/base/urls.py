@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserRegisterView, MyTokenObtainPairView, UserProfileView, RegisterView, ChangePasswordView, SuperUserProfileView, ProfilePictureUploadView, UserProfileUpdateView, ValidateUserView, ResetPasswordView, CreateSuperUserView, CustomTokenRefreshView
+from .views import UserRegisterView, MyTokenObtainPairView, UserProfileView, RegisterView, ChangePasswordView, SuperUserProfileView, ProfilePictureUploadView, UserProfileUpdateView, ValidateUserView, ResetPasswordView, CreateSuperUserView, CustomTokenRefreshView, BlockUserView, UnblockUserView, CurrentUserView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -16,4 +16,7 @@ urlpatterns = [
     path('reset-password/', ResetPasswordView.as_view(), name='reset_password'),
     path('create-superuser/', CreateSuperUserView.as_view(), name='create-superuser'),
     path('refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+    path('block-user/', BlockUserView.as_view(), name='block-user'),
+    path('unblock-user/', UnblockUserView.as_view(), name='unblock-user'),
+    path('current-user/', CurrentUserView.as_view(), name='current-user'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

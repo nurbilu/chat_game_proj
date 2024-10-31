@@ -144,7 +144,7 @@ class ProfilePictureUploadView(APIView):
             return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
         
         user.profile_picture = file
-        user.save(update_fields=['profile_picture'])  # Only update the profile_picture field
+        user.save()
         return Response({'profile_picture': user.profile_picture.url}, status=status.HTTP_200_OK)
     
     def put(self, request):
@@ -154,7 +154,7 @@ class ProfilePictureUploadView(APIView):
             return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
         
         user.profile_picture = file
-        user.save(update_fields=['profile_picture'])  # Only update the profile_picture field
+        user.save()
         return Response({'profile_picture': user.profile_picture.url}, status=status.HTTP_200_OK)
 
 class UserProfileUpdateView(APIView):
@@ -223,3 +223,45 @@ class CreateSuperUserView(APIView):
             return Response({'message': 'Superuser created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class BlockUserView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        username = request.data.get('username')
+        try:
+            user = User.objects.get(username=username)
+            user.is_blocked = True
+            user.save()
+            return Response({
+                'message': 'User blocked successfully',
+                'is_blocked': True
+            }, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class UnblockUserView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        username = request.data.get('username')
+        try:
+            user = User.objects.get(username=username)
+            user.is_blocked = False
+            user.save()
+            return Response({
+                'message': 'User unblocked successfully',
+                'is_blocked': False
+            }, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            'username': user.username,
+            'email': user.email,
+            'is_blocked': user.is_blocked
+        })

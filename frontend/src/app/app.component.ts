@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, NgZone, HostListener } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, NgZone, HostListener, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbOffcanvas, NgbOffcanvasRef, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from './services/toast.service';
@@ -29,10 +29,16 @@ export class AppComponent implements OnInit {
   @ViewChild('welcomeTemplate', { static: true }) welcomeTemplate!: TemplateRef<any>;
   @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
-  private offcanvasRef!: NgbOffcanvasRef;
+  private offcanvasRef: NgbOffcanvasRef | null = null; // Allow null as a type
   isLoggedIn: boolean = false;
   @ViewChild(ChrcterCreationComponent) chrcterCreationComponent!: ChrcterCreationComponent;
   @ViewChild('logoutSuccessTemplate', { static: true }) logoutSuccessTemplate!: TemplateRef<any>;
+  @ViewChild('draggableOffcanvas', { static: true }) draggableOffcanvas!: ElementRef;
+
+  currentOffcanvasPosition: 'top' | 'bottom' | 'start' | 'end' = 'start'; // Default position
+  private defaultPosition: 'top' | 'bottom' | 'start' | 'end' = 'start';
+  private clickCount: number = 0;
+  private clickTimer: any;
 
   constructor(
     private router: Router,
@@ -53,6 +59,8 @@ export class AppComponent implements OnInit {
         });
       }
     });
+
+    this.makeOffcanvasDraggable();
   }
 
   @HostListener('window:scroll', [])
@@ -171,17 +179,33 @@ export class AppComponent implements OnInit {
     }
   }
 
+  toggleOffcanvasPosition(position: 'top' | 'bottom' | 'start' | 'end') {
+    this.currentOffcanvasPosition = position;
+    this.openOffcanvas();
+  }
+
   openOffcanvas() {
-    this.offcanvasRef = this.offcanvasService.open(this.offcanvasContent, {
-      ariaLabelledBy: 'offcanvasNavbarLabel',
-      scroll: true,
-      backdrop: true
+    if (this.offcanvasRef) {
+      this.closeOffcanvas();
+    }
+    
+    const options = {
+      position: this.currentOffcanvasPosition,
+      backdrop: true,
+      keyboard: true
+    };
+    
+    this.offcanvasRef = this.offcanvasService.open(this.offcanvasContent, options);
+    
+    this.offcanvasRef.dismissed.subscribe(() => {
+      this.offcanvasRef = null;
     });
   }
 
   closeOffcanvas() {
     if (this.offcanvasRef) {
       this.offcanvasRef.dismiss();
+      this.offcanvasRef = null; // Reset the reference
     }
   }
 
@@ -212,5 +236,120 @@ export class AppComponent implements OnInit {
       sessionStorage.setItem('intendedRoute', route);
       this.router.navigate(['/login']);
     }
+  }
+
+  makeOffcanvasDraggable() {
+    const offcanvasElement = this.draggableOffcanvas.nativeElement;
+    let isDragging = false;
+    let startX: number, startY: number, initialX: number, initialY: number;
+
+    offcanvasElement.addEventListener('mousedown', (event: MouseEvent) => {
+      isDragging = true;
+      startX = event.clientX;
+      startY = event.clientY;
+      initialX = offcanvasElement.offsetLeft;
+      initialY = offcanvasElement.offsetTop;
+      event.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (event: MouseEvent) => {
+      if (isDragging) {
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        offcanvasElement.style.left = `${initialX + dx}px`;
+        offcanvasElement.style.top = `${initialY + dy}px`;
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+  }
+
+  startDragging(event: MouseEvent) {
+    event.preventDefault();
+    
+    const toggleElement = event.target as HTMLElement;
+    const startX = event.clientX;
+    const startY = event.clientY;
+    let isDragging = false;
+    const dragThreshold = 10;
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+      
+      if (!isDragging && (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold)) {
+        isDragging = true;
+        toggleElement.classList.add('dragging');
+      }
+
+      if (isDragging) {
+        // Determine position based on the largest movement axis
+        if (Math.abs(dx) > Math.abs(dy)) {
+          // Horizontal movement
+          if (dx > 0) {
+            this.currentOffcanvasPosition = 'end';
+            toggleElement.className = 'toggle-offcanvas-icon end';
+          } else {
+            this.currentOffcanvasPosition = 'start';
+            toggleElement.className = 'toggle-offcanvas-icon start';
+          }
+        } else {
+          // Vertical movement
+          if (dy > 0) {
+            this.currentOffcanvasPosition = 'bottom';
+            toggleElement.className = 'toggle-offcanvas-icon bottom';
+          } else {
+            this.currentOffcanvasPosition = 'top';
+            toggleElement.className = 'toggle-offcanvas-icon top';
+          }
+        }
+      }
+    };
+
+    const onMouseUp = () => {
+      toggleElement.classList.remove('dragging');
+      
+      if (isDragging) {
+        this.openOffcanvas();
+      } else {
+        this.toggleOffcanvas();
+      }
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+
+  toggleOffcanvas() {
+    if (this.offcanvasRef) {
+      this.closeOffcanvas();
+    } else {
+      this.openOffcanvas();
+    }
+  }
+
+  handleLogoClick() {
+    this.clickCount++;
+    
+    if (this.clickTimer) {
+      clearTimeout(this.clickTimer);
+    }
+    
+    this.clickTimer = setTimeout(() => {
+      if (this.clickCount === 2) {
+        // Double click detected - reset position
+        this.currentOffcanvasPosition = this.defaultPosition;
+        this.openOffcanvas();
+      } else if (this.clickCount === 1) {
+        // Single click - just open offcanvas
+        this.openOffcanvas();
+      }
+      this.clickCount = 0;
+    }, 250); // Adjust timing as needed
   }
 }

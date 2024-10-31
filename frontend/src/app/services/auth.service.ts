@@ -405,4 +405,16 @@ export class AuthService {
             })
         );
     }
+
+    blockUser(username: string): Observable<any> {
+        return this.http.post(`${this.baseUrl}block-user/`, { username });
+    }
+
+    unblockUser(username: string): Observable<any> {
+        return this.http.post(`${this.baseUrl}unblock-user/`, { username });
+    }
+
+    getCurrentUser(): Observable<any> {
+        return this.http.get(`${this.baseUrl}current-user/`);
+    }
 }

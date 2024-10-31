@@ -4,10 +4,10 @@
 estimated total time frame: ~ 56 - 80+ hours
 
 (estimated time frame: 9-12 hours)
-   1.a. match the visual effect of rest of the website to as homepage , login and register (done)
+   1.a. understand and create an expalnation for the offcanvas toggle icon (almost done)
    1.b. finish card tables design (almost done)
    1.c. finish total lib design (almost done)
-   1.d. design hover card close button (done?)
+
 
 (estimated time frame: ~ 8 hours)
    2.a. change /adjust /fix /add toasts messages in all components (almost done)
@@ -16,17 +16,16 @@ estimated total time frame: ~ 56 - 80+ hours
 (estimated time frame: ~ 9 hours)
    3.a. fix / insure refresh token is working as expected with the login Modal as login component () - fix the remember me that is cleared from local storage 
    when logout ()
-   3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor ()
+   3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor ()(? i dont understand what i wrote here - pls check with myself what i wrote here ())
 
 (estimated time frame: ~ 2 - 7 hours)
-3.5.a. add 2-3 functions to super profile page [block user access and unblock user access , display user characters prompts , display user last message and 3 last 
-searches]
+3.5.a. add 2-3 functions to super profile page [block user access and unblock user access -fix and enable , display user characters prompts , display user last message and 3 last searches- correct any "dmg" cause by new features!!]
 sub-task : remove Super Profile or Profile and keep the other one {} ()
 3.5.b. add 2-3 functions to user chat page - optional ()
 
 
 (estimated time frame: ~ 3 - 12 hours)
-   4.fix / implement / adjust login so save last un auth page in local storage / cookie / session storage ()
+   4.fix / implement / adjust login so save last un auth page in local storage / cookie / session storage () - fix also the unauth page displayment in the login component ()
    if not implement login by google and facebook and twitter , remove ()
    - add google login (optional)
    - add facebook login (optional)
@@ -154,9 +153,9 @@ DONE LIST :
 
 38. 3.a. adjust dice roller desisgn (done)
 
-39.
+39. 1.d. design hover card close button (done- dont care if it is not perfect)
 
-40. 
+40. 1.a. match the visual effect of rest of the website to as homepage , login and register (done)
 
 41.
 
