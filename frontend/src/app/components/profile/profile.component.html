@@ -31,12 +31,24 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-4 text-body">
-                        <p class="lead fw-normal mb-0">Character Prompt</p>
-                        <p class="mb-0"><a class="text-muted">Show all</a></p>
+                        <p class="lead fw-normal mb-0">Character Prompts</p>
                     </div>
                     <div class="row g-2">
                         <div class="col mb-2">
-                            <p>{{ characterPrompt }}</p>
+                            <div class="character-prompt-container">
+                                <button 
+                                    class="character-button" 
+                                    (click)="togglePrompt()"
+                                    ngbTooltip="A User Created Character Prompt No {{promptNumber}}"
+                                    triggers="mouseenter:mouseleave">
+                                    No. {{promptNumber}} Character Prompt
+                                </button>
+                                <div class="prompt-hover-card" [class.show]="isPromptVisible">
+                                    <div class="prompt-content">
+                                        <p>{{ characterPrompt }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

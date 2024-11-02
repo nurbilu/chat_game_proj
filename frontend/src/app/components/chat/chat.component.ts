@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
     rollResults: number[] = [];
     rollTotal: number = 0;
     additionalModifiers: number[] = [];
-    profilePictureUrl: string = '/assets/imgs/default-profile.png'; // Default profile picture
+    profilePictureUrl: string = '';
     isDropupOpen = false;
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
@@ -37,6 +37,16 @@ export class ChatComponent implements OnInit {
                 this.responses = [{ text: 'Please log in to start your adventure.', from: 'bot' }];
                 this.router.navigate(['/login']);
             } else {
+                this.authService.getUserProfile(this.username).subscribe({
+                    next: (data) => {
+                        if (data.profile_picture) {
+                            this.profilePictureUrl = `http://127.0.0.1:8000${data.profile_picture}`;
+                        }
+                    },
+                    error: (error) => {
+                        console.error('Error fetching profile picture:', error);
+                    }
+                });
                 this.responses = [{ text: `Welcome back, ${this.username}! Continue your adventure.`, from: 'bot' }];
                 // Load session data
                 this.chatService.sendMessage('', this.username).subscribe({
@@ -50,11 +60,6 @@ export class ChatComponent implements OnInit {
                     }
                 });
             }
-        });
-
-        this.authService.getUserProfile().subscribe(profile => {
-            this.profilePictureUrl = profile.profilePictureUrl || '/assets/imgs/default-profile.png';
-            console.log('Profile Picture URL:', this.profilePictureUrl); // Debugging line
         });
     }
 

@@ -4,33 +4,35 @@
 estimated total time frame: ~ 56 - 80+ hours
 
 (estimated time frame: 9-12 hours)
-   1.a. understand and create an expalnation for the offcanvas toggle icon (almost done)
-   1.b. finish card tables design (almost done)
-   1.c. finish total lib design (almost done)
+   1.a. understand and create an expalnation for the offcanvas toggle icon (done)
+   1.b. finish card tables design (almost done) - remove the seethrough effect from the cards flip ()
+   1.c. finish total lib design (almost done) - complete implementation of to left button() 
+   1.d. complete the displayment of Load-srch-icon with loading component or not ()
 
 
 (estimated time frame: ~ 8 hours)
-   2.a. change /adjust /fix /add toasts messages in all components (almost done)
+   2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
 
 (estimated time frame: ~ 9 hours)
    3.a. fix / insure refresh token is working as expected with the login Modal as login component () - fix the remember me that is cleared from local storage 
    when logout ()
-   3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor ()(? i dont understand what i wrote here - pls check with myself what i wrote here ())
+   3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor (almost done)(need to adjust character creation to to create more characters and display them here(optional)())
 
 (estimated time frame: ~ 2 - 7 hours)
-3.5.a. add 2-3 functions to super profile page [block user access and unblock user access -fix and enable , display user characters prompts , display user last message and 3 last searches- correct any "dmg" cause by new features!!]
-sub-task : remove Super Profile or Profile and keep the other one {} ()
-3.5.b. add 2-3 functions to user chat page - optional ()
+3.5.a. add 2-3 functions to super profile page [block user access and unblock user access -fix and enable - 90% done - complete the is_blocked Route access , display user characters prompts - done ] (done)
+sub-task : remove Super Profile or Profile and keep the other one {} (done)
+3.5.b. add 2-3 functions to user chat page - optional (done? - done one )
 
 
 (estimated time frame: ~ 3 - 12 hours)
-   4.fix / implement / adjust login so save last un auth page in local storage / cookie / session storage () - fix also the unauth page displayment in the login component ()
+   4.fix login redirect from unauth page to login page () 
    if not implement login by google and facebook and twitter , remove ()
    - add google login (optional)
    - add facebook login (optional)
    - add twitter login (optional)
-   4.b. design change pwd or remove the component display or link component to profile and design it ()
+   4.b. design change pwd or remove the component display or link component to profile and design it (done)
+   4.c. try to implement after success login navigate to the last click component link button on navbar offcanvas (optional())
 
 (estimated time frame: + 10 hours at least)
    4.b. fix docker hub GUI ()
@@ -43,11 +45,11 @@ sub-task : remove Super Profile or Profile and keep the other one {} ()
 (estimated time frame: ~ 2 - 7 hours)
    6.a. add more visual effects to the website ():
       - design the grid of character create component better ? 
-      - add visual effects to super profile page ()
-      - add visual effects to user chat page ()
+      - add visual effects to super profile page (done)
+      - add visual effects to user chat page (done)
 
 
-**++ lets try to deliver the project by the date 03/11/2024 , if not possible - deliver as soon as possible. (before my Bday) ++**
+**++ lets try to deliver the project by the date 15/11/2024 , if not possible - deliver as soon as possible. (before my Bday) ++**
 
 questionable tasks: 
    6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable in short term - necessary ?)
@@ -157,7 +159,7 @@ DONE LIST :
 
 40. 1.a. match the visual effect of rest of the website to as homepage , login and register (done)
 
-41.
+41. 1.a. understand and create an expalnation for the offcanvas toggle icon (done) 
 
 42.
 

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ScrollSpyService } from '../../services/scroll-spy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../services/toast.service';
+import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 
 interface UserProfile {
   username: string;
@@ -16,6 +17,7 @@ interface UserProfile {
   first_name?: string;
   last_name?: string;
   is_blocked?: boolean;
+  characterPrompt?: string;
 }
 
 @Component({
@@ -30,6 +32,8 @@ export class SuperProfileComponent implements OnInit {
   error: string | null = null;
   superUserForm: FormGroup;
   currentSection: string = '';
+  searchTerm: string = '';
+  filteredProfiles: UserProfile[] = [];
 
   constructor(
     private authService: AuthService,
@@ -37,7 +41,8 @@ export class SuperProfileComponent implements OnInit {
     private fb: FormBuilder,
     private scrollSpyService: ScrollSpyService,
     private modalService: NgbModal,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private chcrcterCreationService: ChcrcterCreationService
   ) {
     this.superUserForm = this.fb.group({
       username: ['', Validators.required],
@@ -58,6 +63,7 @@ export class SuperProfileComponent implements OnInit {
     this.authService.getSuperUserProfiles().subscribe({
       next: (profiles: UserProfile[]) => {
         this.userProfiles = profiles;
+        this.filteredProfiles = profiles;
         this.isLoading = false;
       },
       error: (error) => {
@@ -68,8 +74,26 @@ export class SuperProfileComponent implements OnInit {
     });
   }
 
+  filterProfiles(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
+    this.searchTerm = searchTerm;
+    this.filteredProfiles = this.userProfiles.filter(profile =>
+      profile.username.toLowerCase().includes(searchTerm) ||
+      profile.email.toLowerCase().includes(searchTerm)
+    );
+  }
+
   onProfileSelect(profile: UserProfile): void {
     this.selectedProfile = profile;
+    this.chcrcterCreationService.getCharacterPrompt(profile.username).subscribe({
+      next: (response) => {
+        this.selectedProfile!.characterPrompt = response.characterPrompt || 'None';
+      },
+      error: (error) => {
+        console.error('Error fetching character prompt:', error);
+        this.selectedProfile!.characterPrompt = 'None';
+      }
+    });
   }
 
   createSuperUser(): void {
@@ -154,6 +178,61 @@ export class SuperProfileComponent implements OnInit {
       (result) => {
         if (result === 'unblock') {
           this.unblockUser(user);
+        }
+      },
+      (reason) => {
+        // Modal dismissed
+      }
+    );
+  }
+
+  deleteUser(user: UserProfile): void {
+    this.authService.deleteUser(user.username).subscribe({
+      next: (response) => {
+        // Remove user from both lists immediately
+        this.userProfiles = this.userProfiles.filter(p => p.username !== user.username);
+        this.filteredProfiles = this.filteredProfiles.filter(p => p.username !== user.username);
+        
+        // Clear selected profile if it's the deleted user
+        if (this.selectedProfile && this.selectedProfile.username === user.username) {
+          this.selectedProfile = null;
+        }
+        
+        // Show success message
+        this.toastService.show({
+          template: this.toastService.successTemplate,
+          classname: 'bg-success text-light',
+          delay: 5000,
+          context: { message: `User ${user.username} has been permanently deleted` }
+        });
+        
+        // Reset search if the filtered list is empty
+        if (this.filteredProfiles.length === 0 && this.searchTerm) {
+          this.searchTerm = '';
+          this.filteredProfiles = [...this.userProfiles];
+        }
+      },
+      error: (error) => {
+        console.error('Failed to delete user:', error);
+        this.toastService.show({
+          template: this.toastService.errorTemplate,
+          classname: 'bg-danger text-light',
+          delay: 5000,
+          context: { message: 'Failed to delete user. Please try again.' }
+        });
+      }
+    });
+  }
+
+  openDeleteConfirmationModal(content: any, user: UserProfile): void {
+    this.modalService.open(content, { 
+      ariaLabelledBy: 'modal-delete-title',
+      backdrop: 'static',
+      keyboard: false
+    }).result.then(
+      (result) => {
+        if (result === 'delete') {
+          this.deleteUser(user);
         }
       },
       (reason) => {

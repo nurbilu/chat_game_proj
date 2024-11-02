@@ -62,29 +62,29 @@
 
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark" [class.sticky-top]="isNavbarSticky">
   <a class="navbar-brand" (click)="handleLogoClick()" ngbTooltip="Click to open Navbar Menu, Double click to reset position">
-    <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px;">
+    <img src="favicon.ico" alt="Logo" class="rounded-circle" style="width: 55px; height: 55px;">
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <div class="btn-group12" role="group" aria-label="Home and Login">
-        <img src="assets/imgs/icons/Login-smll-page-icon.png" alt="Go to Login" class="go-to-login-icon" (click)="navigateToLoginpage()" ngbTooltip="Click to go to Login">
-      <img src="assets/imgs/icons/smllHomepage.png" alt="Go to Home" class="go-to-home-icon" (click)="navigateToHomepage()" ngbTooltip="Click to go to Homepage">
+    <div class="status-container">
+      <img [src]="profilePictureUrl" *ngIf="isLoggedIn" [alt]="username + '\'s profile'" class="profile-picture" ngbTooltip="Profile Picture">
+      <span *ngIf="isLoggedIn" class="username-text">
+        {{ username }} is {{ isLoggedIn ? 'online' : 'offline' }}
+        <img [src]="isLoggedIn ? 'assets/imgs/icons/green-dot.png' : 'assets/imgs/icons/red-dot.png'" alt="status-icon" class="status-icon">
+      </span>
     </div>
-  </ul>
+    </ul>
   </div>
+  
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <div class="btn-group" role="group" aria-label="Login, Register, Super Profile and Logout">
         <img src="assets/imgs/icons/login-modal-icon.png" alt="Login" (click)="openLoginModal(loginTemplate)" ngbTooltip="Click to open Login Modal" class="btn-icon">
         <img src="assets/imgs/icons/register-smll-icon.png" alt="Register" routerLink="/register" ngbTooltip="Click to open Register" class="btn-icon">
         <img src="assets/imgs/icons/super-profile-icon.png" alt="Super Profile" *ngIf="isSuperUser" routerLink="/super-profile" ngbTooltip="Click to open Super Profile" class="btn-icon">
-        <img src="assets/imgs/icons/logout-icon.png" alt="Logout" (click)="openLogoutModal(logoutTemplate)" ngbTooltip="Click to open Logout Modal" class="btn-icon">
-      </div>
-      <div>
-        <li class="nav-item d-flex align-items-center">
-          <img [src]="isLoggedIn ? 'assets/imgs/icons/green-dot.png' : 'assets/imgs/icons/red-dot.png'" alt="status-icon" style="width: 20px; height: 20px;">
-          <span *ngIf="isLoggedIn" class="text-white ml-2">{{ username }} logged in</span>
-        </li>
+        <img src="assets/imgs/icons/Login-smll-page-icon.png" alt="Go to Login" class="go-to-login-icon" (click)="navigateToLoginpage()" ngbTooltip="Click to go to Login">
+        <img src="assets/imgs/icons/smllHomepage.png" alt="Go to Home" class="go-to-home-icon" (click)="navigateToHomepage()" ngbTooltip="Click to go to Homepage">        
+        <img src="assets/imgs/icons/logout-icon.png" alt="Logout" (click)="openLogoutModal(logoutTemplate)" ngbTooltip="Click to open Logout Modal" class="btn-icon">    
       </div>
     </ul>
   </div>

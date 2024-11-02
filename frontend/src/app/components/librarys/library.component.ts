@@ -328,13 +328,11 @@ export class LibraryComponent implements OnInit {
     });
   }
 
-  resetLocation() {
-    const tableHeader = document.querySelector('.table thead') as HTMLElement;
-    if (tableHeader) {
-      tableHeader.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      this.scrollToTop();
-    }
+  scrollToLeft() {
+    window.scrollTo({
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   scrollToTop() {
@@ -343,7 +341,8 @@ export class LibraryComponent implements OnInit {
 
   shouldShowHoverCard(): boolean {
     const allowedCollections = ['Equipment', 'Spells', 'Monsters'];
-    return allowedCollections.includes(this.selectedCollection) && this.isScrollbarVisible;
+    const hasHorizontalScroll = document.documentElement.scrollWidth > document.documentElement.clientWidth;
+    return allowedCollections.includes(this.selectedCollection) && (this.isScrollbarVisible || hasHorizontalScroll);
   }
 
   checkScrollbarVisibility(): void {

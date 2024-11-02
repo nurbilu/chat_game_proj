@@ -40,6 +40,8 @@ export class AppComponent implements OnInit {
   private clickCount: number = 0;
   private clickTimer: any;
 
+  profilePictureUrl: string | null = null;
+
   constructor(
     private router: Router,
     private offcanvasService: NgbOffcanvas,
@@ -56,6 +58,14 @@ export class AppComponent implements OnInit {
         this.authService.getUsername().subscribe(username => {
           this.username = username;
           this.isSuperUser = this.authService.isSuperUser();
+        });
+        
+        this.authService.getCurrentUser().subscribe(data => {
+          if (data && data.profile_picture) {
+            this.profilePictureUrl = `http://127.0.0.1:8000${data.profile_picture}`;
+          } else {
+            this.profilePictureUrl = 'http://127.0.0.1:8000/profile_pictures/default.png';
+          }
         });
       }
     });

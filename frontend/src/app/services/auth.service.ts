@@ -417,4 +417,24 @@ export class AuthService {
     getCurrentUser(): Observable<any> {
         return this.http.get(`${this.baseUrl}current-user/`);
     }
+
+    deleteUser(username: string): Observable<any> {
+        const token = this.getToken();
+        if (!token) {
+            return throwError(() => new Error('Authentication token not found'));
+        }
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        
+        return this.http.delete(`${this.baseUrl}delete-user/`, {
+            headers,
+            body: { username }
+        }).pipe(
+            catchError(error => {
+                console.error('Failed to delete user:', error);
+                return throwError(() => new Error('Failed to delete user'));
+            })
+        );
+    }
 }

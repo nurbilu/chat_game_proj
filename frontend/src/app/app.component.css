@@ -1,20 +1,16 @@
 nav {
   display: flex;
   align-items: center;
-  /* Center items vertically */
   background-color: #333740;
-  /* Darker shade for a more subtle look */
   padding: 10px 20px;
   border-bottom: 2px solid #c9a66b;
-  /* Gold color accent */
+  justify-content: space-between;
 }
 
 .navbar-collapse {
   display: flex;
-  justify-content: space-between;
-  /* Space out the items */
   align-items: center;
-  /* Center items vertically */
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -43,27 +39,6 @@ nav {
   padding-bottom: 5px;
 }
 
-.navbar-nav .btn-group12 {
-  display: flex;
-  align-items: center;
-  margin-left: 0; /* Align to the left */
-  margin-right: auto; /* Push to the left */
-  border: 2px solid white; 
-  border-radius: 5px; 
-  padding: 5px; 
-  position: absolute; /* Position it absolutely */
-  left: 75px; /* Adjust this value to position it near the logo */
-  top: 23px; /* Adjust this value to align vertically */
-}
-
-.navbar-nav .btn-group12 img {
-  margin-right: 10px; 
-  padding-right: 15px;
-  padding-left: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;    
-}
-
 
 .navbar-brand {
   margin-right: 20px; /* Increase this value to create a bigger gap */
@@ -90,7 +65,15 @@ nav {
 .offcanvas-header {
   background-color: #333740;
   color: #f4eee8;
-  /* Parchment white */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.offcanvas-title {
+  margin: 0;
+  flex: 1;
 }
 
 .offcanvas-body {
@@ -154,7 +137,7 @@ body.offcanvas-open {
   height: 300px;
   max-width: 100%; /* Ensure it doesn't exceed the viewport width */
   max-height: 100%; /* Ensure it doesn't exceed the viewport height */
-
+}
 
 .form-control {
   background-color: #444950;
@@ -185,13 +168,11 @@ body.offcanvas-open {
 }
 
 .toggle-offcanvas-icon {
-  cursor: grab;
-  transition: transform 0.3s ease;
-  user-select: none;
+  cursor: pointer;
   width: 24px;
   height: 24px;
-  padding: 4px;
-  border-radius: 4px;
+  margin: 0 15px;
+  transition: transform 0.3s ease;
 }
 
 .toggle-offcanvas-icon.dragging {
@@ -222,22 +203,36 @@ body.offcanvas-open {
 
 .offcanvas-footer {
   display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
   position: absolute;
   bottom: 0;
+  left: 0;
   right: 0;
   background: #333740;
 }
 
 #navMap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;  /* Increased size */
+  height: 48px; /* Increased size */
   padding: 8px;
-  border-radius: 4px;
-  cursor: grab;
+  border-radius: 50%;
+  background: rgba(201, 166, 107, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-#navMap:active {
-  cursor: grabbing;
+#navMap:hover {
+  background: rgba(201, 166, 107, 0.2);
+}
+
+#navMap img {
+  width: 32px;  /* Increased size */
+  height: 32px; /* Increased size */
 }
 
 ::ng-deep .custom-tooltip {
@@ -249,4 +244,53 @@ body.offcanvas-open {
   border-radius: 5px;
   font-size: 14px;
 }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 20px;
+  position: relative;
+}
+
+.status-icon {
+  width: 18px;  /* Reduced from 18px */
+  height: 18px; /* Reduced from 18px */
+  position: static; /* Changed from absolute */
+  margin: 0; /* Reset all margins */
+}
+
+.username-text {
+  color: white;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap; /* Prevent text wrapping */
+  margin: 0;
+}
+
+/* Update the profile picture styling */
+.navbar-nav .profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #c9a66b;
+  margin-right: 10px;
+  padding: 2px;
+}
+.btn-group {
+  display: flex;
+  align-items: center;
+  margin-left: 20px; /* Add space between status and buttons */
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 5px;
 }

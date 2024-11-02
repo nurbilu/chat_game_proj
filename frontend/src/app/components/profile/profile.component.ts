@@ -24,6 +24,9 @@ export class ProfileComponent implements OnInit {
   characterPrompts: any[] = []; // Store character prompts
   characterPrompt: string = ''; // Store the character prompt
   showEditProfile: boolean = false;
+  isPromptVisible: boolean = false;
+  isPromptLocked: boolean = false;
+  promptNumber: number = 1; // Add this property
 
   constructor(private authService: AuthService, private characterService: ChcrcterCreationService, private router: Router, private toastService: ToastService) { }
 
@@ -141,5 +144,22 @@ export class ProfileComponent implements OnInit {
 
   hideEditProfile(): void {
     this.showEditProfile = false;
+  }
+
+  showPrompt(): void {
+    if (!this.isPromptLocked) {
+      this.isPromptVisible = true;
+    }
+  }
+
+  hidePrompt(): void {
+    if (!this.isPromptLocked) {
+      this.isPromptVisible = false;
+    }
+  }
+
+  togglePrompt(): void {
+    this.isPromptLocked = !this.isPromptLocked;
+    this.isPromptVisible = this.isPromptLocked;
   }
 }

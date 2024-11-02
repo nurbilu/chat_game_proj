@@ -1,3 +1,14 @@
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .super-profile-container {
     max-width: 100%;
     min-height: 94vh;
@@ -10,6 +21,7 @@
     border-radius: 55px;
     box-shadow: none;
     color: rgb(14, 13, 13);
+    animation: fadeInUp 0.5s ease-out;
 }
 
 .super-profile-content {
@@ -24,7 +36,38 @@
 .dropdown-menu {
     width: 100%;
     max-width: 400px;
-    padding: 20px;
+    max-height: 400px; /* Set maximum height */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    padding: 10px;
+}
+
+.dropdown-item {
+    white-space: normal; /* Allow text to wrap */
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Custom scrollbar styling */
+.dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .dropend-form {
@@ -36,4 +79,15 @@
 .scrollspy-active {
     background-color: #f0f0f0;
     border-left: 4px solid #007bff;
+}
+
+.text-muted {
+    color: #6c757d;
+    font-style: italic;
+}
+
+table td {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 500px;
 }

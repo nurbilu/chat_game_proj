@@ -8,6 +8,7 @@ export class ToastService {
   private toasts: any[] = [];  // Array to store toast messages
 
   errorTemplate!: TemplateRef<any>;  // Ensure this is initialized
+  successTemplate: TemplateRef<any> | undefined;
 
   constructor(private toastr: ToastrService) {}
 

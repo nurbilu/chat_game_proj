@@ -263,5 +263,20 @@ class CurrentUserView(APIView):
         return Response({
             'username': user.username,
             'email': user.email,
-            'is_blocked': user.is_blocked
+            'is_blocked': user.is_blocked,
+            'profile_picture': user.profile_picture.url if user.profile_picture else '/profile_pictures/default.png'
         })
+
+class DeleteUserView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def delete(self, request):
+        username = request.data.get('username')
+        try:
+            user = User.objects.get(username=username)
+            user.delete()
+            return Response({
+                'message': 'User deleted successfully'
+            }, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)

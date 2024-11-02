@@ -10,6 +10,9 @@ import { switchMap, catchError, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  private publicRoutes = ['/login', '/homepage', '/library', '/about', '/register'];
+  private blockedUserRoutes = ['/login', '/homepage'];
+
   constructor(
     private router: Router,
     private jwtHelper: JwtHelperService,
@@ -26,11 +29,13 @@ export class AuthGuard implements CanActivate {
 
   private checkLogin(url: string): Observable<boolean> {
     if (isPlatformBrowser(this.platformId)) {
+      // Check if user is logged in
       if (this.authService.isLoggedIn()) {
         return this.authService.getCurrentUser().pipe(
           map(user => {
             if (user && user.is_blocked) {
-              if (url === '/login' || url === '/homepage') {
+              // Blocked users can only access login and homepage
+              if (this.blockedUserRoutes.includes(url)) {
                 return true;
               }
               this.router.navigate(['/access-denied']);
@@ -40,16 +45,25 @@ export class AuthGuard implements CanActivate {
           })
         );
       } else {
+        // No user logged in
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
           return this.authService.refreshToken().pipe(
             switchMap(() => of(true)),
             catchError(() => {
+              // If public route, allow access
+              if (this.publicRoutes.includes(url)) {
+                return of(true);
+              }
               this.router.navigate(['/homepage']);
               return of(false);
             })
           );
         } else {
+          // If public route, allow access
+          if (this.publicRoutes.includes(url)) {
+            return of(true);
+          }
           this.router.navigate(['/homepage']);
           return of(false);
         }
