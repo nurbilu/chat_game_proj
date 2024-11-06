@@ -41,6 +41,7 @@ export class LibraryComponent implements OnInit {
   isModalOpen: boolean = false;
   showHoverCard: boolean = false;
   isScrollbarVisible: boolean = false;
+  staticCards: { [key: number]: boolean } = {};
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -320,19 +321,15 @@ export class LibraryComponent implements OnInit {
     this.showHoverCard = scrollPosition > 300;
   }
 
-  scrollToStart() {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
 
   scrollToLeft() {
-    window.scrollTo({
-      left: 0,
-      behavior: 'smooth'
-    });
+    const container = document.querySelector('.scrollspy-example');
+    if (container) {
+      container.scrollTo({
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
   }
 
   scrollToTop() {
@@ -347,7 +344,24 @@ export class LibraryComponent implements OnInit {
 
   checkScrollbarVisibility(): void {
     if (typeof window !== 'undefined') {
-      this.isScrollbarVisible = document.documentElement.scrollHeight > document.documentElement.clientHeight;
+      const container = document.querySelector('.scrollspy-example');
+      if (container) {
+        this.isScrollbarVisible = 
+          document.documentElement.scrollHeight > document.documentElement.clientHeight ||
+          container.scrollWidth > container.clientWidth;
+      }
+    }
+  }
+
+  toggleCardStatic(index: number, event: Event): void {
+    event.stopPropagation(); // Prevent event bubbling
+    
+    if (this.staticCards[index]) {
+      // If already static, remove static state
+      delete this.staticCards[index];
+    } else {
+      // If not static, make it static
+      this.staticCards[index] = true;
     }
   }
 }

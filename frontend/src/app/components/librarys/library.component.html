@@ -40,9 +40,9 @@
         <div class="articles row justify-content-center">
           <div class="col-16 col-md-9 col-lg-4" *ngFor="let item of getPaginatedItems(); let i = index">
             <div class="flip-card">
-              <div class="flip-card-inner">
+              <div class="flip-card-inner" [ngClass]="{'static': staticCards[i]}">
                 <div class="flip-card-front">
-                  <h2 class="card-title">{{item.name}}</h2>
+                  <h2 class="card-title" (click)="toggleCardStatic(i, $event)">{{item.name}}</h2>
                   <figure>
                     <img [src]="'/assets/Lib-Imgs-Cards/' + item.name + '.jpg'" alt="{{item.name}}"
                       class="card-img-top">
@@ -51,32 +51,35 @@
                   </div>
                 </div>
                 <div class="flip-card-back">
+                  <h2 class="card-title" (click)="toggleCardStatic(i, $event)" ngbTooltip="click on title to freeze card , click again to unfreeze card" triggers="mouseenter:mouseleave" tooltipTitle="Freeze Card">{{item.name}}</h2>
                   <button class="btn btn-sm btn-secondary mb-2" (click)="toggleAllCardValues(i)">
                     {{ allCardValuesExpanded[i] ? 'Collapse All' : 'Expand All' }}
                   </button>
-                  <table class="card-table table-striped table-hover table-responsive" *ngIf="item.name !== 'url' && item.name !== 'name' && item.name !== 'rowNumber'">
-                    <thead class="table-dark">
-                      <tr>
-                        <th>Key</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let key of getKeys(item)">
-                        <td>{{ key }}</td>
-                        <td>
-                          <span *ngIf="isLongText(item[key]) || isArray(item[key])">
-                            <span (click)="toggleTextVisibility(i, key)" style="cursor: pointer;">
-                              {{ isTextVisible(i, key) ? formatArray($any(item[key])) : (item[key] | slice:0:30) + '...' }}
+                  <div class="table-container">
+                    <table class="card-table table-striped table-hover table-responsive" *ngIf="item.name !== 'url' && item.name !== 'name'">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Key</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let key of getKeys(item)">
+                          <td *ngIf="key !== 'rowNumber'">{{ key }}</td>
+                          <td *ngIf="key !== 'rowNumber'">
+                            <span *ngIf="isLongText(item[key]) || isArray(item[key])">
+                              <span (click)="toggleTextVisibility(i, key)" style="cursor: pointer;">
+                                {{ isTextVisible(i, key) ? formatArray($any(item[key])) : (item[key] | slice:0:30) + '...' }}
+                              </span>
                             </span>
-                          </span>
-                          <span *ngIf="!isLongText(item[key]) && !isArray(item[key])">
-                            {{ formatArray($any(item[key])) }}
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                            <span *ngIf="!isLongText(item[key]) && !isArray(item[key])">
+                              {{ formatArray($any(item[key])) }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

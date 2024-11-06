@@ -5,8 +5,8 @@ estimated total time frame: ~ 56 - 80+ hours
 
 (estimated time frame: 9-12 hours)
    1.a. understand and create an expalnation for the offcanvas toggle icon (done)
-   1.b. finish card tables design (almost done) - remove the seethrough effect from the cards flip ()
-   1.c. finish total lib design (almost done) - complete implementation of to left button() 
+   1.b. finish card tables design (almost done) - remove the seethrough effect from the cards flip (done)
+   1.c. finish total lib design (almost done) - complete implementation of to left button(done?) 
    1.d. complete the displayment of Load-srch-icon with loading component or not ()
 
 
@@ -49,7 +49,7 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
       - add visual effects to user chat page (done)
 
 
-**++ lets try to deliver the project by the date 15/11/2024 , if not possible - deliver as soon as possible. (before my Bday) ++**
+**++ lets try to deliver the project by the date 15/11/2024 , if not possible - deliver as soon as possible. ++**
 
 questionable tasks: 
    6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable in short term - necessary ?)
