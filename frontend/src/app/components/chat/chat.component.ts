@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
+import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
     selector: 'app-chat',
@@ -23,8 +25,29 @@ export class ChatComponent implements OnInit {
     additionalModifiers: number[] = [];
     profilePictureUrl: string = '';
     isDropupOpen = false;
+    showEditor: boolean = false;
+    showStaticHoverCard = false;
+    selectedEntry: any = null;
 
-    constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService) { }
+    editorConfig = {
+        menubar: false,
+        toolbar_location: "top",
+        plugins: "link lists emoticons",
+        toolbar: [
+            'bold italic underline | forecolor | alignleft aligncenter alignright | bullist numlist | emoticons'
+        ],
+        skin: "oxide-dark",
+        icons: "small",
+        height: "auto",
+        resize: false
+    };
+    errorTemplate: TemplateRef<any> | undefined;
+
+    private isResizing = false;
+    private startY = 0;
+    private startHeight = 0;
+
+    constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService, private chcrcterCreationService: ChcrcterCreationService, private toastService: ToastService) { }
 
     ngOnInit() {
         this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
@@ -59,6 +82,38 @@ export class ChatComponent implements OnInit {
                         console.error('Error fetching session data:', error);
                     }
                 });
+            }
+        });
+
+        // Add resize event listeners
+        const chatInput = document.querySelector('.chat-input') as HTMLTextAreaElement;
+        
+        chatInput?.addEventListener('mousedown', (e: MouseEvent) => {
+            // Only trigger if clicking near the top border (within 4px)
+            if (e.offsetY <= 4) {
+                this.isResizing = true;
+                this.startY = e.clientY;
+                this.startHeight = chatInput.offsetHeight;
+                chatInput.classList.add('resizing');
+                
+                // Prevent text selection
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('mousemove', (e: MouseEvent) => {
+            if (!this.isResizing) return;
+            
+            const deltaY = this.startY - e.clientY;
+            const newHeight = Math.max(50, this.startHeight + deltaY); // Minimum height of 50px
+            
+            chatInput.style.height = `${newHeight}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (this.isResizing) {
+                this.isResizing = false;
+                chatInput?.classList.remove('resizing');
             }
         });
     }
@@ -171,5 +226,91 @@ export class ChatComponent implements OnInit {
         this.selectedTemplate = option;
         this.isDropupOpen = false;
         this.pasteTemplate();
+    }
+
+    toggleEditor(): void {
+        this.showEditor = !this.showEditor;
+    }
+
+    applyBold(): void {
+        this.message = `<b>${this.message}</b>`;
+    }
+
+    applyItalic(): void {
+        this.message = `<i>${this.message}</i>`;
+    }
+    
+    applyUnderline(): void {
+        this.message = `<u>${this.message}</u>`;
+    }
+    applyStrikethrough(): void {
+        this.message = `<strike>${this.message}</strike>`;
+    }
+    applyForecolor(): void {
+        this.message = `<span style="color: ${this.message}">${this.message}</span>`;
+    }   
+    applyAlignleft(): void {
+        this.message = `<div style="text-align: left;">${this.message}</div>`;
+    }
+    applyAligncenter(): void {
+        this.message = `<div style="text-align: center;">${this.message}</div>`;
+    }
+    applyAlignright(): void {
+        this.message = `<div style="text-align: right;">${this.message}</div>`;
+    }
+    applyBullist(): void {
+        this.message = `<ul>${this.message}</ul>`;
+    }
+    applyNumlist(): void {
+        this.message = `<ol>${this.message}</ol>`;
+    }
+
+    showCharacterPromptHover(): void {
+        this.authService.getUsername().subscribe((username: string) => {
+            this.chcrcterCreationService.getCharacterPrompt(username).subscribe({
+                next: (response) => {
+                    const promptText = response.characterPrompt || '';
+                    const promptData = this.parsePromptToTableData(promptText);
+                    
+                    this.selectedEntry = {
+                        name: 'Saved Character Prompt',
+                        promptData: promptData
+                    };
+                    this.showStaticHoverCard = true;
+                    document.body.classList.add('modal-open');
+                },
+                error: (error) => {
+                    console.error('Failed to fetch character prompt:', error);
+                    this.toastService.show({
+                        template: this.errorTemplate,
+                        classname: 'bg-danger text-light',
+                        delay: 3000,
+                        context: { message: 'Failed to load character prompt' }
+                    });
+                }
+            });
+        });
+    }
+
+    closeStaticHoverCard(): void {
+        this.showStaticHoverCard = false;
+        this.selectedEntry = null;
+        document.body.classList.remove('modal-open');
+    }
+
+    private parsePromptToTableData(promptText: string): Array<{field: string, value: string}> {
+        const fields = ['character name', 'race', 'class', 'subclass', 'level', 'spells', 'equipment'];
+        const result = [];
+        
+        for (const field of fields) {
+            const regex = new RegExp(`${field}:\\s*([^\\n]+)`, 'i');
+            const match = promptText.match(regex);
+            result.push({
+                field: field.charAt(0).toUpperCase() + field.slice(1),
+                value: match ? match[1].trim() : ''
+            });
+        }
+        
+        return result;
     }
 }

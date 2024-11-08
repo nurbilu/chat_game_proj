@@ -486,4 +486,47 @@ user: any;
     this.selectedEntry = null;
     document.body.classList.remove('modal-open');
   }
+
+  showCharacterPromptHover(): void {
+    this.authService.getUsername().subscribe((username: string) => {
+      this.chcrcterCreationService.getCharacterPrompt(username).subscribe({
+        next: (response) => {
+          const promptText = response.characterPrompt || '';
+          const promptData = this.parsePromptToTableData(promptText);
+          
+          this.selectedEntry = {
+            name: 'Saved Character Prompt',
+            promptData: promptData
+          };
+          this.showStaticHoverCard = true;
+          document.body.classList.add('modal-open');
+        },
+        error: (error) => {
+          console.error('Failed to fetch character prompt:', error);
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to load character prompt' }
+          });
+        }
+      });
+    });
+  }
+
+  private parsePromptToTableData(promptText: string): Array<{field: string, value: string}> {
+    const fields = ['character name', 'race', 'class', 'subclass', 'level', 'spells', 'equipment'];
+    const result = [];
+    
+    for (const field of fields) {
+      const regex = new RegExp(`${field}:\\s*([^\\n]+)`, 'i');
+      const match = promptText.match(regex);
+      result.push({
+        field: field.charAt(0).toUpperCase() + field.slice(1),
+        value: match ? match[1].trim() : ''
+      });
+    }
+    
+    return result;
+  }
 }

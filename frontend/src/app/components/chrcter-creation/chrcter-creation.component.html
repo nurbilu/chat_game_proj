@@ -4,7 +4,9 @@
     <ngb-progressbar type="info" [value]="progressValue" [animated]="true" [striped]="true"></ngb-progressbar>
   </div>
   <div class="text-frame fade-in-delay" [class.fade-in-active]="!isLoading">
-    <h2>Welcome to Character Creation</h2>
+    <div class="title-row">
+      <h2>Welcome to Character Creation</h2>
+    </div>
     <p>Greetings, adventurer! In this section, you can create and customize your DnD 5e character. Follow these steps to
       get started:
       <br>
@@ -41,9 +43,7 @@
         triggers="mouseenter:mouseleave" tooltipTitle="Clear Results"></button>
     </div>
     <div *ngIf="isSearching" class="spinner-container">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Searching...</span>
-      </div>
+        <img src="assets/imgs/icons/Load-srch-icon.gif" alt="Loading..." class="loading-gif">
     </div>
     <div *ngIf="showSearchResults && !isSearching" class="search-results">
       <app-lib-search 
@@ -57,8 +57,16 @@
   </div>
   <div class="grid fade-in-delay" [class.fade-in-active]="!isLoading">
     <div class="g-col-8 text-frame">
-      <h3 class="CharacterCreationPrompt" ngbPopover="Click to edit your character creation prompt"
-        triggers="mouseenter:mouseleave" popoverTitle="Character Creation Prompt">Character Creation Prompt</h3>
+      <div class="title-row">
+        <h3 class="CharacterCreationPrompt" ngbPopover="Click to edit your character creation prompt"
+          triggers="mouseenter:mouseleave" popoverTitle="Character Creation Prompt">Character Creation Prompt</h3>
+        <button class="prompt-icon" 
+                (click)="showCharacterPromptHover()" 
+                ngbTooltip="View saved character prompt" 
+                triggers="mouseenter:mouseleave">
+          <img src="/assets/imgs/icons/Advtre-Poem.png" alt="Character Prompt">
+        </button>
+      </div>
       <div class="text-editor-container">
         <st-editor [(ngModel)]="characterPrompt" [Config]="config"></st-editor>
       </div>
@@ -182,16 +190,24 @@
   </button>
   <!-- Add this just before the closing </div> of the chrcter-creation-container -->
   <div *ngIf="showStaticHoverCard" class="backdrop" (click)="closeStaticHoverCard()"></div>
-  <div *ngIf="showStaticHoverCard" class="static-hover-card">
+  <div *ngIf="showStaticHoverCard" class="static-hover-card prompt-card">
     <button (click)="closeStaticHoverCard()" class="close-btn">&times;</button>
     <h5>{{ selectedEntry?.name }}</h5>
-    <ul class="list-unstyled">
-      <ng-container *ngFor="let subEntry of (selectedEntry | keyvalue)">
-        <li *ngIf="subEntry.key !== 'name'">
-          <strong>{{ subEntry.key }}:</strong> {{ formatItem(subEntry.value) }}
-        </li>
-      </ng-container>
-    </ul>
+    
+    <table class="prompt-table" *ngIf="selectedEntry?.promptData">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of selectedEntry.promptData">
+          <td>{{ item.field }}</td>
+          <td>{{ item.value }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

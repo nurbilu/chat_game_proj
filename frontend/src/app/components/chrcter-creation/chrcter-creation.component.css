@@ -558,3 +558,58 @@ body.modal-open {
 body.modal-open {
   overflow: hidden;
 }
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.prompt-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.prompt-icon img {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.2s;
+}
+
+.prompt-icon:hover img {
+  transform: scale(1.1);
+}
+
+/* Add to your existing static hover card styles */
+.static-hover-card.prompt-card {
+  width: 90%;
+  max-width: 800px;
+  background-color: rgba(0, 0, 0, 0.95);
+  padding: 25px;
+}
+
+.prompt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.prompt-table th,
+.prompt-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.prompt-table th {
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+}
+
+.prompt-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}

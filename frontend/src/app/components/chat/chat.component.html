@@ -18,30 +18,53 @@
           </div>
         </div>
         <div class="card-footer">
-          <div class="chat-input-grid">
-            <div class="input-area">
-              <div class="subcard input-container">
-                <span>{{ username }}: </span>
-                <textarea [(ngModel)]="message" placeholder="Type your message here" required
-                  (keydown)="onEnter($event)" class="form-control" rows="4"></textarea>
+          <div class="input-area">
+            <div class="subcard input-container">
+              <span>{{ username }}: </span>
+              <div class="editor-wrapper">
+                <textarea [(ngModel)]="message" 
+                          placeholder="Type your message here" 
+                          required
+                          (keydown)="onEnter($event)" 
+                          class="form-control chat-input" 
+                          rows="2">
+                </textarea>
+                <div class="editor-toolbar" [class.show]="showEditor">
+                  <st-editor [(ngModel)]="message" 
+                            [Config]="editorConfig"
+                            [hideTextArea]="true">
+                  </st-editor>
+                </div>
               </div>
-            </div>
-            <div class="controls-area">
-              <div class="subcard controls-container">
+              <div class="toolbar-controls">
+                <button class="btn btn-icon" (click)="toggleEditor()" 
+                        ngbTooltip="Toggle formatting options">
+                  <i class="fas fa-font"></i>
+                </button>
                 <div class="custom-select">
-                  <button (click)="toggleDropup()" class="select-button" ngbTooltip="Select a template" triggers="mouseenter:mouseleave" tooltipTitle="Select Template">Select a template</button>
+                  <button (click)="toggleDropup()" class="btn btn-icon" 
+                          ngbTooltip="Select template">
+                    <i class="fas fa-clipboard-list"></i>
+                  </button>
                   <ul class="options" [class.show]="isDropupOpen">
                     <li (click)="selectOption('template1')">Lets Start a Game</li>
                     <li (click)="selectOption('template2')">Character Prompt</li>
                     <li (click)="selectOption('template3')">Save Last Prompt</li>
                   </ul>
                 </div>
-                <div class="button-group">
-                  <button (click)="sendMessage()" class="send-icon" ngbPopover="Send the message" triggers="mouseenter:mouseleave" popoverTitle="Send Message"></button>
-                  <button (click)="clearChatInput()" class="clear-icon"
-                    ngbPopover="Clear the chat input" triggers="mouseenter:mouseleave" popoverTitle="Clear Chat Input">
-                  </button>
-                </div>
+                <button class="btn btn-icon" 
+                        (click)="showCharacterPromptHover()" 
+                        ngbTooltip="View saved character prompt">
+                  <i class="fas fa-user-circle"></i>
+                </button>
+                <button class="btn btn-icon" (click)="clearChatInput()" 
+                        ngbTooltip="Clear text">
+                  <i class="fas fa-times"></i>
+                </button>
+                <button class="btn btn-icon send-button" (click)="sendMessage()" 
+                        ngbTooltip="Send message">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -84,4 +107,24 @@
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="showStaticHoverCard" class="backdrop" (click)="closeStaticHoverCard()"></div>
+  <div *ngIf="showStaticHoverCard" class="static-hover-card prompt-card">
+    <button (click)="closeStaticHoverCard()" class="close-btn">&times;</button>
+    <h5>{{ selectedEntry?.name }}</h5>
+    
+    <table class="prompt-table" *ngIf="selectedEntry?.promptData">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of selectedEntry.promptData">
+          <td>{{ item.field }}</td>
+          <td>{{ item.value }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
