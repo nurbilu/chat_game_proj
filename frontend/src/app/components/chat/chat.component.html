@@ -23,6 +23,7 @@
               <span>{{ username }}: </span>
               <div class="editor-wrapper">
                 <textarea [(ngModel)]="message" 
+                          (ngModelChange)="onInputChange()"
                           placeholder="Type your message here" 
                           required
                           (keydown)="onEnter($event)" 
@@ -30,20 +31,72 @@
                           rows="2">
                 </textarea>
                 <div class="editor-toolbar" [class.show]="showEditor">
-                  <st-editor [(ngModel)]="message" 
-                            [Config]="editorConfig"
-                            [hideTextArea]="true">
-                  </st-editor>
+                  <div class="toolbar-buttons">
+                    <div class="btn-group">
+                      <button class="btn btn-icon" (click)="formatText('bold')" 
+                              [class.active]="activeFormats.has('bold')"
+                              ngbTooltip="Bold">
+                        <i class="fas fa-bold"></i>
+                      </button>
+                      <button class="btn btn-icon" (click)="formatText('italic')" 
+                              [class.active]="activeFormats.has('italic')"
+                              ngbTooltip="Italic">
+                        <i class="fas fa-italic"></i>
+                      </button>
+                      <button class="btn btn-icon" (click)="formatText('underline')" 
+                              [class.active]="activeFormats.has('underline')"
+                              ngbTooltip="Underline">
+                        <i class="fas fa-underline"></i>
+                      </button>
+                    </div>
+                    <div class="btn-divider"></div>
+                    <div class="btn-group">
+                      <button class="btn btn-icon" (click)="formatText('align', 'left')" 
+                              [class.active]="activeFormats.has('align-left')"
+                              ngbTooltip="Align Left">
+                        <i class="fas fa-align-left"></i>
+                      </button>
+                      <button class="btn btn-icon" (click)="formatText('align', 'center')" 
+                              [class.active]="activeFormats.has('align-center')"
+                              ngbTooltip="Align Center">
+                        <i class="fas fa-align-center"></i>
+                      </button>
+                      <button class="btn btn-icon" (click)="formatText('align', 'right')" 
+                              [class.active]="activeFormats.has('align-right')"
+                              ngbTooltip="Align Right">
+                        <i class="fas fa-align-right"></i>
+                      </button>
+                    </div>
+                    <div class="btn-divider"></div>
+                    <div class="btn-group">
+                      <button class="btn btn-icon" (click)="formatText('list', 'bullet')" 
+                              [class.active]="activeFormats.has('list-bullet')"
+                              ngbTooltip="Bullet List">
+                        <i class="fas fa-list-ul"></i>
+                      </button>
+                      <button class="btn btn-icon" (click)="formatText('list', 'number')" 
+                              [class.active]="activeFormats.has('list-number')"
+                              ngbTooltip="Numbered List">
+                        <i class="fas fa-list-ol"></i>
+                      </button>
+                    </div>
+                    <div class="btn-divider"></div>
+                    <button class="btn btn-icon" 
+                            (click)="resetFormatting()" 
+                            ngbTooltip="Reset all formatting">
+                      <i class="fas fa-remove-format"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
               <div class="toolbar-controls">
                 <button class="btn btn-icon" (click)="toggleEditor()" 
-                        ngbTooltip="Toggle formatting options">
+                        ngbTooltip="Toggle formatting options" triggers="mouseenter:mouseleave">
                   <i class="fas fa-font"></i>
                 </button>
                 <div class="custom-select">
                   <button (click)="toggleDropup()" class="btn btn-icon" 
-                          ngbTooltip="Select template">
+                          ngbTooltip="Select template" triggers="mouseenter:mouseleave">
                     <i class="fas fa-clipboard-list"></i>
                   </button>
                   <ul class="options" [class.show]="isDropupOpen">
@@ -54,15 +107,15 @@
                 </div>
                 <button class="btn btn-icon" 
                         (click)="showCharacterPromptHover()" 
-                        ngbTooltip="View saved character prompt">
+                        ngbTooltip="View saved character prompt" triggers="mouseenter:mouseleave">
                   <i class="fas fa-user-circle"></i>
                 </button>
                 <button class="btn btn-icon" (click)="clearChatInput()" 
-                        ngbTooltip="Clear text">
+                        ngbTooltip="Clear text" triggers="mouseenter:mouseleave">
                   <i class="fas fa-times"></i>
                 </button>
                 <button class="btn btn-icon send-button" (click)="sendMessage()" 
-                        ngbTooltip="Send message">
+                        ngbTooltip="Send message" triggers="mouseenter:mouseleave">
                   <i class="fas fa-paper-plane"></i>
                 </button>
               </div>

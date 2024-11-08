@@ -401,6 +401,12 @@
     margin-bottom: 5px;
     position: relative;
     border-top: 4px solid rgba(255, 255, 255, 0.2);
+    font-family: inherit;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-height: 50px;
 }
 
 /* Add a pseudo-element for the resize handle */
@@ -459,11 +465,19 @@
     color: white;
     padding: 5px 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
+}
+
+.btn-icon.active {
+    color: #007bff;
 }
 
 .btn-icon:hover {
-    color: #007bff;
+    color: #0056b3;
+}
+
+.btn-icon.active:hover {
+    color: #0056b3;
 }
 
 .btn-icon i {
@@ -559,4 +573,68 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1050;
+}
+
+/* Ensure the textarea can display rich text formatting */
+.chat-input[style*="bold"] {
+    font-weight: bold;
+}
+
+.chat-input[style*="italic"] {
+    font-style: italic;
+}
+
+.chat-input[style*="underline"] {
+    text-decoration: underline;
+}
+
+.chat-input[style*="text-align"] {
+    display: block;
+    width: 100%;
+}
+
+.btn-divider {
+    width: 1px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0 8px;
+}
+
+.btn-icon {
+    /* ... existing styles ... */
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.btn-icon.active {
+    color: #007bff;
+}
+
+.btn-icon:hover {
+    color: #0056b3;
+}
+
+.btn-icon.active:hover {
+    color: #0056b3;
+}
+
+.toolbar-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+.btn-group {
+    display: flex;
+    align-items: center;
+}
+
+.btn-divider {
+    display: inline-flex;
+    width: 1px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0 8px;
+    align-self: center;
 }

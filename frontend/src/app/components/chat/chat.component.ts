@@ -28,6 +28,7 @@ export class ChatComponent implements OnInit {
     showEditor: boolean = false;
     showStaticHoverCard = false;
     selectedEntry: any = null;
+    activeFormats: Set<string> = new Set();
 
     editorConfig = {
         menubar: false,
@@ -137,7 +138,14 @@ export class ChatComponent implements OnInit {
 
     onEnter(event: KeyboardEvent): void {
         if (event.key === 'Enter') {
-            this.sendMessage();
+            if (event.shiftKey) {
+                // Allow default behavior (new line) when Shift+Enter is pressed
+                return;
+            } else {
+                // Prevent default behavior and send message when only Enter is pressed
+                event.preventDefault();
+                this.sendMessage();
+            }
         }
     }
 
@@ -232,37 +240,77 @@ export class ChatComponent implements OnInit {
         this.showEditor = !this.showEditor;
     }
 
-    applyBold(): void {
-        this.message = `<b>${this.message}</b>`;
+    formatText(command: string, value: string | null = null): void {
+        const textarea = document.querySelector('.chat-input') as HTMLTextAreaElement;
+        if (!textarea) return;
+
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = this.message.substring(start, end);
+
+        if (start === end) {
+            // Toggle format state even without selection
+            this.toggleFormat(command, value);
+            return;
+        }
+
+        let formattedText = '';
+        switch (command) {
+            case 'bold':
+                formattedText = `**${selectedText}**`;
+                this.toggleFormat('bold');
+                break;
+            case 'italic':
+                formattedText = `*${selectedText}*`;
+                this.toggleFormat('italic');
+                break;
+            case 'underline':
+                formattedText = `__${selectedText}__`;
+                this.toggleFormat('underline');
+                break;
+            case 'align':
+                formattedText = `<div style="text-align: ${value}">${selectedText}</div>`;
+                this.toggleFormat('align', value);
+                break;
+            case 'list':
+                const lines = selectedText.split('\n');
+                if (value === 'bullet') {
+                    formattedText = lines.map(line => `• ${line}`).join('\n');
+                } else {
+                    formattedText = lines.map((line, i) => `${i + 1}. ${line}`).join('\n');
+                }
+                this.toggleFormat('list', value);
+                break;
+        }
+
+        // Replace the selected text with the formatted text
+        this.message = this.message.substring(0, start) + formattedText + this.message.substring(end);
+        
+        // Restore cursor position
+        setTimeout(() => {
+            textarea.focus();
+            textarea.setSelectionRange(start, start + formattedText.length);
+        }, 0);
     }
 
-    applyItalic(): void {
-        this.message = `<i>${this.message}</i>`;
-    }
-    
-    applyUnderline(): void {
-        this.message = `<u>${this.message}</u>`;
-    }
-    applyStrikethrough(): void {
-        this.message = `<strike>${this.message}</strike>`;
-    }
-    applyForecolor(): void {
-        this.message = `<span style="color: ${this.message}">${this.message}</span>`;
-    }   
-    applyAlignleft(): void {
-        this.message = `<div style="text-align: left;">${this.message}</div>`;
-    }
-    applyAligncenter(): void {
-        this.message = `<div style="text-align: center;">${this.message}</div>`;
-    }
-    applyAlignright(): void {
-        this.message = `<div style="text-align: right;">${this.message}</div>`;
-    }
-    applyBullist(): void {
-        this.message = `<ul>${this.message}</ul>`;
-    }
-    applyNumlist(): void {
-        this.message = `<ol>${this.message}</ol>`;
+    private toggleFormat(format: string, value: string | null = null): void {
+        const formatKey = value ? `${format}-${value}` : format;
+        if (this.activeFormats.has(formatKey)) {
+            this.activeFormats.delete(formatKey);
+        } else {
+            // For alignment, remove other alignment options first
+            if (format === 'align') {
+                ['align-left', 'align-center', 'align-right'].forEach(f => this.activeFormats.delete(f));
+            }
+            // For lists, remove other list options first
+            if (format === 'list') {
+                ['list-bullet', 'list-number'].forEach(f => this.activeFormats.delete(f));
+            }
+            this.activeFormats.add(formatKey);
+        }
+        
+        // Apply formatting after toggling
+        this.applyFormatting();
     }
 
     showCharacterPromptHover(): void {
@@ -313,4 +361,60 @@ export class ChatComponent implements OnInit {
         
         return result;
     }
+
+    // Add this method to apply formatting to the input text
+    private applyFormatting(): void {
+        const textarea = document.querySelector('.chat-input') as HTMLTextAreaElement;
+        if (!textarea) return;
+
+        // Create a temporary div to hold the formatted text
+        const tempDiv = document.createElement('div');
+        let formattedText = this.message;
+
+        // Apply active formats
+        this.activeFormats.forEach(format => {
+            switch (format) {
+                case 'bold':
+                    formattedText = `<strong>${formattedText}</strong>`;
+                    break;
+                case 'italic':
+                    formattedText = `<em>${formattedText}</em>`;
+                    break;
+                case 'underline':
+                    formattedText = `<u>${formattedText}</u>`;
+                    break;
+                case 'align-left':
+                    formattedText = `<div style="text-align: left">${formattedText}</div>`;
+                    break;
+                case 'align-center':
+                    formattedText = `<div style="text-align: center">${formattedText}</div>`;
+                    break;
+                case 'align-right':
+                    formattedText = `<div style="text-align: right">${formattedText}</div>`;
+                    break;
+            }
+        });
+
+        // Update the textarea's content
+        tempDiv.innerHTML = formattedText;
+        textarea.style.fontWeight = this.activeFormats.has('bold') ? 'bold' : 'normal';
+        textarea.style.fontStyle = this.activeFormats.has('italic') ? 'italic' : 'normal';
+        textarea.style.textDecoration = this.activeFormats.has('underline') ? 'underline' : 'none';
+        textarea.style.textAlign = 
+            this.activeFormats.has('align-right') ? 'right' : 
+            this.activeFormats.has('align-center') ? 'center' : 
+            'left';
+    }
+
+    // Add this to handle input changes
+    onInputChange(): void {
+        this.applyFormatting();
+    }
+
+    // Add this method to reset all formatting
+    resetFormatting(): void {
+        this.activeFormats.clear();
+        this.applyFormatting();
+    }
+
 }
