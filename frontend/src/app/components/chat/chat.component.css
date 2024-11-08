@@ -403,7 +403,8 @@
     border-top: 4px solid rgba(255, 255, 255, 0.2);
     font-family: inherit;
     line-height: 1.5;
-    transition: all 0.3s ease;
+    transition: height 0.1s ease-out;
+    cursor: text;
     white-space: pre-wrap;
     word-wrap: break-word;
     min-height: 50px;
@@ -413,16 +414,14 @@
 .chat-input::before {
     content: '';
     position: absolute;
-    top: -2px; /* Slightly overlap the border */
+    top: -4px;
     left: 0;
     right: 0;
-    height: 4px;
-    cursor: row-resize; /* Change cursor to vertical resize */
+    height: 8px;
+    cursor: row-resize;
     background: transparent;
     z-index: 10;
 }
-
-
 
 /* Optional: Show a subtle visual indicator on hover */
 .chat-input:hover::before {
@@ -431,8 +430,8 @@
 
 /* Keep the cursor during resize operation */
 .chat-input.resizing {
+    transition: none;
     user-select: none;
-    cursor: row-resize !important;
 }
 
 .editor-toolbar {
@@ -637,4 +636,21 @@
     background-color: rgba(255, 255, 255, 0.2);
     margin: 0 8px;
     align-self: center;
+}
+
+/* Add styles for when resizing is active */
+.chat-input.resizing {
+    transition: none;
+    user-select: none;
+}
+
+/* Add styles for the resize handle hover state */
+.chat-input:hover::before {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure resize cursor stays during the entire resize operation */
+.chat-input.resizing,
+.chat-input.resizing::before {
+    cursor: row-resize !important;
 }

@@ -90,31 +90,47 @@ export class ChatComponent implements OnInit {
         const chatInput = document.querySelector('.chat-input') as HTMLTextAreaElement;
         
         chatInput?.addEventListener('mousedown', (e: MouseEvent) => {
-            // Only trigger if clicking near the top border (within 4px)
-            if (e.offsetY <= 4) {
+            const rect = chatInput.getBoundingClientRect();
+            const isInResizeZone = e.clientY - rect.top <= 8; // Increased zone to 8px
+            
+            if (isInResizeZone) {
                 this.isResizing = true;
                 this.startY = e.clientY;
                 this.startHeight = chatInput.offsetHeight;
+                
+                // Add resizing class
                 chatInput.classList.add('resizing');
+                
+                // Add temporary mousemove and mouseup listeners
+                const onMouseMove = (moveEvent: MouseEvent) => {
+                    if (!this.isResizing) return;
+                    
+                    const deltaY = this.startY - moveEvent.clientY;
+                    const newHeight = Math.max(50, this.startHeight + deltaY);
+                    
+                    // Use requestAnimationFrame for smoother updates
+                    requestAnimationFrame(() => {
+                        chatInput.style.height = `${newHeight}px`;
+                    });
+                };
+                
+                const onMouseUp = () => {
+                    if (this.isResizing) {
+                        this.isResizing = false;
+                        chatInput.classList.remove('resizing');
+                        
+                        // Remove temporary listeners
+                        document.removeEventListener('mousemove', onMouseMove);
+                        document.removeEventListener('mouseup', onMouseUp);
+                    }
+                };
+                
+                // Add temporary listeners
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
                 
                 // Prevent text selection
                 e.preventDefault();
-            }
-        });
-
-        document.addEventListener('mousemove', (e: MouseEvent) => {
-            if (!this.isResizing) return;
-            
-            const deltaY = this.startY - e.clientY;
-            const newHeight = Math.max(50, this.startHeight + deltaY); // Minimum height of 50px
-            
-            chatInput.style.height = `${newHeight}px`;
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (this.isResizing) {
-                this.isResizing = false;
-                chatInput?.classList.remove('resizing');
             }
         });
     }
