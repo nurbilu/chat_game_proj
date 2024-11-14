@@ -79,7 +79,7 @@ nav {
 .offcanvas-body {
   background-color: #333740;
   overflow-y: auto;
-  /* Enable vertical scrolling */
+  cursor: default;
 }
 
 .offcanvas-body ul {
@@ -164,7 +164,7 @@ body.offcanvas-open {
 }
 
 #draggableOffcanvas {
-  cursor: move; /* Indicate that the element is draggable */
+  cursor: default;
 }
 
 .toggle-offcanvas-icon {
@@ -176,8 +176,12 @@ body.offcanvas-open {
 }
 
 .toggle-offcanvas-icon.dragging {
-  cursor: grabbing;
-  background-color: rgba(201, 166, 107, 0.2);
+  cursor: none;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  margin: 0;
 }
 
 .toggle-offcanvas-icon.start {
@@ -222,7 +226,7 @@ body.offcanvas-open {
   padding: 8px;
   border-radius: 50%;
   background: rgba(201, 166, 107, 0.1);
-  cursor: pointer;
+  cursor: move;
   transition: background-color 0.3s ease;
 }
 
@@ -293,4 +297,35 @@ body.offcanvas-open {
   border: 2px solid white;
   border-radius: 5px;
   padding: 5px;
+}
+
+/* Add these styles for the modal password input */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.btn-reveal-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.btn-reveal-password:hover {
+  color: #007bff;
+}
+
+.btn-reveal-password:focus {
+  outline: none;
+  color: #007bff;
+}
+
+.password-input-wrapper input {
+  padding-right: 40px;
 }

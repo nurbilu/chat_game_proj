@@ -3,6 +3,9 @@
 
 estimated total time frame: ~ 56 - 80+ hours
 
+1.1.
+ 4848896:error:10000438:SSL routines:OPENSSL_internal:TLSV1_ALERT_INTERNAL_ERROR:..\..\third_party\boringssl\src\ssl\tls_record.cc:592:SSL alert number 80 - fix error first - dont let to run the code properly - fix error first , have also an error for the character create - fix error first for DB first - probably wiil fix the character create problem too (done - fixed - check again - suppose to be ok - happens every some updates)
+
 (estimated time frame: 9-12 hours)(done)
    1.Z. adjust the display design of the library for crads , scrollspy and etc ()
    1.a. understand and create an expalnation for the offcanvas toggle icon (done)
@@ -14,32 +17,33 @@ estimated total time frame: ~ 56 - 80+ hours
 (estimated time frame: ~ 8 hours)()
    2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
+   2.c. change mouse cursor to pointer when hovering over offcanvas menu ()
 
 (estimated time frame: ~ 9 hours)()
    3.a. fix / insure refresh token is working as expected with the login Modal as login component () - fix the remember me that is cleared from local storage 
    when logout ()
-   3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor (almost done)(need to adjust character creation to to create more characters and display them here(optional)())
+   3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor (almost done)(need to adjust character creation to to create more characters and display them here(optional)(done))
 
-(estimated time frame: ~ 2 - 7 hours)( almost done )
+(estimated time frame: ~ 2 - 7 hours)( almost done - check for last updates - else - mark (___done___) )
 3.5.a. add 2-3 functions to super profile page [block user access and unblock user access -fix and enable - 90% - 95% done - complete the is_blocked Route access , display user characters prompts - done ] (done)
 sub-task : remove Super Profile or Profile and keep the other one {} (done)
-3.5.b. add 2-3 functions to user chat page - continue to implement the text editor toolbar functions and input display()
+3.5.b. add 2-3 functions to user chat page - continue to implement the text editor toolbar functions and input display(done)
 
 
 (estimated time frame: ~ 3 - 12 hours)()
-   4.fix login redirect from unauth page to login page () 
-   if not implement login by google and facebook and twitter , remove ()
-   - add google login (optional)
-   - add facebook login (optional)
-   - add twitter login (optional)
-   4.b. design change pwd or remove the component display or link component to profile and design it (done)
-   4.c. try to implement after success login navigate to the last click component link button on navbar offcanvas (optional())
+   4.a.fix login redirect from unauth page to login page () 
+   4.b. :
+   - google , facebook and twitter login is removed from the login component (done)
+   - google and social networks login is removed , fix forgot-pwd and reset-pwd to be sent to the email instead of redirect to login page or fill a 4 input form fields 
+     to navigate to reset-pwd page too ()
+   4.c. design change pwd or remove the component display or link component to profile and design it (done)
+   4.d. try to implement after success login navigate to the last click component link button on navbar offcanvas (optional())
 
 (estimated time frame: + 10 hours at least)()
-   4.b. fix docker hub GUI ()
+   4.b. fix docker hub GUI (docker is fixed by itself - could be that OS updates fixed GUI(done?))
 
 
-(if needed : estimated time frame: ~ 3 - 6 hours)()
+(if needed : estimated time frame: ~ 3 - 6 hours - might be optional)()
    5. maybe need one terminal command to run all the flask apps for docker (? maybe its not needed? )
       make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command ( maybe its not needed?) 
 

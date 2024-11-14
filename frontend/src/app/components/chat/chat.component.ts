@@ -187,9 +187,12 @@ export class ChatComponent implements OnInit {
                         this.responses.push({ text: 'Error: Could not fetch character prompt', from: 'bot' });
                     }
                 });
-                return; // Exit the function to avoid setting the message again
+                return;
             case 'template3':
                 templateMessage = 'Save last prompt to know from where to continue.';
+                break;
+            case 'template4':
+                templateMessage = `Please display last prompt for User ${this.username}, for ${this.username} to know what next prompt to write .`;
                 break;
             default:
                 templateMessage = '';

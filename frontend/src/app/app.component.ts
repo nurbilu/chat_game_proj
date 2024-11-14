@@ -42,6 +42,8 @@ export class AppComponent implements OnInit {
 
   profilePictureUrl: string | null = null;
 
+  modalPasswordVisible = false;
+
   constructor(
     private router: Router,
     private offcanvasService: NgbOffcanvas,
@@ -295,24 +297,28 @@ export class AppComponent implements OnInit {
       }
 
       if (isDragging) {
+        // Update icon position to follow cursor
+        toggleElement.style.left = `${moveEvent.clientX}px`;
+        toggleElement.style.top = `${moveEvent.clientY}px`;
+
         // Determine position based on the largest movement axis
         if (Math.abs(dx) > Math.abs(dy)) {
           // Horizontal movement
           if (dx > 0) {
             this.currentOffcanvasPosition = 'end';
-            toggleElement.className = 'toggle-offcanvas-icon end';
+            toggleElement.className = 'toggle-offcanvas-icon dragging end';
           } else {
             this.currentOffcanvasPosition = 'start';
-            toggleElement.className = 'toggle-offcanvas-icon start';
+            toggleElement.className = 'toggle-offcanvas-icon dragging start';
           }
         } else {
           // Vertical movement
           if (dy > 0) {
             this.currentOffcanvasPosition = 'bottom';
-            toggleElement.className = 'toggle-offcanvas-icon bottom';
+            toggleElement.className = 'toggle-offcanvas-icon dragging bottom';
           } else {
             this.currentOffcanvasPosition = 'top';
-            toggleElement.className = 'toggle-offcanvas-icon top';
+            toggleElement.className = 'toggle-offcanvas-icon dragging top';
           }
         }
       }
@@ -361,5 +367,9 @@ export class AppComponent implements OnInit {
       }
       this.clickCount = 0;
     }, 250); // Adjust timing as needed
+  }
+
+  toggleModalPasswordVisibility(): void {
+    this.modalPasswordVisible = !this.modalPasswordVisible;
   }
 }

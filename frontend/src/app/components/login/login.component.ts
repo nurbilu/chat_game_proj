@@ -13,6 +13,7 @@ export class LoginComponent {
     password: string = '';
     rememberMe: boolean = false;
     returnUrl: string = '/';
+    passwordVisible = false;
 
     @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
     @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
@@ -73,17 +74,7 @@ export class LoginComponent {
         this.router.navigate(['/forget-password']);
     }
 
-    togglePasswordVisibility(passwordFieldId: string, toggleIconId: string): void {
-        const passwordField = document.getElementById(passwordFieldId) as HTMLInputElement;
-        const toggleIcon = document.getElementById(toggleIconId) as HTMLElement;
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-            toggleIcon.classList.remove('bi-eye-slash');
-            toggleIcon.classList.add('bi-eye');
-        } else {
-            passwordField.type = 'password';
-            toggleIcon.classList.remove('bi-eye');
-            toggleIcon.classList.add('bi-eye-slash');
-        }
+    togglePasswordVisibility(): void {
+        this.passwordVisible = !this.passwordVisible;
     }
 }

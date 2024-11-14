@@ -574,13 +574,14 @@ body.modal-open {
 }
 
 .prompt-icon img {
-  width: 32px;
-  height: 32px;
+  width: 55px;
+  height: 55px;
   transition: transform 0.2s;
 }
 
 .prompt-icon:hover img {
   transform: scale(1.1);
+  border-radius: 10px;
 }
 
 /* Add to your existing static hover card styles */

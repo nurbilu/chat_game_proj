@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 })
 export class ChangePasswordComponent implements OnInit {
   changePasswordForm: FormGroup;
+  oldPasswordVisible = false;
+  newPasswordVisible = false;
+  confirmPasswordVisible = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private toastService: ToastService, private router: Router) {
     this.changePasswordForm = this.fb.group({
@@ -39,6 +42,10 @@ export class ChangePasswordComponent implements OnInit {
       this.authService.changePassword(this.changePasswordForm.value).subscribe(
         (response: any) => {
           this.toastService.success('Password changed successfully');
+          this.changePasswordForm.reset();
+          this.oldPasswordVisible = false;
+          this.newPasswordVisible = false;
+          this.confirmPasswordVisible = false;
         },
         (error: any) => {
           this.toastService.error('Error changing password');
@@ -46,6 +53,20 @@ export class ChangePasswordComponent implements OnInit {
       );
     } else {
       this.toastService.error('Form is not valid');
+    }
+  }
+
+  togglePasswordVisibility(field: 'old' | 'new' | 'confirm') {
+    switch (field) {
+      case 'old':
+        this.oldPasswordVisible = !this.oldPasswordVisible;
+        break;
+      case 'new':
+        this.newPasswordVisible = !this.newPasswordVisible;
+        break;
+      case 'confirm':
+        this.confirmPasswordVisible = !this.confirmPasswordVisible;
+        break;
     }
   }
 }
