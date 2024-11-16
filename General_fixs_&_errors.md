@@ -14,14 +14,14 @@ estimated total time frame: ~ 56 - 80+ hours
    1.d. complete the displayment of Load-srch-icon with loading component or not (done)
 
 
-(estimated time frame: ~ 8 hours)()
+(estimated time frame: ~ 8 hours)( 2/3 done )
    2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
    2.c. change mouse cursor to pointer when hovering over offcanvas menu (done)
 
-(estimated time frame: ~ 9 hours)()
-   3.a. fix / insure refresh token is working as expected with the login Modal as login component () - fix the remember me that is cleared from local storage 
-   when logout ()
+(estimated time frame: ~ 9 hours)(almost done)
+   3.a. fix / insure refresh token is working as expected with the login Modal as login component (?) - fix the remember me that is cleared from local storage 
+   when logout (done?)
    3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor (done)(need to adjust character creation to to create more characters and display them here(optional)(done))
 
 (estimated time frame: ~ 2 - 7 hours)( almost done - check for last updates - else - mark (___done___) )
@@ -47,7 +47,7 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
    5. maybe need one terminal command to run all the flask apps for docker (? maybe its not needed? )
       make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command ( maybe its not needed?) 
 
-(estimated time frame: ~ 2 - 7 hours)()
+(estimated time frame: ~ 2 - 7 hours)(almost done)
    6.a. add more visual effects to the website (almost done):
       - design the grid of character create component better (done) 
       - add visual effects to super profile page (done)

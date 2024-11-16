@@ -60,19 +60,32 @@ button:hover {
 
 input[type="text"],
 input[type="password"] {
-    width: 100%; /* Full width */
-    height: 40px; /* Increased height */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    margin: 0 auto; /* Center the input horizontally */
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    margin: 0 auto;
     font-size: 25px;
     font-family: 'Garamond', serif;
-    text-align: center; /* Center the text */
-    line-height: 1.1; /* Adjust line height for better appearance */
+    text-align: center;
+    line-height: 1.1;
+    background-color: #393F44; /* Mid-dark gray background */
+    color: #FFFFFF; /* White text */
+    border: 1px solid #85888C; /* Optional: adds a subtle border */
 }
 
+/* Change placeholder color to be more visible on dark background */
 input[type="text"]::placeholder,
 input[type="password"]::placeholder {
-    color: #555; /* Change placeholder text color */
+    color: #CCCCCC;
+}
+
+/* Style for autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #393F44 inset !important;
+    -webkit-text-fill-color: #FFFFFF !important;
 }
 
 .submit-link:hover {
@@ -134,23 +147,6 @@ input[type="password"]::placeholder {
   width: 100%;
 }
 
-.password-toggle {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #555;
-  padding: 0;
-  font-size: 1.2rem;
-}
-
-.password-toggle:hover {
-  color: #333;
-}
-
 input[type="password"] {
   padding-right: 40px;
 }
@@ -175,12 +171,12 @@ input[type="password"] {
   justify-content: center;
   width: 24px;
   height: 24px;
-  color: #6c757d;
+  color: #8797a5;
   transition: color 0.3s ease;
 }
 
 .btn-reveal-password:hover {
-  color: #007bff;
+  color: #37c0f7;
 }
 
 .btn-reveal-password:focus {

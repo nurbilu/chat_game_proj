@@ -359,6 +359,8 @@ export class AuthService {
             tap(() => {
                 const username = this.username.getValue(); // Get the current username
                 this.clearLocalStorage();
+                sessionStorage.removeItem('lastNavLink');
+                localStorage.removeItem('rememberMe');
                 this._isLoggedIn.next(false);
                 this.username.next('');
                 if (this.refreshTokenExpirationTimer) {

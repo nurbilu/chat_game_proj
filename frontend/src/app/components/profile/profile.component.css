@@ -45,7 +45,7 @@
     position: relative;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
-    color: rgb(2, 51, 26);
+    color: rgb(173, 228, 201);
     transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
@@ -169,7 +169,7 @@
 }
 
 .character-card h4 {
-    color: white;
+    color: rgb(0, 0, 0);
     margin-bottom: 10px;
 }
 
@@ -206,4 +206,34 @@
 .prompt-hover-card.show {
     opacity: 1;
     visibility: visible;
+}
+
+.card-body {
+    background-color: rgba(0, 0, 0, 0.925);
+    color: rgb(255, 255, 255);
+}
+
+.card-body p {
+    color: rgb(255, 255, 255);
+}
+
+.text-black .bg-body-tertiary {
+    background-color: rgba(0, 0, 0, 0.925);
+}
+
+/* Add these styles to override Bootstrap's bg-body-tertiary */
+.bg-body-tertiary {
+    background-color: #000000 !important;
+    color: #ffffff;
+}
+
+/* Update the existing card-body styles */
+.card-body {
+    background-color: rgba(0, 0, 0, 0.925);
+    color: rgb(255, 255, 255);
+}
+
+/* Ensure text remains visible */
+.card-body .bg-body-tertiary p {
+    color: rgb(255, 255, 255);
 }
