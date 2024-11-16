@@ -27,7 +27,7 @@
 </div>
 <div *ngIf="!showSearchResults && !isLoading">
   <div class="tab-content scrollspy-example" id="nav-tabContent" data-bs-spy="scroll" data-bs-target="#nav-tab"
-    data-bs-offset="0" tabindex="0">
+    data-bs-offset="0" tabindex="0" (scroll)="onScroll($event)">
     <div class="tab-pane fade show active" role="tabpanel">
       <div *ngIf="isCardCollection(selectedCollection)" class="card-collection">
         <div class="articles row justify-content-center">
@@ -136,7 +136,7 @@
 </div>
 
 <!-- Update the hover card buttons -->
-<div class="hover-card" [ngClass]="{'show': showHoverCard}">
+<div class="hover-card-move" [ngClass]="{'show': showHoverCard}">
   <div class="group-buttons">
     <button (click)="scrollToTop()">Back to Top</button>
     <button (click)="scrollToLeft()">Back to Left Side</button>

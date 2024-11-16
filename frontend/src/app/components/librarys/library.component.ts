@@ -322,9 +322,13 @@ export class LibraryComponent implements OnInit {
 
   checkScrollPosition() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    this.showHoverCard = scrollPosition > 300;
+    const container = document.querySelector('.scrollspy-example');
+    const horizontalScrollPosition = container ? container.scrollLeft : 0;
+    const hasHorizontalScroll = horizontalScrollPosition > 300;
+    
+    // Show hover card if either vertical scroll is > 300 OR horizontal scroll is > 200
+    this.showHoverCard = scrollPosition > 300 || hasHorizontalScroll;
   }
-
 
   scrollToLeft() {
     const container = document.querySelector('.scrollspy-example');
@@ -342,8 +346,10 @@ export class LibraryComponent implements OnInit {
 
   shouldShowHoverCard(): boolean {
     const allowedCollections = ['Equipment', 'Spells', 'Monsters'];
-    const hasHorizontalScroll = document.documentElement.scrollWidth > document.documentElement.clientWidth;
-    return allowedCollections.includes(this.selectedCollection) && (this.isScrollbarVisible || hasHorizontalScroll);
+    const container = document.querySelector('.scrollspy-example');
+    const horizontalScrollPosition = container ? container.scrollLeft : 0;
+    
+    return allowedCollections.includes(this.selectedCollection) && horizontalScrollPosition > 200;
   }
 
   checkScrollbarVisibility(): void {
@@ -366,6 +372,24 @@ export class LibraryComponent implements OnInit {
     } else {
       // If not static, make it static
       this.staticCards[index] = true;
+    }
+  }
+
+  // Add a new event listener for horizontal scroll
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScrollPosition();
+  }
+
+  // Add event listener for horizontal scroll
+  @HostListener('scroll', ['$event'])
+  onScroll(event: Event) {
+    if (event.target instanceof Element) {
+      const container = event.target;
+      const horizontalScrollPosition = container.scrollLeft;
+      const verticalScrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      
+      this.showHoverCard = verticalScrollPosition > 300 || horizontalScrollPosition > 200;
     }
   }
 }
