@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { CleanTextPipe } from '../../clean-text.pipe';
 import { SearchService } from '../../services/search.service';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 interface Collection {
   [key: string]: any[];
@@ -33,7 +32,7 @@ export class LibraryComponent implements OnInit {
   isSearchExpanded: boolean = false;
   isCollapsed: boolean = false;
   allRowsExpanded: boolean = false;
-  cardExpandedStates: { [cardIndex: number]: { [key: string]: boolean } } = {};
+  cardExpandedStates: { [key: number]: boolean } = {};
   tableExpandedStates: { [rowIndex: number]: { [key: string]: boolean } } = {};
   showNavigationButtons: boolean = false;
   allCardValuesExpanded: { [cardIndex: number]: boolean } = {};
@@ -273,12 +272,14 @@ export class LibraryComponent implements OnInit {
   // Add a new method to collapse all values in a card
   collapseAllCardValues(): void {
     this.getPaginatedItems().forEach((item, index) => {
+      // Reset the card's expanded state
+      this.cardExpandedStates[index] = false;
+      
       const keys = this.getKeys(item);
       keys.forEach(key => {
         const visibilityIndex = this.getTextVisibilityIndex(index, key);
         this.textVisibility[visibilityIndex] = false;
       });
-      this.allCardValuesExpanded[index] = false;
     });
   }
 
@@ -296,11 +297,14 @@ export class LibraryComponent implements OnInit {
   }
 
   toggleAllCardValues(cardIndex: number): void {
-    this.allCardValuesExpanded[cardIndex] = !this.allCardValuesExpanded[cardIndex];
-    const keys = this.getKeys(this.getPaginatedItems()[cardIndex]);
+    this.cardExpandedStates[cardIndex] = !this.cardExpandedStates[cardIndex];
+    
+    const item = this.getPaginatedItems()[cardIndex];
+    const keys = this.getKeys(item);
+    
     keys.forEach(key => {
       const visibilityIndex = this.getTextVisibilityIndex(cardIndex, key);
-      this.textVisibility[visibilityIndex] = this.allCardValuesExpanded[cardIndex];
+      this.textVisibility[visibilityIndex] = this.cardExpandedStates[cardIndex];
     });
   }
 

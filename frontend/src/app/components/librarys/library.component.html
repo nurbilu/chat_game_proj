@@ -17,9 +17,6 @@
   <div class="collapse-area">
     <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}" ngbTooltip="Search for items in the library" triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
   </div>
-  <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
-  [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
-  [ellipses]="true" class="pagination"></ngb-pagination>
 </div>
 <div *ngIf="isLoading" class="spinner-container">
   <img src="assets/imgs/icons/Load-srch-icon.gif" alt="Loading..." class="loading-gif">
@@ -32,10 +29,16 @@
   <div class="tab-content scrollspy-example" id="nav-tabContent" data-bs-spy="scroll" data-bs-target="#nav-tab"
     data-bs-offset="0" tabindex="0">
     <div class="tab-pane fade show active" role="tabpanel">
-      <h4>{{selectedCollection}}</h4>
-      <div *ngIf="isCardCollection(selectedCollection)">
-        <button class="btn btn-sm btn-secondary mb-2" (click)="collapseAllCardValues()">Collapse All Cards</button>
+      <div *ngIf="isCardCollection(selectedCollection)" class="card-collection">
         <div class="articles row justify-content-center">
+          <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
+            [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
+            [ellipses]="true" class="pagination"></ngb-pagination>
+          <div class="collapse-all-container">
+            <button class="collapse-all-btn" (click)="collapseAllCardValues()">
+              Collapse All Cards
+            </button>
+          </div>
           <div class="col-16 col-md-9 col-lg-4" *ngFor="let item of getPaginatedItems(); let i = index">
             <div class="flip-card">
               <div class="flip-card-inner" [ngClass]="{'static': staticCards[i]}">
@@ -49,10 +52,16 @@
                   </div>
                 </div>
                 <div class="flip-card-back">
-                  <h2 class="card-title" (click)="toggleCardStatic(i, $event)" ngbTooltip="click on title to freeze card , click again to unfreeze card" triggers="mouseenter:mouseleave" tooltipTitle="Freeze Card">{{item.name}}</h2>
+                  <h2 class="card-title" (click)="toggleCardStatic(i, $event)" 
+                      ngbTooltip="click on title to freeze card , click again to unfreeze card" 
+                      triggers="mouseenter:mouseleave" 
+                      tooltipTitle="Freeze Card">{{item.name}}</h2>
+                  
+                  <!-- Individual card expand/collapse button -->
                   <button class="btn btn-sm btn-secondary mb-2" (click)="toggleAllCardValues(i)">
-                    {{ allCardValuesExpanded[i] ? 'Collapse All' : 'Expand All' }}
+                    {{ cardExpandedStates[i] ? 'Collapse Card' : 'Expand Card' }}
                   </button>
+                  
                   <div class="table-container">
                     <table class="card-table table-striped table-hover table-responsive" *ngIf="item.name !== 'url' && item.name !== 'name'">
                       <thead class="table-dark">
@@ -84,7 +93,10 @@
           </div>
         </div>
       </div>
-      <div *ngIf="!isCardCollection(selectedCollection)">
+      <div *ngIf="!isCardCollection(selectedCollection)" class="table-collection">
+        <ngb-pagination *ngIf="collections[selectedCollection]" [(page)]="page" [pageSize]="pageSize"
+          [collectionSize]="collections[selectedCollection].length || 0" [maxSize]="maxPages" [rotate]="true"
+          [ellipses]="true" class="pagination"></ngb-pagination>
         <button class="btn btn-sm btn-secondary mb-2" (click)="collapseAllTableValues()">Collapse All Table Rows</button>
         <table class="table table-striped table-hover table-responsive">
           <thead>

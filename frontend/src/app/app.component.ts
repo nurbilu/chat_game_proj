@@ -372,4 +372,27 @@ export class AppComponent implements OnInit {
   toggleModalPasswordVisibility(): void {
     this.modalPasswordVisible = !this.modalPasswordVisible;
   }
+
+  saveNavLinkToCookies(url: string): void {
+    sessionStorage.setItem('lastNavLink', url);
+    
+    if (!this.isLoggedIn && this.requiresAuthRoute(url)) {
+      this.router.navigate(['/login']);
+      this.closeOffcanvas();
+    } else {
+      this.router.navigate([url]);
+      this.closeOffcanvas();
+    }
+  }
+
+  private requiresAuthRoute(route: string): boolean {
+    const protectedRoutes = [
+      '/chat',
+      '/profile',
+      '/change-password',
+      '/character-creation',
+      '/super-profile'
+    ];
+    return protectedRoutes.includes(route);
+  }
 }

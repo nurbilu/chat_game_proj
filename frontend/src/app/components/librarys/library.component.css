@@ -14,17 +14,19 @@ section {
 
 .row {
   display: flex;
-  justify-content: center; /* Center the cards */
-  flex-wrap: wrap; /* Allow wrapping of cards */
-  gap: 200px; /* Space between cards */
+  flex-wrap: wrap;
+  gap: 20px;
   height: 75vh;
   width: 100%;
   margin: 0;
   padding: 35px 0;
   font-family: "Figtree", sans-serif;
-  font-size: 1.2rem;
-  line-height: 1.6rem;
+
   min-height: 85vh;
+  position: relative;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
 }
 
 body {
@@ -113,13 +115,28 @@ tbody tr:hover {
 
 .pagination {
   display: flex;
+  justify-content: center;
   position: sticky;
-  top: 50px; /* Adjust this value as needed */
-  left: 200px;
-  z-index: 1000; /* Ensure it stays above other content */
-  background: linear-gradient(45deg, #eb8e38, #dba3f5);
+  z-index: 1000;
+  width: fit-content;
+  margin: 0 auto;
 }
 
+/* Table collection pagination */
+.table-collection .pagination {
+  top: 30px;
+  background: transparent; /* Remove background color */
+}
+
+/* Card collection pagination */
+.card-collection .pagination {
+  position: absolute;
+  top: 1px;
+  right: 20px;
+  transform: none;
+  left: auto;
+  z-index: 1;
+}
 
 .spinner-container {
   position: fixed;
@@ -175,6 +192,7 @@ tbody tr:hover {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
+
 /* Add this new style for the static state */
 .flip-card-inner.static {
   transform: rotateY(180deg);
@@ -192,14 +210,18 @@ tbody tr:hover {
 }
 
 .flip-card-front {
-  background-color: #b6bec4;
-  color: black;
+  background: linear-gradient(45deg, #3880eb, #a3b2f5);
+  color: rgb(0, 0, 0);
 }
 
 .flip-card-back {
-  background-color: #b6bec4;
+  background: linear-gradient(45deg, #86adf7, #521b6b);
   color: white;
   transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
 }
 
 .card-title {
@@ -207,8 +229,9 @@ tbody tr:hover {
   text-align: center;
   cursor: pointer;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.1);
+  background: linear-gradient(45deg, #3880eb, #a3b2f5);
   margin: 0;
+  color: black;
 }
 
 figure {
@@ -430,7 +453,7 @@ app-lib-search {
 
 /* Update flip card back side to handle table better */
 .flip-card-back {
-  background-color: #b6bec4;
+  background-color: #0000007c;
   color: black;
   transform: rotateY(180deg);
   display: flex;
@@ -480,4 +503,38 @@ app-lib-search {
     min-width: 100px;
     font-size: 0.8em;
   }
+}
+
+/* Update the collapse button container positioning */
+.collapse-all-container {
+  position: absolute;
+  top: 4px;
+  left: 20px;
+  width: auto;
+  text-align: left;
+  z-index: 1;
+}
+
+.collapse-all-btn {
+  background: linear-gradient(45deg, #3880eb, #a3b2f5);
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.collapse-all-btn:hover {
+  background: linear-gradient(45deg, #a3b2f5, #3880eb);
+}
+
+/* Add specific styling for single card scenario */
+.articles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 50px;
+  width: 100%;
 }

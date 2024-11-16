@@ -150,12 +150,10 @@ export class AuthService {
         return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password, remember_me: rememberMe }).pipe(
             tap(response => {
                 if (!response || !response.access) {
-                    console.error('Invalid response structure:', response);
                     throw new Error('Token not provided');
                 }
                 const decodedToken = this.jwtHelper.decodeToken(response.access);
                 if (!decodedToken || !decodedToken.username) {
-                    console.error('Username not provided in token:', decodedToken);
                     throw new Error('Username not provided in token');
                 }
                 this.setItem('token', response.access);
@@ -164,17 +162,38 @@ export class AuthService {
                     this.startRefreshTokenExpirationTimer();
                 }
                 this.setItem('username', username);
-                this._isLoggedIn.next(true); // Update login state
+                this._isLoggedIn.next(true);
                 this.username.next(decodedToken.username);
                 this.startTokenExpirationTimer();
-                const targetRoute = this.isSuperUser() ? '/super-profile' : '/chat';
+
+                // Get saved nav link from session storage
+                const savedNavLink = sessionStorage.getItem('lastNavLink');
+                const targetRoute = savedNavLink && this.requiresAuth(savedNavLink) 
+                    ? savedNavLink 
+                    : this.isSuperUser() ? '/super-profile' : '/chat';
+                
+                // Clear the saved nav link
+                sessionStorage.removeItem('lastNavLink');
+                
                 this.router.navigate([targetRoute]);
             }),
             catchError(error => {
                 console.error('Login failed', error);
-                return throwError(() => new Error('Login failed: ' + error.message));
+                return throwError(() => error);
             })
         );
+    }
+
+    // Add helper method to check if route requires authentication
+    private requiresAuth(route: string): boolean {
+        const protectedRoutes = [
+            '/chat',
+            '/profile',
+            '/change-password',
+            '/character-creation',
+            '/super-profile'
+        ];
+        return protectedRoutes.includes(route);
     }
 
     refreshToken(): Observable<any> {

@@ -115,12 +115,12 @@
   </div>
   <div class="offcanvas-body" id="draggableOffcanvas">
     <ul class="navbar-nav">
-      <li class="nav-item"><a class="nav-link" routerLink="/character-creation">Create Character</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/chat">Chat</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/library">Library</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/about">About</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/profile">Profile</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/change-password">Change Password</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/character-creation" (click)="saveNavLinkToCookies('/character-creation')">Create Character</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/chat" (click)="saveNavLinkToCookies('/chat')">Chat</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/library" (click)="saveNavLinkToCookies('/library')">Library</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/about" (click)="saveNavLinkToCookies('/about')">About</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/profile" (click)="saveNavLinkToCookies('/profile')">Profile</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="/change-password" (click)="saveNavLinkToCookies('/change-password')">Change Password</a></li>
     </ul>
   </div>
   <div class="offcanvas-footer">
