@@ -57,7 +57,6 @@
                       triggers="mouseenter:mouseleave" 
                       tooltipTitle="Freeze Card">{{item.name}}</h2>
                   
-                  <!-- Individual card expand/collapse button -->
                   <button class="btn btn-sm btn-secondary mb-2" (click)="toggleAllCardValues(i)">
                     {{ cardExpandedStates[i] ? 'Collapse Card' : 'Expand Card' }}
                   </button>
@@ -135,10 +134,20 @@
   </div>
 </div>
 
-<!-- Update the hover card buttons -->
 <div class="hover-card-move" [ngClass]="{'show': showHoverCard}">
   <div class="group-buttons">
-    <button (click)="scrollToTop()">Back to Top</button>
-    <button (click)="scrollToLeft()">Back to Left Side</button>
+
+    <button *ngIf="scrollDeltaY > 0 && scrollDeltaX === 0" (click)="scrollToTop()">
+      Back to Top
+    </button>
+    
+    <button *ngIf="scrollDeltaX > 0 && scrollDeltaY === 0" (click)="scrollToLeft()">
+      Back to Left Side
+    </button>
+    
+    <ng-container *ngIf="scrollDeltaX > 0 && scrollDeltaY > 0">
+      <button (click)="scrollToTop()">Back to Top</button>
+      <button (click)="scrollToLeft()">Back to Left Side</button>
+    </ng-container>
   </div>
 </div>

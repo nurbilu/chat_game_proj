@@ -19,11 +19,10 @@
   No results found.
 </div>
 
-<!-- Backdrop and Centered Static Hover Card -->
 <div *ngIf="showHoverCard" class="backdrop" (click)="closeHoverCard()"></div>
 <div *ngIf="showHoverCard" class="static-hover-card">
   <div class="hover-card-header">
-    <button (click)="closeHoverCard()" class="close-btn">&times;</button>
+    <button (click)="closeHoverCard()" class="close-btn" aria-label="Close"></button>
   </div>
   <div class="hover-card-content">
     <h5>{{ selectedEntry?.name }}</h5>

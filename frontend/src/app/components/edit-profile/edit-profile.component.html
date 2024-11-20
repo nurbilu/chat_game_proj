@@ -1,6 +1,6 @@
 <div class="edit-profile-header">
   <h2 style="text-align: center;">Edit Profile</h2>
-  <button class="close-btn" (click)="closeEditProfile()" ngbTooltip="Click to close the edit profile form" triggers="mouseenter:mouseleave">&times;</button>
+  <button class="close-btn" (click)="closeEditProfile()" aria-label="Close" ngbTooltip="Click to close the edit profile form" triggers="mouseenter:mouseleave"></button>
 </div>
 
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="zoom-in" id="editProfileForm">

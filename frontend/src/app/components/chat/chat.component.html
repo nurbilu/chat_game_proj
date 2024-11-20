@@ -164,7 +164,7 @@
   </div>
   <div *ngIf="showStaticHoverCard" class="backdrop" (click)="closeStaticHoverCard()"></div>
   <div *ngIf="showStaticHoverCard" class="static-hover-card prompt-card">
-    <button (click)="closeStaticHoverCard()" class="close-btn">&times;</button>
+    <button (click)="closeStaticHoverCard()" class="close-btn" aria-label="Close"></button>
     <h5>{{ selectedEntry?.name }}</h5>
     
     <table class="prompt-table" *ngIf="selectedEntry?.promptData">

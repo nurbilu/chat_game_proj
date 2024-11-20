@@ -41,6 +41,10 @@ export class LibraryComponent implements OnInit {
   showHoverCard: boolean = false;
   isScrollbarVisible: boolean = false;
   staticCards: { [key: number]: boolean } = {};
+  showBackToTop: boolean = false;
+  showBackToLeft: boolean = false;
+  scrollDeltaY: number = 0;
+  scrollDeltaX: number = 0;
 
   constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
 
@@ -98,7 +102,7 @@ export class LibraryComponent implements OnInit {
           return formattedItem;
         });
       } else if (typeof data === 'object') {
-        // Handle object case if necessary
+        
       } else {
         console.error('Unexpected data format:', data);
       }
@@ -160,7 +164,6 @@ export class LibraryComponent implements OnInit {
     this.page = 1;
     this.loadPageItems();
 
-    // Add this line to check scrollbar visibility when changing collections
     setTimeout(() => this.checkScrollbarVisibility(), 0);
   }
 
@@ -269,10 +272,8 @@ export class LibraryComponent implements OnInit {
     });
   }
 
-  // Add a new method to collapse all values in a card
   collapseAllCardValues(): void {
     this.getPaginatedItems().forEach((item, index) => {
-      // Reset the card's expanded state
       this.cardExpandedStates[index] = false;
       
       const keys = this.getKeys(item);
@@ -283,7 +284,6 @@ export class LibraryComponent implements OnInit {
     });
   }
 
-  // Add a new method to collapse all values in the table
   collapseAllTableValues(): void {
     this.getPaginatedItems().forEach((item, index) => {
       const keys = this.getKeys(item);
@@ -324,10 +324,25 @@ export class LibraryComponent implements OnInit {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     const container = document.querySelector('.scrollspy-example');
     const horizontalScrollPosition = container ? container.scrollLeft : 0;
-    const hasHorizontalScroll = horizontalScrollPosition > 300;
     
-    // Show hover card if either vertical scroll is > 300 OR horizontal scroll is > 200
-    this.showHoverCard = scrollPosition > 300 || hasHorizontalScroll;
+    this.scrollDeltaY = scrollPosition;
+    this.scrollDeltaX = horizontalScrollPosition;
+    
+    this.showHoverCard = this.scrollDeltaY > 300 || this.scrollDeltaX > 200;
+    
+    if (this.scrollDeltaX > 200 && this.scrollDeltaY === 0) {
+      this.showBackToLeft = true;
+      this.showBackToTop = false;
+    } else if (this.scrollDeltaY > 300 && this.scrollDeltaX === 0) {
+      this.showBackToTop = true;
+      this.showBackToLeft = false;
+    } else if (this.scrollDeltaX > 200 && this.scrollDeltaY > 300) {
+      this.showBackToTop = true;
+      this.showBackToLeft = true;
+    } else {
+      this.showBackToTop = false;
+      this.showBackToLeft = false;
+    }
   }
 
   scrollToLeft() {
@@ -364,32 +379,29 @@ export class LibraryComponent implements OnInit {
   }
 
   toggleCardStatic(index: number, event: Event): void {
-    event.stopPropagation(); // Prevent event bubbling
+    event.stopPropagation();
     
     if (this.staticCards[index]) {
-      // If already static, remove static state
+
       delete this.staticCards[index];
     } else {
-      // If not static, make it static
+
       this.staticCards[index] = true;
     }
   }
 
-  // Add a new event listener for horizontal scroll
   @HostListener('window:resize')
   onResize() {
     this.checkScrollPosition();
   }
 
-  // Add event listener for horizontal scroll
   @HostListener('scroll', ['$event'])
   onScroll(event: Event) {
     if (event.target instanceof Element) {
       const container = event.target;
-      const horizontalScrollPosition = container.scrollLeft;
-      const verticalScrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      
-      this.showHoverCard = verticalScrollPosition > 300 || horizontalScrollPosition > 200;
+      this.scrollDeltaX = container.scrollLeft;
+      this.scrollDeltaY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      this.checkScrollPosition();
     }
   }
 }

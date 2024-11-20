@@ -180,3 +180,54 @@ button:hover {
 ::-webkit-scrollbar-corner {
   background-color: #f0f0f0;
 }
+
+/* Universal Close Button Styles */
+.close-btn {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #333740;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn::before,
+.close-btn::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 16px;
+  background-color: #333740;
+  border-radius: 1px;
+}
+
+.close-btn::before {
+  transform: rotate(45deg);
+}
+
+.close-btn::after {
+  transform: rotate(-45deg);
+}
+
+/* Hover state */
+.close-btn:hover {
+  border-color: #0056b3;
+}
+
+/* Keep the X lines in original color even on hover */
+.close-btn:hover::before,
+.close-btn:hover::after {
+  background-color: #333740;
+}
+
+/* Active state */
+.close-btn:active {
+  transform: scale(0.95);
+}
