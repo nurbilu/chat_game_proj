@@ -14,11 +14,11 @@ estimated total time frame: ~ 56 - 80+ hours
    1.d. complete the displayment of Load-srch-icon with loading component or not (done)
 
 
-(estimated time frame: ~ 8 hours)( 2/4 == 1/2 done )
+(estimated time frame: ~ 8 hours)( 2/4 == 3/4 done )
    2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
    2.c. change mouse cursor to pointer when hovering over offcanvas menu (done)
-   2.d. finish library hover-card-move logic - when right scroll only display - Back to Left Side <button> , when bottom scroll only display - Back to Top <button> , else display both as current display state (done) - only fix/adjust the close <button> of the hover card of lib-search , chat , edit-profile , character-creation (done) - done but to chrcter-creation component ()
+   2.d. finish library hover-card-move logic - when right scroll only display - Back to Left Side <button> , when bottom scroll only display - Back to Top <button> , else display both as current display state (done) - only fix/adjust the close <button> of the hover card of lib-search , chat , edit-profile , character-creation (done) - done but to chrcter-creation component (done)
 
 (estimated time frame: ~ 9 hours)(almost done)
    3.a. fix / insure refresh token is working as expected with the login Modal as login component (?) - fix the remember me that is cleared from local storage 

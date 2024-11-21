@@ -329,3 +329,56 @@ body.offcanvas-open {
 .password-input-wrapper input {
   padding-right: 40px;
 }
+
+/* Logout Modal Specific Styles */
+.modal-header {
+  background-color: #333740;
+  color: #f4eee8;
+  border-bottom: 1px solid #c9a66b;
+  padding: 1rem;
+}
+
+.modal-body {
+  background-color: #333740;
+  color: #f4eee8;
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  background-color: #333740;
+  border-top: 1px solid #c9a66b;
+  padding: 1rem;
+}
+
+/* Style the buttons in logout modal */
+.modal-footer .btn-secondary {
+  background-color: #444950;
+  color: #f4eee8;
+  border: 1px solid #c9a66b;
+  padding: 0.5rem 1.5rem;
+  margin-right: 10px;
+}
+
+.modal-footer .btn-danger {
+  background-color: #c9a66b;
+  border: none;
+  color: #333740;
+  padding: 0.5rem 1.5rem;
+}
+
+.modal-footer .btn-danger:hover {
+  background-color: #b28954;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #555d69;
+  border-color: #b28954;
+}
+
+/* Add some padding and border radius to the modal itself */
+.modal-content {
+  border: 2px solid #c9a66b;
+  border-radius: 8px;
+  padding: 0;
+  background-color: #333740;
+}
