@@ -18,7 +18,7 @@ estimated total time frame: ~ 56 - 80+ hours
    2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
    2.c. change mouse cursor to pointer when hovering over offcanvas menu (done)
-   2.d. finish library hover-card-move logic - when right scroll only display - Back to Left Side <button> , when bottom scroll only display - Back to Top <button> , else display both as current display state (done) - only fix/adjust the close <button> of the hover card of lib-search , chat , edit-profile , character-creation ()
+   2.d. finish library hover-card-move logic - when right scroll only display - Back to Left Side <button> , when bottom scroll only display - Back to Top <button> , else display both as current display state (done) - only fix/adjust the close <button> of the hover card of lib-search , chat , edit-profile , character-creation (done) - done but to chrcter-creation component ()
 
 (estimated time frame: ~ 9 hours)(almost done)
    3.a. fix / insure refresh token is working as expected with the login Modal as login component (?) - fix the remember me that is cleared from local storage 
@@ -54,6 +54,13 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
       - add visual effects to super profile page (done)
       - add visual effects to user chat page (done)
 
+7.a. fix angular errors ()
+7.b. make logger simillarty to all flask apps ()
+7.c. add to django logger - clr after ctrl + c ()
+
+8.a. check / implement questionable tasks ()
+8.b. implement docker-compose.yml file to run all flask apps in one command / docker-compose up --build ()
+8.c. final QA ()
 
 **++ lets try to deliver the project by the date 15/11/2024 , if not possible - deliver as soon as possible. ++**
 

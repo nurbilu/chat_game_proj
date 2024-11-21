@@ -22,7 +22,9 @@
 <div *ngIf="showHoverCard" class="backdrop" (click)="closeHoverCard()"></div>
 <div *ngIf="showHoverCard" class="static-hover-card">
   <div class="hover-card-header">
-    <button (click)="closeHoverCard()" class="close-btn" aria-label="Close"></button>
+    <button class="close-btn" (click)="closeHoverCard()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   <div class="hover-card-content">
     <h5>{{ selectedEntry?.name }}</h5>

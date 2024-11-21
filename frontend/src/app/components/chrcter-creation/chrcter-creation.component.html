@@ -185,28 +185,33 @@
       </div>
     </div>
   </div>
-  <button class="back-to-top" (click)="scrollToTop()" [ngClass]="{'show': showBackToTop}">
-    Back up top?
-  </button>
+
   <!-- Add this just before the closing </div> of the chrcter-creation-container -->
   <div *ngIf="showStaticHoverCard" class="backdrop" (click)="closeStaticHoverCard()"></div>
   <div *ngIf="showStaticHoverCard" class="static-hover-card prompt-card">
-    <button (click)="closeStaticHoverCard()" class="close-btn">&times;</button>
+    <button class="close-btn" 
+            (click)="closeStaticHoverCard()" 
+            aria-label="Close" 
+            ngbTooltip="Click to close" 
+            triggers="mouseenter:mouseleave">
+        <span class="visually-hidden">Close</span>
+    </button>
+    
     <h5>{{ selectedEntry?.name }}</h5>
     
     <table class="prompt-table" *ngIf="selectedEntry?.promptData">
-      <thead>
-        <tr>
-          <th>Field</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of selectedEntry.promptData">
-          <td>{{ item.field }}</td>
-          <td>{{ item.value }}</td>
-        </tr>
-      </tbody>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of selectedEntry.promptData">
+                <td>{{ item.field }}</td>
+                <td>{{ item.value }}</td>
+            </tr>
+        </tbody>
     </table>
   </div>
 </div>
@@ -227,3 +232,7 @@
     </div>
   </div>
 </ng-template>
+
+<button class="back-to-top" (click)="scrollToTop()" [ngClass]="{'show': showBackToTop}">
+  Back up top?
+</button>

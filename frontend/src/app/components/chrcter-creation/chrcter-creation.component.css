@@ -488,17 +488,6 @@ app-lib-search {
   color: white;
 }
 
-.static-hover-card .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
 body.modal-open {
   overflow: hidden;
 }
@@ -544,16 +533,6 @@ body.modal-open {
   color: white;
 }
 
-.static-hover-card .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
 
 body.modal-open {
   overflow: hidden;

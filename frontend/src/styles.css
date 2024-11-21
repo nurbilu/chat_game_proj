@@ -186,7 +186,7 @@ button:hover {
   position: relative;
   width: 32px;
   height: 32px;
-  border: 2px solid #333740;
+  border: 2px solid #f4eee8;
   border-radius: 50%;
   background: transparent;
   cursor: pointer;
@@ -196,16 +196,20 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  z-index: 1000;
 }
 
+/* X symbol using pseudo-elements */
 .close-btn::before,
 .close-btn::after {
   content: '';
   position: absolute;
   width: 2px;
   height: 16px;
-  background-color: #333740;
+  background-color: #f4eee8;
   border-radius: 1px;
+  transition: all 0.3s ease;
 }
 
 .close-btn::before {
@@ -218,16 +222,45 @@ button:hover {
 
 /* Hover state */
 .close-btn:hover {
-  border-color: #0056b3;
+  transform: scale(1.1);
+  border-color: #c9a66b;
 }
 
-/* Keep the X lines in original color even on hover */
 .close-btn:hover::before,
 .close-btn:hover::after {
-  background-color: #333740;
+  background-color: #c9a66b;
 }
 
-/* Active state */
+/* Active/pressed state */
 .close-btn:active {
   transform: scale(0.95);
+}
+
+/* Position variants */
+.static-hover-card .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.modal-header .close-btn {
+  position: relative;
+  margin-left: auto;
+}
+
+/* Hide default content */
+.close-btn span {
+  display: none;
+}
+
+/* Add these new positioning classes */
+.static-hover-card .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.edit-profile-header .close-btn {
+  position: relative;
+  margin-left: auto;
 }

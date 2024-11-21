@@ -1,12 +1,13 @@
 /* Container for the form */
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 600px; /* Increased from 90% to a fixed width */
-    margin: 0 auto; /* Center the form */
+    display: grid;
+    grid-template-columns: 150px 1fr;  /* First column for labels, second for inputs */
+    gap: 20px;  /* Consistent spacing between rows */
+    max-width: 600px;
+    margin: 0 auto;
     padding: 30px;
-    background-color: white;
+    background-color: #000000;
+    color: white;
     border-radius: 10px;
     border-left: 5px solid #3498db;
     border-right: 5px solid #2ecc71;
@@ -15,9 +16,12 @@ form {
   
   /* Style for form labels */
   form label {
-    margin-bottom: 5px;
-    color: #2c3e50;
+    text-align: left;
+    padding-top: 10px;
+    color: white;
     font-weight: 600;
+    border-bottom: 1px solid #404040;
+    padding-bottom: 10px;
   }
   
   /* Style for form inputs */
@@ -25,24 +29,29 @@ form {
   form input[type="email"],
   form input[type="date"],
   form input[type="file"] {
+    width: 100%;
+    background-color: #404040;
+    color: white;
     padding: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
+    border: none;
+    border-bottom: 1px solid #404040;
+    border-radius: 5px 5px 0 0;
     font-size: 16px;
-    transition: border-color 0.3s ease;
   }
   
   /* Style for error messages */
   form small {
+    grid-column: 2 / 3;  /* Start at column 2, end at 3 */
     color: #3c80e7;
-    display: block;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    font-size: 14px;
+    margin-top: -15px;
   }
   
   /* Style for the submit button */
   form button[type="submit"] {
+    grid-column: 1 / -1;  /* Span all columns */
+    justify-self: center;
+    width: 200px;
+    margin-top: 20px;
     background-color: #3498db;
     color: white;
     border: none;
@@ -103,7 +112,7 @@ form {
   
 :host {
   display: block;
-  background-color: #f8f9fa;
+  background-color: #1a1a1ace;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -122,17 +131,15 @@ form {
 }
 
 .edit-profile-header h2 {
-  color: #2c3e50;
+  color: white;
   font-size: 24px;
   margin: 0;
 }
 
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: #34495e;
-  cursor: pointer;
+/* Make each form field div span both columns */
+form > div {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: flex-start;
 }
-
-/* ... rest of your existing styles ... */

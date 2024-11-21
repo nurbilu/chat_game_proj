@@ -135,6 +135,7 @@ export class AuthService {
                     context: { message: 'Your session has expired. Please log in again.' }
                 });
                 this.router.navigate(['/homepage']);
+            
             }, expiresIn);
         }
     }
@@ -219,26 +220,40 @@ export class AuthService {
         );
     }
 
-    loginForModal(username: string, password: string): Observable<any> {
-        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
+    loginForModal(username: string, password: string, rememberMe: boolean): Observable<any> {
+        return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password, remember_me: rememberMe }).pipe(
             tap(response => {
                 if (!response || !response.access) {
-                    console.error('Invalid response structure:', response);
                     throw new Error('Token not provided');
                 }
                 const decodedToken = this.jwtHelper.decodeToken(response.access);
                 if (!decodedToken || !decodedToken.username) {
-                    console.error('Username not provided in token:', decodedToken);
                     throw new Error('Username not provided in token');
                 }
                 this.setItem('token', response.access);
+                if (rememberMe) {
+                    this.setItem('refresh_token', response.refresh);
+                    this.startRefreshTokenExpirationTimer();
+                }
                 this.setItem('username', username);
-                this._isLoggedIn.next(true); // Update login state
+                this._isLoggedIn.next(true);
                 this.username.next(decodedToken.username);
                 this.startTokenExpirationTimer();
+
+                // Get saved nav link from session storage
+                const savedNavLink = sessionStorage.getItem('lastNavLink');
+                const targetRoute = savedNavLink && this.requiresAuth(savedNavLink) 
+                    ? savedNavLink 
+                    : this.isSuperUser() ? '/super-profile' : '/chat';
+                
+                // Clear the saved nav link
+                sessionStorage.removeItem('lastNavLink');
+                
+                this.router.navigate([targetRoute]);
             }),
             catchError(error => {
-                return throwError(() => new Error('Login failed: ' + error.message));
+                console.error('Login failed', error);
+                return throwError(() => error);
             })
         );
     }
