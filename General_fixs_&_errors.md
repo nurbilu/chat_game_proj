@@ -14,7 +14,7 @@ estimated total time frame: ~ 56 - 80+ hours
    1.d. complete the displayment of Load-srch-icon with loading component or not (done)
 
 
-(estimated time frame: ~ 8 hours)( 2/4 == 3/4 done )
+(estimated time frame: ~ 8 hours)( 3/4 done )
    2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings ()
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
    2.c. change mouse cursor to pointer when hovering over offcanvas menu (done)
@@ -31,7 +31,7 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
 3.5.b. add 2-3 functions to user chat page - continue to implement the text editor toolbar functions and input display(done)
 
 
-(estimated time frame: ~ 3 - 12 hours)()
+(estimated time frame: ~ 3 - 12 hours)(3/5 done)
    4.a.fix login redirect from unauth page to login page (done?) 
    4.b. :
    - google , facebook and twitter login is removed from the login component (done)

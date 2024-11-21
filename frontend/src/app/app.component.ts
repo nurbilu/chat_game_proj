@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, NgZone, HostListener, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd, Event } from '@angular/router';
 import { NgbOffcanvas, NgbOffcanvasRef, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from './services/toast.service';
 import { AuthService } from './services/auth.service';
@@ -44,6 +44,11 @@ export class AppComponent implements OnInit {
 
   modalPasswordVisible = false;
 
+  currentRoute: string = '';
+
+  private profileClickCount: number = 0;
+  private profileClickTimer: any;
+
   constructor(
     private router: Router,
     private offcanvasService: NgbOffcanvas,
@@ -51,7 +56,13 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private ngZone: NgZone,
     private modalService: NgbModal
-  ) {}
+  ) {
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
+  }
 
   ngOnInit() {
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
@@ -394,5 +405,44 @@ export class AppComponent implements OnInit {
       '/super-profile'
     ];
     return protectedRoutes.includes(route);
+  }
+
+  isProfileOrChatRoute(): boolean {
+    return ['/profile', '/chat'].includes(this.currentRoute);
+  }
+
+  navigateToChat(): void {
+    if (!this.isLoggedIn) return;
+
+    this.profileClickCount++;
+    
+    if (this.profileClickTimer) {
+      clearTimeout(this.profileClickTimer);
+    }
+    
+    this.profileClickTimer = setTimeout(() => {
+      if (this.profileClickCount === 2) {
+        // Double click - conditional navigation
+        if (this.currentRoute === '/character-creation') {
+          this.router.navigate(['/profile']);
+        } else {
+          this.router.navigate(['/character-creation']);
+        }
+      } else if (this.profileClickCount === 1) {
+        // Single click - navigate to chat
+        this.router.navigate(['/chat']);
+      }
+      this.profileClickCount = 0;
+    }, 250);
+  }
+
+  navigateToProfile(): void {
+    if (!this.isLoggedIn) return;
+
+    if (this.currentRoute === '/profile') {
+      this.router.navigate(['/character-creation']);
+    } else {
+      this.router.navigate(['/profile']);
+    }
   }
 }

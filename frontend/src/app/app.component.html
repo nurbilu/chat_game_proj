@@ -78,10 +78,22 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
     <div class="status-container">
-      <img [src]="profilePictureUrl" *ngIf="isLoggedIn" [alt]="username + '\'s profile'" class="profile-picture" ngbTooltip="Profile Picture">
-      <span *ngIf="isLoggedIn" class="username-text">
+      <img [src]="profilePictureUrl" 
+           *ngIf="isLoggedIn && !isProfileOrChatRoute()" 
+           [alt]="username + '\'s profile'" 
+           class="profile-picture" 
+           [ngbTooltip]="currentRoute === '/character-creation' ? 'Click for Chat, Double click for Profile' : 'Click for Chat, Double click for Character Creation'"
+           (click)="navigateToChat()"
+           style="cursor: pointer;">
+      <span *ngIf="isLoggedIn" 
+            class="username-text" 
+            (click)="navigateToProfile()" 
+            style="cursor: pointer;"
+            [ngbTooltip]="currentRoute === '/profile' ? 'Click to go to Character Creation' : 'Click to go to Profile'">
         {{ username }} is {{ isLoggedIn ? 'online' : 'offline' }}
-        <img [src]="isLoggedIn ? 'assets/imgs/icons/green-dot.png' : 'assets/imgs/icons/red-dot.png'" alt="status-icon" class="status-icon">
+        <img [src]="isLoggedIn ? 'assets/imgs/icons/green-dot.png' : 'assets/imgs/icons/red-dot.png'" 
+             alt="status-icon" 
+             class="status-icon">
       </span>
     </div>
     </ul>
