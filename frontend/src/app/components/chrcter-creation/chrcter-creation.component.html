@@ -189,15 +189,22 @@
   <!-- Add this just before the closing </div> of the chrcter-creation-container -->
   <div *ngIf="showStaticHoverCard" class="backdrop" (click)="closeStaticHoverCard()"></div>
   <div *ngIf="showStaticHoverCard" class="static-hover-card prompt-card">
-    <button class="close-btn" 
-            (click)="closeStaticHoverCard()" 
-            aria-label="Close" 
-            ngbTooltip="Click to close" 
-            triggers="mouseenter:mouseleave">
-        <span class="visually-hidden">Close</span>
-    </button>
-    
-    <h5>{{ selectedEntry?.name }}</h5>
+    <div class="card-header">
+        <h5>{{ selectedEntry?.name }}</h5>
+        <button class="copy-prompt-btn" 
+                (click)="copyCharacterPrompt()" 
+                ngbTooltip="Copy character prompt" 
+                triggers="mouseenter:mouseleave">
+            <img src="/assets/imgs/icons/copy.png" alt="Copy prompt">
+        </button>
+        <button class="close-btn" 
+                (click)="closeStaticHoverCard()" 
+                aria-label="Close" 
+                ngbTooltip="Click to close" 
+                triggers="mouseenter:mouseleave">
+            <span class="visually-hidden">Close</span>
+        </button>
+    </div>
     
     <table class="prompt-table" *ngIf="selectedEntry?.promptData">
         <thead>

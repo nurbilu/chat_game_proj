@@ -34,6 +34,7 @@ export class SuperProfileComponent implements OnInit {
   currentSection: string = '';
   searchTerm: string = '';
   filteredProfiles: UserProfile[] = [];
+  superUserImageUrl: string = this.authService.SUPER_USER_IMAGE_URL;
 
   constructor(
     private authService: AuthService,

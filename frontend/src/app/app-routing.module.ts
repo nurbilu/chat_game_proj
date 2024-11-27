@@ -16,6 +16,7 @@ import { LibraryComponent } from './components/librarys/library.component';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { PwdResetUnrealComponent } from './components/pwd-reset-unreal/pwd-reset-unreal.component';
 import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
+import { MsgResetPwdComponent } from './components/msg-reset-pwd/msg-reset-pwd.component';
 
 const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: 'pwd-reset-unreal', component: PwdResetUnrealComponent },
     { path: 'email-verification', component: EmailVerificationComponent },
+    { path: 'msg-reset-pwd', component: MsgResetPwdComponent },
 ];
 
 @NgModule({

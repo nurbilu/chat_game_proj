@@ -1,22 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-pwd-reset-unreal',
   templateUrl: './pwd-reset-unreal.component.html',
-  styleUrl: './pwd-reset-unreal.component.css'
+  styleUrls: ['./pwd-reset-unreal.component.css']
 })
-export class PwdResetUnrealComponent {
-  unrealForm: FormGroup;
+export class PwdResetUnrealComponent implements OnInit {
+  extendedAuthForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router,
+    private authService: AuthService,
     private toastService: ToastService
   ) {
-    this.unrealForm = this.fb.group({
+    this.extendedAuthForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', Validators.required],
@@ -24,11 +27,33 @@ export class PwdResetUnrealComponent {
     });
   }
 
+  ngOnInit() {
+    // Pre-fill form with query params
+    this.route.queryParams.subscribe(params => {
+      if (params['username'] && params['email']) {
+        this.extendedAuthForm.patchValue({
+          username: params['username'],
+          email: params['email']
+        });
+      }
+    });
+  }
+
   onSubmit() {
-    if (this.unrealForm.valid) {
-      this.router.navigate(['/reset-pwd']);
+    if (this.extendedAuthForm.valid) {
+      this.authService.validateUser(this.extendedAuthForm.value).subscribe({
+        next: (response) => {
+          // Navigate to reset password with token
+          this.router.navigate(['/reset-password'], {
+            queryParams: { token: response.token }
+          });
+        },
+        error: () => {
+          this.toastService.error('Invalid user information');
+        }
+      });
     } else {
-      this.toastService.error('Please fill all required fields');
+      this.toastService.error('Please fill in all required fields');
     }
   }
 }

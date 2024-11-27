@@ -333,9 +333,29 @@ body.offcanvas-open {
 /* Logout Modal Specific Styles */
 .modal-header {
   background-color: #333740;
-  color: #f4eee8;
   border-bottom: 1px solid #c9a66b;
   padding: 1rem;
+}
+
+.modal-header .modal-title {
+  color: #f4eee8;  /* Light text color to match theme */
+  margin: 0;
+}
+
+.modal-header .btn-close {
+  color: #f4eee8;
+  opacity: 0.8;
+}
+
+.modal-header .btn-close:hover {
+  opacity: 1;
+}
+
+/* Specific styling for login modal header content */
+.modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .modal-body {
@@ -381,4 +401,33 @@ body.offcanvas-open {
   border-radius: 8px;
   padding: 0;
   background-color: #333740;
+}
+
+/* Default modal footer styling (for logout modal) */
+.modal-footer {
+  background-color: #333740;
+  border-top: 1px solid #c9a66b;
+  padding: 1rem;
+}
+
+/* Special styling for login modal footer */
+#loginTemplate .modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;  /* Space between buttons */
+}
+
+/* Keep the existing button styles */
+.modal-footer .btn-secondary {
+  background-color: #444950;
+  color: #f4eee8;
+  border: 1px solid #c9a66b;
+  padding: 0.5rem 1.5rem;
+}
+
+.modal-footer .btn-primary {
+  background-color: #c9a66b;
+  border: none;
+  color: #333740;
+  padding: 0.5rem 1.5rem;
 }

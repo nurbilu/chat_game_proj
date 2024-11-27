@@ -6,7 +6,7 @@ estimated total time frame: ~ 56 - 80+ hours
 1.1.
  4848896:error:10000438:SSL routines:OPENSSL_internal:TLSV1_ALERT_INTERNAL_ERROR:..\..\third_party\boringssl\src\ssl\tls_record.cc:592:SSL alert number 80 - fix error first - dont let to run the code properly - fix error first , have also an error for the character create - fix error first for DB first - probably wiil fix the character create problem too (done - fixed - check again - suppose to be ok - happens every some updates)
 
-(estimated time frame: 9-12 hours)(done)
+(estimated time frame: 9-12 hours)(***done***)
    1.Z. adjust the display design of the library for cards , scrollspy and etc (almost done) - fix the expand/collapse seperate to each card (done)
    1.a. understand and create an expalnation for the offcanvas toggle icon (done)
    1.b. finish card tables design (almost done) - remove the seethrough effect from the cards flip (done)
@@ -25,20 +25,21 @@ estimated total time frame: ~ 56 - 80+ hours
    when logout (done?)
    3.b. add dislplay hover card of user characters prompt/s in create character component under the div of Character Creation Prompt Editor (done)(need to adjust character creation to to create more characters and display them here(optional)(done))
 
-(estimated time frame: ~ 2 - 7 hours)( almost done - check for last updates - else - mark (___done___) )
+(estimated time frame: ~ 2 - 7 hours)( almost done - check for last updates - else - mark (___ done ___) )
 3.5.a. add 2-3 functions to super profile page [block user access and unblock user access -fix and enable - 90% - 95% done - complete the is_blocked Route access , display user characters prompts - done ] (done)
 sub-task : remove Super Profile or Profile and keep the other one {} (done)
 3.5.b. add 2-3 functions to user chat page - continue to implement the text editor toolbar functions and input display(done)
 
 
-(estimated time frame: ~ 3 - 12 hours)(3/5 done)
+(estimated time frame: ~ 3 - 12 hours)(1/2 done)
    4.a.fix login redirect from unauth page to login page (done?) 
    4.b. :
    - google , facebook and twitter login is removed from the login component (done)
    - google and social networks login is removed , fix forgot-pwd and reset-pwd to be sent to the email instead of redirect to login page or fill a 4 input form fields 
-     to navigate to reset-pwd page too ()
+     to navigate to reset-pwd page too (half done) - need to fully implement the email msg sent for reset-pwd for "real" email address ()
    4.c. design change pwd or remove the component display or link component to profile and design it (done)
-   4.d. try to implement after success login navigate to the last click component link button on navbar offcanvas (optional( half done )) - save to session storage but need implement the navigation to the last link after login ()
+   4.d. try to implement after success login navigate to the last click component link button on navbar offcanvas (optional( half done )) - save to session storage but need implement the navigation to the last link after login ( done? - check if works later . ())
+   4.e. adjsut character creation - OPTION 1 : enable to create more characters and display them in the character creation component OR OPTION 2 : create a new character prompt and delete the old one ()
 
 (estimated time frame: + 10 hours at least)()
    4.b. fix docker hub GUI (docker is fixed by itself - could be that OS updates fixed GUI(done?))

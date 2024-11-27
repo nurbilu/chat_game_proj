@@ -4,12 +4,14 @@
       <div class="card chat-card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h2 class="mb-0">D&D Adventure Chat</h2>
-          <img [src]="profilePictureUrl || 'assets/imgs/icons/GoToProf.png'" 
-               (click)="GoToProfile()" 
-               class="profile-picture" 
-               
-               ngbTooltip="Go to Profile" 
-               triggers="mouseenter:mouseleave">
+          <img 
+              [src]="isSuperUser() ? superUserImageUrl : (profilePictureUrl  || defaultProfilePicture)" 
+              [alt]="username"
+              (click)="GoToProfile()" 
+              class="profile-picture" 
+              ngbTooltip="Go to Profile" 
+              triggers="mouseenter:mouseleave"
+          >
         </div>
         <div class="card-body chat-window">
           <div *ngFor="let response of responses"

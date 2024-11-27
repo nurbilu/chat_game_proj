@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserRegisterView, MyTokenObtainPairView, UserProfileView, RegisterView, ChangePasswordView, SuperUserProfileView, ProfilePictureUploadView, UserProfileUpdateView, ValidateUserView, ResetPasswordView, CreateSuperUserView, CustomTokenRefreshView, BlockUserView, UnblockUserView, CurrentUserView, DeleteUserView
+from .views import UserRegisterView, MyTokenObtainPairView, UserProfileView, RegisterView, ChangePasswordView, SuperUserProfileView, ProfilePictureUploadView, UserProfileUpdateView, ValidateUserView, ResetPasswordView, CreateSuperUserView, CustomTokenRefreshView, BlockUserView, UnblockUserView, CurrentUserView, DeleteUserView, SendPasswordResetEmailView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -20,4 +20,5 @@ urlpatterns = [
     path('unblock-user/', UnblockUserView.as_view(), name='unblock-user'),
     path('current-user/', CurrentUserView.as_view(), name='current-user'),
     path('delete-user/', DeleteUserView.as_view(), name='delete-user'),
+    path('send-reset-email/', SendPasswordResetEmailView.as_view(), name='send-reset-email'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

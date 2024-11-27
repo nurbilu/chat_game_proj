@@ -654,3 +654,23 @@
 .chat-input.resizing::before {
     cursor: row-resize !important;
 }
+
+.chat-profile-picture {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1px solid #007bff;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.sender-name {
+    font-weight: 500;
+    color: #2c3e50;
+}

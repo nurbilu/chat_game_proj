@@ -12,6 +12,7 @@ import { ToastService } from './toast.service';
 })
 export class AuthService {
     private baseUrl = 'http://127.0.0.1:8000/';
+    public readonly SUPER_USER_IMAGE_URL = 'http://127.0.0.1:8000/media/super-user-pic/Super-Pic.png';
     private _isLoggedIn = new BehaviorSubject<boolean>(false);
     private username = new BehaviorSubject<string>('');
     private tokenExpirationTimer: any;
@@ -149,14 +150,17 @@ export class AuthService {
 
     login(username: string, password: string, rememberMe: boolean): Observable<any> {
         return this.httpClient.post<any>(`${this.baseUrl}login/`, { username, password, remember_me: rememberMe }).pipe(
-            tap(response => {
+            tap(async response => {
                 if (!response || !response.access) {
                     throw new Error('Token not provided');
                 }
+                
                 const decodedToken = this.jwtHelper.decodeToken(response.access);
                 if (!decodedToken || !decodedToken.username) {
                     throw new Error('Username not provided in token');
                 }
+
+                // Handle token storage and state updates
                 this.setItem('token', response.access);
                 if (rememberMe) {
                     this.setItem('refresh_token', response.refresh);
@@ -173,10 +177,11 @@ export class AuthService {
                     ? savedNavLink 
                     : this.isSuperUser() ? '/super-profile' : '/chat';
                 
-                // Clear the saved nav link
-                sessionStorage.removeItem('lastNavLink');
-                
-                this.router.navigate([targetRoute]);
+                // Navigate first, then remove the session storage item
+                await this.router.navigate([targetRoute]);
+                if (savedNavLink) {
+                    sessionStorage.removeItem('lastNavLink');
+                }
             }),
             catchError(error => {
                 console.error('Login failed', error);
@@ -389,7 +394,7 @@ export class AuthService {
         );
     }
 
-    validateUser(data: { username: string; email: string }): Observable<any> {
+    validateUser(data: { username: string; email: string; firstName: string; lastName: string }): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}validate-user/`, data).pipe(
             catchError(error => throwError(() => new Error('Error validating user: ' + error.message)))
         );
@@ -473,4 +478,11 @@ export class AuthService {
             })
         );
     }
+
+    sendPasswordResetEmail(email: string): Observable<any> {
+        return this.http.post(`${this.baseUrl}send-reset-email/`, { email }).pipe(
+            catchError(error => throwError(() => new Error('Error sending reset email: ' + error.message)))
+        );
+    }
+
 }

@@ -41,6 +41,14 @@ export class AuthGuard implements CanActivate {
               this.router.navigate(['/access-denied']);
               return false;
             }
+            
+            // Check for saved navigation link
+            const savedNavLink = sessionStorage.getItem('lastNavLink');
+            if (savedNavLink) {
+              this.router.navigate([savedNavLink]);
+              sessionStorage.removeItem('lastNavLink');
+            }
+            
             return true;
           })
         );

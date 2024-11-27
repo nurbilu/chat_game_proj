@@ -15,6 +15,12 @@ interface ChatbotResponse {
   characterPrompt?: string; // Add this line to define the characterPrompt property
 }
 
+// First, add an interface to define the structure of the prompt data item
+interface PromptDataItem {
+  field: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-chrcter-creation',
   templateUrl: './chrcter-creation.component.html',
@@ -528,5 +534,32 @@ user: any;
     }
     
     return result;
+  }
+
+  copyCharacterPrompt(): void {
+    if (this.selectedEntry?.promptData) {
+      // Add type annotation for the map callback parameter
+      const promptText = this.selectedEntry.promptData
+        .map((item: PromptDataItem) => `${item.field}: ${item.value}`)
+        .join('\n');
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(promptText).then(() => {
+        this.toastService.show({
+          template: this.successToast,
+          classname: 'bg-success text-light',
+          delay: 3000,
+          context: { message: 'Character prompt copied to clipboard' }
+        });
+      }).catch(err => {
+        console.error('Failed to copy character prompt:', err);
+        this.toastService.show({
+          template: this.errorToast,
+          classname: 'bg-danger text-light',
+          delay: 3000,
+          context: { message: 'Failed to copy character prompt' }
+        });
+      });
+    }
   }
 }

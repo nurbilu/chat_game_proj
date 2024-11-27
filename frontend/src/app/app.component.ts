@@ -49,6 +49,8 @@ export class AppComponent implements OnInit {
   private profileClickCount: number = 0;
   private profileClickTimer: any;
 
+  superUserImageUrl: string = 'http://127.0.0.1:8000/media/super-user-pic/Super-Pic.png';
+
   constructor(
     private router: Router,
     private offcanvasService: NgbOffcanvas,
@@ -83,7 +85,9 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.makeOffcanvasDraggable();
+    if (this.draggableOffcanvas?.nativeElement) {
+      this.makeOffcanvasDraggable();
+    }
   }
 
   @HostListener('window:scroll', [])
@@ -425,7 +429,11 @@ export class AppComponent implements OnInit {
         // Double click - conditional navigation
         if (this.currentRoute === '/character-creation') {
           this.router.navigate(['/profile']);
-        } else {
+        }
+        else if (this.currentRoute === '/profile') {
+          this.router.navigate(['/library']);
+        }
+        else {
           this.router.navigate(['/character-creation']);
         }
       } else if (this.profileClickCount === 1) {
@@ -441,7 +449,11 @@ export class AppComponent implements OnInit {
 
     if (this.currentRoute === '/profile') {
       this.router.navigate(['/character-creation']);
-    } else {
+    }
+    else if (this.currentRoute === '/character-creation') {
+      this.router.navigate(['/library']);
+    } 
+     else {
       this.router.navigate(['/profile']);
     }
   }

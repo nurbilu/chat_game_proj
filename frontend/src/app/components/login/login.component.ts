@@ -20,6 +20,14 @@ export class LoginComponent {
     @ViewChild('logoutTemplate', { static: true }) logoutTemplate!: TemplateRef<any>;
     @ViewChild('welcomeTemplate', { static: true }) welcomeTemplate!: TemplateRef<any>;
 
+    private readonly PROTECTED_ROUTES = [
+        '/character-creation',
+        '/profile',
+        '/chat',
+        '/change-password',
+        '/super-profile'
+    ];
+
     constructor(
         private authService: AuthService,
         private router: Router,
@@ -33,22 +41,13 @@ export class LoginComponent {
     login() {
         if (this.username && this.password) {
             this.authService.login(this.username, this.password, this.rememberMe).subscribe({
-                next: (response) => {
+                next: async () => {
                     this.toastService.show({
                         template: this.welcomeTemplate,
                         classname: 'bg-light-blue text-dark-blue',
                         delay: 3000,
                         context: { username: this.username }
                     });
-                    
-                    // Get the intended route from session storage
-                    const intendedRoute = sessionStorage.getItem('intendedRoute') || '/';
-                    
-                    // Clear the intended route from session storage
-                    sessionStorage.removeItem('intendedRoute');
-                    
-                    // Navigate to the intended route
-                    this.router.navigate([intendedRoute]);
                 },
                 error: (error) => {
                     console.error('Login error:', error);

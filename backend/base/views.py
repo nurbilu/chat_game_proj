@@ -18,6 +18,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User 
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -260,11 +264,15 @@ class CurrentUserView(APIView):
 
     def get(self, request):
         user = request.user
+        profile_picture = '/super-user-pic/Super-Pic.png' if user.is_superuser else (
+            user.profile_picture.url if user.profile_picture else '/profile_pictures/default.png'
+        )
+        
         return Response({
             'username': user.username,
             'email': user.email,
             'is_blocked': user.is_blocked,
-            'profile_picture': user.profile_picture.url if user.profile_picture else '/profile_pictures/default.png'
+            'profile_picture': profile_picture
         })
 
 class DeleteUserView(APIView):
@@ -280,3 +288,49 @@ class DeleteUserView(APIView):
             }, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class SendPasswordResetEmailView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+            token = RefreshToken.for_user(user)
+            
+            try:
+                reset_url = f"http://localhost:4200/reset-pwd?token={str(token)}"
+                
+                html_message = render_to_string('registration/reset_password_email.html', {
+                    'user': user,
+                    'reset_url': reset_url
+                })
+                
+                plain_message = strip_tags(html_message)
+                
+                send_mail(
+                    subject='Password Reset Request',
+                    message=plain_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email],
+                    html_message=html_message,
+                    fail_silently=False,
+                )
+                
+                return Response({
+                    'message': 'Password reset email sent successfully'
+                }, status=status.HTTP_200_OK)
+                
+            except Exception as e:
+                logger.error(f"Error sending email to {email}: {str(e)}")
+                return Response({
+                    'error': f'Failed to send email: {str(e)}'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+        except User.DoesNotExist:
+            return Response({
+                'message': 'If a user with this email exists, a password reset link has been sent'
+            }, status=status.HTTP_200_OK)

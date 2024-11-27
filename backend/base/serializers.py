@@ -96,4 +96,6 @@ class CreateSuperUserSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password']
         )
+        user.profile_picture = 'super-user-pic/Super-Pic.png'
+        user.save()
         return user

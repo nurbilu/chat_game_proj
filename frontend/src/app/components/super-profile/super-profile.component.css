@@ -91,3 +91,20 @@ table td {
     word-wrap: break-word;
     max-width: 500px;
 }
+
+.super-user-image {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #007bff;
+    margin: 0 auto 20px;
+    display: block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.super-user-image:hover {
+    transform: scale(1.1);
+}
+

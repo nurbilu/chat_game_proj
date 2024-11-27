@@ -1,6 +1,6 @@
 <ng-template #logoutTemplate let-modal="modal" >
   <div class="modal-header">
-    <h4 class="modal-title">Confirm Logout</h4>
+    <h4 class="modal-title">Logout ?</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="crossClick()"></button>
   </div>
   <div class="modal-body">
@@ -13,10 +13,13 @@
 </ng-template>
 
 <ng-template #loginTemplate let-modal>
-  <div class="modal-dialog modal-dialog-centered custom-modal">
+  <div id="loginTemplate" class="modal-dialog modal-dialog-centered custom-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Login</h4>
+        <div class="modal-header-content">
+          <img src="assets/imgs/icons/Login-smll-page-icon.png" alt="Go to Login" class="go-to-login-icon" (click)="navigateToLoginpage()" ngbTooltip="Click to go to Login page for a more fancy experience">
+          <h4 class="modal-title">Login</h4>
+        </div>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
       </div>
       <div class="modal-body">
@@ -78,18 +81,26 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
     <div class="status-container">
-      <img [src]="profilePictureUrl" 
-           *ngIf="isLoggedIn && !isProfileOrChatRoute()" 
-           [alt]="username + '\'s profile'" 
+      <img [src]="isSuperUser ? superUserImageUrl : profilePictureUrl" 
+           [alt]="username" 
            class="profile-picture" 
-           [ngbTooltip]="currentRoute === '/character-creation' ? 'Click for Chat, Double click for Profile' : 'Click for Chat, Double click for Character Creation'"
+           *ngIf="isLoggedIn"
+           [ngbTooltip]="currentRoute === '/profile' ? 
+             'Single click: Go to Chat | Double click: Go to Library' : 
+             currentRoute === '/character-creation' ? 
+             'Single click: Go to Chat | Double click: Go to Profile' :
+             'Single click: Go to Chat | Double click: Go to Character Creation'"
            (click)="navigateToChat()"
            style="cursor: pointer;">
       <span *ngIf="isLoggedIn" 
             class="username-text" 
             (click)="navigateToProfile()" 
             style="cursor: pointer;"
-            [ngbTooltip]="currentRoute === '/profile' ? 'Click to go to Character Creation' : 'Click to go to Profile'">
+            [ngbTooltip]="currentRoute === '/profile' ? 
+              'Click to go to Character Creation' : 
+              currentRoute === '/character-creation' ? 
+              'Click to go to Library' :
+              'Click to go to Profile'">
         {{ username }} is {{ isLoggedIn ? 'online' : 'offline' }}
         <img [src]="isLoggedIn ? 'assets/imgs/icons/green-dot.png' : 'assets/imgs/icons/red-dot.png'" 
              alt="status-icon" 
@@ -105,7 +116,6 @@
         <img src="assets/imgs/icons/login-modal-icon.png" alt="Login" (click)="openLoginModal(loginTemplate)" ngbTooltip="Click to open Login Modal" class="btn-icon">
         <img src="assets/imgs/icons/register-smll-icon.png" alt="Register" routerLink="/register" ngbTooltip="Click to open Register" class="btn-icon">
         <img src="assets/imgs/icons/super-profile-icon.png" alt="Super Profile" *ngIf="isSuperUser" routerLink="/super-profile" ngbTooltip="Click to open Super Profile" class="btn-icon">
-        <img src="assets/imgs/icons/Login-smll-page-icon.png" alt="Go to Login" class="go-to-login-icon" (click)="navigateToLoginpage()" ngbTooltip="Click to go to Login">
         <img src="assets/imgs/icons/smllHomepage.png" alt="Go to Home" class="go-to-home-icon" (click)="navigateToHomepage()" ngbTooltip="Click to go to Homepage">        
         <img src="assets/imgs/icons/logout-icon.png" alt="Logout" (click)="openLogoutModal(logoutTemplate)" ngbTooltip="Click to open Logout Modal" class="btn-icon">    
       </div>

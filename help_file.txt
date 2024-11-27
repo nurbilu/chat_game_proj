@@ -1,0 +1,71 @@
+The error message indicates that the email server rejected the username and password used for authentication. This is a common issue when trying to send emails via Google's SMTP server, especially when using a third-party application. Here's how you can resolve it:
+
+---
+
+### Steps to Fix the Issue:
+
+1. **Enable "Less Secure Apps" or Use App Passwords**:
+   - **Google no longer supports less secure apps directly**. Instead:
+     - Turn on **2-Step Verification** for your Google account.
+     - Create an **App Password** specific to your application. Use this password instead of your regular Google account password.
+     - You can set this up via: [Google App Passwords](https://myaccount.google.com/apppasswords).
+
+2. **Check Your Credentials**:
+   - Double-check the email and password in your code or configuration file. Ensure there are no typos or incorrect characters.
+
+3. **SMTP Configuration**:
+   - Ensure you are using the correct SMTP settings:
+     ```
+     SMTP Server: smtp.gmail.com
+     Port: 587 (or 465 for SSL)
+     Authentication: Required
+     Encryption: TLS (or SSL for port 465)
+     ```
+
+4. **Review Security Settings**:
+   - Visit your [Google Account Security page](https://myaccount.google.com/security).
+   - Check for any security alerts that may have blocked the application.
+
+5. **Review Email Sending Quota**:
+   - If your app is sending a lot of emails, you may have exceeded the daily email quota. Free Gmail accounts have limits, so check your account usage.
+
+6. **Check Logs for Additional Clues**:
+   - The error includes a link for more details: [Google Support on Bad Credentials](https://support.google.com/mail/?p=BadCredentials). Read the guidance and adjust your configuration if needed.
+
+7. **Test with an Email Client**:
+   - Try setting up the email credentials in an email client (e.g., Outlook, Thunderbird). This helps verify that the credentials are correct and working.
+
+8. **Code Example with Correct Settings**:
+   If you're using Python with `smtplib`, here's an example of proper configuration:
+   ```python
+   import smtplib
+   from email.mime.text import MIMEText
+
+   sender_email = "your_email@gmail.com"
+   app_password = "your_app_password"
+   recipient_email = "nurb111@gmail.com"
+   subject = "Test Email"
+   body = "This is a test email."
+
+   # Setup the MIME
+   msg = MIMEText(body)
+   msg['Subject'] = subject
+   msg['From'] = sender_email
+   msg['To'] = recipient_email
+
+   try:
+       # Connect to the server
+       server = smtplib.SMTP('smtp.gmail.com', 587)
+       server.starttls()  # Secure the connection
+       server.login(sender_email, app_password)
+       server.sendmail(sender_email, recipient_email, msg.as_string())
+       print("Email sent successfully!")
+   except Exception as e:
+       print(f"Error sending email: {e}")
+   finally:
+       server.quit()
+   ```
+
+---
+
+If these steps don’t resolve the issue, let me know more about your setup (e.g., programming language, email library) for further assistance!

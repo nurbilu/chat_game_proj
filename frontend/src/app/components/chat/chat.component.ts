@@ -29,6 +29,9 @@ export class ChatComponent implements OnInit {
     showStaticHoverCard = false;
     selectedEntry: any = null;
     activeFormats: Set<string> = new Set();
+    superUserImageUrl: string = 'http://127.0.0.1:8000/media/super-user-pic/Super-Pic.png';
+    defaultProfilePicture: string = 'assets/default-profile.png';
+    userProfilePicture: string | null = null;
 
     editorConfig = {
         menubar: false,
@@ -131,6 +134,16 @@ export class ChatComponent implements OnInit {
                 
                 // Prevent text selection
                 e.preventDefault();
+            }
+        });
+
+        this.authService.getCurrentUser().subscribe({
+            next: (user) => {
+                this.userProfilePicture = user.profile_picture;
+                this.username = user.username;
+            },
+            error: (error) => {
+                console.error('Error fetching user profile:', error);
             }
         });
     }
@@ -434,6 +447,12 @@ export class ChatComponent implements OnInit {
     resetFormatting(): void {
         this.activeFormats.clear();
         this.applyFormatting();
+    }
+
+    isSuperUser(): boolean {
+        // Implement logic to determine if the current user is a superuser
+        // This could be based on a user role or a specific property
+        return this.authService.isSuperUser(); // Example using AuthService
     }
 
 }

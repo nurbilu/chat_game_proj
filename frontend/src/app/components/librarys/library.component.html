@@ -5,6 +5,14 @@
       [class.active]="collection === selectedCollection && !showSearchResults" (click)="selectCollection(collection)">
       {{collection}}
     </a>
+    <button class="collapse-button-search" 
+            (click)="toggleCollapse()" 
+            alt="Collapse" 
+            [ngClass]="{'collapsed': isCollapsed}" 
+            ngbTooltip="Search for items in the library" 
+            triggers="mouseenter:mouseleave" 
+            tooltipTitle="Search">
+    </button>
   </div>
 </nav>
 <div class="search-container" [ngClass]="{'collapsed': isCollapsed}">
@@ -13,9 +21,6 @@
     <button (click)="onSearch()" class="search-icon" alt="Search" ngbTooltip="Click to search" triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
     <button class="clear-icon" (click)="clearSearchQuery()" alt="clear-input" ngbTooltip="Clear search query" triggers="mouseenter:mouseleave" tooltipTitle="Clear"></button>
     <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbTooltip="Return to Library" triggers="mouseenter:mouseleave" tooltipTitle="Return"></button>
-  </div>
-  <div class="collapse-area">
-    <button class="collapse-button" (click)="toggleCollapse()" alt="Collapse" [ngClass]="{'collapsed': isCollapsed}" ngbTooltip="Search for items in the library" triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
   </div>
 </div>
 <div *ngIf="isLoading" class="spinner-container">

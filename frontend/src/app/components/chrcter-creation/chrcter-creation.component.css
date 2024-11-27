@@ -593,3 +593,40 @@ body.modal-open {
 .prompt-table tr:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
+
+.static-hover-card .card-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 5px;
+}
+
+.static-hover-card .card-header h5 {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.copy-prompt-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.copy-prompt-btn img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s;
+    filter: invert(1);
+}
+
+.copy-prompt-btn:hover {
+    background-color: rgba(147, 112, 219, 0.3);
+    border-radius: 5px;
+}

@@ -34,6 +34,7 @@ import { SearchService } from './services/search.service';
 import { LibSearchComponent } from './components/lib-search/lib-search.component'; 
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component'; // Ensure EditProfileComponent is declared here
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { PwdResetUnrealComponent } from './components/pwd-reset-unreal/pwd-reset-unreal.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     LibraryComponent, 
     CleanTextPipe, 
     LibSearchComponent,
-    EditProfileComponent // Ensure EditProfileComponent is declared here
+    EditProfileComponent, // Ensure EditProfileComponent is declared here
+    PwdResetUnrealComponent
   ],
   imports: [
     BrowserModule,
