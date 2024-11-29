@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef, ElementRef ,EventEmitter, Input, Output, ViewEncapsulation, HostListener} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
+import { ChcrcterCreationService ,Character} from '../../services/chcrcter-creation.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
@@ -8,6 +8,7 @@ import { NgbAccordionItem } from '@ng-bootstrap/ng-bootstrap';
 import { EditorConfig } from 'ngx-simple-text-editor';
 import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search.service';
+import { switchMap } from 'rxjs/operators';
 
 
 interface ChatbotResponse {
@@ -135,6 +136,11 @@ user: any;
   showStaticHoverCard: boolean = false;
   selectedEntry: any = null;
 
+  characterPrompts: Character[] = [];
+  currentPrompt: Character | null = null;
+
+  isCharacterDisplayCollapsed = false;
+
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
@@ -145,6 +151,7 @@ user: any;
       this.fetchRaces();
       this.fetchAllSpells();
       this.loadSpellSlotLevels();
+      this.loadCharacterPrompts();
     });
 
     // Simulate loading process
@@ -269,14 +276,8 @@ user: any;
             });
           }
         },
-        error: (error: any) => {
-          console.error('Failed to load draft:', error);
-          this.toastService.show({
-            template: this.errorToast,
-            classname: 'bg-danger text-light',
-            delay: 3000,
-            context: { message: 'Failed to load draft' }
-          });
+        error: (error) => {
+          console.error('Error loading draft:', error);
         }
       });
     });
@@ -404,14 +405,35 @@ user: any;
     this.characterPrompt = '';
   }
 
-  sendMessage(): void {
-    // Implement the sendMessage logic here
-    // After successful sending:
-    this.toastService.show({
-      template: this.successToast,
-      classname: 'bg-success text-light',
-      delay: 3000,
-      context: { message: 'Character prompt sent successfully' }
+  sendMessage() {
+    this.authService.getUsername().subscribe((username: string) => {
+      const characterData = {
+        username: username,
+        characterPrompt: this.characterPrompt
+      };
+
+      this.chcrcterCreationService.saveNewCharacterPrompt(characterData).subscribe({
+        next: () => {
+          this.loadCharacterPrompts(); // Reload the character list
+          this.toastService.show({
+            template: this.successToast,
+            classname: 'bg-success text-light',
+            delay: 3000,
+            context: { message: 'Character prompt saved successfully' }
+          });
+          // Reset the prompt to default template
+          this.characterPrompt = this.getDefaultPromptTemplate();
+        },
+        error: (error) => {
+          console.error('Failed to save character prompt:', error);
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to save character prompt' }
+          });
+        }
+      });
     });
   }
 
@@ -561,5 +583,169 @@ user: any;
         });
       });
     }
+  }
+
+  loadCharacterPrompts() {
+    this.authService.getUsername().subscribe((username: string) => {
+      this.chcrcterCreationService.getAllCharacterPrompts(username).subscribe({
+        next: (prompts) => {
+          this.characterPrompts = prompts.map((prompt: any, index: number) => ({
+            _id: prompt._id.$oid || prompt._id,
+            username: prompt.username,
+            characterPrompt: prompt.characterPrompt,
+            index: index + 1,
+            character: prompt.character || { name: '', prompt: '' }
+          }));
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Failed to load character prompts:', error);
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to load character prompts' }
+          });
+        }
+      });
+    });
+  }
+
+  createNewPrompt() {
+    if (this.characterPrompts.length >= 4) {
+      this.toastService.show({
+        template: this.errorToast,
+        classname: 'bg-danger text-light',
+        delay: 3000,
+        context: { message: 'Maximum number of characters (4) reached' }
+      });
+      return;
+    }
+
+    this.characterPrompt = this.getDefaultPromptTemplate();
+    this.currentPrompt = null;
+  }
+
+  viewPrompt(prompt: any) {
+    this.selectedEntry = {
+      name: `Character ${prompt.index}`,
+      promptData: this.parsePromptToTableData(prompt.characterPrompt)
+    };
+    this.showStaticHoverCard = true;
+  }
+
+  editPrompt(prompt: Character) {
+    this.characterPrompt = prompt.characterPrompt || '';
+    this.currentPrompt = prompt;
+    
+    // Scroll to the editor
+    const editorElement = document.querySelector('.text-editor-container');
+    if (editorElement) {
+      editorElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  deletePrompt(prompt: Character): void {
+    if (!prompt?._id) {
+        this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Invalid prompt: missing ID' }
+        });
+        return;
+    }
+
+    this.authService.getUsername().subscribe((username: string) => {
+        this.chcrcterCreationService.deleteCharacterPrompt(username, prompt).subscribe({
+            next: () => {
+                // Remove the deleted prompt from the local array
+                this.characterPrompts = this.characterPrompts.filter(p => p._id !== prompt._id);
+                
+                // Show success message
+                this.toastService.show({
+                    template: this.successToast,
+                    classname: 'bg-success text-light',
+                    delay: 3000,
+                    context: { message: 'Character deleted successfully' }
+                });
+                
+                // Reload the character prompts to ensure sync with server
+                this.loadCharacterPrompts();
+            },
+            error: (error) => {
+                console.error('Failed to delete character:', error);
+                this.toastService.show({
+                    template: this.errorToast,
+                    classname: 'bg-danger text-light',
+                    delay: 3000,
+                    context: { message: 'Failed to delete character' }
+                });
+            }
+        });
+    });
+  }
+
+  getPromptPreview(prompt: string | undefined): string {
+    if (!prompt) return '';
+    
+    const maxLength = 100;
+    return prompt.length > maxLength 
+        ? prompt.substring(0, maxLength) + '...'
+        : prompt;
+  }
+
+  getDefaultPromptTemplate(): string {
+    return `
+      <div style="text-align: left;">character name:&nbsp;</div>
+      <div style="text-align: left;"><br></div>
+      <div style="text-align: left;">race:&nbsp;<br><br>class:&nbsp;<br><br>subclass:&nbsp;<br><br>level:&nbsp;<br><br>spells:&nbsp;<br></div>
+      <div style="text-align: left;"><br></div>
+      <div style="text-align: left;">equipment:&nbsp;</div>
+    `;
+  }
+
+  toggleCharacterDisplay(): void {
+    this.isCharacterDisplayCollapsed = !this.isCharacterDisplayCollapsed;
+  }
+
+  saveNewCharacter(): void {
+    if (this.characterPrompts.length >= 4) {
+      this.toastService.show({
+        template: this.errorToast,
+        classname: 'bg-danger text-light',
+        delay: 3000,
+        context: { message: 'Maximum number of characters (4) reached' }
+      });
+      return;
+    }
+
+    this.authService.getUsername().subscribe((username: string) => {
+      const characterData: Partial<Character> = {
+        username: username,
+        characterPrompt: this.characterPrompt
+      };
+
+      this.chcrcterCreationService.saveNewCharacterPrompt(characterData).subscribe({
+        next: () => {
+          this.loadCharacterPrompts();
+          this.toastService.show({
+            template: this.successToast,
+            classname: 'bg-success text-light',
+            delay: 3000,
+            context: { message: 'Character saved successfully' }
+          });
+        },
+        error: (error) => {
+          console.error('Failed to save character:', error);
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to save character' }
+          });
+        }
+      });
+    });
   }
 }

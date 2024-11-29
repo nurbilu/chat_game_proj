@@ -630,3 +630,213 @@ body.modal-open {
     background-color: rgba(147, 112, 219, 0.3);
     border-radius: 5px;
 }
+
+/* Add these styles for the character prompts grid */
+.character-prompts-container {
+  margin-top: 20px;
+}
+
+.prompts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.prompts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.prompt-card {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prompt-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.prompt-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.prompt-actions button {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.prompt-actions button:hover {
+  transform: scale(1.1);
+}
+
+.prompt-actions img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+.prompt-preview {
+  color: #fff;
+  font-size: 0.9em;
+  max-height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-line;
+}
+
+.new-prompt-btn {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.new-prompt-btn img {
+  width: 30px;
+  height: 30px;
+  transition: transform 0.2s;
+}
+
+.new-prompt-btn:hover img {
+  transform: scale(1.1);
+}
+
+.text-frame-character-display {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(24, 24, 24, 0.678);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
+}
+
+.text-frame-character-display h3 {
+  color: rgb(250, 250, 250);
+}
+
+.character-list {
+  max-height: 500px;
+  overflow-y: auto;
+  transition: max-height 0.3s ease-out;
+}
+
+.character-list.collapsed {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.character-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.character-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.character-card-header h5 {
+  color: white;
+  margin: 0;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.delete-btn img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+.send-btn {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+}
+
+.send-btn img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+  transition: transform 0.2s;
+}
+
+.send-btn:hover img {
+  transform: scale(1.1);
+}
+
+.character-table-container {
+  margin: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.character-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+}
+
+.character-table th,
+.character-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.character-table th {
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+}
+
+.character-table tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.action-buttons button img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+.prompt-preview {
+  max-width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

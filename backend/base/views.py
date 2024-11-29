@@ -22,7 +22,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-
+from django.core.mail import get_connection
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
@@ -304,6 +304,29 @@ class SendPasswordResetEmailView(APIView):
             try:
                 reset_url = f"http://localhost:4200/reset-pwd?token={str(token)}"
                 
+                # Test connection first with detailed error logging
+                connection = get_connection(
+                    host=settings.EMAIL_HOST,
+                    port=settings.EMAIL_PORT,
+                    username=settings.EMAIL_HOST_USER,
+                    password=settings.EMAIL_HOST_PASSWORD,
+                    use_tls=settings.EMAIL_USE_TLS
+                )
+                
+                try:
+                    connection.open()
+                    logger.info("SMTP connection successful")
+                except Exception as conn_error:
+                    logger.error(f"SMTP connection error details: {str(conn_error)}")
+                    return Response({
+                        'error': 'Failed to connect to email server. Please try again later.',
+                        'details': str(conn_error)
+                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
+                # Add more detailed logging
+                logger.info(f"Starting email send process to {email}")
+                logger.info(f"Using email configuration: HOST={settings.EMAIL_HOST}, PORT={settings.EMAIL_PORT}")
+                
                 html_message = render_to_string('registration/reset_password_email.html', {
                     'user': user,
                     'reset_url': reset_url
@@ -318,8 +341,10 @@ class SendPasswordResetEmailView(APIView):
                     recipient_list=[email],
                     html_message=html_message,
                     fail_silently=False,
+                    connection=connection
                 )
                 
+                logger.info(f"Password reset email sent successfully to {email}")
                 return Response({
                     'message': 'Password reset email sent successfully'
                 }, status=status.HTTP_200_OK)
@@ -327,10 +352,18 @@ class SendPasswordResetEmailView(APIView):
             except Exception as e:
                 logger.error(f"Error sending email to {email}: {str(e)}")
                 return Response({
-                    'error': f'Failed to send email: {str(e)}'
+                    'error': f'Failed to send email: {str(e)}',
+                    'email_settings': {
+                        'host': settings.EMAIL_HOST,
+                        'port': settings.EMAIL_PORT,
+                        'use_tls': settings.EMAIL_USE_TLS,
+                        'from_email': settings.DEFAULT_FROM_EMAIL,
+                        'username': settings.EMAIL_HOST_USER,
+                    }
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
         except User.DoesNotExist:
+            # Security through obscurity - don't reveal if email exists
             return Response({
                 'message': 'If a user with this email exists, a password reset link has been sent'
             }, status=status.HTTP_200_OK)

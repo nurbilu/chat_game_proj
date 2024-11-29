@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate {
               if (this.publicRoutes.includes(url)) {
                 return of(true);
               }
-              this.router.navigate(['/login']);
+              this.router.navigate(['/homepage']);
               return of(false);
             })
           );
@@ -72,7 +72,7 @@ export class AuthGuard implements CanActivate {
           if (this.publicRoutes.includes(url)) {
             return of(true);
           }
-          this.router.navigate(['/login']);
+          this.router.navigate(['/homepage']);
           return of(false);
         }
       }

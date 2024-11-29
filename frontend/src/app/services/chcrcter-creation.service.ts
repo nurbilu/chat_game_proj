@@ -13,9 +13,12 @@ interface Race {
 }
 
 export interface Character {
-  _id: string;
+  character: { name: string; prompt: string; };
+  _id: string | { $oid: string } | { toString(): string };
   username: string;
-  prompt: any;
+  characterPrompt?: string;
+  prompt?: any;
+  index?: number;
 }
 
 export interface Spell {
@@ -117,6 +120,59 @@ export class ChcrcterCreationService {
         console.error('Failed to fetch character prompts:', error);
         return throwError(() => new Error('Error fetching character prompts: ' + error.message));
       })
+    );
+  }
+
+  getAllCharacterPrompts(username: string): Observable<Character[]> {
+    return this.http.get<Character[]>(`${this.apiUrl}/character_prompts/${username}`).pipe(
+      catchError(error => {
+        console.error('Failed to fetch all character prompts:', error);
+        return throwError(() => new Error('Error fetching character prompts: ' + error.message));
+      })
+    );
+  }
+
+  saveNewCharacterPrompt(character: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}/save_character_prompt`, JSON.stringify(character), { headers }).pipe(
+      catchError(error => {
+        console.error('Failed to save character prompt:', error);
+        return throwError(() => new Error('Error saving character prompt: ' + error.message));
+      })
+    );
+  }
+
+  deleteCharacterPrompt(username: string, prompt: Character): Observable<any> {
+    // Ensure we have a valid ID
+    if (!prompt?._id) {
+        return throwError(() => new Error('Invalid prompt: missing _id'));
+    }
+
+    // Handle different ObjectId formats
+    let promptId: string;
+    if (typeof prompt._id === 'object' && '$oid' in prompt._id) {
+        promptId = prompt._id.$oid as string;
+    } else if (typeof prompt._id === 'object') {
+        promptId = prompt._id.toString();
+    } else {
+        promptId = prompt._id;
+    }
+
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.delete(
+        `${this.apiUrl}/character_prompt/${username}/${promptId}`,
+        { headers }
+    ).pipe(
+        catchError(error => {
+            console.error('Failed to delete character prompt:', error);
+            return throwError(() => new Error('Error deleting character prompt: ' + error.message));
+        })
     );
   }
 

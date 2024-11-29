@@ -55,6 +55,47 @@
     <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbTooltip="Clear search results"
       triggers="mouseenter:mouseleave" tooltipTitle="Clear Results"></button>
   </div>
+  <div class="text-frame-character-display fade-in-delay" [class.fade-in-active]="!isLoading">
+    <div class="title-row">
+      <h3>Saved Characters ({{characterPrompts.length}}/4)</h3>
+      <button class="prompt-icon" 
+              (click)="toggleCharacterDisplay()" 
+              ngbTooltip="Toggle character display" 
+              triggers="mouseenter:mouseleave">
+        <img src="/assets/imgs/icons/Advtre-Poem.png" alt="Character Display">
+      </button>
+    </div>
+
+    <!-- Character display content -->
+    <div class="character-table-container" *ngIf="!isCharacterDisplayCollapsed">
+      <table class="character-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Character Details</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let prompt of characterPrompts; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="prompt-preview">{{ getPromptPreview(prompt.characterPrompt) }}</td>
+            <td class="action-buttons">
+              <button class="view-btn" (click)="viewPrompt(prompt)" [disabled]="!prompt._id">
+                <img src="/assets/imgs/icons/View-chr-prmpt.png" alt="View">
+              </button>
+              <button class="edit-btn" (click)="editPrompt(prompt)" [disabled]="!prompt._id">
+                <img src="/assets/imgs/icons/Edit-chr-prmpt.png" alt="Edit">
+              </button>
+              <button class="delete-btn" (click)="deletePrompt(prompt)">
+                <img src="/assets/imgs/icons/Del-chr-prmpt.png" alt="Delete">
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <div class="grid fade-in-delay" [class.fade-in-active]="!isLoading">
     <div class="g-col-8 text-frame">
       <div class="title-row">
@@ -243,3 +284,7 @@
 <button class="back-to-top" (click)="scrollToTop()" [ngClass]="{'show': showBackToTop}">
   Back up top?
 </button>
+
+
+  
+

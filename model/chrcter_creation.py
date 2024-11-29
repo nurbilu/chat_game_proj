@@ -14,6 +14,8 @@ import json
 from flask.logging import default_handler
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+from datetime import datetime
+from bson import ObjectId
 
 # Load environment variables from .env file
 load_dotenv()
@@ -49,6 +51,19 @@ class CustomJSONEncoder(json.JSONEncoder):
             return json_util.default(obj)
         except TypeError:
             return str(obj)
+            
+    @staticmethod
+    def decode_object_id(obj):
+        if isinstance(obj, str) and ObjectId.is_valid(obj.strip().rstrip('/')):
+            return ObjectId(obj.strip().rstrip('/'))
+        return obj
+    
+
+class ChrcterPrmptEncoder_id(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
 
 def configure_logging():
     log_file = 'chrcter_creation.log'
@@ -132,7 +147,18 @@ def create_app():
     app = Flask(__name__)
     app.url_map.strict_slashes = False
     app.json_encoder = CustomJSONEncoder
-    CORS(app, resources={r"/*": {"origins": "*"}})  # Configure CORS more securely
+    CORS(app, resources={r"/*": {"origins": "*"}})
+    
+    # Add request preprocessor for ObjectId
+    @app.before_request
+    def handle_object_id():
+        if 'prompt_id' in request.view_args:
+            try:
+                raw_id = request.view_args['prompt_id']
+                request.view_args['prompt_id'] = CustomJSONEncoder.decode_object_id(raw_id)
+            except Exception as e:
+                app.logger.error(f"Failed to decode ObjectId: {str(e)}")
+    
     app.register_blueprint(character_blueprint, url_prefix='/api')
     
     # Configure logging
@@ -303,6 +329,72 @@ def get_classes():
         return jsonify(classes), 200
     except Exception as e:
         app.logger.error(f"Failed to fetch classes: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/character_prompts/<username>', methods=['GET'])
+def get_all_character_prompts(username):
+    try:
+        prompts = db.characters.find({"username": username})
+        prompts_list = list(prompts)
+        
+        if prompts_list:
+            # Clean HTML from all prompts
+            for prompt in prompts_list:
+                if 'characterPrompt' in prompt:
+                    soup = BeautifulSoup(prompt['characterPrompt'], "html.parser")
+                    prompt['characterPrompt'] = soup.get_text(separator="\n").strip()
+            
+            return jsonify(json.loads(json_util.dumps(prompts_list))), 200
+        else:
+            return jsonify([]), 200
+    except Exception as e:
+        app.logger.error(f"Failed to fetch character prompts: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/save_character_prompt', methods=['POST'])
+def save_character_prompt():
+    try:
+        data = request.json
+        username = data.get('username')
+        character_prompt = data.get('characterPrompt')
+        
+        if not username or not character_prompt:
+            return jsonify({'error': 'Username and character prompt are required'}), 400
+
+        # Check if user already has 4 characters
+        existing_prompts = db.characters.count_documents({"username": username})
+        if existing_prompts >= 4:
+            return jsonify({'error': 'Maximum number of characters (4) reached'}), 400
+
+        # Save character prompt to MongoDB
+        result = db.characters.insert_one({
+            "username": username,
+            "characterPrompt": character_prompt,
+            "created_at": datetime.utcnow()
+        })
+        
+        return jsonify({'message': 'Character prompt saved successfully', 'id': str(result.inserted_id)}), 200
+    except Exception as e:
+        app.logger.error(f"Failed to save character prompt: {str(e)}")
+        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+
+@character_blueprint.route('/character_prompt/<username>/<prompt_id>', methods=['DELETE'])
+def delete_character_prompt(username, prompt_id):
+    try:
+        prompt_id = ObjectId(prompt_id)
+        
+        result = db.characters.delete_one({
+            "username": username,
+            "_id": prompt_id
+        })
+        
+        if result.deleted_count > 0:
+            return jsonify({'message': 'Character prompt deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Character prompt not found'}), 404
+            
+    except Exception as e:
+        app.logger.error(f"Failed to delete character prompt: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
 
 def build_cors_preflight_response():

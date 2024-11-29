@@ -3,6 +3,14 @@ import { AuthService } from '../../services/auth.service';
 import { Character, ChcrcterCreationService } from '../../services/chcrcter-creation.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+
+// Add this interface at the top of the file
+interface EquipmentCategory {
+    key: string;
+    value: string[];
+}
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +29,8 @@ export class ProfileComponent implements OnInit {
   characters: Character[] = []; // Use Character type
   profilePictureUrl: string = '';  // Initialize to an empty string
   selectedCharacter: Character | null = null;
-  characterPrompts: any[] = []; // Store character prompts
+  selectedCharacterIndex: number = -1;
+  characterPrompts: Character[] = []; // Change type to Character[]
   characterPrompt: string = ''; // Store the character prompt
   showEditProfile: boolean = false;
   isPromptVisible: boolean = false;
@@ -44,7 +53,6 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['/super-profile']);
       } else {
         this.loadCharacterPrompts(decodedToken.username); // Load character prompts
-        this.loadCharacterPrompt(decodedToken.username); // Load character prompt
       }
     }).catch(error => console.error('Error decoding token:', error));
   }
@@ -62,25 +70,21 @@ export class ProfileComponent implements OnInit {
   }
 
   loadCharacterPrompts(username: string): void {
-    this.characterService.getCharacterPrompt(username).subscribe(
-      (prompts) => {
+    this.characterService.getAllCharacterPrompts(username).subscribe({
+      next: (prompts) => {
         this.characterPrompts = prompts;
+        console.log('Loaded character prompts:', prompts);
       },
-      (error) => {
+      error: (error) => {
         console.error('Failed to load character prompts:', error);
+        this.toastService.show({
+          template: this.errorTemplate,
+          classname: 'bg-danger text-light',
+          delay: 3000,
+          context: { message: 'Failed to load character prompts' }
+        });
       }
-    );
-  }
-
-  loadCharacterPrompt(username: string): void {
-    this.characterService.getCharacterPrompt(username).subscribe(
-      (response) => {
-        this.characterPrompt = response.characterPrompt;
-      },
-      (error) => {
-        console.error('Failed to load character prompt:', error);
-      }
-    );
+    });
   }
 
   toggleEditMode(): void {
@@ -120,10 +124,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  selectCharacter(character: Character): void {
+  selectCharacter(character: Character, index: number): void {
     this.selectedCharacter = character;
+    this.selectedCharacterIndex = index;
     // Fetch character details by _id and username
-    this.authService.getCharacterByIdAndUsername(character._id, character.username).subscribe(
+    this.authService.getCharacterByIdAndUsername(this.getCharacterId(character), character.username).subscribe(
       (data) => {
         this.selectedCharacter = data;
         // Additional logic if needed
@@ -161,5 +166,94 @@ export class ProfileComponent implements OnInit {
   togglePrompt(): void {
     this.isPromptLocked = !this.isPromptLocked;
     this.isPromptVisible = this.isPromptLocked;
+  }
+
+  private getCharacterId(character: Character): string {
+    if (!character._id) return '';
+    
+    // Handle different ObjectId formats
+    if (typeof character._id === 'object') {
+        // Handle MongoDB ObjectId format with $oid
+        if ('$oid' in character._id) {
+            return (character._id as any).$oid;
+        }
+        // Handle other object formats that have toString()
+        return character._id.toString();
+    }
+    // Handle string format
+    return character._id;
+  }
+
+  extractField(prompt: string | undefined, field: string): string {
+    if (!prompt) return '';
+    
+    const regex = new RegExp(`${field}:\\s*([^\\n]+)`);
+    const match = prompt.match(regex);
+    return match ? match[1].trim() : '';
+  }
+
+  isEquipmentCategorized(prompt: string | undefined): boolean {
+    if (!prompt) return false;
+    const equipmentText = this.extractField(prompt, 'equipment');
+    if (!equipmentText) return false;
+    return !!equipmentText.match(/([A-Z][a-zA-Z]+):/g);
+  }
+
+  getEquipmentEntries(equipment: { [key: string]: string[] }): EquipmentCategory[] {
+    return Object.entries(equipment).map(([key, value]) => ({
+        key: key.replace('*', ''), // Remove asterisk if present
+        value: value.map(item => item.trim())
+    }));
+  }
+
+  extractEquipment(prompt: string | undefined): { [key: string]: string[] } {
+    if (!prompt) return {};
+    
+    const equipmentSection = prompt.split('equipment:')[1];
+    if (!equipmentSection) return {};
+
+    const result: { [key: string]: string[] } = {};
+    let currentCategory = '';
+    
+    // Split by newlines and process each line
+    equipmentSection.split('\n').forEach(line => {
+        const trimmedLine = line.trim();
+        if (!trimmedLine) return;
+
+        // Check if line is a category header (starts with capital letter)
+        if (/^[A-Z]/.test(trimmedLine) && !trimmedLine.includes('–') && !trimmedLine.includes('-')) {
+            currentCategory = trimmedLine;
+            result[currentCategory] = [];
+        } else if (currentCategory && trimmedLine) {
+            result[currentCategory].push(trimmedLine);
+        }
+    });
+
+    return result;
+  }
+
+  // Add this method to check if equipment is simple or categorized
+  isSimpleEquipment(prompt: string | undefined): boolean {
+    if (!prompt) return true;
+    
+    const equipmentSection = prompt.split('equipment:')[1];
+    if (!equipmentSection) return true;
+    
+    // Check if there are any category headers (lines starting with capital letter and no dashes)
+    const lines = equipmentSection.split('\n').map(line => line.trim()).filter(line => line);
+    return !lines.some(line => /^[A-Z]/.test(line) && !line.includes('–') && !line.includes('-'));
+  }
+
+  // Add this method to extract simple equipment
+  extractSimpleEquipment(prompt: string | undefined): string[] {
+    if (!prompt) return [];
+    
+    const equipmentSection = prompt.split('equipment:')[1];
+    if (!equipmentSection) return [];
+    
+    return equipmentSection
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line);
   }
 }

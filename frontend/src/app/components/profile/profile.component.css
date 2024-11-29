@@ -111,37 +111,39 @@
 /* Add these styles for the character prompt hover card */
 .character-prompt-container {
     position: relative;
-    display: inline-block;
+    margin-bottom: 10px;
 }
 
 .character-button {
-    padding: 8px 16px;
-    background-color: #064441;
+    width: 100%;
+    padding: 12px;
+    background-color: #0a6661;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
+    margin-bottom: 5px;
 }
 
 .character-button:hover {
-    background-color: #0a6661;
+    background-color: #064441;
 }
 
 .prompt-hover-card {
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 10;
-    min-width: 900px;
-    padding: 15px;
+    z-index: 1000;
+    width: 100%;
+    min-width: 300px;
     background: linear-gradient(45deg, #064441, #a3f5b5);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    color: white;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s, visibility 0.3s;
 }
 
 .prompt-hover-card.show {
@@ -153,6 +155,7 @@
     max-height: 200px;
     overflow-y: auto;
     padding-right: 10px;
+    color: white;
 }
 
 .character-card {
@@ -236,4 +239,114 @@
 /* Ensure text remains visible */
 .card-body .bg-body-tertiary p {
     color: rgb(255, 255, 255);
+}
+
+/* Add these styles */
+.character-selection-container {
+    margin: 20px 0;
+}
+
+.character-dropdown {
+    margin-bottom: 20px;
+}
+
+.character-dropdown button {
+    width: 200px;
+    background-color: #0a6661;
+    border: none;
+}
+
+.character-dropdown button:hover {
+    background-color: #064441;
+}
+
+.character-table-container {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.character-table {
+    width: 100%;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.character-table td {
+    padding: 8px;
+    border: 1px solid #333;
+}
+
+.character-table strong {
+    color: #a3f5b5;
+}
+
+.equipment-container {
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.equipment-container h5 {
+    color: #a3f5b5;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #a3f5b5;
+    padding-bottom: 10px;
+}
+
+.equipment-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.equipment-category {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.category-title {
+    background: rgba(10, 102, 97, 0.8);
+    color: #ffffff;
+    padding: 12px 15px;
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(163, 245, 181, 0.3);
+}
+
+.equipment-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.equipment-table td {
+    padding: 12px 15px;
+    color: #ffffff;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(163, 245, 181, 0.1);
+}
+
+.equipment-table tr:last-child td {
+    border-bottom: none;
+}
+
+.equipment-table tr:hover {
+    background: rgba(163, 245, 181, 0.1);
+}
+
+/* Add styles for simple equipment display */
+.equipment-container .equipment-category:only-child {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    max-width: 800px; /* Adjust this value as needed */
 }

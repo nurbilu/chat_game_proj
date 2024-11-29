@@ -35,6 +35,7 @@ import { LibSearchComponent } from './components/lib-search/lib-search.component
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component'; // Ensure EditProfileComponent is declared here
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PwdResetUnrealComponent } from './components/pwd-reset-unreal/pwd-reset-unreal.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { PwdResetUnrealComponent } from './components/pwd-reset-unreal/pwd-reset
       preventDuplicates: true,
     }), 
     NgxSimpleTextEditorModule,
-    NgbPopoverModule
+    NgbPopoverModule,
+    NgbDropdownModule
   ],
   providers: [
     AuthService,
