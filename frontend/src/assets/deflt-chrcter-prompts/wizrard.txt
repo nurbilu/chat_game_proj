@@ -1,0 +1,32 @@
+Character Name: Suzan Boyi
+Race: Tiefling
+Class: Wizard
+Subclass: School of Evocation
+Level: 16
+
+Spells:
+Cantrips: Fire Bolt, Mage Hand, Minor Illusion, Prestidigitation, Ray of Frost
+1st Level: Shield, Magic Missile, Mage Armor
+2nd Level: Misty Step, Mirror Image, Scorching Ray
+3rd Level: Counterspell, Fireball, Fly
+4th Level: Greater Invisibility, Polymorph
+5th Level: Wall of Force, Cone of Cold
+6th Level: Disintegrate
+7th Level: Teleport
+8th Level: Sunburst
+9th Level: Meteor Swarm
+
+Arcane Tradition Features:
+• Sculpt Spells
+• Potent Cantrip
+• Empowered Evocation
+
+Equipment:
+• Staff of Power (+2 to attack rolls, damage rolls, and AC, contains powerful spells)
+• Cloak of Protection (+1 AC, +1 saving throws)
+• Spellbook containing all learned spells
+• Component Pouch or Arcane Focus
+• Studded Leather Armor
+• Explorer's Pack
+• Wand of Fireballs (can cast Fireball multiple times)
+• 750 gp in currency and gems

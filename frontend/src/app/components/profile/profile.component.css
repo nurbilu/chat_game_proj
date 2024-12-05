@@ -247,13 +247,15 @@
 }
 
 .character-dropdown {
-    margin-bottom: 20px;
+    flex: 0 0 auto;
 }
 
 .character-dropdown button {
     width: 200px;
     background-color: #0a6661;
     border: none;
+    height: 38px;
+    line-height: 24px;
 }
 
 .character-dropdown button:hover {
@@ -262,52 +264,99 @@
 
 .character-table-container {
     background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 12px;
     margin-top: 20px;
 }
 
 .character-table {
     width: 100%;
-    margin-bottom: 20px;
-    color: white;
+    margin-bottom: 30px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
 }
 
 .character-table td {
-    padding: 8px;
-    border: 1px solid #333;
+    padding: 12px 15px;
+    color: #ffffff;
 }
 
-.character-table strong {
+.character-table td:first-child {
+    width: 150px;
     color: #a3f5b5;
+    font-weight: 600;
 }
 
 .equipment-container {
-    margin-top: 20px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 12px;
     padding: 20px;
-    border-radius: 8px;
+    margin: 20px 0;
 }
 
 .equipment-container h5 {
     color: #a3f5b5;
     margin-bottom: 20px;
-    font-size: 1.2em;
-    border-bottom: 2px solid #a3f5b5;
     padding-bottom: 10px;
+    border-bottom: 2px solid #a3f5b5;
+}
+
+.equipment-list {
+    padding: 0 15px;
+}
+
+.equipment-item {
+    color: #ffffff;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(163, 245, 181, 0.1);
 }
 
 .equipment-categories {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
 }
 
 .equipment-category {
-    background: rgba(6, 68, 65, 0.4);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.no-spells {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    color: #ffffff;
+    font-style: italic;
+}
+
+/* Spells styles */
+.spells-container {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.spells-container h5 {
+    color: #a3f5b5;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a3f5b5;
+}
+
+.spells-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.spells-category {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .category-title {
@@ -315,30 +364,17 @@
     color: #ffffff;
     padding: 12px 15px;
     margin: 0;
-    font-size: 1.1em;
     font-weight: 600;
-    border-bottom: 1px solid rgba(163, 245, 181, 0.3);
 }
 
-.equipment-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+.spell-list {
+    padding: 15px;
 }
 
-.equipment-table td {
-    padding: 12px 15px;
+.spell-item {
     color: #ffffff;
-    line-height: 1.5;
+    padding: 8px 0;
     border-bottom: 1px solid rgba(163, 245, 181, 0.1);
-}
-
-.equipment-table tr:last-child td {
-    border-bottom: none;
-}
-
-.equipment-table tr:hover {
-    background: rgba(163, 245, 181, 0.1);
 }
 
 /* Add styles for simple equipment display */
@@ -349,4 +385,96 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin: 0 auto;
     max-width: 800px; /* Adjust this value as needed */
+}
+
+/* Add these styles for the character selection controls and reset button */
+.character-selection-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.btn-reset {
+    height: 38px;
+    padding: 0 16px;
+    background-color: rgba(14, 78, 34, 0.562);
+    border: 2px solid;
+    border-radius: 5px;
+    color: rgb(173, 228, 201);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    line-height: 34px;
+}
+
+.btn-reset:hover:not(:disabled) {
+    background-color: #297d92;
+    color: #050505;
+    border-color: #005f20;
+}
+
+.btn-reset:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Spells Table Styles */
+.spells-container {
+    margin: 20px 0;
+}
+
+.spells-table {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table-dark {
+    background-color: transparent;
+}
+
+.no-spells {
+    background: rgba(6, 68, 65, 0.4);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    color: #a3f5b5;
+}
+
+/* Equipment Styles */
+.equipment-container {
+    margin: 20px 0;
+}
+
+.equipment-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.equipment-category.card {
+    background: rgba(6, 68, 65, 0.4);
+    border: 1px solid rgba(163, 245, 181, 0.2);
+}
+
+.equipment-category .card-header {
+    background: rgba(10, 102, 97, 0.8);
+    color: #a3f5b5;
+    border-bottom: 1px solid rgba(163, 245, 181, 0.2);
+}
+
+.equipment-item {
+    color: #ffffff;
+    padding: 8px 0;
+}
+
+.simple-equipment {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
 }

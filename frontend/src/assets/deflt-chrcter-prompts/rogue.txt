@@ -1,0 +1,36 @@
+Character Name: Gary
+Race: Gnome
+Class: Rogue
+Subclass: Assassin
+Level: 12
+
+Spells: None
+
+Equipment:
+• Weapons
+  • Rapier +1 (finesse weapon with bonus to attack and damage rolls)
+  • Dagger +1 (versatile for melee or throwing)
+  • Shortbow +1 (for ranged sneak attacks)
+
+• Armor
+  • Studded Leather Armor +1
+  • Boots of Elvenkind
+
+• Tools
+  • Thieves' Tools
+  • Poisoner's Kit
+
+• Magic Items
+  • Cloak of Elvenkind
+  • Ring of Evasion
+  • Bag of Holding
+
+• Miscellaneous Gear
+  • Alchemist's Fire (flasks)
+  • Caltrops and Ball Bearings
+  • Disguise Kit
+
+• Potions
+  • Potion of Invisibility
+  • Potion of Greater Healing
+  • Oil of Sharpness

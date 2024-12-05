@@ -12,6 +12,11 @@ interface EquipmentCategory {
     value: string[];
 }
 
+interface SpellCategory {
+    key: string;
+    value: string[];
+}
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -127,16 +132,7 @@ export class ProfileComponent implements OnInit {
   selectCharacter(character: Character, index: number): void {
     this.selectedCharacter = character;
     this.selectedCharacterIndex = index;
-    // Fetch character details by _id and username
-    this.authService.getCharacterByIdAndUsername(this.getCharacterId(character), character.username).subscribe(
-      (data) => {
-        this.selectedCharacter = data;
-        // Additional logic if needed
-      },
-      (error) => {
-        this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
-      }
-    );
+    console.log('Selected character:', character);
   }
 
   onProfileUpdated(): void {
@@ -184,12 +180,29 @@ export class ProfileComponent implements OnInit {
     return character._id;
   }
 
-  extractField(prompt: string | undefined, field: string): string {
+  extractField(prompt: string | undefined, fieldName: string): string {
     if (!prompt) return '';
     
-    const regex = new RegExp(`${field}:\\s*([^\\n]+)`);
-    const match = prompt.match(regex);
-    return match ? match[1].trim() : '';
+    const lines = prompt.split('\n');
+    const startIndex = lines.findIndex(line => 
+      line.trim().toLowerCase().startsWith(fieldName.toLowerCase() + ':'));
+    
+    if (startIndex === -1) return '';
+
+    let endIndex = lines.length;
+    for (let i = startIndex + 1; i < lines.length; i++) {
+      if (lines[i].includes(':') && !lines[i].trim().startsWith('•')) {
+        endIndex = i;
+        break;
+      }
+    }
+
+    const fieldContent = lines.slice(startIndex, endIndex)
+      .join('\n')
+      .replace(`${fieldName}:`, '')
+      .trim();
+
+    return fieldContent || '';
   }
 
   isEquipmentCategorized(prompt: string | undefined): boolean {
@@ -200,16 +213,16 @@ export class ProfileComponent implements OnInit {
   }
 
   getEquipmentEntries(equipment: { [key: string]: string[] }): EquipmentCategory[] {
-    return Object.entries(equipment).map(([key, value]) => ({
-        key: key.replace('*', ''), // Remove asterisk if present
-        value: value.map(item => item.trim())
-    }));
+    return Object.entries(equipment)
+      .map(([key, value]) => ({
+        key,
+        value: value.filter(item => item)
+      }));
   }
 
   extractEquipment(prompt: string | undefined): { [key: string]: string[] } {
     if (!prompt) return {};
-    
-    const equipmentSection = prompt.split('equipment:')[1];
+    const equipmentSection = this.extractField(prompt, 'Equipment');
     if (!equipmentSection) return {};
 
     const result: { [key: string]: string[] } = {};
@@ -235,25 +248,98 @@ export class ProfileComponent implements OnInit {
   // Add this method to check if equipment is simple or categorized
   isSimpleEquipment(prompt: string | undefined): boolean {
     if (!prompt) return true;
-    
-    const equipmentSection = prompt.split('equipment:')[1];
-    if (!equipmentSection) return true;
-    
-    // Check if there are any category headers (lines starting with capital letter and no dashes)
-    const lines = equipmentSection.split('\n').map(line => line.trim()).filter(line => line);
-    return !lines.some(line => /^[A-Z]/.test(line) && !line.includes('–') && !line.includes('-'));
+    const equipment = this.extractField(prompt, 'Equipment');
+    return !equipment.includes('•') && !equipment.includes(':');
   }
 
   // Add this method to extract simple equipment
   extractSimpleEquipment(prompt: string | undefined): string[] {
     if (!prompt) return [];
+    const equipment = this.extractField(prompt, 'Equipment');
+    return equipment.split('\n')
+      .map(item => item.trim())
+      .filter(item => item && !item.startsWith('Equipment:'));
+  }
+
+  // Add this method to the ProfileComponent class
+  resetCharacterSelection(): void {
+    this.selectedCharacter = null;
+    this.selectedCharacterIndex = -1;
+  }
+
+  extractSpells(prompt: string | undefined): { [key: string]: string[] } {
+    if (!prompt) return {};
+    const spellsSection = this.extractField(prompt, 'Spells');
+    if (!spellsSection || spellsSection.toLowerCase() === 'none') {
+      return {};
+    }
+
+    const result: { [key: string]: string[] } = {};
+    let currentCategory = '';
     
-    const equipmentSection = prompt.split('equipment:')[1];
-    if (!equipmentSection) return [];
+    // Predefined spell level categories
+    const spellLevels = [
+        'Cantrips',
+        '1st Level',
+        '2nd Level',
+        '3rd Level',
+        '4th Level',
+        '5th Level',
+        '6th Level',
+        '7th Level',
+        '8th Level',
+        '9th Level'
+    ];
     
-    return equipmentSection
-        .split('\n')
-        .map(line => line.trim())
-        .filter(line => line);
+    spellsSection.split('\n').forEach(line => {
+        const trimmedLine = line.trim();
+        if (!trimmedLine) return;
+
+        // Check if line is a category header
+        if (spellLevels.includes(trimmedLine) || 
+            (/^[A-Z]/.test(trimmedLine) && trimmedLine.includes('Spells') || trimmedLine.includes('Abilities'))) {
+            currentCategory = trimmedLine;
+            result[currentCategory] = [];
+        } else if (currentCategory && trimmedLine) {
+            result[currentCategory].push(trimmedLine);
+        }
+    });
+
+    return result;
+  }
+
+  getSpellEntries(spells: { [key: string]: string[] }): SpellCategory[] {
+    const spellOrder = [
+        'Cantrips',
+        '1st Level',
+        '2nd Level',
+        '3rd Level',
+        '4th Level',
+        '5th Level',
+        '6th Level',
+        '7th Level',
+        '8th Level',
+        '9th Level'
+    ];
+
+    return Object.entries(spells)
+        .sort(([keyA], [keyB]) => {
+            const indexA = spellOrder.indexOf(keyA);
+            const indexB = spellOrder.indexOf(keyB);
+            if (indexA === -1 && indexB === -1) return 0;
+            if (indexA === -1) return 1;
+            if (indexB === -1) return -1;
+            return indexA - indexB;
+        })
+        .map(([key, value]) => ({
+            key: key.replace('*', ''),
+            value: value.map(item => item.trim())
+        }));
+  }
+
+  hasSpells(prompt: string | undefined): boolean {
+    if (!prompt) return false;
+    const spells = this.extractField(prompt, 'Spells');
+    return spells !== '' && spells.toLowerCase() !== 'none';
   }
 }

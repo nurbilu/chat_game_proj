@@ -45,7 +45,8 @@ export class ChrcterCreationComponent implements OnInit {
       { name: 'styles', groups: ['font', 'colors'], items: ['Font', 'FontSize', '-', 'TextColor', 'BGColor'] },
       { name: 'links', items: ['Link', 'Unlink'] },
       { name: 'forms', items: ['Checkbox', 'Radio'] },
-      { name: 'tools', items: ['Maximize'] }
+      { name: 'tools', items: ['Maximize'] },
+      { name: 'spells', items: ['SpellToggle'] }
     ],
     fontSize_sizes: '1/4px;2/6px;3/8px;4/10px;5/14px;6/20px;7/24px;',
     font_names:
@@ -55,6 +56,9 @@ export class ChrcterCreationComponent implements OnInit {
       'Open Sans/Open Sans;',
     fontSize_defaultLabel: '5',
     font_defaultLabel: 'Open Sans',
+    allowedContent: true,
+    extraPlugins: 'divarea',
+    removePlugins: 'elementspath'
   };
 
   @ViewChild('successTemplate', { static: true }) successTemplate!: TemplateRef<any>;
@@ -141,6 +145,14 @@ user: any;
 
   isCharacterDisplayCollapsed = false;
 
+  showClassSelection = false;
+
+  templateFiles = {
+    cleric: 'assets/deflt-chrcter-prompts/cleric.txt',
+    wizard: 'assets/deflt-chrcter-prompts/wizrard.txt',
+    rogue: 'assets/deflt-chrcter-prompts/rogue.txt'
+  };
+
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
@@ -203,36 +215,27 @@ user: any;
     this.authService.getUsername().subscribe((username: string) => {
       this.chcrcterCreationService.getDraft(username).subscribe({
         next: (response) => {
-          if (response.prompt) {
+          if (response.prompt && response.prompt.trim()) {
             this.characterPrompt = response.prompt;
             this.toastService.show({
               template: this.successToast,
               classname: 'bg-success text-light',
               delay: 3000,
-              context: { message: 'Draft pasted successfully' }
+              context: { message: 'Draft loaded successfully' }
             });
           } else {
-            this.characterPrompt = `
-              <div style="text-align: left;">character name:&nbsp;</div>
-              <div style="text-align: left;"><br></div>
-              <div style="text-align: left;">race:&nbsp;<br><br>class:&nbsp;<br><br>subclass:&nbsp;<br><br>level:&nbsp;<br><br>spells:&nbsp;<br></div>
-              <div style="text-align: left;"><br></div>
-              <div style="text-align: left;">
-                <a class="nav-item nav-link active" style="padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x); font-size: 16px; font-weight: 400; border-color: var(--bs-nav-tabs-link-active-border-color); --bs-link-color-rgb: var(--bs-link-hover-color-rgb); margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width)); border-top-left-radius: var(--bs-nav-tabs-border-radius); border-top-right-radius: var(--bs-nav-tabs-border-radius); isolation: isolate;">
-                  equipment:&nbsp;
-                </a>
-              </div>
-            `;
+            this.characterPrompt = this.getDefaultPromptTemplate();
             this.toastService.show({
               template: this.errorToast,
               classname: 'bg-warning text-dark',
               delay: 3000,
-              context: { message: 'No saved draft found' }
+              context: { message: 'No saved draft found, using default template' }
             });
           }
         },
-        error: (error: any) => {
+        error: (error) => {
           console.error('Failed to load draft:', error);
+          this.characterPrompt = this.getDefaultPromptTemplate();
           this.toastService.show({
             template: this.errorToast,
             classname: 'bg-danger text-light',
@@ -248,7 +251,7 @@ user: any;
     this.authService.getUsername().subscribe((username: string) => {
       this.chcrcterCreationService.getDraft(username).subscribe({
         next: (response) => {
-          if (response.prompt) {
+          if (response.prompt && response.prompt.trim()) {
             this.characterPrompt = response.prompt;
             this.toastService.show({
               template: this.successToast,
@@ -257,27 +260,24 @@ user: any;
               context: { message: 'Draft pasted successfully' }
             });
           } else {
-            this.characterPrompt = `
-              <div style="text-align: left;">character name:&nbsp;</div>
-              <div style="text-align: left;"><br></div>
-              <div style="text-align: left;">race:&nbsp;<br><br>class:&nbsp;<br><br>subclass:&nbsp;<br><br>level:&nbsp;<br><br>spells:&nbsp;<br></div>
-              <div style="text-align: left;"><br></div>
-              <div style="text-align: left;">
-                <a class="nav-item nav-link active" style="padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x); font-size: 16px; font-weight: 400; border-color: var(--bs-nav-tabs-link-active-border-color); --bs-link-color-rgb: var(--bs-link-hover-color-rgb); margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width)); border-top-left-radius: var(--bs-nav-tabs-border-radius); border-top-right-radius: var(--bs-nav-tabs-border-radius); isolation: isolate;">
-                  equipment:&nbsp;
-                </a>
-              </div>
-            `;
+            this.characterPrompt = this.getDefaultPromptTemplate();
             this.toastService.show({
               template: this.errorToast,
               classname: 'bg-warning text-dark',
               delay: 3000,
-              context: { message: 'No saved draft found' }
+              context: { message: 'No saved draft found, using default template' }
             });
           }
         },
         error: (error) => {
           console.error('Error loading draft:', error);
+          this.characterPrompt = this.getDefaultPromptTemplate();
+          this.toastService.show({
+            template: this.errorToast,
+            classname: 'bg-danger text-light',
+            delay: 3000,
+            context: { message: 'Failed to load draft' }
+          });
         }
       });
     });
@@ -542,16 +542,84 @@ user: any;
     });
   }
 
-  private parsePromptToTableData(promptText: string): Array<{field: string, value: string}> {
-    const fields = ['character name', 'race', 'class', 'subclass', 'level', 'spells', 'equipment'];
+  // Add this method to parse and format spell levels or class abilities
+  parseSpellsOrAbilities(promptText: string): { type: string, content: string[] }[] {
+    const sections: { type: string, content: string[] }[] = [];
+    
+    // Check for spells section
+    const spellsMatch = promptText.match(/Spells:([^]*?)(?=Equipment:|$)/i);
+    if (spellsMatch) {
+      const spellContent = spellsMatch[1].trim();
+      
+      // Parse spell levels
+      const spellLevels = spellContent.split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+      
+      if (spellLevels.length > 0 && !spellLevels[0].toLowerCase().includes('none')) {
+        sections.push({
+          type: 'Spells',
+          content: spellLevels
+        });
+      }
+    }
+
+    // Check for class abilities/features
+    const featureMatches = promptText.match(/(\w+\s*Features?:)([^]*?)(?=Equipment:|Spells:|$)/gi);
+    if (featureMatches) {
+      featureMatches.forEach(match => {
+        const [title, ...content] = match.split('\n');
+        const features = content
+          .map(line => line.trim())
+          .filter(line => line.startsWith('•') || line.length > 0);
+        
+        if (features.length > 0) {
+          sections.push({
+            type: title.trim(),
+            content: features
+          });
+        }
+      });
+    }
+
+    return sections;
+  }
+
+  // Update the parsePromptToTableData method
+  private parsePromptToTableData(promptText: string): Array<{field: string, value: string, isExpandable?: boolean, expanded?: boolean}> {
+    const basicFields = ['character name', 'race', 'class', 'subclass', 'level'];
     const result = [];
     
-    for (const field of fields) {
+    // Handle basic fields
+    for (const field of basicFields) {
       const regex = new RegExp(`${field}:\\s*([^\\n]+)`, 'i');
       const match = promptText.match(regex);
       result.push({
         field: field.charAt(0).toUpperCase() + field.slice(1),
-        value: match ? match[1].trim() : ''
+        value: match ? match[1].trim() : '',
+        isExpandable: false
+      });
+    }
+
+    // Parse spells and abilities
+    const sections = this.parseSpellsOrAbilities(promptText);
+    sections.forEach(section => {
+      result.push({
+        field: section.type,
+        value: section.content.join('\n'),
+        isExpandable: true,
+        expanded: false
+      });
+    });
+
+    // Handle equipment section
+    const equipmentMatch = promptText.match(/Equipment:([^]*?)(?=\n\w+:|$)/i);
+    if (equipmentMatch) {
+      result.push({
+        field: 'Equipment',
+        value: equipmentMatch[1].trim(),
+        isExpandable: true,
+        expanded: false
       });
     }
     
@@ -622,7 +690,16 @@ user: any;
       return;
     }
 
-    this.characterPrompt = this.getDefaultPromptTemplate();
+    this.showClassSelection = true;
+  }
+
+  onClassSelect(selectedClass: string) {
+    const nonSpellcasters = ['Barbarian', 'Fighter', 'Monk', 'Rogue'];
+    this.characterPrompt = nonSpellcasters.includes(selectedClass) 
+      ? this.getNonSpellcasterTemplate() 
+      : this.getDefaultPromptTemplate();
+    
+    this.showClassSelection = false;
     this.currentPrompt = null;
   }
 
@@ -697,11 +774,67 @@ user: any;
 
   getDefaultPromptTemplate(): string {
     return `
-      <div style="text-align: left;">character name:&nbsp;</div>
+      <div style="text-align: left;"><strong>Character Name:</strong></div>
+      <div style="text-align: left;"><strong>Race:</strong></div>
+      <div style="text-align: left;"><strong>Class:</strong></div>
+      <div style="text-align: left;"><strong>Subclass:</strong></div>
+      <div style="text-align: left;"><strong>Level:</strong></div>
+      <div style="text-align: left;">
+        <strong>Spells:</strong>
+        <span class="spell-toggle" contenteditable="false" onclick="event.stopPropagation(); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">None</span>
+        <div class="spell-options" style="display: none;" contenteditable="false">
+          <div onclick="
+            event.stopPropagation();
+            this.parentElement.style.display='none';
+            this.parentElement.previousElementSibling.textContent='Available';
+            this.parentElement.nextElementSibling.style.display='block'
+          ">Yes</div>
+          <div onclick="
+            event.stopPropagation();
+            this.parentElement.style.display='none';
+            this.parentElement.previousElementSibling.textContent='None';
+            this.parentElement.nextElementSibling.style.display='none'
+          ">No</div>
+        </div>
+        <div class="spell-list">
+          <div>Cantrips:</div>
+          <div>1st Level:</div>
+          <div>2nd Level:</div>
+          <div>3rd Level:</div>
+          <div>4th Level:</div>
+          <div>5th Level:</div>
+          <div>6th Level:</div>
+          <div>7th Level:</div>
+          <div>8th Level:</div>
+          <div>9th Level:</div>
+        </div>
+      </div>
+      <div style="text-align: left;"><strong>Equipment:</strong></div>
+      <div style="text-align: left;">Weapons</div>
+      <div style="text-align: left;">• Armor</div>
+      <div style="text-align: left;">• Tools</div>
+      <div style="text-align: left;">• Magic Items</div>
+      <div style="text-align: left;">• Miscellaneous Gear</div>
+      <div style="text-align: left;">• Potions</div>
+    `;
+  }
+
+  getNonSpellcasterTemplate(): string {
+    return `
+      <div style="text-align: left;"><strong>Character Name:</strong></div>
+      <div style="text-align: left;"><strong>Race:</strong></div>
+      <div style="text-align: left;"><strong>Class:</strong></div>
+      <div style="text-align: left;"><strong>Subclass:</strong></div>
+      <div style="text-align: left;"><strong>Level:</strong></div>
+      <div style="text-align: left;"><strong>Class Abilities:</strong></div>
       <div style="text-align: left;"><br></div>
-      <div style="text-align: left;">race:&nbsp;<br><br>class:&nbsp;<br><br>subclass:&nbsp;<br><br>level:&nbsp;<br><br>spells:&nbsp;<br></div>
-      <div style="text-align: left;"><br></div>
-      <div style="text-align: left;">equipment:&nbsp;</div>
+      <div style="text-align: left;"><strong>Equipment:</strong></div>
+      <div style="text-align: left;">• Weapons</div>
+      <div style="text-align: left;">• Armor</div>
+      <div style="text-align: left;">• Tools</div>
+      <div style="text-align: left;">• Magic Items</div>
+      <div style="text-align: left;">• Miscellaneous Gear</div>
+      <div style="text-align: left;">• Potions</div>
     `;
   }
 
@@ -747,5 +880,150 @@ user: any;
         }
       });
     });
+  }
+
+  formatCharacterPrompt(promptText: string): string {
+    // Create a structured template with consistent formatting
+    return `
+      <div style="text-align: left; padding: 10px;">
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Character Name:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'character name') || ''}</div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Race:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'race') || ''}</div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Class:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'class') || ''}</div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Subclass:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'subclass') || ''}</div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Level:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'level') || ''}</div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Spells:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'spells') || ''}</div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Equipment:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'equipment') || ''}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  extractField(text: string, fieldName: string): string {
+    const regex = new RegExp(`${fieldName}:\\s*([^\\n]+)`, 'i');
+    const match = text.match(regex);
+    return match ? match[1].trim() : '';
+  }
+
+  toggleSpellList(event: Event): void {
+    event.stopPropagation(); // Prevent event bubbling
+    const target = event.target as HTMLElement;
+    const optionsDiv = target.nextElementSibling as HTMLElement;
+    
+    // Close any other open spell options
+    document.querySelectorAll('.spell-options').forEach(el => {
+      if (el !== optionsDiv) {
+        (el as HTMLElement).style.display = 'none';
+      }
+    });
+
+    // Toggle this spell options
+    if (optionsDiv) {
+      optionsDiv.style.display = optionsDiv.style.display === 'none' ? 'block' : 'none';
+    }
+  }
+
+  selectSpellOption(option: string, event: Event): void {
+    event.stopPropagation(); // Prevent event bubbling
+    const target = event.target as HTMLElement;
+    const optionsDiv = target.parentElement as HTMLElement;
+    const spellToggle = optionsDiv.previousElementSibling as HTMLElement;
+    const spellList = optionsDiv.nextElementSibling as HTMLElement;
+
+    if (option === 'yes') {
+      spellToggle.textContent = 'Available';
+      spellList.style.display = 'block';
+    } else {
+      spellToggle.textContent = 'None';
+      spellList.style.display = 'none';
+    }
+    optionsDiv.style.display = 'none';
+  }
+
+  // Add click handler to close spell options when clicking outside
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    // Don't close if clicking inside the spell options
+    if (!(event.target as HTMLElement).closest('.spell-toggle, .spell-options')) {
+      document.querySelectorAll('.spell-options').forEach(el => {
+        (el as HTMLElement).style.display = 'none';
+      });
+    }
+  }
+
+  // Add a method to toggle expansion
+  toggleExpansion(item: any): void {
+    if (item.isExpandable) {
+      item.expanded = !item.expanded;
+    }
+  }
+
+  loadTemplate(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const templateName = select.value;
+    
+    if (!templateName) return;
+
+    const templatePath = this.templateFiles[templateName as keyof typeof this.templateFiles];
+    
+    this.http.get(templatePath, { responseType: 'text' }).subscribe({
+      next: (content) => {
+        // Transform template markers
+        const formattedContent = content
+          .replace(/^\*/gm, '•') // Replace leading asterisks with bullets
+          .replace(/^\-/gm, '•') // Replace leading hyphens with bullets
+          .replace(/\*\*(.*?)\*\*/g, '$1'); // Remove double asterisks
+          
+        this.characterPrompt = formattedContent;
+        
+        this.toastService.show({
+          template: this.successToast,
+          classname: 'bg-success text-light',
+          delay: 3000,
+          context: { message: 'Template loaded successfully' }
+        });
+      },
+      error: (error) => {
+        console.error('Error loading template:', error);
+        this.toastService.show({
+          template: this.errorToast,
+          classname: 'bg-danger text-light',
+          delay: 3000,
+          context: { message: 'Failed to load template' }
+        });
+      }
+    });
+  }
+
+  getPreviewText(text: string): string {
+    const previewLength = 100;
+    return text.length > previewLength 
+      ? text.substring(0, previewLength) + '... (click to expand)'
+      : text;
   }
 }

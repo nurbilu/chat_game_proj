@@ -81,10 +81,10 @@
             <td>{{ i + 1 }}</td>
             <td class="prompt-preview">{{ getPromptPreview(prompt.characterPrompt) }}</td>
             <td class="action-buttons">
-              <button class="view-btn" (click)="viewPrompt(prompt)" [disabled]="!prompt._id">
+              <button class="view-btn" (click)="viewPrompt(prompt)" [disabled]="!prompt._id" ngbTooltip="Click to view your prompt" triggers="mouseenter:mouseleave" tooltipTitle="View">
                 <img src="/assets/imgs/icons/View-chr-prmpt.png" alt="View">
               </button>
-              <button class="edit-btn" (click)="editPrompt(prompt)" [disabled]="!prompt._id">
+              <button class="edit-btn" (click)="editPrompt(prompt)" [disabled]="!prompt._id" ngbTooltip="Click to edit your prompt" triggers="mouseenter:mouseleave" tooltipTitle="Edit">
                 <img src="/assets/imgs/icons/Edit-chr-prmpt.png" alt="Edit">
               </button>
               <button class="delete-btn" (click)="deletePrompt(prompt)">
@@ -111,12 +111,22 @@
       <div class="text-editor-container">
         <st-editor [(ngModel)]="characterPrompt" [Config]="config"></st-editor>
       </div>
-      <button (click)="sendMessage()" ngbTooltip="Click to save your prompt to the chat"
-        triggers="mouseenter:mouseleave" tooltipTitle="Send">Send</button>
-      <button (click)="saveDraft()" ngbTooltip="Click to save draft not as a prompt" triggers="mouseenter:mouseleave"
-        tooltipTitle="Save Draft">Save Draft</button>
-      <button (click)="pasteDraft()" ngbTooltip="Click to paste your draft" triggers="mouseenter:mouseleave"
-        tooltipTitle="Paste Draft">Paste Draft</button>
+      <div class="editor-buttons">
+        <button (click)="sendMessage()" ngbTooltip="Click to save your prompt to the chat"
+          triggers="mouseenter:mouseleave" tooltipTitle="Send">Send</button>
+        <button (click)="saveDraft()" ngbTooltip="Click to save draft not as a prompt" triggers="mouseenter:mouseleave"
+          tooltipTitle="Save Draft">Save Draft</button>
+        <button (click)="pasteDraft()" ngbTooltip="Click to paste your draft" triggers="mouseenter:mouseleave"
+          tooltipTitle="Paste Draft">Paste Draft</button>
+        
+        <!-- Add template selection -->
+        <select #templateSelect class="template-select" (change)="loadTemplate($event)">
+          <option value="">Select Template</option>
+          <option value="cleric">Cleric Template</option>
+          <option value="wizard">Wizard Template</option>
+          <option value="rogue">Rogue Template</option>
+        </select>
+      </div>
     </div>
 
     <div class="g-col-4 text-frame">
@@ -257,7 +267,17 @@
         <tbody>
             <tr *ngFor="let item of selectedEntry.promptData">
                 <td>{{ item.field }}</td>
-                <td>{{ item.value }}</td>
+                <td [ngClass]="{'expandable-cell': item.field === 'Spells' || item.field === 'Equipment'}">
+                    <div *ngIf="item.field === 'Spells' || item.field === 'Equipment'"
+                         class="expandable-content"
+                         [class.expanded]="item.expanded"
+                         (click)="toggleExpansion(item)">
+                        {{ item.expanded ? item.value : getPreviewText(item.value) }}
+                    </div>
+                    <div *ngIf="item.field !== 'Spells' && item.field !== 'Equipment'">
+                        {{ item.value }}
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -284,6 +304,21 @@
 <button class="back-to-top" (click)="scrollToTop()" [ngClass]="{'show': showBackToTop}">
   Back up top?
 </button>
+
+<!-- Add this dialog for class selection -->
+<div *ngIf="showClassSelection" class="class-selection-dialog">
+  <div class="dialog-content">
+    <h3>Select Character Class</h3>
+    <div class="class-buttons">
+      <button *ngFor="let class of classes" 
+              (click)="onClassSelect(class.name)"
+              [ngClass]="{'spellcaster': !['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(class.name)}">
+        {{ class.name }}
+      </button>
+    </div>
+    <button class="cancel-btn" (click)="showClassSelection = false">Cancel</button>
+  </div>
+</div>
 
 
   

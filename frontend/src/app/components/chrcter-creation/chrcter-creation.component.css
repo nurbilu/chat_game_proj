@@ -565,16 +565,21 @@ body.modal-open {
 
 /* Add to your existing static hover card styles */
 .static-hover-card.prompt-card {
-  width: 90%;
-  max-width: 800px;
+  width: 95%;
+  max-width: 1200px;
+  height: auto;
   background-color: rgba(0, 0, 0, 0.95);
   padding: 25px;
+  display: flex;
+  flex-direction: column;
 }
 
 .prompt-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin-top: 15px;
+  table-layout: fixed;
 }
 
 .prompt-table th,
@@ -585,13 +590,36 @@ body.modal-open {
   color: white;
 }
 
-.prompt-table th {
-  background-color: rgba(255, 255, 255, 0.1);
-  font-weight: bold;
+.prompt-table th:first-child,
+.prompt-table td:first-child {
+  width: 15%;
 }
 
-.prompt-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+.prompt-table td.equipment-cell,
+.prompt-table td.spells-cell {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 600px;
+}
+
+.prompt-table td.equipment-cell div,
+.prompt-table td.spells-cell div {
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.prompt-table td div::-webkit-scrollbar {
+  width: 8px;
+}
+
+.prompt-table td div::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.prompt-table td div::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
 }
 
 .static-hover-card .card-header {
@@ -839,4 +867,184 @@ body.modal-open {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.spell-toggle:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.spell-options div:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.spell-list {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 2px solid #4a90e2;
+}
+
+.spell-list div {
+  margin: 5px 0;
+  color: #000000;
+  list-style-type: none;
+}
+
+/* Add these styles */
+.spell-toggle {
+  cursor: pointer;
+  color: #4a90e2;
+  text-decoration: underline;
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+  user-select: none;
+}
+
+.spell-toggle:hover {
+  color: #357abd;
+}
+
+.spell-options {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 1000;
+  min-width: 100px;
+  top: 100%;
+  left: 0;
+}
+
+.spell-options div {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.spell-options div:hover {
+  background-color: #f5f5f5;
+}
+
+.spell-list {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 2px solid #4a90e2;
+}
+
+.spell-list div {
+  margin: 5px 0;
+  color: #000000;
+  list-style-type: none;
+}
+
+/* Make sure the spell options are above other content */
+.text-editor-container {
+  position: relative;
+}
+
+/* Add these styles for expandable content */
+.expandable-content {
+  cursor: pointer;
+  position: relative;
+  padding-left: 20px;
+}
+
+.expandable-content::before {
+  content: '►';
+  position: absolute;
+  left: 0;
+  transition: transform 0.3s;
+}
+
+.expandable-content.expanded::before {
+  transform: rotate(90deg);
+}
+
+.expandable-details {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.item-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.item-list li {
+  margin: 5px 0;
+}
+
+/* Update the prompt table styles */
+.prompt-table td.expandable-cell {
+  padding: 0;
+}
+
+.expandable-cell .expandable-content {
+  padding: 12px;
+  padding-left: 32px;
+}
+
+.expandable-cell .expandable-details {
+  padding: 12px;
+  padding-left: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spell-levels, .equipment-categories {
+  margin-top: 10px;
+}
+
+.spell-level, .equipment-category {
+  margin-bottom: 10px;
+}
+
+.spell-level-title, .equipment-category-title {
+  font-weight: bold;
+  color: #4a90e2;
+  margin-bottom: 5px;
+}
+
+.spell-list, .equipment-list {
+  padding-left: 20px;
+  list-style-type: none;
+}
+
+.spell-list li, .equipment-list li {
+  margin: 3px 0;
+  color: #fff;
+}
+
+.template-select {
+  padding: 8px;
+  margin: 5px;
+  border-radius: 4px;
+  background-color: #2c2c2c;
+  color: white;
+  border: 1px solid #444;
+}
+
+.expandable-cell {
+  cursor: pointer;
+}
+
+.expandable-content {
+  white-space: pre-wrap;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+  max-height: 100px;
+}
+
+.expandable-content.expanded {
+  max-height: none;
+}
+
+/* Add to existing prompt-table styles */
+.prompt-table td {
+  vertical-align: top;
 }

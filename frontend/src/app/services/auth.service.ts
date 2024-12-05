@@ -1,7 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID, NgZone, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpBackend } from '@angular/common/http';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
-import { tap, catchError, switchMap } from 'rxjs/operators';
+import { tap, catchError, switchMap, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
@@ -436,15 +436,112 @@ export class AuthService {
         );
     }
 
-    getCharacterByIdAndUsername(_id: string, username: string): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}profile_display/characters/${_id}/${username}/`).pipe(
-            catchError(error => {
-                if (error.status === 404) {
-                    return throwError(() => new Error('Character not found'));
-                }
-                return throwError(() => new Error('Error fetching character: ' + error.message));
-            })
-        );
+    getCharacterByIdAndUsername(id: string, username: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${this.getToken()}`
+        });
+        
+        return this.http.get(`http://127.0.0.1:6500/api/character_prompts/${username}`, { headers })
+            .pipe(
+                map(response => {
+                    // Format the response to ensure consistent structure
+                    if (Array.isArray(response)) {
+                        return response.map(character => {
+                            const prompt = character.characterPrompt || character.prompt;
+                            
+                            // Format Equipment section
+                            if (prompt && prompt.includes('Equipment:')) {
+                                const equipmentSection = this.extractSection(prompt, 'Equipment');
+                                const formattedEquipment = this.formatEquipmentSection(equipmentSection);
+                                prompt.replace(equipmentSection, formattedEquipment);
+                            }
+
+                            // Format Spells section
+                            if (prompt && prompt.includes('Spells:')) {
+                                const spellsSection = this.extractSection(prompt, 'Spells');
+                                const formattedSpells = this.formatSpellsSection(spellsSection);
+                                prompt.replace(spellsSection, formattedSpells);
+                            }
+
+                            return {
+                                ...character,
+                                characterPrompt: prompt
+                            };
+                        });
+                    }
+                    return response;
+                }),
+                catchError(error => {
+                    console.error('Error fetching character:', error);
+                    return throwError(() => new Error('Failed to fetch character details'));
+                })
+            );
+    }
+
+    private extractSection(prompt: string, sectionName: string): string {
+        const lines = prompt.split('\n');
+        const startIndex = lines.findIndex(line => 
+            line.trim().toLowerCase().startsWith(sectionName.toLowerCase() + ':'));
+        
+        if (startIndex === -1) return '';
+
+        let endIndex = lines.length;
+        for (let i = startIndex + 1; i < lines.length; i++) {
+            if (lines[i].includes(':') && !lines[i].trim().startsWith('•')) {
+                endIndex = i;
+                break;
+            }
+        }
+
+        return lines.slice(startIndex, endIndex).join('\n');
+    }
+
+    private formatEquipmentSection(section: string): string {
+        if (!section) return 'Equipment:\nNone';
+
+        const lines = section.split('\n').map(line => line.trim());
+        if (!lines.some(line => line.includes('•'))) {
+            // Convert simple list to categorized format
+            return `Equipment:
+• Weapons
+• Armor
+• Tools
+• Magic Items
+• Miscellaneous Gear
+• Potions`;
+        }
+        return section;
+    }
+
+    private formatSpellsSection(section: string): string {
+        if (!section || section.toLowerCase().includes('none')) {
+            return 'Spells:\nNone';
+        }
+
+        const spellLevels = [
+            'Cantrips',
+            '1st Level',
+            '2nd Level',
+            '3rd Level',
+            '4th Level',
+            '5th Level',
+            '6th Level',
+            '7th Level',
+            '8th Level',
+            '9th Level'
+        ];
+
+        const lines = section.split('\n');
+        if (!lines.some(line => spellLevels.some(level => line.includes(level)))) {
+            // Convert simple list to leveled format
+            const spells = lines
+                .filter(line => line.trim() && !line.startsWith('Spells:'))
+                .map(line => line.trim());
+            
+            return `Spells:
+Cantrips: ${spells.join(', ')}`;
+        }
+        return section;
     }
 
     blockUser(username: string): Observable<any> {
