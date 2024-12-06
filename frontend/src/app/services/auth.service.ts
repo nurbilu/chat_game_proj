@@ -400,17 +400,35 @@ export class AuthService {
         );
     }
 
-    resetPassword(token: string, data: { newPassword: string; confirmPassword: string }): Observable<any> {
+    resetPassword(token: string, data: { 
+        newPassword: string; 
+        confirmPassword: string;
+
+    }): Observable<any> {
+        // Store the token temporarily for this request
+        this.setItem('temp_reset_token', token);
+        
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         });
+
         const payload = {
             new_password: data.newPassword,
             confirm_new_password: data.confirmPassword
         };
-        return this.http.put(`${this.baseUrl}reset-password/`, payload, { headers }).pipe(
-            catchError(error => throwError(() => new Error('Error resetting password: ' + error.message)))
+
+        return this.httpClient.put(`${this.baseUrl}reset-password/`, payload, { 
+            headers 
+        }).pipe(
+            tap(() => {
+                // Clean up the temporary token
+                this.removeItem('temp_reset_token');
+            }),
+            catchError(error => {
+                this.removeItem('temp_reset_token');
+                return throwError(() => new Error(error.error?.error || 'Error resetting password'));
+            })
         );
     }
 
@@ -519,16 +537,16 @@ export class AuthService {
         }
 
         const spellLevels = [
-            'Cantrips',
-            '1st Level',
-            '2nd Level',
-            '3rd Level',
-            '4th Level',
-            '5th Level',
-            '6th Level',
-            '7th Level',
-            '8th Level',
-            '9th Level'
+            'Cantrips:',
+            '1st Level:',
+            '2nd Level:',
+            '3rd Level:',
+            '4th Level:',
+            '5th Level:',
+            '6th Level:',
+            '7th Level:',
+            '8th Level:',
+            '9th Level:'
         ];
 
         const lines = section.split('\n');
@@ -576,10 +594,6 @@ Cantrips: ${spells.join(', ')}`;
         );
     }
 
-    sendPasswordResetEmail(email: string): Observable<any> {
-        return this.http.post(`${this.baseUrl}send-reset-email/`, { email }).pipe(
-            catchError(error => throwError(() => new Error('Error sending reset email: ' + error.message)))
-        );
-    }
+
 
 }

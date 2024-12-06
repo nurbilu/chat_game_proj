@@ -478,3 +478,112 @@
     border-radius: 8px;
     overflow: hidden;
 }
+
+/* Add these styles for the spells table */
+.spells-container {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.spells-container h5 {
+    color: #a3f5b5;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a3f5b5;
+}
+
+.spell-item {
+    color: #ffffff;
+    padding: 4px 0;
+}
+
+/* Update character table styles to ensure consistency */
+.character-table {
+    width: 100%;
+    margin-bottom: 30px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.character-table td {
+    padding: 12px 15px;
+    color: #ffffff;
+}
+
+.character-table td:first-child {
+    width: 150px;
+    color: #a3f5b5;
+    font-weight: 600;
+}
+
+/* Add these styles for the abilities section */
+.abilities-container {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.abilities-container h5 {
+    color: #a3f5b5;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a3f5b5;
+}
+
+.ability-item {
+    color: #ffffff;
+    padding: 4px 0;
+}
+
+.spells-container {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.spells-container h5 {
+    color: #a3f5b5;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a3f5b5;
+}
+
+.spell-categories {
+    display: grid;
+    gap: 20px;
+}
+
+.spell-category {
+    background: rgba(10, 102, 97, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.spell-category h6 {
+    color: #a3f5b5;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.spell-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.spell-list li {
+    color: #ffffff;
+    padding: 4px 0 4px 20px;
+    position: relative;
+}
+
+.spell-list li:before {
+    content: "•";
+    position: absolute;
+    left: 5px;
+    color: #a3f5b5;
+}

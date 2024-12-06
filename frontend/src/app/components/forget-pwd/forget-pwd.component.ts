@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -9,49 +9,44 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: './forget-pwd.component.html',
   styleUrls: ['./forget-pwd.component.css']
 })
-export class ForgetPwdComponent {
+export class ForgetPwdComponent implements OnInit {
   forgetPwdForm: FormGroup;
-  realEmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com'];
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
     private router: Router,
+    private authService: AuthService,
     private toastService: ToastService
   ) {
     this.forgetPwdForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required]
     });
   }
 
-  isRealEmail(email: string): boolean {
-    const domain = email.split('@')[1]?.toLowerCase();
-    return this.realEmailDomains.includes(domain);
-  }
+  ngOnInit() {}
 
   onSubmit() {
     if (this.forgetPwdForm.valid) {
-      const { username, email } = this.forgetPwdForm.value;
-
-      if (this.isRealEmail(email)) {
-        this.authService.sendPasswordResetEmail(email).subscribe({
-          next: () => {
-            this.router.navigate(['/msg-reset-pwd']);
-          },
-          error: () => {
-            this.toastService.error('Error sending reset email');
-          }
-        });
-      } else {
-        // Handle non-real email case
-        this.router.navigate(['/pwd-reset-unreal'], { 
-          queryParams: { 
-            username: username,
-            email: email 
-          }
-        });
-      }
+      this.authService.validateUser(this.forgetPwdForm.value).subscribe({
+        next: (response) => {
+          // Navigate to reset password with token and credentials
+          this.router.navigate(['/reset-password'], {
+            queryParams: { 
+              token: response.token,
+              username: this.forgetPwdForm.get('username')?.value,
+              email: this.forgetPwdForm.get('email')?.value
+            }
+          });
+        },
+        error: () => {
+          this.toastService.error('Invalid user information');
+        }
+      });
+    } else {
+      this.toastService.error('Please fill in all required fields');
     }
   }
 }

@@ -2,7 +2,7 @@
     <form [formGroup]="forgetPwdForm" (ngSubmit)="onSubmit()">
         <div class="forget-pwd-container container">
             <div class="forget-pwd-content">
-                <h2 class="text-center mb-4">Forgot Password</h2>
+                <h2 class="text-center mb-4">Additional Verification Required</h2>
                 <div class="form-group mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" formControlName="username" class="form-control" id="username">
@@ -11,8 +11,16 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" formControlName="email" class="form-control" id="email">
                 </div>
+                <div class="form-group mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" formControlName="firstName" class="form-control" id="firstName">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" formControlName="lastName" class="form-control" id="lastName">
+                </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Validate</button>
+                    <button type="submit" class="btn btn-primary">Verify</button>
                 </div>
             </div>
         </div>

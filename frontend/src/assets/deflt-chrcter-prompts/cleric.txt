@@ -5,38 +5,38 @@ Subclass: Forge Domain
 Level: 9  
 
 Spells:  
-Cantrips: Sacred Flame, Guidance, Thaumaturgy, Mending  
-1st Level: Shield of Faith, Bless, Cure Wounds  
-2nd Level: Spiritual Weapon, Lesser Restoration, Heat Metal  
-3rd Level: Revivify, Spirit Guardians, Dispel Magic  
-4th Level: Freedom of Movement, Guardian of Faith  
-5th Level: Wall of Stone, Flame Strike  
+    Cantrips:Sacred Flame, Guidance, Thaumaturgy, Mending  
+    1st Level:Shield of Faith, Bless, Cure Wounds  
+    2nd Level:Spiritual Weapon, Lesser Restoration, Heat Metal  
+    3rd Level:Revivify, Spirit Guardians, Dispel Magic  
+    4th Level:Freedom of Movement, Guardian of Faith  
+    5th Level:Wall of Stone, Flame Strike  
 
 Divine Features:  
-• Artisan's Blessing: Create simple items during a short rest.  
-• Blessing of the Forge: Grant +1 AC or a weapon enhancement daily.  
-• Soul of the Forge: Bonus AC while wearing heavy armor and resistance to fire damage.  
+    Artisan's Blessing: Create simple items during a short rest.  
+    Blessing of the Forge: Grant +1 AC or a weapon enhancement daily.  
+    Soul of the Forge: Bonus AC while wearing heavy armor and resistance to fire damage.  
 
 Equipment:  
-Weapons  
-• Warhammer +1 – A mighty weapon for melee combat  
-• Handaxe x2 – Useful for both melee and ranged attacks  
+    Weapons  
+        Warhammer +1 – A mighty weapon for melee combat  
+        Handaxe x2 – Useful for both melee and ranged attacks  
 
-Armor  
-• Plate Armor – Heavy armor for excellent protection  
-• Shield – Further boosts AC  
-• Amulet of the Devout +1 – Increases spell save DC and attack bonus  
+    Armor  
+        Plate Armor – Heavy armor for excellent protection  
+        Shield – Further boosts AC  
+        Amulet of the Devout +1 – Increases spell save DC and attack bonus  
 
-Tools  
-• Smith's Tools – Essential for the Forge Domain  
-• Cleric's Holy Symbol – Used as an arcane focus  
+    Tools  
+        Smith's Tools – Essential for the Forge Domain  
+        Cleric's Holy Symbol – Used as an arcane focus  
 
-Magic Items  
-• Boots of the Winterlands – Resistance to cold and improved movement in harsh conditions  
-• Ring of Protection – +1 to AC and saving throws  
-• Bag of Holding – Convenient for carrying equipment and loot  
+    Magic Items  
+        Boots of the Winterlands – Resistance to cold and improved movement in harsh conditions  
+        Ring of Protection – +1 to AC and saving throws  
+        Bag of Holding – Convenient for carrying equipment and loot  
 
-Miscellaneous Gear  
-• Adventurer’s Pack – Includes torches, rations, rope, and other essentials  
-• Potion of Greater Healing x3 – For emergencies  
-• Alchemical Fire – Versatile for dealing damage or starting fires  
+    Miscellaneous Gear  
+        Adventurer’s Pack – Includes torches, rations, rope, and other essentials  
+        Potion of Greater Healing x3 – For emergencies  
+        Alchemical Fire – Versatile for dealing damage or starting fires  

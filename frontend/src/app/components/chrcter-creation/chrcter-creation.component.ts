@@ -150,7 +150,9 @@ user: any;
   templateFiles = {
     cleric: 'assets/deflt-chrcter-prompts/cleric.txt',
     wizard: 'assets/deflt-chrcter-prompts/wizrard.txt',
-    rogue: 'assets/deflt-chrcter-prompts/rogue.txt'
+    rogue: 'assets/deflt-chrcter-prompts/rogue.txt',
+    warlock: 'assets/deflt-chrcter-prompts/warlock.txt',
+    barbarian: 'assets/deflt-chrcter-prompts/barbarian.txt'
   };
 
   ngOnInit(): void {

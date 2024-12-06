@@ -183,14 +183,38 @@ class ValidateUserView(APIView):
     def post(self, request):
         serializer = ValidateUserSerializer(data=request.data)
         if serializer.is_valid():
-            username = serializer.validated_data.get('username')
-            email = serializer.validated_data.get('email')
             try:
-                user = User.objects.get(username=username, email=email)
-                token = RefreshToken.for_user(user)
-                return Response({'token': str(token)}, status=status.HTTP_200_OK)
+                user = User.objects.get(
+                    username=serializer.validated_data['username'],
+                    email=serializer.validated_data['email'],
+                    first_name=serializer.validated_data['firstName'],
+                    last_name=serializer.validated_data['lastName']
+                )
+                
+                # Create a special reset token using JWT
+                refresh = RefreshToken.for_user(user)
+                
+                # Add custom claims
+                refresh['token_type'] = 'reset'  # Add token type
+                refresh['email'] = user.email
+                refresh['username'] = user.username
+                
+                access_token = str(refresh.access_token)
+                
+                return Response({
+                    'token': access_token,
+                    'user': {
+                        'username': user.username,
+                        'email': user.email
+                    }
+                }, status=status.HTTP_200_OK)
+                
             except User.DoesNotExist:
-                return Response({'error': 'Invalid username or email'}, status=status.HTTP_400_BAD_REQUEST)
+                # For security, don't reveal if user exists
+                return Response({
+                    'error': 'Invalid user information'
+                }, status=status.HTTP_404_NOT_FOUND)
+                
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ResetPasswordView(APIView):
@@ -200,21 +224,42 @@ class ResetPasswordView(APIView):
         serializer = ResetPasswordSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                token = request.headers.get('Authorization').split(' ')[1]
-                user = User.objects.get(id=AccessToken(token).payload['user_id'])  # Use AccessToken instead of RefreshToken
+                # Get token from Authorization header
+                auth_header = request.headers.get('Authorization')
+                if not auth_header or not auth_header.startswith('Bearer '):
+                    return Response(
+                        {'error': 'Invalid token format'}, 
+                        status=status.HTTP_401_UNAUTHORIZED
+                    )
+                
+                token = auth_header.split(' ')[1]
+                # Decode token to get user
+                try:
+                    decoded_token = AccessToken(token)
+                    user = User.objects.get(id=decoded_token['user_id'])
+                except (InvalidToken, User.DoesNotExist):
+                    return Response(
+                        {'error': 'Invalid or expired token'}, 
+                        status=status.HTTP_401_UNAUTHORIZED
+                    )
+
+                # Update password
                 new_password = serializer.validated_data.get('new_password')
-                confirm_new_password = serializer.validated_data.get('confirm_new_password')
-
-                if new_password != confirm_new_password:
-                    return Response({'error': 'New passwords must match.'}, status=status.HTTP_400_BAD_REQUEST)
-
                 user.set_password(new_password)
-                user.pwd_user_str = new_password
+                user.pwd_user_str = new_password  # Update the plain text password field
                 user.save()
-                return Response({'success': 'Password reset successfully.'}, status=status.HTTP_200_OK)
+
+                return Response(
+                    {'success': 'Password reset successfully'}, 
+                    status=status.HTTP_200_OK
+                )
+                
             except Exception as e:
                 logger.error(f"Error resetting password: {str(e)}")
-                return Response({'error': 'Server error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response(
+                    {'error': 'Server error occurred'}, 
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CreateSuperUserView(APIView):
@@ -294,11 +339,13 @@ class SendPasswordResetEmailView(APIView):
 
     def post(self, request):
         email = request.data.get('email')
+        username = request.data.get('username')
+        
         if not email:
             return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=email, username=username)
             token = RefreshToken.for_user(user)
             
             try:

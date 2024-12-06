@@ -74,6 +74,8 @@ class ChangePasswordSerializer(serializers.Serializer):
 class ValidateUserSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
+    firstName = serializers.CharField(required=True)
+    lastName = serializers.CharField(required=True)
 
 class ResetPasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)

@@ -10,41 +10,51 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
-    let authReq = req;
-
-    if (token) {
-      authReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${token}`)
-      });
+    if (req.url.includes('reset-password')) {
+      const resetToken = localStorage.getItem('temp_reset_token');
+      if (resetToken) {
+        const authReq = req.clone({
+          headers: req.headers.set('Authorization', `Bearer ${resetToken}`)
+        });
+        return next.handle(authReq);
+      }
+      return next.handle(req);
     }
 
-    return next.handle(authReq).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          return this.authService.refreshToken().pipe(
-            switchMap(() => {
-              const newToken = this.authService.getToken();
-              if (newToken) {
-                authReq = req.clone({
-                  headers: req.headers.set('Authorization', `Bearer ${newToken}`)
-                });
-                return next.handle(authReq);
-              }
-              return throwError(() => new Error('Token refresh failed'));
-            }),
-            catchError(refreshError => {
-              this.authService.logout().subscribe(() => {
-                this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
-              });
-              return throwError(() => new Error(refreshError.message));
-            })
-          );
-        } else if (error.status === 500) {
-          console.error('Server error:', error.message);
-          // Optionally, you can navigate to an error page or show a toast message
+    const token = this.authService.getToken();
+    if (token) {
+      const authReq = req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${token}`)
+      });
+      return next.handle(authReq).pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401) {
+            return this.handleUnauthorizedError(req, next);
+          }
+          return throwError(() => error);
+        })
+      );
+    }
+    return next.handle(req);
+  }
+
+  private handleUnauthorizedError(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return this.authService.refreshToken().pipe(
+      switchMap(() => {
+        const newToken = this.authService.getToken();
+        if (newToken) {
+          const authReq = req.clone({
+            headers: req.headers.set('Authorization', `Bearer ${newToken}`)
+          });
+          return next.handle(authReq);
         }
-        return throwError(() => new Error(error.message));
+        return throwError(() => new Error('Token refresh failed'));
+      }),
+      catchError(refreshError => {
+        this.authService.logout().subscribe(() => {
+          this.router.navigate(['/login']);
+        });
+        return throwError(() => refreshError);
       })
     );
   }

@@ -84,20 +84,35 @@
                             <!-- Spells Section -->
                             <div class="spells-container" *ngIf="hasSpells(selectedCharacter.characterPrompt)">
                                 <h5>Spells</h5>
-                                <div class="spells-categories">
-                                    <div *ngFor="let category of getSpellEntries(extractSpells(selectedCharacter.characterPrompt))" 
-                                         class="spells-category">
-                                        <h6 class="category-title">{{category.key}}</h6>
-                                        <div class="spell-list">
-                                            <div *ngFor="let spell of category.value" class="spell-item">
-                                                {{spell}}
-                                            </div>
+                                <div class="spell-categories">
+                                    <ng-container *ngFor="let category of getSpellEntries(extractSpells(selectedCharacter.characterPrompt))">
+                                        <div class="spell-category">
+                                            <h6>{{category.key}}</h6>
+                                            <ul class="spell-list">
+                                                <li *ngFor="let spell of category.value">
+                                                    {{spell}}
+                                                </li>
+                                            </ul>
                                         </div>
-                                    </div>
+                                    </ng-container>
                                 </div>
                             </div>
-                            <div *ngIf="!hasSpells(selectedCharacter.characterPrompt)" class="no-spells">
-                                <p>None</p>
+
+                            <!-- Class Abilities -->
+                            <div class="abilities-container" *ngIf="hasClassAbilities(selectedCharacter.characterPrompt)">
+                                <h5>Class Abilities</h5>
+                                <table class="character-table">
+                                    <tbody>
+                                        <tr *ngFor="let category of extractClassAbilities(selectedCharacter.characterPrompt) | keyvalue">
+                                            <td><strong>{{category.key}}:</strong></td>
+                                            <td>
+                                                <div *ngFor="let ability of category.value" class="ability-item">
+                                                    • {{ability}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
                             <!-- Equipment Section -->

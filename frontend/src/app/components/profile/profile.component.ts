@@ -271,41 +271,69 @@ export class ProfileComponent implements OnInit {
     if (!prompt) return {};
     const spellsSection = this.extractField(prompt, 'Spells');
     if (!spellsSection || spellsSection.toLowerCase() === 'none') {
-      return {};
+        return {};
     }
 
     const result: { [key: string]: string[] } = {};
-    let currentCategory = '';
+    const lines = spellsSection.split('\n');
     
-    // Predefined spell level categories
-    const spellLevels = [
-        'Cantrips',
-        '1st Level',
-        '2nd Level',
-        '3rd Level',
-        '4th Level',
-        '5th Level',
-        '6th Level',
-        '7th Level',
-        '8th Level',
-        '9th Level'
-    ];
-    
-    spellsSection.split('\n').forEach(line => {
-        const trimmedLine = line.trim();
-        if (!trimmedLine) return;
+    for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
 
-        // Check if line is a category header
-        if (spellLevels.includes(trimmedLine) || 
-            (/^[A-Z]/.test(trimmedLine) && trimmedLine.includes('Spells') || trimmedLine.includes('Abilities'))) {
-            currentCategory = trimmedLine;
-            result[currentCategory] = [];
-        } else if (currentCategory && trimmedLine) {
-            result[currentCategory].push(trimmedLine);
+        // Match the format: "    LevelName:Spell1, Spell2, Spell3"
+        const match = line.match(/^\s*([\w\s]+):([\w\s,]+)$/);
+        if (match) {
+            const [, level, spellList] = match;
+            const levelName = level.trim();
+            // Split spells by comma and clean up each spell name
+            result[levelName] = spellList
+                .split(',')
+                .map(spell => spell.trim())
+                .filter(spell => spell);
         }
-    });
+    }
 
     return result;
+  }
+
+  extractClassAbilities(prompt: string | undefined): { [key: string]: string[] } {
+    if (!prompt) return {};
+    
+    // Look for various D&D 5e class feature sections
+    const featureSections = [
+      'Divine Features',
+      'Arcane Tradition Features',
+      'Invocations',
+      'Class Features',
+      'Martial Features',
+      'Druidic Features',
+      'Bardic Features',
+      'Monastic Features',
+      'Rage Features'
+    ];
+
+    const result: { [key: string]: string[] } = {};
+    
+    for (const section of featureSections) {
+      const sectionContent = this.extractField(prompt, section);
+      if (sectionContent) {
+        const features = sectionContent.split('\n')
+          .map(line => line.trim())
+          .filter(line => line && !line.includes(':'));
+        if (features.length > 0) {
+          result[section] = features;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  hasClassAbilities(prompt: string | undefined): boolean {
+    if (!prompt) return false;
+    const abilities = this.extractClassAbilities(prompt);
+    return Object.keys(abilities).length > 0;
   }
 
   getSpellEntries(spells: { [key: string]: string[] }): SpellCategory[] {
@@ -326,20 +354,22 @@ export class ProfileComponent implements OnInit {
         .sort(([keyA], [keyB]) => {
             const indexA = spellOrder.indexOf(keyA);
             const indexB = spellOrder.indexOf(keyB);
-            if (indexA === -1 && indexB === -1) return 0;
-            if (indexA === -1) return 1;
-            if (indexB === -1) return -1;
             return indexA - indexB;
         })
         .map(([key, value]) => ({
-            key: key.replace('*', ''),
-            value: value.map(item => item.trim())
-        }));
+            key,
+            value: value.filter(spell => spell && spell.trim()) // Additional filtering for empty spells
+        }))
+        .filter(category => category.value.length > 0); // Only include categories with spells
   }
 
   hasSpells(prompt: string | undefined): boolean {
     if (!prompt) return false;
     const spells = this.extractField(prompt, 'Spells');
-    return spells !== '' && spells.toLowerCase() !== 'none';
+    if (!spells || spells.toLowerCase() === 'none') return false;
+    
+    // Check if there are actually any spells extracted
+    const extractedSpells = this.extractSpells(prompt);
+    return Object.keys(extractedSpells).length > 0;
   }
 }

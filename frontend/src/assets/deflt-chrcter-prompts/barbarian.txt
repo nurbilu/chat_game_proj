@@ -1,0 +1,21 @@
+Character Name: Hogo  
+Race: Half-Orc  
+Class: Barbarian  
+Subclass: Path of the Berserker  
+Level: 6  
+
+Spells: None  
+
+Equipment:  
+    Weapons  
+        Great Dwarvish Axe – A powerful two-handed weapon, perfect for dealing massive damage in melee combat  
+        Shortbow and Quiver (40 arrows) – A ranged option for engaging enemies from a distance  
+
+    Armor  
+        Barbarian 5e Starting Equipment – Includes an explorer's pack, a set of handaxes, a javelin, and a greataxe  
+
+    Magic Items  
+        Amulet of Health, Boots of Speed, Gauntlets of Ogre Power
+
+    Miscellaneous Gear  
+        Standard adventuring supplies included with starting equipment – torches, rations, bedroll, and rope  
