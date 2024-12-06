@@ -3,14 +3,41 @@
         <div class="reset-password-container container">
             <div class="reset-password-content">
                 <h2 class="text-center mb-4">Reset Password</h2>
+                
                 <div class="form-group mb-3">
                     <label for="newPassword" class="form-label">New Password</label>
-                    <input type="password" formControlName="newPassword" class="form-control" id="newPassword" autocomplete="new-password">
+                    <div class="password-input-wrapper">
+                        <input [type]="showNewPassword ? 'text' : 'password'" 
+                               formControlName="newPassword" 
+                               class="form-control" 
+                               id="newPassword" 
+                               autocomplete="new-password">
+                        <button type="button" 
+                                class="btn-reveal-password" 
+                                (click)="toggleNewPasswordVisibility()"
+                                [attr.aria-label]="showNewPassword ? 'Hide password' : 'Show password'">
+                            <i class="fas" [class.fa-eye]="!showNewPassword" [class.fa-eye-slash]="showNewPassword"></i>
+                        </button>
+                    </div>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                    <input type="password" formControlName="confirmPassword" class="form-control" id="confirmPassword" autocomplete="new-password">
+                    <div class="password-input-wrapper">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" 
+                               formControlName="confirmPassword" 
+                               class="form-control" 
+                               id="confirmPassword" 
+                               autocomplete="new-password">
+                        <button type="button" 
+                                class="btn-reveal-password"
+                                (click)="toggleConfirmPasswordVisibility()"
+                                [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'">
+                            <i class="fas" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword"></i>
+                        </button>
+                    </div>
                 </div>
+
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary">Reset Password</button>
                 </div>

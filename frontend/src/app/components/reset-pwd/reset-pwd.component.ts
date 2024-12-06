@@ -12,8 +12,8 @@ import { ToastService } from '../../services/toast.service';
 export class ResetPwdComponent {
   resetPwdForm: FormGroup;
   token: string;
-  username: string;
-  email: string;
+  showNewPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -22,14 +22,10 @@ export class ResetPwdComponent {
     private router: Router,
     private toastService: ToastService
   ) {
-    // Get all required params from the URL
     this.token = this.route.snapshot.queryParams['token'];
-    this.username = this.route.snapshot.queryParams['username'];
-    this.email = this.route.snapshot.queryParams['email'];
-
-    if (!this.token || !this.username || !this.email) {
+    if (!this.token) {
       this.router.navigate(['/forget-password']);
-      this.toastService.error('Invalid reset information');
+      this.toastService.error('Invalid reset token');
     }
 
     this.resetPwdForm = this.fb.group({
@@ -44,13 +40,19 @@ export class ResetPwdComponent {
     return pass === confirmPass ? null : { notSame: true };
   }
 
+  toggleNewPasswordVisibility() {
+    this.showNewPassword = !this.showNewPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
   onSubmit() {
     if (this.resetPwdForm.valid) {
       const passwordData = {
         newPassword: this.resetPwdForm.get('newPassword')?.value,
-        confirmPassword: this.resetPwdForm.get('confirmPassword')?.value,
-        username: this.username,
-        email: this.email
+        confirmPassword: this.resetPwdForm.get('confirmPassword')?.value
       };
 
       this.authService.resetPassword(this.token, passwordData).subscribe({

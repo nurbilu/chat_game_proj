@@ -21,7 +21,7 @@ body {
     max-width: 900px;
     min-width: 600px;
     padding: 3rem;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(0, 0, 0, 0.95);
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(8px);
@@ -41,7 +41,7 @@ body {
 }
 
 .forget-pwd-content h2 {
-    color: #2c3e50;
+    color: white;
     margin-bottom: 2rem;
     font-weight: 700;
     position: relative;
@@ -63,22 +63,25 @@ body {
 }
 
 .form-control {
-    border-radius: 10px;
-    padding: 12px 15px;
-    border: 2px solid #e3e3e3;
+    border-radius: 12px;
+    padding: 15px;
+    border: 2px solid #333;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    background-color: #333;
+    color: white;
 }
 
 .form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+    border-color: #00d9ff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
     transform: translateY(-2px);
+    background-color: #444;
 }
 
 .form-label {
     font-weight: 600;
-    color: #2c3e50;
+    color: white;
     margin-bottom: 0.7rem;
     display: block;
     transition: all 0.3s ease;
