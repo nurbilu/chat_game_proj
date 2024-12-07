@@ -31,15 +31,15 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
 3.5.b. add 2-3 functions to user chat page - continue to implement the text editor toolbar functions and input display(done)
 
 
-(estimated time frame: ~ 3 - 12 hours)(3/5 done)
+(estimated time frame: ~ 3 - 12 hours)(4/5 done)
    4.a.fix login redirect from unauth page to login page (done?) 
    4.b. :
    - google , facebook and twitter login is removed from the login component (done)
    - google and social networks login is removed , fix forgot-pwd and reset-pwd to be sent to the email instead of redirect to login page or fill a 4 input form fields 
-     to navigate to reset-pwd page too (half done) - need to fully implement the email msg sent for reset-pwd for "real" email address () - either set back to easy and "stupid" email auth or fix the authentication for the google email problem () if not possible considering the time frame remain - adjust the forget password only to "stupid" email auth (done) - fix reset-pwd , fixed reset-pwd navigate to msg-reset-pwd page ()
+     to navigate to reset-pwd page too (half done) - need to fully implement the email msg sent for reset-pwd for "real" email address () - either set back to easy and "stupid" email auth or fix the authentication for the google email problem () if not possible considering the time frame remain - adjust the forget password only to "stupid" email auth (done) - fix reset-pwd , fixed reset-pwd navigate to msg-reset-pwd page ( done - check later .)
    4.c. design change pwd or remove the component display or link component to profile and design it (done) 
    4.d. try to implement after success login navigate to the last click component link button on navbar offcanvas (optional( half done )) - save to session storage but need implement the navigation to the last link after login ( done? - check if works later . ( done))
-   4.e. adjsut character creation - OPTION 1 : enable to create more characters and display them in the character creation component (chosen)OR OPTION 2 (not chosen) : create a new character prompt and delete the old one ( half done ) - only implement the delete prompt (done) - display is more complex then expected - fix complexity by reducing or either finding a solution to display - adjust profile and chat pages accordingly : either set from last git or try to fix then set from last git (fixed) - adjust chat and fix some display bugs for profile and character creation ()
+   4.e. adjsut character creation - OPTION 1 : enable to create more characters and display them in the character creation component (chosen)OR OPTION 2 (not chosen) : create a new character prompt and delete the old one ( half done ) - only implement the delete prompt (done) - display is more complex then expected - fix complexity by reducing or either finding a solution to display - adjust profile and chat pages accordingly : either set from last git or try to fix then set from last git (fixed) - adjust chat and fix some display bugs for profile and character creation ( half done ) - complete the character prompt display in chat component and fix display bugs for character prompts sub table display of spells , equipment and class abilities + fix the select character prompt in chat component ()
 
 (estimated time frame: + 10 hours at least)()
    4.b. fix docker hub GUI (docker is fixed by itself - could be that OS updates fixed GUI(done?))
@@ -61,7 +61,8 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
 
 8.a. check / implement questionable tasks ()
 8.b. implement docker-compose.yml file to run all flask apps in one command / docker-compose up --build ()
-8.c. final QA ()
+8.c. clean all comments to a better git displayment ()
+8.d. final QA ()
 
 **++ lets try to deliver the project by the date 15/11/2024 , if not possible - deliver as soon as possible. ++**
 

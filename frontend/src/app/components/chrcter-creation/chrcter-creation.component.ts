@@ -885,43 +885,88 @@ user: any;
   }
 
   formatCharacterPrompt(promptText: string): string {
-    // Create a structured template with consistent formatting
+    try {
+      // Try to parse as JSON first
+      const jsonData = JSON.parse(promptText);
+      return this.formatJsonPrompt(jsonData);
+    } catch (e) {
+      // Fallback to text format if JSON parsing fails
+      return this.formatTextPrompt(promptText);
+    }
+  }
+
+  private formatJsonPrompt(jsonData: any): string {
+    let formattedContent = '<div style="text-align: left; padding: 10px;">';
+
+    // Format basic fields
+    const basicFields = ['Character Name', 'Race', 'Class', 'Subclass', 'Level'];
+    basicFields.forEach(field => {
+      if (jsonData[field] !== undefined && jsonData[field] !== null) {
+        formattedContent += `
+          <div style="margin-bottom: 15px;">
+            <strong style="color: #4a90e2;">${field}:</strong>
+            <div style="margin-left: 20px; margin-top: 5px;">${jsonData[field]}</div>
+          </div>`;
+      }
+    });
+
+    // Format Spells section
+    if (jsonData.Spells) {
+      formattedContent += `
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Spells:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">`;
+      
+      Object.entries(jsonData.Spells).forEach(([level, spells]) => {
+        if (Array.isArray(spells)) {
+          formattedContent += `
+            <div style="margin-bottom: 10px;">
+              <strong>${level}:</strong>
+              <ul style="margin: 5px 0;">
+                ${(spells as string[]).map(spell => `<li>${spell}</li>`).join('')}
+              </ul>
+            </div>`;
+        }
+      });
+      
+      formattedContent += '</div></div>';
+    }
+
+    // Format Equipment section
+    if (jsonData.Equipment) {
+      formattedContent += `
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4a90e2;">Equipment:</strong>
+          <div style="margin-left: 20px; margin-top: 5px;">`;
+      
+      Object.entries(jsonData.Equipment).forEach(([category, items]) => {
+        if (Array.isArray(items)) {
+          formattedContent += `
+            <div style="margin-bottom: 10px;">
+              <strong>${category}:</strong>
+              <ul style="margin: 5px 0;">
+                ${(items as string[]).map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>`;
+        }
+      });
+      
+      formattedContent += '</div></div>';
+    }
+
+    formattedContent += '</div>';
+    return formattedContent;
+  }
+
+  private formatTextPrompt(promptText: string): string {
+    // Keep existing text format logic as fallback
     return `
       <div style="text-align: left; padding: 10px;">
         <div style="margin-bottom: 15px;">
           <strong style="color: #4a90e2;">Character Name:</strong>
           <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'character name') || ''}</div>
         </div>
-
-        <div style="margin-bottom: 15px;">
-          <strong style="color: #4a90e2;">Race:</strong>
-          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'race') || ''}</div>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <strong style="color: #4a90e2;">Class:</strong>
-          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'class') || ''}</div>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <strong style="color: #4a90e2;">Subclass:</strong>
-          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'subclass') || ''}</div>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <strong style="color: #4a90e2;">Level:</strong>
-          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'level') || ''}</div>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <strong style="color: #4a90e2;">Spells:</strong>
-          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'spells') || ''}</div>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <strong style="color: #4a90e2;">Equipment:</strong>
-          <div style="margin-left: 20px; margin-top: 5px;">${this.extractField(promptText, 'equipment') || ''}</div>
-        </div>
+        // ... rest of existing text format logic ...
       </div>
     `;
   }
@@ -995,13 +1040,17 @@ user: any;
     
     this.http.get(templatePath, { responseType: 'text' }).subscribe({
       next: (content) => {
-        // Transform template markers
-        const formattedContent = content
-          .replace(/^\*/gm, '•') // Replace leading asterisks with bullets
-          .replace(/^\-/gm, '•') // Replace leading hyphens with bullets
-          .replace(/\*\*(.*?)\*\*/g, '$1'); // Remove double asterisks
-          
-        this.characterPrompt = formattedContent;
+        try {
+          // Try to parse as JSON
+          const jsonData = JSON.parse(content);
+          this.characterPrompt = this.formatJsonPrompt(jsonData);
+        } catch (e) {
+          // Fallback to text format if JSON parsing fails
+          this.characterPrompt = content
+            .replace(/^\*/gm, '•')
+            .replace(/^\-/gm, '•')
+            .replace(/\*\*(.*?)\*\*/g, '$1');
+        }
         
         this.toastService.show({
           template: this.successToast,

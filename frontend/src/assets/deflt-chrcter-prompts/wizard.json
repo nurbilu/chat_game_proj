@@ -1,0 +1,73 @@
+{
+    "Character Name": "Suzan Boyi",
+    "Race": "Tiefling",
+    "Class": "Wizard",
+    "Subclass": "School of Evocation",
+    "Level": 16,
+    "Spells": {
+        "Cantrips": [
+            "Fire Bolt",
+            "Mage Hand",
+            "Minor Illusion",
+            "Prestidigitation",
+            "Ray of Frost"
+        ],
+        "1st Level": [
+            "Shield",
+            "Magic Missile",
+            "Mage Armor"
+        ],
+        "2nd Level": [
+            "Misty Step",
+            "Mirror Image",
+            "Scorching Ray"
+        ],
+        "3rd Level": [
+            "Counterspell",
+            "Fireball",
+            "Fly"
+        ],
+        "4th Level": [
+            "Greater Invisibility",
+            "Polymorph"
+        ],
+        "5th Level": [
+            "Wall of Force",
+            "Cone of Cold"
+        ],
+        "6th Level": [
+            "Disintegrate"
+        ],
+        "7th Level": [
+            "Teleport"
+        ],
+        "8th Level": [
+            "Sunburst"
+        ],
+        "9th Level": [
+            "Meteor Swarm"
+        ]
+    },
+    "Arcane Tradition Features": [
+        "Sculpt Spells",
+        "Potent Cantrip",
+        "Empowered Evocation"
+    ],
+    "Equipment": {
+        "Weapons": [
+            "Staff of Power"
+        ],
+        "Armor": [
+            "Studded Leather Armor"
+        ],
+        "Magic Items": [
+            "Cloak of Protection",
+            "Wand of Fireballs"
+        ],
+        "Miscellaneous Gear": [
+            "Spellbook",
+            "Component Pouch",
+            "750 gp"
+        ]
+    }
+}

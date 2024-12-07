@@ -54,91 +54,115 @@
                             </button>
                         </div>
 
-                        <!-- Main Character Table -->
+                        <!-- Character Information Section -->
                         <div class="character-table-container" *ngIf="selectedCharacter">
-                            <table class="character-table">
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Character Name:</strong></td>
-                                        <td>{{extractField(selectedCharacter.characterPrompt, 'Character Name')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Race:</strong></td>
-                                        <td>{{extractField(selectedCharacter.characterPrompt, 'Race')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Class:</strong></td>
-                                        <td>{{extractField(selectedCharacter.characterPrompt, 'Class')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Subclass:</strong></td>
-                                        <td>{{extractField(selectedCharacter.characterPrompt, 'Subclass')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Level:</strong></td>
-                                        <td>{{extractField(selectedCharacter.characterPrompt, 'Level')}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="card character-info-card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Character Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="character-table">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Character Name:</strong></td>
+                                                <td>{{extractField(selectedCharacter.characterPrompt, 'Character Name')}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Race:</strong></td>
+                                                <td>{{extractField(selectedCharacter.characterPrompt, 'Race')}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Class:</strong></td>
+                                                <td>{{extractField(selectedCharacter.characterPrompt, 'Class')}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Subclass:</strong></td>
+                                                <td>{{extractField(selectedCharacter.characterPrompt, 'Subclass')}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Level:</strong></td>
+                                                <td>{{extractField(selectedCharacter.characterPrompt, 'Level')}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <!-- Spells Section -->
-                            <div class="spells-container" *ngIf="hasSpells(selectedCharacter.characterPrompt)">
-                                <h5>Spells</h5>
-                                <div class="spell-categories">
-                                    <ng-container *ngFor="let category of getSpellEntries(extractSpells(selectedCharacter.characterPrompt))">
-                                        <div class="spell-category">
-                                            <h6>{{category.key}}</h6>
-                                            <ul class="spell-list">
-                                                <li *ngFor="let spell of category.value">
-                                                    {{spell}}
+                            <!-- Separate Accordion Panels -->
+                            <ngb-accordion [closeOthers]="false">
+                                <!-- Spells Panel -->
+                                <ngb-panel id="spells-panel">
+                                    <ng-template ngbPanelHeader>
+                                        <div class="d-flex align-items-center">
+                                            <h5 class="mb-0">Spells</h5>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template ngbPanelContent>
+                                        <div *ngIf="!hasSpells(selectedCharacter.characterPrompt)" class="no-spells">
+                                            No spells available for this character
+                                        </div>
+                                        <div *ngIf="hasSpells(selectedCharacter.characterPrompt)" class="spells-grid">
+                                            <div *ngFor="let category of getSpellEntries(extractSpells(selectedCharacter.characterPrompt))" 
+                                                 class="spell-category">
+                                                <h6 class="spell-level-header">{{category.key}}</h6>
+                                                <ul class="spell-list">
+                                                    <li *ngFor="let spell of category.value">{{spell}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+
+                                <!-- Class Abilities Panel -->
+                                <ngb-panel id="abilities-panel">
+                                    <ng-template ngbPanelHeader>
+                                        <div class="d-flex align-items-center">
+                                            <h5 class="mb-0">Class Abilities</h5>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template ngbPanelContent>
+                                        <div *ngIf="!hasClassAbilities(selectedCharacter.characterPrompt)" class="no-abilities">
+                                            No class abilities available for this character
+                                        </div>
+                                        <div *ngIf="hasClassAbilities(selectedCharacter.characterPrompt)" class="abilities-grid">
+                                            <div *ngFor="let category of extractClassAbilities(selectedCharacter.characterPrompt) | keyvalue" 
+                                                 class="ability-category">
+                                                <h6 class="ability-type-header">{{category.key}}</h6>
+                                                <ul class="ability-list">
+                                                    <li *ngFor="let ability of category.value">{{ability}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+
+                                <!-- Equipment Panel -->
+                                <ngb-panel id="equipment-panel">
+                                    <ng-template ngbPanelHeader>
+                                        <div class="d-flex align-items-center">
+                                            <h5 class="mb-0">Equipment</h5>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template ngbPanelContent>
+                                        <div *ngIf="isSimpleEquipment(selectedCharacter.characterPrompt)" class="simple-equipment-list">
+                                            <ul>
+                                                <li *ngFor="let item of extractSimpleEquipment(selectedCharacter.characterPrompt)">
+                                                    {{item}}
                                                 </li>
                                             </ul>
                                         </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-
-                            <!-- Class Abilities -->
-                            <div class="abilities-container" *ngIf="hasClassAbilities(selectedCharacter.characterPrompt)">
-                                <h5>Class Abilities</h5>
-                                <table class="character-table">
-                                    <tbody>
-                                        <tr *ngFor="let category of extractClassAbilities(selectedCharacter.characterPrompt) | keyvalue">
-                                            <td><strong>{{category.key}}:</strong></td>
-                                            <td>
-                                                <div *ngFor="let ability of category.value" class="ability-item">
-                                                    • {{ability}}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Equipment Section -->
-                            <div class="equipment-container">
-                                <h5>Equipment</h5>
-                                <!-- Simple Equipment Display -->
-                                <div *ngIf="isSimpleEquipment(selectedCharacter.characterPrompt)" class="equipment-list">
-                                    <div *ngFor="let item of extractSimpleEquipment(selectedCharacter.characterPrompt)" 
-                                         class="equipment-item">
-                                        • {{item}}
-                                    </div>
-                                </div>
-
-                                <!-- Categorized Equipment Display -->
-                                <div *ngIf="!isSimpleEquipment(selectedCharacter.characterPrompt)" class="equipment-categories">
-                                    <div *ngFor="let category of getEquipmentEntries(extractEquipment(selectedCharacter.characterPrompt))" 
-                                         class="equipment-category">
-                                        <h6 class="category-title">{{category.key}}</h6>
-                                        <div class="equipment-list">
-                                            <div *ngFor="let item of category.value" class="equipment-item">
-                                                • {{item}}
+                                        <div *ngIf="!isSimpleEquipment(selectedCharacter.characterPrompt)" class="equipment-grid">
+                                            <div *ngFor="let category of getEquipmentEntries(extractEquipment(selectedCharacter.characterPrompt))" 
+                                                 class="equipment-category">
+                                                <h6 class="equipment-type-header">{{category.key}}</h6>
+                                                <ul class="equipment-list">
+                                                    <li *ngFor="let item of category.value">{{item}}</li>
+                                                </ul>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
                         </div>
                     </div>
                 </div>

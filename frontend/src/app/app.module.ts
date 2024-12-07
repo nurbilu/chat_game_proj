@@ -36,6 +36,7 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PwdResetUnrealComponent } from './components/pwd-reset-unreal/pwd-reset-unreal.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     }), 
     NgxSimpleTextEditorModule,
     NgbPopoverModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    NgbAccordionModule
   ],
   providers: [
     AuthService,

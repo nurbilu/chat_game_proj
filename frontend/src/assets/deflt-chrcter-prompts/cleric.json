@@ -1,0 +1,68 @@
+{
+    "Character Name": "Tohrim Stoneforge",
+    "Race": "Mountain Dwarf",
+    "Class": "Cleric",
+    "Subclass": "Forge Domain",
+    "Level": 9,
+    "Spells": {
+        "Cantrips": [
+            "Sacred Flame",
+            "Guidance",
+            "Thaumaturgy",
+            "Mending"
+        ],
+        "1st Level": [
+            "Shield of Faith",
+            "Bless",
+            "Cure Wounds"
+        ],
+        "2nd Level": [
+            "Spiritual Weapon",
+            "Lesser Restoration",
+            "Heat Metal"
+        ],
+        "3rd Level": [
+            "Revivify",
+            "Spirit Guardians",
+            "Dispel Magic"
+        ],
+        "4th Level": [
+            "Freedom of Movement",
+            "Guardian of Faith"
+        ],
+        "5th Level": [
+            "Wall of Stone",
+            "Flame Strike"
+        ]
+    },
+    "Divine Features": [
+        "Artisan's Blessing",
+        "Blessing of the Forge",
+        "Soul of the Forge"
+    ],
+    "Equipment": {
+        "Weapons": [
+            "Warhammer +1",
+            "Handaxe x2"
+        ],
+        "Armor": [
+            "Plate Armor",
+            "Shield",
+            "Amulet of the Devout +1"
+        ],
+        "Tools": [
+            "Smith's Tools",
+            "Cleric's Holy Symbol"
+        ],
+        "Magic Items": [
+            "Boots of the Winterlands",
+            "Ring of Protection",
+            "Bag of Holding"
+        ],
+        "Miscellaneous Gear": [
+            "Adventurer\u2019s Pack",
+            "Potion of Greater Healing x3",
+            "Alchemical Fire"
+        ]
+    }
+}

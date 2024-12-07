@@ -334,6 +334,8 @@
   margin-bottom: 5px;
   min-width: 200px;
   z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .options.show {
@@ -345,10 +347,31 @@
   cursor: pointer;
   color: white;
   list-style: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .options li:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Add scrollbar styling for the dropdown */
+.options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.options::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.options::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.options::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .button-group {
@@ -534,11 +557,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 600px;
+  max-width: 1200px;
+  height: auto;
+  max-height: 80vh;
   background-color: rgba(0, 0, 0, 0.95);
   padding: 25px;
   z-index: 1100;
   border-radius: 8px;
+  overflow-y: auto;
 }
 
 .prompt-table {
@@ -674,3 +700,45 @@
     font-weight: 500;
     color: #2c3e50;
 }
+
+/* Add these styles for the character prompt select */
+.custom-select select {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.custom-select select option {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+}
+.prompt-select {
+  margin: 15px 0;
+  width: 100%;
+}
+
+.prompt-select select {
+  width: 100%;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.static-hover-card {
+  padding: 20px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.static-hover-card h5 {
+  margin: 10px 0;
+  color: white;
+}
+

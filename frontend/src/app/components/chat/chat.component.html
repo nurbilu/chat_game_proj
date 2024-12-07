@@ -103,9 +103,21 @@
                   </button>
                   <ul class="options" [class.show]="isDropupOpen">
                     <li (click)="selectOption('template1')">Lets Start a Game</li>
-                    <li (click)="selectOption('template2')">Character Prompt</li>
-                    <li (click)="selectOption('template3')">Save Last Prompt</li>
+                    <!-- <li (click)="selectOption('template3')">Save Last Prompt</li> -->
+                    <li (click)="selectOption('template3')">Reset/Clear Chat</li>
                     <li (click)="selectOption('template4')">Display Last Prompt</li>
+                  </ul>
+                </div>
+                <div class="custom-select">
+                  <button (click)="toggleCharacterDropup()" class="btn btn-icon" 
+                          ngbTooltip="Select character prompt" triggers="mouseenter:mouseleave">
+                    <i class="fas fa-user-shield"></i>
+                  </button>
+                  <ul class="options" [class.show]="isCharacterDropupOpen">
+                    <li *ngFor="let prompt of characterPrompts" 
+                        (click)="selectOption('character_' + prompt._id)">
+                      Character {{prompt.index || prompt._id}}
+                    </li>
                   </ul>
                 </div>
                 <button class="btn btn-icon" 
@@ -169,6 +181,14 @@
     <button class="close-btn" (click)="closeStaticHoverCard()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
+    <div class="prompt-select">
+      <select class="form-control" (change)="selectCharacterPrompt($event)">
+        <option value="">Select a Character</option>
+        <option *ngFor="let prompt of characterPrompts; let i = index" [value]="i">
+          Character {{ prompt.index }}: {{ prompt.character.name || 'Unnamed' }}
+        </option>
+      </select>
+    </div>
     <h5>{{ selectedEntry?.name }}</h5>
     
     <table class="prompt-table" *ngIf="selectedEntry?.promptData">
@@ -181,8 +201,19 @@
       <tbody>
         <tr *ngFor="let item of selectedEntry.promptData">
           <td>{{ item.field }}</td>
-          <td>{{ item.value }}</td>
+          <td [ngClass]="{'expandable-cell': item.field === 'Spells' || item.field === 'Equipment'}">
+            <div *ngIf="item.field === 'Spells' || item.field === 'Equipment'"
+                 class="expandable-content"
+                 [class.expanded]="item.expanded"
+                 (click)="toggleExpansion(item)">
+              {{ item.expanded ? item.value : getPreviewText(item.value) }}
+            </div>
+            <div *ngIf="item.field !== 'Spells' && item.field !== 'Equipment'">
+              {{ item.value }}
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
+  </div>
   </div>

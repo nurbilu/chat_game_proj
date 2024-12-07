@@ -1,10 +1,16 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, HostListener } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
-import { ChcrcterCreationService } from '../../services/chcrcter-creation.service';
+import { ChcrcterCreationService, Character } from '../../services/chcrcter-creation.service';
 import { ToastService } from '../../services/toast.service';
+
+interface PromptDataItem {
+    field: string;
+    value: string;
+    expanded?: boolean;
+}
 
 @Component({
     selector: 'app-chat',
@@ -32,6 +38,11 @@ export class ChatComponent implements OnInit {
     superUserImageUrl: string = 'http://127.0.0.1:8000/media/super-user-pic/Super-Pic.png';
     defaultProfilePicture: string = 'assets/default-profile.png';
     userProfilePicture: string | null = null;
+    isCharacterDropupOpen = false;
+    characterPrompts: Character[] = [];
+    promptData: PromptDataItem[] = [];
+    selectedCharacterPrompt: Character | null = null;
+    selectedCharacterPromptdata: any = null;
 
     editorConfig = {
         menubar: false,
@@ -87,6 +98,7 @@ export class ChatComponent implements OnInit {
                     }
                 });
             }
+            this.loadCharacterPrompts();
         });
 
         // Add resize event listeners
@@ -188,7 +200,7 @@ export class ChatComponent implements OnInit {
         let templateMessage = '';
         switch (this.selectedTemplate) {
             case 'template1':
-                templateMessage = `Hello, my name is ${this.username}. I want to start a game. If you want me to give you information for creating a character, I'll gladly send you my pre-made character prompt.`;
+                templateMessage = `Hello, my name is ${this.username}. I'll send a Character prompt of a DnD character - create an ongoing "One-Shot" DnD campaign for this character. Please respond. After Character prompt is sent - start the campaign, thank you.`;
                 break;
             case 'template2':
                 this.chatService.getCharacterPrompt(this.username).subscribe({
@@ -202,7 +214,7 @@ export class ChatComponent implements OnInit {
                 });
                 return;
             case 'template3':
-                templateMessage = 'Save last prompt to know from where to continue.';
+                templateMessage = 'If this prompt is sent - reset / clear chat';
                 break;
             case 'template4':
                 templateMessage = `Please display last prompt for User ${this.username}, for ${this.username} to know what next prompt to write .`;
@@ -265,7 +277,41 @@ export class ChatComponent implements OnInit {
     selectOption(option: string) {
         this.selectedTemplate = option;
         this.isDropupOpen = false;
-        this.pasteTemplate();
+        this.isCharacterDropupOpen = false;
+
+        // Check if the option is a character prompt
+        if (option.startsWith('character_')) {
+            const promptId = option.split('_')[1];
+            const selectedPrompt = this.characterPrompts.find(prompt => 
+                prompt._id.toString() === promptId
+            );
+
+            if (selectedPrompt?.characterPrompt) {
+                // Clean and format the prompt text if needed
+                const cleanPrompt = this.formatCharacterPrompt(selectedPrompt.characterPrompt);
+                this.message = cleanPrompt;
+            }
+        } else {
+            // Handle other template options
+            this.pasteTemplate();
+        }
+    }
+
+    private formatCharacterPrompt(promptText: string): string {
+        try {
+            // Remove HTML tags if present
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = promptText;
+            const cleanText = tempDiv.textContent || tempDiv.innerText;
+
+            // Format the text for chat input
+            return cleanText.trim()
+                .replace(/\n{3,}/g, '\n\n') // Replace multiple newlines with double newline
+                .replace(/^\s+/gm, ''); // Remove leading whitespace from each line
+        } catch (e) {
+            console.error('Error formatting character prompt:', e);
+            return promptText;
+        }
     }
 
     toggleEditor(): void {
@@ -349,11 +395,15 @@ export class ChatComponent implements OnInit {
         this.authService.getUsername().subscribe((username: string) => {
             this.chcrcterCreationService.getCharacterPrompt(username).subscribe({
                 next: (response) => {
+                    // Load all character prompts first
+                    this.loadCharacterPrompts();
+                    
+                    // Set initial prompt data
                     const promptText = response.characterPrompt || '';
                     const promptData = this.parsePromptToTableData(promptText);
                     
                     this.selectedEntry = {
-                        name: 'Saved Character Prompt',
+                        name: 'Character Prompts',
                         promptData: promptData
                     };
                     this.showStaticHoverCard = true;
@@ -378,20 +428,27 @@ export class ChatComponent implements OnInit {
         document.body.classList.remove('modal-open');
     }
 
-    private parsePromptToTableData(promptText: string): Array<{field: string, value: string}> {
-        const fields = ['character name', 'race', 'class', 'subclass', 'level', 'spells', 'equipment'];
-        const result = [];
+    private parsePromptToTableData(promptText: string): PromptDataItem[] {
+        const fields = [
+            'Character Name', 
+            'Race', 
+            'Class', 
+            'Subclass', 
+            'Level', 
+            'Spells',
+            'Class Abilities',
+            'Equipment'
+        ];
         
-        for (const field of fields) {
-            const regex = new RegExp(`${field}:\\s*([^\\n]+)`, 'i');
+        return fields.map(field => {
+            const regex = new RegExp(`${field}:\\s*([^\\n]+(?:\\n(?!\\w+:)[^\\n]+)*)`, 'i');
             const match = promptText.match(regex);
-            result.push({
-                field: field.charAt(0).toUpperCase() + field.slice(1),
-                value: match ? match[1].trim() : ''
-            });
-        }
-        
-        return result;
+            return {
+                field: field,
+                value: match ? match[1].trim() : '',
+                expanded: false
+            };
+        });
     }
 
     // Add this method to apply formatting to the input text
@@ -453,6 +510,79 @@ export class ChatComponent implements OnInit {
         // Implement logic to determine if the current user is a superuser
         // This could be based on a user role or a specific property
         return this.authService.isSuperUser(); // Example using AuthService
+    }
+
+    toggleCharacterDropup() {
+        this.isCharacterDropupOpen = !this.isCharacterDropupOpen;
+        // Close other dropup if open
+        if (this.isCharacterDropupOpen) {
+            this.isDropupOpen = false;
+        }
+    }
+
+    @HostListener('document:click', ['$event'])
+    onDocumentClick(event: Event) {
+        const target = event.target as HTMLElement;
+        if (!target.closest('.custom-select')) {
+            this.isDropupOpen = false;
+            this.isCharacterDropupOpen = false;
+        }
+    }
+
+    loadCharacterPrompts(): void {
+        this.authService.getUsername().subscribe((username: string) => {
+            this.chcrcterCreationService.getAllCharacterPrompts(username).subscribe({
+                next: (prompts) => {
+                    this.characterPrompts = prompts.map((prompt: Character, index: number) => ({
+                        ...prompt,
+                        index: index + 1,
+                        character: prompt.character || { name: '', prompt: '' }
+                    }));
+                },
+                error: (error) => {
+                    console.error('Failed to load character prompts:', error);
+                    this.toastService.show({
+                        template: this.errorTemplate,
+                        classname: 'bg-danger text-light',
+                        delay: 3000,
+                        context: { message: 'Failed to load character prompts' }
+                    });
+                }
+            });
+        });
+    }
+
+    selectCharacterPrompt(event: Event): void {
+        const select = event.target as HTMLSelectElement;
+        const selectedIndex = select.selectedIndex - 1; // -1 because of the default option
+        
+        if (selectedIndex >= 0 && this.characterPrompts[selectedIndex]) {
+            const prompt = this.characterPrompts[selectedIndex];
+            this.selectedCharacterPrompt = prompt;
+            this.selectedCharacterPromptdata = prompt;
+            
+            if (prompt.characterPrompt) {
+                const promptData = this.parsePromptToTableData(prompt.characterPrompt);
+                // Update the selected entry with new prompt data
+                this.selectedEntry = {
+                    name: `Character ${prompt.index}`,
+                    promptData: promptData
+                };
+            }
+        }
+    }
+
+    toggleExpansion(item: PromptDataItem): void {
+        if (item.field === 'Spells' || item.field === 'Equipment') {
+            item.expanded = !item.expanded;
+        }
+    }
+
+    getPreviewText(text: string): string {
+        const previewLength = 50;
+        return text.length > previewLength 
+            ? text.substring(0, previewLength) + '...(click to expand)'
+            : text;
     }
 
 }

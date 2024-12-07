@@ -1,0 +1,25 @@
+{
+    "Character Name": "Hogo",
+    "Race": "Half-Orc",
+    "Class": "Barbarian",
+    "Subclass": "Path of the Berserker",
+    "Level": 6,
+    "Spells": null,
+    "Equipment": {
+        "Weapons": [
+            "Great Dwarvish Axe",
+            "Shortbow and Quiver (40 arrows)"
+        ],
+        "Armor": [
+            "Barbarian 5e Starting Equipment"
+        ],
+        "Magic Items": [
+            "Amulet of Health",
+            "Boots of Speed",
+            "Gauntlets of Ogre Power"
+        ],
+        "Miscellaneous Gear": [
+            "Standard adventuring supplies"
+        ]
+    }
+}

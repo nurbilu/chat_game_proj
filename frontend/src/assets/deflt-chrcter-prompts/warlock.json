@@ -1,0 +1,66 @@
+{
+    "Character Name": "Barry Hold-It",
+    "Race": "Tiefling",
+    "Class": "Warlock",
+    "Subclass": "The Fiend",
+    "Level": 14,
+    "Spells": {
+        "Cantrips": [
+            "Eldritch Blast",
+            "Minor Illusion",
+            "Mage Hand",
+            "Toll the Dead"
+        ],
+        "1st Level": [
+            "Hex",
+            "Armor of Agathys"
+        ],
+        "2nd Level": [
+            "Mirror Image",
+            "Misty Step"
+        ],
+        "3rd Level": [
+            "Counterspell",
+            "Fly"
+        ],
+        "4th Level": [
+            "Blight",
+            "Greater Invisibility"
+        ],
+        "5th Level": [
+            "Wall of Force",
+            "Hold Monster"
+        ],
+        "6th Level": [
+            "True Seeing"
+        ],
+        "7th Level": [
+            "Finger of Death"
+        ]
+    },
+    "Invocations": [
+        "Agonizing Blast",
+        "Book of Ancient Secrets",
+        "Fiendish Vigor",
+        "Repelling Blast",
+        "Sculptor of Flesh",
+        "Ascendant Step"
+    ],
+    "Equipment": {
+        "Weapons": [
+            "Pact Weapon (Black rapier)"
+        ],
+        "Armor": [
+            "Studded Leather Armor"
+        ],
+        "Magic Items": [
+            "Rod of the Pact Keeper (+2)",
+            "Cloak of Protection"
+        ],
+        "Miscellaneous Gear": [
+            "Component Pouch",
+            "Explorer's Pack",
+            "500 gp"
+        ]
+    }
+}
