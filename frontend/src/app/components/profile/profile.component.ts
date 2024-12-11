@@ -235,32 +235,42 @@ export class ProfileComponent implements OnInit {
     if (!prompt) return {};
     
     try {
-      const jsonData = JSON.parse(prompt);
-      if (jsonData.Equipment) {
-        return jsonData.Equipment;
-      }
-    } catch (e) {
-      // Fallback to text parsing
-      const equipmentSection = this.extractField(prompt, 'Equipment');
-      if (!equipmentSection) return {};
+        // Look for Equipment section
+        const equipmentMatch = prompt.match(/Equipment:?([\s\S]*?)(?=\n(?:[A-Z][a-z]+:)|$)/i);
+        if (!equipmentMatch) return {};
 
-      const result: { [key: string]: string[] } = {};
-      const categories = ['Weapons', 'Armor', 'Magic Items', 'Tools', 'Miscellaneous Gear', 'Potions'];
-      
-      categories.forEach(category => {
-        const categoryRegex = new RegExp(`${category}:\\s*([^]*?)(?=${categories.join('|')}:|$)`, 'i');
-        const match = equipmentSection.match(categoryRegex);
-        if (match) {
-          result[category] = match[1]
-            .split('\n')
-            .map(item => item.trim())
-            .filter(item => item && item.length > 0);
+        const equipmentText = equipmentMatch[1].trim();
+        
+        // Check if the equipment is categorized
+        const hasCategories = /[A-Z][a-z]+:/.test(equipmentText);
+        
+        if (hasCategories) {
+            const categories: { [key: string]: string[] } = {};
+            const categoryMatches = equipmentText.match(/([A-Z][^:]+):([^]*?)(?=(?:\n[A-Z][^:]+:|$))/g);
+            
+            if (categoryMatches) {
+                categoryMatches.forEach(match => {
+                    const [category, items] = match.split(':').map(s => s.trim());
+                    categories[category] = items
+                        .split(/[,\n]/)
+                        .map(item => item.trim())
+                        .filter(item => item.length > 0);
+                });
+            }
+            return categories;
+        } else {
+            // Handle uncategorized equipment
+            return {
+                'Equipment': equipmentText
+                    .split(/[,\n]/)
+                    .map(item => item.trim())
+                    .filter(item => item.length > 0)
+            };
         }
-      });
-      
-      return result;
+    } catch (e) {
+        console.error('Error parsing equipment:', e);
+        return {};
     }
-    return {};
   }
 
   isSimpleEquipment(prompt: string | undefined): boolean {
@@ -304,67 +314,63 @@ export class ProfileComponent implements OnInit {
     if (!prompt) return {};
     
     try {
-      // Try parsing as JSON first
-      const jsonData = JSON.parse(prompt);
-      if (jsonData.Spells) {
-        return jsonData.Spells;
-      }
+        // First try to find a "Spells:" section
+        const spellsMatch = prompt.match(/Spells?:?([\s\S]*?)(?=\n(?:[A-Z][a-z]+:)|$)/i);
+        if (!spellsMatch) return {};
+
+        const spellsText = spellsMatch[1].trim();
+        const spellsByLevel: { [key: string]: string[] } = {};
+        
+        // Split into level sections and handle various formats
+        const levelSections = spellsText.split(/\n(?=(?:Cantrips|[0-9](?:st|nd|rd|th) Level):)/i);
+        
+        levelSections.forEach(section => {
+            const levelMatch = section.match(/^(Cantrips|[0-9](?:st|nd|rd|th) Level):?([\s\S]*)/i);
+            if (levelMatch) {
+                const level = levelMatch[1].trim();
+                const spells = levelMatch[2]
+                    .split(/[,\n]/) // Split by comma or newline
+                    .map(spell => spell.trim())
+                    .filter(spell => spell.length > 0 && !spell.match(/^(?:Cantrips|[0-9](?:st|nd|rd|th) Level):?/i));
+                
+                if (spells.length > 0) {
+                    spellsByLevel[level] = spells;
+                }
+            }
+        });
+        
+        return spellsByLevel;
     } catch (e) {
-      // Fallback to text parsing
-      const spellsSection = this.extractField(prompt, 'Spells');
-      if (!spellsSection || spellsSection.toLowerCase() === 'none') {
+        console.error('Error parsing spells:', e);
         return {};
-      }
-
-      const result: { [key: string]: string[] } = {};
-      const lines = spellsSection.split('\n');
-      
-      for (let line of lines) {
-        line = line.trim();
-        if (!line) continue;
-
-        const match = line.match(/^(?:•\s*)?([\w\s]+):\s*([\w\s,]+)$/);
-        if (match) {
-          const [, level, spellList] = match;
-          result[level.trim()] = spellList
-            .split(',')
-            .map(spell => spell.trim())
-            .filter(spell => spell);
-        }
-      }
-      return result;
     }
-    return {};
   }
 
   extractClassAbilities(prompt: string | undefined): { [key: string]: string[] } {
     if (!prompt) return {};
     
     try {
-      // Try parsing as JSON first
-      const jsonData = JSON.parse(prompt);
-      const abilityFields = [
-        'Divine Features',
-        'Arcane Tradition Features',
-        'Invocations',
-        'Class Features',
-        'Martial Features',
-        'Druidic Features',
-        'Bardic Features',
-        'Monastic Features',
-        'Rage Features'
-      ];
+        // Look for Class Features, Class Abilities, or Features sections
+        const abilitiesMatch = prompt.match(/(?:Class Features|Class Abilities|Features):?([\s\S]*?)(?=\n(?:[A-Z][a-z]+:)|$)/i);
+        if (!abilitiesMatch) return {};
 
-      const result: { [key: string]: string[] } = {};
-      abilityFields.forEach(field => {
-        if (jsonData[field] && Array.isArray(jsonData[field])) {
-          result[field] = jsonData[field];
-        }
-      });
-      return result;
+        const abilitiesText = abilitiesMatch[1].trim();
+        const abilities: { [key: string]: string[] } = {
+            'Class Features': []
+        };
+        
+        // Split by bullet points, dashes, or numbered lists
+        const abilityList = abilitiesText
+            .split(/(?:\n\s*[•\-\*]|\n\s*\d+\.|\n\n)/)
+            .map(ability => ability.trim())
+            .filter(ability => ability.length > 0);
+            
+        abilities['Class Features'] = abilityList;
+        
+        return abilities;
     } catch (e) {
-      // Fallback to text parsing
-      return this.extractClassAbilitiesFromText(prompt);
+        console.error('Error parsing class abilities:', e);
+        return {};
     }
   }
 
@@ -402,7 +408,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getSpellEntries(spells: { [key: string]: string[] }): SpellCategory[] {
-    const spellOrder = [
+    let spellOrder = [
         'Cantrips',
         '1st Level',
         '2nd Level',
@@ -415,7 +421,9 @@ export class ProfileComponent implements OnInit {
         '9th Level'
     ];
 
+    // Filter out empty spell levels and only include available ones
     return Object.entries(spells)
+        .filter(([_, value]) => value && value.length > 0) // Only include non-empty spell lists
         .sort(([keyA], [keyB]) => {
             const indexA = spellOrder.indexOf(keyA);
             const indexB = spellOrder.indexOf(keyB);
@@ -424,8 +432,7 @@ export class ProfileComponent implements OnInit {
         .map(([key, value]) => ({
             key,
             value: Array.isArray(value) ? value : [value]
-        }))
-        .filter(category => category.value && category.value.length > 0);
+        }));
   }
 
   hasSpells(prompt: string | undefined): boolean {

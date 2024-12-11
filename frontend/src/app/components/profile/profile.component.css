@@ -854,3 +854,107 @@
   font-size: 24px;
   line-height: 1;
 }
+
+/* Add these styles to ensure accordion panels are visible */
+::ng-deep ngb-accordion {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+::ng-deep .accordion-item {
+    background-color: rgba(10, 102, 97, 0.8) !important;
+    border: 1px solid rgba(163, 245, 181, 0.2) !important;
+    margin-bottom: 10px;
+}
+
+::ng-deep .accordion-button {
+    background-color: rgba(6, 68, 65, 0.8) !important;
+    color: #ffffff !important;
+    padding: 15px 20px;
+}
+
+::ng-deep .accordion-button:not(.collapsed) {
+    color: #a3f5b5 !important;
+    border-bottom: 1px solid rgba(163, 245, 181, 0.2);
+}
+
+::ng-deep .accordion-body {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    padding: 20px;
+}
+
+/* Ensure the accordion content is visible */
+::ng-deep .accordion-collapse {
+    visibility: visible !important;
+}
+
+/* Add spacing between panels */
+ngb-panel {
+    margin-bottom: 10px;
+}
+
+/* Table Styles */
+.table-responsive {
+    margin-top: 15px;
+}
+
+.table {
+    margin-bottom: 0;
+    background-color: rgba(6, 68, 65, 0.4);
+}
+
+.table th {
+    background-color: rgba(10, 102, 97, 0.8);
+    color: #a3f5b5;
+    border-bottom: 2px solid rgba(163, 245, 181, 0.2);
+    font-weight: 600;
+}
+
+.table td {
+    color: #ffffff;
+    border-color: rgba(163, 245, 181, 0.1);
+}
+
+.spell-level, .ability-category, .equipment-category {
+    color: #a3f5b5 !important;
+    font-weight: 500;
+    width: 150px;
+}
+
+.spell-list, .ability-list, .equipment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.spell-list li, .ability-list li, .equipment-list li {
+    padding: 4px 0;
+    position: relative;
+    padding-left: 15px;
+}
+
+.spell-list li:before, .ability-list li:before, .equipment-list li:before {
+    content: "•";
+    color: #a3f5b5;
+    position: absolute;
+    left: 0;
+}
+
+/* Hover effect for table rows */
+.table-hover tbody tr:hover {
+    background-color: rgba(163, 245, 181, 0.1);
+}
+
+/* Make sure table headers stay visible */
+.table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Add some padding to the accordion content */
+::ng-deep .accordion-body {
+    padding: 20px !important;
+}

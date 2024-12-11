@@ -12,6 +12,12 @@ interface PromptDataItem {
     expanded?: boolean;
 }
 
+interface CharacterPromptDisplay {
+    field: string;
+    value: string;
+    expanded?: boolean;
+}
+
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
@@ -61,6 +67,24 @@ export class ChatComponent implements OnInit {
     private isResizing = false;
     private startY = 0;
     private startHeight = 0;
+
+    displayFields: string[] = [
+        'Character Name',
+        'Race',
+        'Class',
+        'Subclass',
+        'Background',
+        'Level',
+        'Ability Scores',
+        'Skills',
+        'Spells',
+        'Class Abilities',
+        'Equipment',
+        'Character Traits',
+        'Ideals',
+        'Bonds',
+        'Flaws'
+    ];
 
     constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private storageService: StorageService, private chcrcterCreationService: ChcrcterCreationService, private toastService: ToastService) { }
 
@@ -428,27 +452,31 @@ export class ChatComponent implements OnInit {
         document.body.classList.remove('modal-open');
     }
 
-    private parsePromptToTableData(promptText: string): PromptDataItem[] {
-        const fields = [
-            'Character Name', 
-            'Race', 
-            'Class', 
-            'Subclass', 
-            'Level', 
-            'Spells',
-            'Class Abilities',
-            'Equipment'
-        ];
-        
-        return fields.map(field => {
-            const regex = new RegExp(`${field}:\\s*([^\\n]+(?:\\n(?!\\w+:)[^\\n]+)*)`, 'i');
+    private parsePromptToTableData(promptText: string): CharacterPromptDisplay[] {
+        return this.displayFields.map(field => {
+            let regex;
+            let searchField = field;
+            
+            // Handle variations of Class Abilities field name
+            if (field === 'Class Abilities') {
+                searchField = '(?:Class (?:Abilities|Features)|Features)';
+            }
+            
+            if (field === 'Equipment' || field === 'Class Abilities' || field === 'Spells') {
+                // Use a more inclusive regex pattern for these fields
+                regex = new RegExp(`${searchField}:\\s*([\\s\\S]*?)(?=\\n(?:${this.displayFields.join('|')}):|\$)`, 'i');
+            } else {
+                // Use the standard regex for other fields
+                regex = new RegExp(`${searchField}:\\s*([^\\n]+(?:\\n(?!\\w+:)[^\\n]+)*)`, 'i');
+            }
+            
             const match = promptText.match(regex);
             return {
                 field: field,
                 value: match ? match[1].trim() : '',
                 expanded: false
             };
-        });
+        }).filter(item => item.value !== ''); // Only show fields that have values
     }
 
     // Add this method to apply formatting to the input text
@@ -572,8 +600,9 @@ export class ChatComponent implements OnInit {
         }
     }
 
-    toggleExpansion(item: PromptDataItem): void {
-        if (item.field === 'Spells' || item.field === 'Equipment') {
+    toggleExpansion(item: CharacterPromptDisplay): void {
+        const expandableFields = ['Spells', 'Equipment', 'Class Abilities'];
+        if (expandableFields.includes(item.field)) {
             item.expanded = !item.expanded;
         }
     }
@@ -583,6 +612,14 @@ export class ChatComponent implements OnInit {
         return text.length > previewLength 
             ? text.substring(0, previewLength) + '...(click to expand)'
             : text;
+    }
+
+    getCharacterName(prompt: Character): string {
+        if (!prompt?.characterPrompt) {
+            return 'Unnamed Character';
+        }
+        const nameMatch = prompt.characterPrompt.match(/Character Name:\s*([^\n]+)/);
+        return nameMatch ? nameMatch[1].trim() : 'Unnamed Character';
     }
 
 }

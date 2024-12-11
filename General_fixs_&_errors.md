@@ -15,7 +15,8 @@ estimated total time frame: ~ 56 - 80+ hours
 
 
 (estimated time frame: ~ 8 hours)( 3/4 done )
-   2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings also lower the toast display position  () - save draft toast message is display error after initiate logout ()
+   2.a. change /adjust /fix /add toasts messages in all components (almost done) - make sure all toast have message content and finishings also lower the toast display position  (half done) - save draft toast message is display error after initiate login/logout - adjust code so dont upload character data back to DB - it usless - also check if there is more toast messages on the same component logic/ purpose that appears () - add more toast messages to the toast service () - fix toast and add new toast messages that does not exist for example : 
+   when logout after life-tokens (access && / || refresh) is expaired like initiated logout ("goodbye {{username}} hope to see you soon" - or similar to that string in the same effect), change new pwd at chagne-pwd / reset-pwd , delete user + add character (fix abd adjust) , 
    2.b. add popover/tooltip to all buttons required for the user to know what will be the action of the button (?check if needed more (done?))
    2.c. change mouse cursor to pointer when hovering over offcanvas menu (done)
    2.d. finish library hover-card-move logic - when right scroll only display - Back to Left Side <button> , when bottom scroll only display - Back to Top <button> , else display both as current display state (done) - only fix/adjust the close <button> of the hover card of lib-search , chat , edit-profile , character-creation (done) - done but to chrcter-creation component (done)
@@ -39,7 +40,7 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
      to navigate to reset-pwd page too (half done) - need to fully implement the email msg sent for reset-pwd for "real" email address () - either set back to easy and "stupid" email auth or fix the authentication for the google email problem () if not possible considering the time frame remain - adjust the forget password only to "stupid" email auth (done) - fix reset-pwd , fixed reset-pwd navigate to msg-reset-pwd page ( done - check later .)
    4.c. design change pwd or remove the component display or link component to profile and design it (done) 
    4.d. try to implement after success login navigate to the last click component link button on navbar offcanvas (optional( half done )) - save to session storage but need implement the navigation to the last link after login ( done? - check if works later . ( done))
-   4.e. adjsut character creation - OPTION 1 : enable to create more characters and display them in the character creation component (chosen)OR OPTION 2 (not chosen) : create a new character prompt and delete the old one ( half done ) - only implement the delete prompt (done) - display is more complex then expected - fix complexity by reducing or either finding a solution to display - adjust profile and chat pages accordingly : either set from last git or try to fix then set from last git (fixed) - adjust chat and fix some display bugs for profile and character creation ( half done ) - complete the character prompt display in chat component and fix display bugs for character prompts sub table display of spells , equipment and class abilities + fix the select character prompt in chat component ()
+   4.e. adjsut character creation - OPTION 1 : enable to create more characters and display them in the character creation component (chosen)OR OPTION 2 (not chosen) : create a new character prompt and delete the old one ( half done ) - only implement the delete prompt (done) - display is more complex then expected - fix complexity by reducing or either finding a solution to display - adjust profile and chat pages accordingly : either set from last git or try to fix then set from last git (fixed) - adjust chat and fix some display bugs for profile and character creation ( half done ) - complete the character prompt display in chat component and fix display bugs for character prompts sub table display of spells , equipment and class abilities + fix the select character prompt in chat component (half done) - chat Equipment dispaly is incomplete , spells is good , Class Abilities is 100 % empty display - npt good , on profile page only basic character info is displayed - adjust + fix + complete ()
 
 (estimated time frame: + 10 hours at least)()
    4.b. fix docker hub GUI (docker is fixed by itself - could be that OS updates fixed GUI(done?))
@@ -49,13 +50,13 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
    5. maybe need one terminal command to run all the flask apps for docker (? maybe its not needed? )
       make all impelment of server from one terminal command - currnet different frameworks in different terminals - not good - need to be one command to run all frameworks from one folder as blueprints and run all in one command ( maybe its not needed?) 
 
-(estimated time frame: ~ 2 - 7 hours)(almost done)
+(estimated time frame: ~ 2 - 7 hours)(done -check before docker build)
    6.a. add more visual effects to the website (almost done):
       - design the grid of character create component better (done) 
       - add visual effects to super profile page (done)
       - add visual effects to user chat page (done)
 
-7.a. fix angular errors ()
+7.a. fix angular errors {optional()}
 7.b. make logger simillarty to all flask apps ()
 7.c. add to django logger - clr after ctrl + c ()
 

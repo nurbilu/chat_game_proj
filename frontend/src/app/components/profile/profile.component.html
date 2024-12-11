@@ -89,11 +89,11 @@
                             </div>
 
                             <!-- Separate Accordion Panels -->
-                            <ngb-accordion [closeOthers]="false">
+                            <ngb-accordion [closeOthers]="false" class="character-accordion">
                                 <!-- Spells Panel -->
                                 <ngb-panel id="spells-panel">
                                     <ng-template ngbPanelHeader>
-                                        <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-center justify-content-between w-100">
                                             <h5 class="mb-0">Spells</h5>
                                         </div>
                                     </ng-template>
@@ -101,14 +101,25 @@
                                         <div *ngIf="!hasSpells(selectedCharacter.characterPrompt)" class="no-spells">
                                             No spells available for this character
                                         </div>
-                                        <div *ngIf="hasSpells(selectedCharacter.characterPrompt)" class="spells-grid">
-                                            <div *ngFor="let category of getSpellEntries(extractSpells(selectedCharacter.characterPrompt))" 
-                                                 class="spell-category">
-                                                <h6 class="spell-level-header">{{category.key}}</h6>
-                                                <ul class="spell-list">
-                                                    <li *ngFor="let spell of category.value">{{spell}}</li>
-                                                </ul>
-                                            </div>
+                                        <div *ngIf="hasSpells(selectedCharacter.characterPrompt)" class="table-responsive">
+                                            <table class="table table-dark table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Spell Level</th>
+                                                        <th scope="col">Spells</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let category of getSpellEntries(extractSpells(selectedCharacter.characterPrompt))">
+                                                        <td class="spell-level">{{category.key}}</td>
+                                                        <td>
+                                                            <ul class="spell-list">
+                                                                <li *ngFor="let spell of category.value">{{spell}}</li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </ng-template>
                                 </ngb-panel>
@@ -116,7 +127,7 @@
                                 <!-- Class Abilities Panel -->
                                 <ngb-panel id="abilities-panel">
                                     <ng-template ngbPanelHeader>
-                                        <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-center justify-content-between w-100">
                                             <h5 class="mb-0">Class Abilities</h5>
                                         </div>
                                     </ng-template>
@@ -124,14 +135,25 @@
                                         <div *ngIf="!hasClassAbilities(selectedCharacter.characterPrompt)" class="no-abilities">
                                             No class abilities available for this character
                                         </div>
-                                        <div *ngIf="hasClassAbilities(selectedCharacter.characterPrompt)" class="abilities-grid">
-                                            <div *ngFor="let category of extractClassAbilities(selectedCharacter.characterPrompt) | keyvalue" 
-                                                 class="ability-category">
-                                                <h6 class="ability-type-header">{{category.key}}</h6>
-                                                <ul class="ability-list">
-                                                    <li *ngFor="let ability of category.value">{{ability}}</li>
-                                                </ul>
-                                            </div>
+                                        <div *ngIf="hasClassAbilities(selectedCharacter.characterPrompt)" class="table-responsive">
+                                            <table class="table table-dark table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Category</th>
+                                                        <th scope="col">Abilities</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let category of extractClassAbilities(selectedCharacter.characterPrompt) | keyvalue">
+                                                        <td class="ability-category">{{category.key}}</td>
+                                                        <td>
+                                                            <ul class="ability-list">
+                                                                <li *ngFor="let ability of category.value">{{ability}}</li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </ng-template>
                                 </ngb-panel>
@@ -139,26 +161,44 @@
                                 <!-- Equipment Panel -->
                                 <ngb-panel id="equipment-panel">
                                     <ng-template ngbPanelHeader>
-                                        <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-center justify-content-between w-100">
                                             <h5 class="mb-0">Equipment</h5>
                                         </div>
                                     </ng-template>
                                     <ng-template ngbPanelContent>
-                                        <div *ngIf="isSimpleEquipment(selectedCharacter.characterPrompt)" class="simple-equipment-list">
-                                            <ul>
-                                                <li *ngFor="let item of extractSimpleEquipment(selectedCharacter.characterPrompt)">
-                                                    {{item}}
-                                                </li>
-                                            </ul>
+                                        <div *ngIf="isSimpleEquipment(selectedCharacter.characterPrompt)" class="table-responsive">
+                                            <table class="table table-dark table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Equipment</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of extractSimpleEquipment(selectedCharacter.characterPrompt)">
+                                                        <td>{{item}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div *ngIf="!isSimpleEquipment(selectedCharacter.characterPrompt)" class="equipment-grid">
-                                            <div *ngFor="let category of getEquipmentEntries(extractEquipment(selectedCharacter.characterPrompt))" 
-                                                 class="equipment-category">
-                                                <h6 class="equipment-type-header">{{category.key}}</h6>
-                                                <ul class="equipment-list">
-                                                    <li *ngFor="let item of category.value">{{item}}</li>
-                                                </ul>
-                                            </div>
+                                        <div *ngIf="!isSimpleEquipment(selectedCharacter.characterPrompt)" class="table-responsive">
+                                            <table class="table table-dark table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Category</th>
+                                                        <th scope="col">Items</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let category of getEquipmentEntries(extractEquipment(selectedCharacter.characterPrompt))">
+                                                        <td class="equipment-category">{{category.key}}</td>
+                                                        <td>
+                                                            <ul class="equipment-list">
+                                                                <li *ngFor="let item of category.value">{{item}}</li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </ng-template>
                                 </ngb-panel>

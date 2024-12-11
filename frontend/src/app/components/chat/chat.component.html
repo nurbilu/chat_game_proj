@@ -116,7 +116,7 @@
                   <ul class="options" [class.show]="isCharacterDropupOpen">
                     <li *ngFor="let prompt of characterPrompts" 
                         (click)="selectOption('character_' + prompt._id)">
-                      Character {{prompt.index || prompt._id}}
+                      Character Prompt {{prompt.index}} - {{getCharacterName(prompt)}}
                     </li>
                   </ul>
                 </div>
@@ -181,39 +181,31 @@
     <button class="close-btn" (click)="closeStaticHoverCard()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
+    
     <div class="prompt-select">
       <select class="form-control" (change)="selectCharacterPrompt($event)">
         <option value="">Select a Character</option>
         <option *ngFor="let prompt of characterPrompts; let i = index" [value]="i">
-          Character {{ prompt.index }}: {{ prompt.character.name || 'Unnamed' }}
+          Character Prompt {{prompt.index}} - {{getCharacterName(prompt)}}
         </option>
       </select>
     </div>
-    <h5>{{ selectedEntry?.name }}</h5>
-    
-    <table class="prompt-table" *ngIf="selectedEntry?.promptData">
-      <thead>
-        <tr>
-          <th>Field</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of selectedEntry.promptData">
-          <td>{{ item.field }}</td>
-          <td [ngClass]="{'expandable-cell': item.field === 'Spells' || item.field === 'Equipment'}">
-            <div *ngIf="item.field === 'Spells' || item.field === 'Equipment'"
-                 class="expandable-content"
-                 [class.expanded]="item.expanded"
-                 (click)="toggleExpansion(item)">
+
+    <div class="character-prompt-table" *ngIf="selectedEntry?.promptData">
+      <h4>Character Details</h4>
+      <div class="prompt-grid">
+        <div *ngFor="let item of selectedEntry.promptData" class="prompt-item">
+          <div class="prompt-header">{{ item.field }}</div>
+          <div class="prompt-content" 
+               [class.expandable]="['Spells', 'Equipment', 'Ability Scores', 'Skills', 'Class Abilities'].includes(item.field)"
+               [class.expanded]="item.expanded"
+               (click)="toggleExpansion(item)">
+            <div class="content-wrapper">
               {{ item.expanded ? item.value : getPreviewText(item.value) }}
             </div>
-            <div *ngIf="item.field !== 'Spells' && item.field !== 'Equipment'">
-              {{ item.value }}
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   </div>
