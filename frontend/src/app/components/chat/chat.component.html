@@ -115,7 +115,7 @@
                   </button>
                   <ul class="options" [class.show]="isCharacterDropupOpen">
                     <li *ngFor="let prompt of characterPrompts" 
-                        (click)="selectOption('character_' + prompt._id)">
+                        (click)="selectCharacterPromptForChat(prompt)">
                       {{getCharacterName(prompt)}}
                     </li>
                   </ul>

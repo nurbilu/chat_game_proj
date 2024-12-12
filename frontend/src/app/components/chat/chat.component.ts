@@ -619,4 +619,19 @@ export class ChatComponent implements OnInit {
         return classMatch ? classMatch[1].trim() : '';
     }
 
+    selectCharacterPromptForChat(prompt: any): void {
+        if (prompt && prompt.characterPrompt) {
+            // Get the character name and extract first name
+            const fullName = this.getCharacterName(prompt);
+            const firstName = fullName.split(' ')[0]; // Get first word of the name
+            
+            // Format the character prompt with only the first name
+            const formattedPrompt = `Here are the details of ${firstName}:\n\n${prompt.characterPrompt}`;
+            this.message = formattedPrompt;
+            
+            // Close the character dropup after selection
+            this.isCharacterDropupOpen = false;
+        }
+    }
+
 }
