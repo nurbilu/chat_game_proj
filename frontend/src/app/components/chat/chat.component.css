@@ -833,3 +833,42 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
+.placeholder-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.placeholder-image {
+  width: 500px;
+  height: 281px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.placeholder-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2em;
+  font-weight: 500;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.default-placeholder {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.placeholder-subtext {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85em;
+  margin-top: 0.25rem;
+}
+

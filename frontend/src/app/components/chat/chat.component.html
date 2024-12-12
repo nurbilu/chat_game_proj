@@ -116,7 +116,7 @@
                   <ul class="options" [class.show]="isCharacterDropupOpen">
                     <li *ngFor="let prompt of characterPrompts" 
                         (click)="selectOption('character_' + prompt._id)">
-                      Character Prompt {{prompt.index}} - {{getCharacterName(prompt)}}
+                      {{getCharacterName(prompt)}}
                     </li>
                   </ul>
                 </div>
@@ -184,17 +184,25 @@
     
     <div class="prompt-select">
       <select class="form-control" (change)="selectCharacterPrompt($event)">
-        <option value="">Select a Character</option>
+        <option value="">-- Select a Character --</option>
         <option *ngFor="let prompt of characterPrompts; let i = index" [value]="i">
-          Character Prompt {{prompt.index}} - {{getCharacterName(prompt)}}
+          {{ getCharacterName(prompt) }} - Level {{ getCharacterLevel(prompt) }} {{ getCharacterClass(prompt) }}
         </option>
       </select>
     </div>
 
-    <div class="character-prompt-table" *ngIf="selectedEntry?.promptData">
+    <div class="default-placeholder" *ngIf="!selectedCharacterPrompt">
+      <div class="placeholder-card">
+        <img src="assets/imgs/placeholder-character.png" alt="Select a character" class="placeholder-image">
+        <p class="placeholder-text">Welcome to Character Viewer</p>
+        <p class="placeholder-subtext">Select a character from the dropdown above to view their details</p>
+      </div>
+    </div>
+
+    <div class="character-prompt-table" *ngIf="selectedCharacterPrompt">
       <h4>Character Details</h4>
       <div class="prompt-grid">
-        <div *ngFor="let item of selectedEntry.promptData" class="prompt-item">
+        <div *ngFor="let item of selectedEntry?.promptData" class="prompt-item">
           <div class="prompt-header">{{ item.field }}</div>
           <div class="prompt-content" 
                [class.expandable]="['Spells', 'Equipment', 'Ability Scores', 'Skills', 'Class Abilities'].includes(item.field)"

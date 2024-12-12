@@ -416,34 +416,11 @@ export class ChatComponent implements OnInit {
     }
 
     showCharacterPromptHover(): void {
-        this.authService.getUsername().subscribe((username: string) => {
-            this.chcrcterCreationService.getCharacterPrompt(username).subscribe({
-                next: (response) => {
-                    // Load all character prompts first
-                    this.loadCharacterPrompts();
-                    
-                    // Set initial prompt data
-                    const promptText = response.characterPrompt || '';
-                    const promptData = this.parsePromptToTableData(promptText);
-                    
-                    this.selectedEntry = {
-                        name: 'Character Prompts',
-                        promptData: promptData
-                    };
-                    this.showStaticHoverCard = true;
-                    document.body.classList.add('modal-open');
-                },
-                error: (error) => {
-                    console.error('Failed to fetch character prompt:', error);
-                    this.toastService.show({
-                        template: this.errorTemplate,
-                        classname: 'bg-danger text-light',
-                        delay: 3000,
-                        context: { message: 'Failed to load character prompt' }
-                    });
-                }
-            });
-        });
+        // Reset selection when opening
+        this.selectedCharacterPrompt = null;
+        this.selectedEntry = null;
+        this.showStaticHoverCard = true;
+        document.body.classList.add('modal-open');
     }
 
     closeStaticHoverCard(): void {
@@ -582,16 +559,23 @@ export class ChatComponent implements OnInit {
 
     selectCharacterPrompt(event: Event): void {
         const select = event.target as HTMLSelectElement;
-        const selectedIndex = select.selectedIndex - 1; // -1 because of the default option
+        const selectedIndex = parseInt(select.value);
         
-        if (selectedIndex >= 0 && this.characterPrompts[selectedIndex]) {
+        if (isNaN(selectedIndex) || selectedIndex < 0) {
+            // Reset selection to show placeholder
+            this.selectedEntry = null;
+            this.selectedCharacterPrompt = null;
+            this.selectedCharacterPromptdata = null;
+            return;
+        }
+        
+        if (this.characterPrompts[selectedIndex]) {
             const prompt = this.characterPrompts[selectedIndex];
             this.selectedCharacterPrompt = prompt;
             this.selectedCharacterPromptdata = prompt;
             
             if (prompt.characterPrompt) {
                 const promptData = this.parsePromptToTableData(prompt.characterPrompt);
-                // Update the selected entry with new prompt data
                 this.selectedEntry = {
                     name: `Character ${prompt.index}`,
                     promptData: promptData
@@ -618,8 +602,21 @@ export class ChatComponent implements OnInit {
         if (!prompt?.characterPrompt) {
             return 'Unnamed Character';
         }
-        const nameMatch = prompt.characterPrompt.match(/Character Name:\s*([^\n]+)/);
-        return nameMatch ? nameMatch[1].trim() : 'Unnamed Character';
+        const nameMatch = prompt.characterPrompt.match(/Character Name:\s*([^\n]+)/i);
+        const name = nameMatch ? nameMatch[1].trim() : 'Unnamed Character';
+        return name;
+    }
+
+    getCharacterLevel(prompt: Character): string {
+        if (!prompt?.characterPrompt) return '';
+        const levelMatch = prompt.characterPrompt.match(/Level:\s*([^\n]+)/i);
+        return levelMatch ? levelMatch[1].trim() : '';
+    }
+
+    getCharacterClass(prompt: Character): string {
+        if (!prompt?.characterPrompt) return '';
+        const classMatch = prompt.characterPrompt.match(/Class:\s*([^\n]+)/i);
+        return classMatch ? classMatch[1].trim() : '';
     }
 
 }
