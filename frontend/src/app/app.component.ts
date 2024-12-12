@@ -457,4 +457,9 @@ export class AppComponent implements OnInit {
       this.router.navigate(['/profile']);
     }
   }
+
+  navigateToCharacterCreation(): void {
+    if (!this.isLoggedIn) return;
+    this.router.navigate(['/character-creation']);
+  }
 }

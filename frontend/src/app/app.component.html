@@ -84,7 +84,7 @@
       <img [src]="isSuperUser ? superUserImageUrl : profilePictureUrl" 
            [alt]="username" 
            class="profile-picture" 
-           *ngIf="isLoggedIn"
+           *ngIf="isLoggedIn && !isProfileOrChatRoute()"
            [ngbTooltip]="currentRoute === '/profile' ? 
              'Single click: Go to Chat | Double click: Go to Library' : 
              currentRoute === '/character-creation' ? 
@@ -94,9 +94,11 @@
            style="cursor: pointer;">
       <span *ngIf="isLoggedIn" 
             class="username-text" 
-            (click)="navigateToProfile()" 
+            (click)="isProfileOrChatRoute() ? navigateToCharacterCreation() : navigateToProfile()" 
             style="cursor: pointer;"
-            [ngbTooltip]="currentRoute === '/profile' ? 
+            [ngbTooltip]="isProfileOrChatRoute() ? 
+              'Click to go to Character Creation' : 
+              currentRoute === '/profile' ? 
               'Click to go to Character Creation' : 
               currentRoute === '/character-creation' ? 
               'Click to go to Library' :
