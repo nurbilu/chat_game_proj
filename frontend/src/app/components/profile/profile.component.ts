@@ -199,38 +199,6 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  isEquipmentCategorized(prompt: string | undefined): boolean {
-    if (!prompt) return false;
-    const equipmentText = this.extractField(prompt, 'equipment');
-    if (!equipmentText) return false;
-    return !!equipmentText.match(/([A-Z][a-zA-Z]+):/g);
-  }
-
-  getEquipmentEntries(equipment: any): EquipmentCategory[] {
-    if (!equipment) return [];
-
-    const categoryOrder = [
-      'Weapons',
-      'Armor',
-      'Magic Items',
-      'Tools',
-      'Miscellaneous Gear',
-      'Potions'
-    ];
-
-    return Object.entries(equipment)
-      .sort(([keyA], [keyB]) => {
-        const indexA = categoryOrder.indexOf(keyA);
-        const indexB = categoryOrder.indexOf(keyB);
-        return indexA - indexB;
-      })
-      .map(([key, value]) => ({
-        key,
-        value: Array.isArray(value) ? value : [value]
-      }))
-      .filter(category => category.value && category.value.length > 0);
-  }
-
   extractEquipment(prompt: string | undefined): { [key: string]: string[] } {
     if (!prompt) return {};
     
@@ -273,36 +241,60 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  isSimpleEquipment(prompt: string | undefined): boolean {
-    if (!prompt) return false;
-    
-    try {
-      const jsonData = JSON.parse(prompt);
-      return !jsonData.Equipment || typeof jsonData.Equipment === 'string';
-    } catch (e) {
-      const equipment = this.extractField(prompt, 'Equipment');
-      return !equipment.includes(':');
+  getEquipmentEntries(equipment: any): { key: string; value: string[] }[] {
+    if (!equipment) return [];
+
+    const categoryOrder = [
+      'Weapons',
+      'Armor',
+      'Magic Items',
+      'Tools',
+      'Miscellaneous Gear',
+      'Potions',
+      'Equipment' // For uncategorized items
+    ];
+
+    // Check if equipment has any of the predefined categories
+    const hasOrderedCategories = Object.keys(equipment).some(key => categoryOrder.includes(key));
+
+    if (!hasOrderedCategories) {
+      // Return as a single uncategorized list with proper type casting
+      const allItems = Object.values(equipment)
+        .flat()
+        .filter((item): item is string => typeof item === 'string');
+      
+      return [{
+        key: 'Equipment',
+        value: allItems
+      }];
     }
+
+    // Sort and organize by categories
+    return Object.entries(equipment)
+      .sort(([keyA], [keyB]) => {
+        const indexA = categoryOrder.indexOf(keyA);
+        const indexB = categoryOrder.indexOf(keyB);
+        // If category not in order list, put it at the end
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      })
+      .map(([key, value]) => ({
+        key,
+        value: Array.isArray(value) 
+          ? value.filter((item): item is string => typeof item === 'string')
+          : [String(value)]
+      }))
+      .filter(category => category.value && category.value.length > 0);
   }
 
-  extractSimpleEquipment(prompt: string | undefined): string[] {
-    if (!prompt) return [];
-    
-    try {
-      const jsonData = JSON.parse(prompt);
-      if (typeof jsonData.Equipment === 'string') {
-        return jsonData.Equipment.split(',').map((item: string) => item.trim());
-      }
-    } catch (e) {
-      const equipment = this.extractField(prompt, 'Equipment');
-      if (equipment && !equipment.includes(':')) {
-        return equipment
-          .split('\n')
-          .map(item => item.trim())
-          .filter(item => item && item.length > 0);
-      }
-    }
-    return [];
+  formatEquipment(prompt: string): { category: string; items: string[] }[] {
+    const equipment = this.extractEquipment(prompt);
+    return this.getEquipmentEntries(equipment)
+      .map(({ key, value }) => ({
+        category: key,
+        items: value
+      }));
   }
 
   resetCharacterSelection(): void {
