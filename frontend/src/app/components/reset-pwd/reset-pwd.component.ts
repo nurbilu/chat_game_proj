@@ -57,18 +57,24 @@ export class ResetPwdComponent {
 
       this.authService.resetPassword(this.token, passwordData).subscribe({
         next: () => {
-          this.toastService.success('Password reset successfully');
+          this.toastService.success('Your password has been successfully reset. You can now log in with your new password.');
           this.router.navigate(['/msg-reset-pwd']);
         },
         error: (error) => {
-          this.toastService.error(error.message || 'Error resetting password');
+          this.toastService.error(error.message || 'Unable to reset password. Please try again or contact support if the problem persists.');
         }
       });
     } else {
       if (this.resetPwdForm.errors?.['notSame']) {
-        this.toastService.error('Passwords do not match');
+        this.toastService.error('The passwords you entered do not match. Please make sure both passwords are identical.');
+      } else if (this.resetPwdForm.get('newPassword')?.errors?.['minlength']) {
+        this.toastService.error('Password must be at least 5 characters long.');
+      } else if (this.resetPwdForm.get('newPassword')?.errors?.['required']) {
+        this.toastService.error('Please enter a new password.');
+      } else if (this.resetPwdForm.get('confirmPassword')?.errors?.['required']) {
+        this.toastService.error('Please confirm your new password.');
       } else {
-        this.toastService.error('Please fill in all required fields correctly');
+        this.toastService.error('Please fill in all required fields correctly.');
       }
     }
   }

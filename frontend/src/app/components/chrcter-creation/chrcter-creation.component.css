@@ -1,746 +1,127 @@
 .chrcter-creation-container {
-    max-width: 2100px;
-    max-height: 40000px;
-    padding: 5px;
-    background: rgba(255, 255, 255, 0.8) url('/assets/imgs/magic_plains.jpg') no-repeat center center;
-    background-size: cover;
-    border: 2px solid #000000;
-    resize: vertical;
+  max-width: 2100px;
+  max-height: 40000px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.8) url('/assets/imgs/magic_plains.jpg') no-repeat center center;
+  background-size: cover;
+  border: 2px solid #000000;
+  resize: vertical;
 }
 
 .progress-container {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1em;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1em;
 }
 
 .g-col-8 {
-    grid-column: span 2;
+  grid-column: span 2;
 }
 
 /* ... existing code ... */
 button {
-    margin: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .text-frame {
-    margin-bottom: 20px;
-    padding: 20px;
-    background: rgba(24, 24, 24, 0.678);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(24, 24, 24, 0.678);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
 }
 .text-frame p{
-    color: white;
+  color: white;
 }
 .ngbAccordionBody .accordion-body {
-    color: black; /* Set accordion body text color to black */
+  color: black; /* Set accordion body text color to black */
 }
 
 .text-frame li{
-    color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
 }
 .text-frame h2,
 .text-frame h3,
 .text-frame h4,
 .text-frame h5 {
-    color: white;
+  color: white;
 }
 
 /* Add this new class for consistency */
 .text-frame .table-responsive {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .large-textarea {
-    width: 100%;
-    height: 150px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    resize: none;
-    overflow-y: auto;
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  resize: none;
+  overflow-y: auto;
 }
 
 
 .input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .input-container .btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .ngb-accordion .card {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .st-editor-toolbar button {
-    width: 40px;
-    height: 40px;
-    padding: 5px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border: none;
-    /* Ensure no border is applied */
-    background-color: transparent;
-    /* Ensure background is transparent */
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  /* Ensure no border is applied */
+  background-color: transparent;
+  /* Ensure background is transparent */
 }
 
 .no-spells {
-    color: rgb(248, 242, 242);
-    font-style: italic;
-    margin-top: 10px;
-}
-
-.horizontal-list {
-    display: flex;
-    list-style-type: none;
-    padding: 0;
-}
-
-.horizontal-list li {
-    margin-right: 10px;
-}
-
-.progress-container {
-    margin-bottom: 20px;
-}
-
-.text-frame1 {
-    color: rgb(252, 252, 252);
-    margin-bottom: 20px;
-    padding: 20px;
-    background: rgba(24, 24, 24, 0.678);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
-}
-
-.select-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.copy-icon {
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    cursor: pointer;
-}
-.search-icon{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: url('/assets/imgs/icons/srch-icon.png') no-repeat center center;
-    border: none;
-    outline: none;
-}
-.clear-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: url('/assets/imgs/icons/clear-srch.png') no-repeat center center;
-    border: none;
-    outline: none;
-}
-
-.clear-results {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: url('/assets/imgs/icons/clr-rslt.png') no-repeat center center;
-    border: none;
-    outline: none;
-}
-
-/* Apply the same styles to Classes Description */
-.classes-description {
-    margin-bottom: 20px;
-    padding: 20px;
-    background: rgba(24, 24, 24, 0.678);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
-}
-.classes-description p{
-    color: black;
-}
-.classes-description p1{
-    color: white;
-}
-.classes-description li{
-    color: black;
-}
-.classes-description h5{
-    color: black;
-}
-.race-description{
-    color: black;
-}
-.race-description p{
-    color: black;
-}
-.race-description p1{
-    color: white;
-}
-
-
-.text-frame-lib-search  {
-    margin-bottom: 20px;
-    padding: 20px;
-    background: rgba(24, 24, 24, 0.678);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
-}
-.text-frame-lib-search h3{
-    color: rgb(250, 250, 250);
-}
-
-/* Add these styles to your existing CSS file */
-
-.progress-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 600px;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-    z-index: 1000;
-}
-
-.progress-text {
-    color: white;
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 18px;
-}
-
-::ng-deep .progress {
-    height: 25px;
-    background-color: #2c3e50;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-::ng-deep .progress-bar {
-    background-color: #3498db;
-    transition: width 0.5s ease-in-out;
-    position: relative;
-    overflow: hidden;
-}
-
-::ng-deep .progress-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.2) 25%,
-        transparent 25%,
-        transparent 50%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0.2) 75%,
-        transparent 75%,
-        transparent 100%
-    );
-    background-size: 50px 50px;
-    animation: stripes 1s linear infinite;
-    z-index: 1;
-}
-
-@keyframes stripes {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 50px 0;
-    }
-}
-
-/* Add this at the end of the file */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  opacity: 0;
-  animation: fadeIn 1.5s ease-in-out forwards;
-}
-
-.fade-in-delay {
-  opacity: 0;
-}
-
-.fade-in-active {
-  animation: fadeIn 1.5s ease-in-out forwards;
-}
-
-/* Add this to your existing styles */
-.spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-}
-
-/* Add these styles to your existing CSS file */
-
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
+  color: rgb(248, 242, 242);
+  font-style: italic;
   margin-top: 10px;
 }
 
-.spinner-border {
-  width: 3rem;
-  height: 3rem;
-  border-width: 0.25em;
-}
-
-app-lib-search {
-  --background-color: rgba(24, 24, 24, 0.678);
-  --card-background: linear-gradient(45deg, #c99a6e, #71557e);
-  --text-color: rgb(253, 253, 253);
-  --border-color: #ddd;
-  --shadow-color: rgba(248, 248, 248, 0.1);
-  --h5-color: rgb(255, 253, 253);
-}
-
-
-.search-results {
-  background: linear-gradient(45deg, #00000069, #707070, #6e5f51, #dac4a4);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.search-results .horizontal-card {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  margin-bottom: 15px;
-  padding: 15px;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  transition: all 0.3s ease;
-}
-
-.search-results .horizontal-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(184, 229, 243, 0.4);
-  transform: translateY(-5px);
-}
-
-.search-results .horizontal-card-title {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-  color: white;
-}
-
-.search-results .subcard {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.search-results .subcard strong,
-.search-results .subcard li {
-  color: white;
-}
-
-.search-results .subcard ul {
-  padding-left: 20px;
-}
-
-.search-results .subcard li {
-  margin-bottom: 5px;
-}
-
-/* Add this new rule at the end of the file */
-
-.paste-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: url('/assets/imgs/icons/paste-txt-srch.png') no-repeat center center;
-    border: none;
-    outline: none;
-}
-
-
-
-.back-to-top {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 99;
-  font-size: 16px;
-  border: none;
-  outline: none;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  padding: 15px;
-  border-radius: 4px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.back-to-top.show {
-  opacity: 1;
-}
-
-.back-to-top:hover {
-  background-color: #0056b3;
-}
-
-/* Change popover title color to black */
-.popover-header {
-  color: black !important;
-}
-
-/* Ensure the popover body text is also black */
-.popover-body {
-  color: black !important;
-}
-
-/* If you want to change the background color of the popover title as well */
-.popover-header {
-  background-color: #f7f7f7 !important; /* Light gray background */
-  color: black !important;
-}
-
-/* Add these styles at the end of the file */
-
-.static-hover-card-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
+.horizontal-list {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  list-style-type: none;
+  padding: 0;
 }
 
-.static-hover-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.95);
-  color: white;
-  border-radius: 10px;
-  padding: 20px;
-  max-width: 80%;
-  max-height: 80vh;
-  overflow-y: auto;
-  z-index: 9999;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+.horizontal-list li {
+  margin-right: 10px;
 }
 
-.static-hover-card h5 {
-  color: white;
-  margin-bottom: 15px;
-}
-
-.static-hover-card ul {
-  padding-left: 20px;
-}
-
-.static-hover-card li {
-  margin-bottom: 5px;
-  color: white;
-}
-
-body.modal-open {
-  overflow: hidden;
-}
-
-/* Add or update these styles */
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
-}
-
-.static-hover-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.95);
-  color: white;
-  border-radius: 10px;
-  padding: 20px;
-  max-width: 80%;
-  max-height: 80vh;
-  overflow-y: auto;
-  z-index: 9999;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-}
-
-.static-hover-card h5 {
-  color: white;
-  margin-bottom: 15px;
-}
-
-.static-hover-card ul {
-  padding-left: 20px;
-}
-
-.static-hover-card li {
-  margin-bottom: 5px;
-  color: white;
-}
-
-
-body.modal-open {
-  overflow: hidden;
-}
-
-.title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.progress-container {
   margin-bottom: 20px;
 }
 
-.prompt-icon {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.prompt-icon img {
-  width: 55px;
-  height: 55px;
-  transition: transform 0.2s;
-}
-
-.prompt-icon:hover img {
-  transform: scale(1.1);
-  border-radius: 10px;
-}
-
-/* Add to your existing static hover card styles */
-.static-hover-card.prompt-card {
-  width: 95%;
-  max-width: 1200px;
-  height: auto;
-  background-color: rgba(0, 0, 0, 0.95);
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-}
-
-.prompt-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 15px;
-  table-layout: fixed;
-}
-
-.prompt-table th,
-.prompt-table td {
-  padding: 12px;
-  text-align: left;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.prompt-table th:first-child,
-.prompt-table td:first-child {
-  width: 15%;
-}
-
-.prompt-table td.equipment-cell,
-.prompt-table td.spells-cell {
-  white-space: pre-wrap;
-  word-break: break-word;
-  max-width: 600px;
-}
-
-.prompt-table td.equipment-cell div,
-.prompt-table td.spells-cell div {
-  max-height: 150px;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-
-.prompt-table td div::-webkit-scrollbar {
-  width: 8px;
-}
-
-.prompt-table td div::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.prompt-table td div::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-.static-hover-card .card-header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 20px;
-    gap: 5px;
-}
-
-.static-hover-card .card-header h5 {
-    margin: 0;
-    display: inline-flex;
-    align-items: center;
-}
-
-.copy-prompt-btn {
-    background: none;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    margin-left: 8px;
-    vertical-align: middle;
-}
-
-.copy-prompt-btn img {
-    width: 24px;
-    height: 24px;
-    transition: transform 0.2s;
-    filter: invert(1);
-}
-
-.copy-prompt-btn:hover {
-    background-color: rgba(147, 112, 219, 0.3);
-    border-radius: 5px;
-}
-
-/* Add these styles for the character prompts grid */
-.character-prompts-container {
-  margin-top: 20px;
-}
-
-.prompts-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.prompts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.prompt-card {
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-  padding: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.prompt-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.prompt-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.prompt-actions button {
-  background: none;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.prompt-actions button:hover {
-  transform: scale(1.1);
-}
-
-.prompt-actions img {
-  width: 20px;
-  height: 20px;
-  filter: invert(1);
-}
-
-.prompt-preview {
-  color: #fff;
-  font-size: 0.9em;
-  max-height: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre-line;
-}
-
-.new-prompt-btn {
-  background: none;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-}
-
-.new-prompt-btn img {
-  width: 30px;
-  height: 30px;
-  transition: transform 0.2s;
-}
-
-.new-prompt-btn:hover img {
-  transform: scale(1.1);
-}
-
-.text-frame-character-display {
+.text-frame1 {
+  color: rgb(252, 252, 252);
   margin-bottom: 20px;
   padding: 20px;
   background: rgba(24, 24, 24, 0.678);
@@ -748,303 +129,922 @@ body.modal-open {
   box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
 }
 
-.text-frame-character-display h3 {
+.select-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.copy-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.search-icon{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/srch-icon.png') no-repeat center center;
+  border: none;
+  outline: none;
+}
+.clear-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/clear-srch.png') no-repeat center center;
+  border: none;
+  outline: none;
+}
+
+.clear-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/clr-rslt.png') no-repeat center center;
+  border: none;
+  outline: none;
+}
+
+/* Apply the same styles to Classes Description */
+.classes-description {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(24, 24, 24, 0.678);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
+}
+.classes-description p{
+  color: black;
+}
+.classes-description p1{
+  color: white;
+}
+.classes-description li{
+  color: black;
+}
+.classes-description h5{
+  color: black;
+}
+.race-description{
+  color: black;
+}
+.race-description p{
+  color: black;
+}
+.race-description p1{
+  color: white;
+}
+
+
+.text-frame-lib-search  {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(24, 24, 24, 0.678);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
+}
+.text-frame-lib-search h3{
   color: rgb(250, 250, 250);
 }
 
-.character-list {
-  max-height: 500px;
-  overflow-y: auto;
-  transition: max-height 0.3s ease-out;
+/* Add these styles to your existing CSS file */
+
+.progress-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  z-index: 1000;
 }
 
-.character-list.collapsed {
-  max-height: 0;
+.progress-text {
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+::ng-deep .progress {
+  height: 25px;
+  background-color: #2c3e50;
+  border-radius: 15px;
   overflow: hidden;
 }
 
-.character-card {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  margin-bottom: 15px;
-  padding: 15px;
+::ng-deep .progress-bar {
+  background-color: #3498db;
+  transition: width 0.5s ease-in-out;
+  position: relative;
+  overflow: hidden;
 }
 
-.character-card-header {
+::ng-deep .progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent 100%
+  );
+  background-size: 50px 50px;
+  animation: stripes 1s linear infinite;
+  z-index: 1;
+}
+
+@keyframes stripes {
+  0% {
+      background-position: 0 0;
+  }
+  100% {
+      background-position: 50px 0;
+  }
+}
+
+/* Add this at the end of the file */
+@keyframes fadeIn {
+from {
+  opacity: 0;
+}
+to {
+  opacity: 1;
+}
+}
+
+.fade-in {
+opacity: 0;
+animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+.fade-in-delay {
+opacity: 0;
+}
+
+.fade-in-active {
+animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+/* Add this to your existing styles */
+.spinner {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100px;
+}
+
+/* Add these styles to your existing CSS file */
+
+.spinner-container {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 50px;
+margin-top: 10px;
+}
+
+.spinner-border {
+width: 3rem;
+height: 3rem;
+border-width: 0.25em;
+}
+
+app-lib-search {
+--background-color: rgba(24, 24, 24, 0.678);
+--card-background: linear-gradient(45deg, #c99a6e, #71557e);
+--text-color: rgb(253, 253, 253);
+--border-color: #ddd;
+--shadow-color: rgba(248, 248, 248, 0.1);
+--h5-color: rgb(255, 253, 253);
+}
+
+
+.search-results {
+background: linear-gradient(45deg, #00000069, #707070, #6e5f51, #dac4a4);
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-results .horizontal-card {
+background: rgba(0, 0, 0, 0.3);
+border-radius: 8px;
+margin-bottom: 15px;
+padding: 15px;
+box-shadow: 0 2px 4px var(--shadow-color);
+transition: all 0.3s ease;
+}
+
+.search-results .horizontal-card:hover {
+box-shadow: 0 8px 16px 0 rgba(184, 229, 243, 0.4);
+transform: translateY(-5px);
+}
+
+.search-results .horizontal-card-title {
+font-size: 1.2em;
+margin-bottom: 10px;
+color: white;
+}
+
+.search-results .subcard {
+background: rgba(0, 0, 0, 0.3);
+border-radius: 6px;
+padding: 10px;
+margin-bottom: 10px;
+}
+
+.search-results .subcard strong,
+.search-results .subcard li {
+color: white;
+}
+
+.search-results .subcard ul {
+padding-left: 20px;
+}
+
+.search-results .subcard li {
+margin-bottom: 5px;
+}
+
+/* Add this new rule at the end of the file */
+
+.paste-icon {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/imgs/icons/paste-txt-srch.png') no-repeat center center;
+  border: none;
+  outline: none;
 }
 
-.character-card-header h5 {
-  color: white;
+
+
+.back-to-top {
+position: fixed;
+bottom: 20px;
+right: 20px;
+z-index: 99;
+font-size: 16px;
+border: none;
+outline: none;
+background-color: #007bff;
+color: white;
+cursor: pointer;
+padding: 15px;
+border-radius: 4px;
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.back-to-top.show {
+opacity: 1;
+}
+
+.back-to-top:hover {
+background-color: #0056b3;
+}
+
+/* Change popover title color to black */
+.popover-header {
+color: black !important;
+}
+
+/* Ensure the popover body text is also black */
+.popover-body {
+color: black !important;
+}
+
+/* If you want to change the background color of the popover title as well */
+.popover-header {
+background-color: #f7f7f7 !important; /* Light gray background */
+color: black !important;
+}
+
+/* Add these styles at the end of the file */
+
+.static-hover-card-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 9998;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.static-hover-card {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background-color: rgba(0, 0, 0, 0.95);
+color: white;
+border-radius: 10px;
+padding: 20px;
+max-width: 80%;
+max-height: 80vh;
+overflow-y: auto;
+z-index: 9999;
+box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.static-hover-card h5 {
+color: white;
+margin-bottom: 15px;
+}
+
+.static-hover-card ul {
+padding-left: 20px;
+}
+
+.static-hover-card li {
+margin-bottom: 5px;
+color: white;
+}
+
+body.modal-open {
+overflow: hidden;
+}
+
+/* Add or update these styles */
+.backdrop {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 9998;
+}
+
+.static-hover-card {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background-color: rgba(0, 0, 0, 0.95);
+color: white;
+border-radius: 10px;
+padding: 20px;
+max-width: 80%;
+max-height: 80vh;
+overflow-y: auto;
+z-index: 9999;
+box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.static-hover-card h5 {
+color: white;
+margin-bottom: 15px;
+}
+
+.static-hover-card ul {
+padding-left: 20px;
+}
+
+.static-hover-card li {
+margin-bottom: 5px;
+color: white;
+}
+
+
+body.modal-open {
+overflow: hidden;
+}
+
+.title-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+
+.prompt-icon {
+background: none;
+border: none;
+padding: 0;
+cursor: pointer;
+}
+
+.prompt-icon img {
+width: 55px;
+height: 55px;
+transition: transform 0.2s;
+}
+
+.prompt-icon:hover img {
+transform: scale(1.1);
+border-radius: 10px;
+}
+
+/* Add to your existing static hover card styles */
+.static-hover-card.prompt-card {
+width: 95%;
+max-width: 1200px;
+height: auto;
+background-color: rgba(0, 0, 0, 0.95);
+padding: 25px;
+display: flex;
+flex-direction: column;
+}
+
+.prompt-table {
+width: 100%;
+border-collapse: separate;
+border-spacing: 0;
+margin-top: 15px;
+table-layout: fixed;
+}
+
+.prompt-table th,
+.prompt-table td {
+padding: 12px;
+text-align: left;
+border: 1px solid rgba(255, 255, 255, 0.2);
+color: white;
+}
+
+.prompt-table th:first-child,
+.prompt-table td:first-child {
+width: 15%;
+}
+
+.prompt-table td.equipment-cell,
+.prompt-table td.spells-cell {
+white-space: pre-wrap;
+word-break: break-word;
+max-width: 600px;
+}
+
+.prompt-table td.equipment-cell div,
+.prompt-table td.spells-cell div {
+max-height: 150px;
+overflow-y: auto;
+padding-right: 10px;
+}
+
+.prompt-table td div::-webkit-scrollbar {
+width: 8px;
+}
+
+.prompt-table td div::-webkit-scrollbar-track {
+background: rgba(255, 255, 255, 0.1);
+}
+
+.prompt-table td div::-webkit-scrollbar-thumb {
+background: rgba(255, 255, 255, 0.3);
+border-radius: 4px;
+}
+
+.static-hover-card .card-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 5px;
+}
+
+.static-hover-card .card-header h5 {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
 }
 
-.delete-btn {
+.copy-prompt-btn {
   background: none;
   border: none;
   padding: 5px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.copy-prompt-btn img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s;
+  filter: invert(1);
+}
+
+.copy-prompt-btn:hover {
+  background-color: rgba(147, 112, 219, 0.3);
+  border-radius: 5px;
+}
+
+/* Add these styles for the character prompts grid */
+.character-prompts-container {
+margin-top: 20px;
+}
+
+.prompts-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+}
+
+.prompts-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 20px;
+}
+
+.prompt-card {
+background: rgba(0, 0, 0, 0.7);
+border-radius: 8px;
+padding: 15px;
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prompt-card-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.prompt-actions {
+display: flex;
+gap: 8px;
+}
+
+.prompt-actions button {
+background: none;
+border: none;
+padding: 5px;
+cursor: pointer;
+transition: transform 0.2s;
+}
+
+.prompt-actions button:hover {
+transform: scale(1.1);
+}
+
+.prompt-actions img {
+width: 20px;
+height: 20px;
+filter: invert(1);
+}
+
+.prompt-preview {
+color: #fff;
+font-size: 0.9em;
+max-height: 100px;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: pre-line;
+}
+
+.new-prompt-btn {
+background: none;
+border: none;
+padding: 5px;
+cursor: pointer;
+}
+
+.new-prompt-btn img {
+width: 30px;
+height: 30px;
+transition: transform 0.2s;
+}
+
+.new-prompt-btn:hover img {
+transform: scale(1.1);
+}
+
+.text-frame-character-display {
+margin-bottom: 20px;
+padding: 20px;
+background: rgba(24, 24, 24, 0.678);
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(248, 248, 248, 0.1);
+}
+
+.text-frame-character-display h3 {
+color: rgb(250, 250, 250);
+}
+
+.character-list {
+max-height: 500px;
+overflow-y: auto;
+transition: max-height 0.3s ease-out;
+}
+
+.character-list.collapsed {
+max-height: 0;
+overflow: hidden;
+}
+
+.character-card {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 8px;
+margin-bottom: 15px;
+padding: 15px;
+}
+
+.character-card-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.character-card-header h5 {
+color: white;
+margin: 0;
+}
+
+.delete-btn {
+background: none;
+border: none;
+padding: 5px;
+cursor: pointer;
 }
 
 .delete-btn img {
-  width: 20px;
-  height: 20px;
-  filter: invert(1);
+width: 20px;
+height: 20px;
+filter: invert(1);
 }
 
 .send-btn {
-  background: none;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  display: block;
-  margin: 20px auto;
+background: none;
+border: none;
+padding: 10px;
+cursor: pointer;
+display: block;
+margin: 20px auto;
 }
 
 .send-btn img {
-  width: 24px;
-  height: 24px;
-  filter: invert(1);
-  transition: transform 0.2s;
+width: 24px;
+height: 24px;
+filter: invert(1);
+transition: transform 0.2s;
 }
 
 .send-btn:hover img {
-  transform: scale(1.1);
+transform: scale(1.1);
 }
 
 .character-table-container {
-  margin: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-  padding: 15px;
+margin: 20px;
+background: rgba(0, 0, 0, 0.7);
+border-radius: 8px;
+padding: 15px;
 }
 
 .character-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: white;
+width: 100%;
+border-collapse: collapse;
+color: white;
 }
 
 .character-table th,
 .character-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+padding: 12px;
+text-align: left;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .character-table th {
-  background: rgba(255, 255, 255, 0.1);
-  font-weight: bold;
+background: rgba(255, 255, 255, 0.1);
+font-weight: bold;
 }
 
 .character-table tr:hover {
-  background: rgba(255, 255, 255, 0.05);
+background: rgba(255, 255, 255, 0.05);
 }
 
 .action-buttons {
-  display: flex;
-  gap: 10px;
+display: flex;
+gap: 10px;
 }
 
 .action-buttons button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
+background: none;
+border: none;
+cursor: pointer;
+padding: 5px;
 }
 
 .action-buttons button img {
-  width: 20px;
-  height: 20px;
-  filter: invert(1);
+width: 20px;
+height: 20px;
+filter: invert(1);
 }
 
 .prompt-preview {
-  max-width: 500px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+max-width: 500px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .spell-toggle:hover {
-  text-decoration: underline;
-  opacity: 0.8;
+text-decoration: underline;
+opacity: 0.8;
 }
 
 .spell-options div:hover {
-  opacity: 0.8;
-  text-decoration: underline;
+opacity: 0.8;
+text-decoration: underline;
 }
 
 .spell-list {
-  margin-top: 10px;
-  padding-left: 20px;
-  border-left: 2px solid #4a90e2;
+margin-top: 10px;
+padding-left: 20px;
+border-left: 2px solid #4a90e2;
 }
 
 .spell-list div {
-  margin: 5px 0;
-  color: #000000;
-  list-style-type: none;
+margin: 5px 0;
+color: #000000;
+list-style-type: none;
 }
 
 /* Add these styles */
 .spell-toggle {
-  cursor: pointer;
-  color: #4a90e2;
-  text-decoration: underline;
-  position: relative;
-  display: inline-block;
-  margin-left: 5px;
-  user-select: none;
+cursor: pointer;
+color: #4a90e2;
+text-decoration: underline;
+position: relative;
+display: inline-block;
+margin-left: 5px;
+user-select: none;
 }
 
 .spell-toggle:hover {
-  color: #357abd;
+color: #357abd;
 }
 
 .spell-options {
-  position: absolute;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  z-index: 1000;
-  min-width: 100px;
-  top: 100%;
-  left: 0;
+position: absolute;
+background: white;
+border: 1px solid #ddd;
+border-radius: 4px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+z-index: 1000;
+min-width: 100px;
+top: 100%;
+left: 0;
 }
 
 .spell-options div {
-  padding: 8px 12px;
-  cursor: pointer;
-  color: #333;
-  transition: background-color 0.2s;
+padding: 8px 12px;
+cursor: pointer;
+color: #333;
+transition: background-color 0.2s;
 }
 
 .spell-options div:hover {
-  background-color: #f5f5f5;
+background-color: #f5f5f5;
 }
 
 .spell-list {
-  margin-top: 10px;
-  padding-left: 20px;
-  border-left: 2px solid #4a90e2;
+margin-top: 10px;
+padding-left: 20px;
+border-left: 2px solid #4a90e2;
 }
 
 .spell-list div {
-  margin: 5px 0;
-  color: #000000;
-  list-style-type: none;
+margin: 5px 0;
+color: #000000;
+list-style-type: none;
 }
 
 /* Make sure the spell options are above other content */
 .text-editor-container {
-  position: relative;
+position: relative;
 }
 
 /* Add these styles for expandable content */
 .expandable-content {
-  cursor: pointer;
-  position: relative;
-  padding-left: 20px;
+cursor: pointer;
+position: relative;
+padding-left: 20px;
 }
 
 .expandable-content::before {
-  content: '►';
-  position: absolute;
-  left: 0;
-  transition: transform 0.3s;
+content: '►';
+position: absolute;
+left: 0;
+transition: transform 0.3s;
 }
 
 .expandable-content.expanded::before {
-  transform: rotate(90deg);
+transform: rotate(90deg);
 }
 
 .expandable-details {
-  margin-top: 10px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+margin-top: 10px;
+padding: 10px;
+background: rgba(255, 255, 255, 0.1);
+border-radius: 4px;
 }
 
 .item-list {
-  margin: 0;
-  padding-left: 20px;
+margin: 0;
+padding-left: 20px;
 }
 
 .item-list li {
-  margin: 5px 0;
+margin: 5px 0;
 }
 
 /* Update the prompt table styles */
 .prompt-table td.expandable-cell {
-  padding: 0;
+padding: 0;
 }
 
 .expandable-cell .expandable-content {
-  padding: 12px;
-  padding-left: 32px;
+padding: 12px;
+padding-left: 32px;
 }
 
 .expandable-cell .expandable-details {
-  padding: 12px;
-  padding-left: 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+padding: 12px;
+padding-left: 32px;
+border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .spell-levels, .equipment-categories {
-  margin-top: 10px;
+margin-top: 10px;
 }
 
 .spell-level, .equipment-category {
-  margin-bottom: 10px;
+margin-bottom: 10px;
 }
 
 .spell-level-title, .equipment-category-title {
-  font-weight: bold;
-  color: #4a90e2;
-  margin-bottom: 5px;
+font-weight: bold;
+color: #4a90e2;
+margin-bottom: 5px;
 }
 
 .spell-list, .equipment-list {
-  padding-left: 20px;
-  list-style-type: none;
+padding-left: 20px;
+list-style-type: none;
 }
 
 .spell-list li, .equipment-list li {
-  margin: 3px 0;
-  color: #fff;
+margin: 3px 0;
+color: #fff;
 }
 
 .template-select {
-  padding: 8px;
-  margin: 5px;
-  border-radius: 4px;
-  background-color: #2c2c2c;
-  color: white;
-  border: 1px solid #444;
+padding: 8px;
+margin: 5px;
+border-radius: 4px;
+background-color: #2c2c2c;
+color: white;
+border: 1px solid #444;
 }
 
 .expandable-cell {
-  cursor: pointer;
+cursor: pointer;
 }
 
 .expandable-content {
-  white-space: pre-wrap;
-  transition: max-height 0.3s ease-out;
-  overflow: hidden;
-  max-height: 100px;
+white-space: pre-wrap;
+transition: max-height 0.3s ease-out;
+overflow: hidden;
+max-height: 100px;
 }
 
 .expandable-content.expanded {
-  max-height: none;
+max-height: none;
 }
 
 /* Add to existing prompt-table styles */
 .prompt-table td {
-  vertical-align: top;
+vertical-align: top;
 }

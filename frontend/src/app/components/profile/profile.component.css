@@ -894,3 +894,60 @@
 ngb-panel {
     margin-bottom: 10px;
 }
+
+.navigation-card {
+    background: rgba(6, 68, 65, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    border: 1px solid rgba(163, 245, 181, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.navigation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background: rgba(6, 68, 65, 0.6);
+}
+
+.navigation-card p {
+    color: #ffffff;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 0;
+    padding: 10px;
+    letter-spacing: 0.5px;
+}
+
+.text-link {
+    text-decoration: underline;
+    color: #a3f5b5;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 0 4px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.text-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(163, 245, 181, 0.6);
+}
+
+.text-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #a3f5b5;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.text-link:hover::after {
+    transform: scaleX(1);
+}

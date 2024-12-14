@@ -42,30 +42,15 @@ export class LoginComponent {
         if (this.username && this.password) {
             this.authService.login(this.username, this.password, this.rememberMe).subscribe({
                 next: async () => {
-                    this.toastService.show({
-                        template: this.welcomeTemplate,
-                        classname: 'bg-light-blue text-dark-blue',
-                        delay: 3000,
-                        context: { username: this.username }
-                    });
+                    this.toastService.success(`Welcome back, ${this.username}!`);
                 },
                 error: (error) => {
                     console.error('Login error:', error);
-                    this.toastService.show({
-                        template: this.errorTemplate,
-                        classname: 'bg-danger text-light',
-                        delay: 5000,
-                        context: { message: 'Invalid username or password.' }
-                    });
+                    this.toastService.error('Invalid username or password.');
                 }
             });
         } else {
-            this.toastService.show({
-                template: this.errorTemplate,
-                classname: 'bg-danger text-light',
-                delay: 7000,
-                context: { message: 'Username and password are required.' }
-            });
+            this.toastService.error('Username and password are required.');
         }
     }
 

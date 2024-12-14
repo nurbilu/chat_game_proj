@@ -1,12 +1,23 @@
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1200;">
+<div class="toast-container">
   <ng-container *ngFor="let toast of toastService.getToasts()">
     <ngb-toast
-      [header]="toast.title"
       [class]="toast.classname"
       [autohide]="true"
       [delay]="toast.delay || 5000"
       (hidden)="toastService.remove(toast)">
-      <ng-template [ngTemplateOutlet]="toast.template" [ngTemplateOutletContext]="{ username: toast.context?.username, message: toast.context?.message }"></ng-template>
+      <div class="d-flex align-items-center">
+        <i [class]="getToastIcon(toast.classname)"></i>
+        <div class="toast-content">
+          <ng-container *ngIf="toast.template">
+            <ng-template [ngTemplateOutlet]="toast.template" 
+                        [ngTemplateOutletContext]="{ username: toast.context?.username, message: toast.context?.message }">
+            </ng-template>
+          </ng-container>
+          <ng-container *ngIf="!toast.template && toast.context?.message">
+            {{ toast.context.message }}
+          </ng-container>
+        </div>
+      </div>
     </ngb-toast>
   </ng-container>
 </div>

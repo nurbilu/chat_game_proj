@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
   private offcanvasRef: NgbOffcanvasRef | null = null; // Allow null as a type
   isLoggedIn: boolean = false;
   @ViewChild(ChrcterCreationComponent) chrcterCreationComponent!: ChrcterCreationComponent;
-  @ViewChild('logoutSuccessTemplate', { static: true }) logoutSuccessTemplate!: TemplateRef<any>;
   @ViewChild('draggableOffcanvas', { static: true }) draggableOffcanvas!: ElementRef;
 
   currentOffcanvasPosition: 'top' | 'bottom' | 'start' | 'end' = 'start'; // Default position
@@ -127,12 +126,7 @@ export class AppComponent implements OnInit {
         this.modalRef.close();
       }
 
-      this.toastService.show({
-        template: this.logoutSuccessTemplate,
-        classname: 'bg-light-purple text-white',
-        delay: 5000,
-        context: { username: currentUsername, message: 'Bye for now , logout successful' }
-      });
+      this.toastService.info(`Goodbye ${currentUsername}, hope to see you soon!`, 'Logout Successful');
     });
   }
 
@@ -156,12 +150,7 @@ export class AppComponent implements OnInit {
     if (this.username && this.password) {
       this.authService.login(this.username, this.password, this.rememberMe).subscribe({
         next: (response) => {
-          this.toastService.show({
-            template: this.welcomeTemplate,
-            classname: 'bg-light-blue text-dark-blue',
-            delay: 10000,
-            context: { username: this.username }
-          });
+          this.toastService.success(`Welcome back, ${this.username}!`, 'Login Successful');
           if (this.rememberMe) {
             localStorage.setItem('rememberMe', 'true');
           }
@@ -174,21 +163,11 @@ export class AppComponent implements OnInit {
           this.router.navigate([targetRoute]);
         },
         error: (error) => {
-          this.toastService.show({
-            template: this.errorTemplate,
-            classname: 'bg-danger text-light',
-            delay: 15000,
-            context: { message: error.message }
-          });
+          this.toastService.error('Invalid username or password.');
         }
       });
     } else {
-      this.toastService.show({
-        template: this.errorTemplate,
-        classname: 'bg-danger text-light',
-        delay: 15000,
-        context: { message: 'Username and password are required.' }
-      });
+      this.toastService.error('Username and password are required.');
     }
   }
 
@@ -237,6 +216,7 @@ export class AppComponent implements OnInit {
   }
 
   onLogout() {
+    const currentUsername = this.username;
     this.authService.logout().subscribe(() => {
       console.log('User logged out');
       this.isLoggedIn = false;
@@ -244,6 +224,7 @@ export class AppComponent implements OnInit {
       this.isSuperUser = false;
       this.rememberMe = false;
       this.router.navigate(['/homepage']);
+      this.toastService.info(`Goodbye ${currentUsername}, hope to see you soon!`, 'Logout Successful');
     });
   }
 

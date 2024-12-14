@@ -25,7 +25,7 @@ export class RegisterComponent {
 
     register() {
         if (!this.profilePicture) {
-            this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+            this.toastService.error('Please select a profile picture');
             return;
         }
 
@@ -39,10 +39,10 @@ export class RegisterComponent {
         formData.append('last_name', this.lastName);
         formData.append('profile_picture', this.profilePicture);
 
-        this.authService.register(formData).subscribe(
-            data => {
+        this.authService.register(formData).subscribe({
+            next: () => {
+                this.toastService.success('Registration successful! You can now log in.');
                 this.router.navigate(['/login']);
-                this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
                 this.username = '';
                 this.password = '';
                 this.email = '';
@@ -52,10 +52,10 @@ export class RegisterComponent {
                 this.lastName = '';
                 this.profilePicture = null;
             },
-            error => {
-                this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
+            error: (error) => {
+                this.toastService.error('Registration failed. Please try again.');
             }
-        );
+        });
     }
 
     onFileSelected(event: any): void {

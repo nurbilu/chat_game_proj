@@ -61,17 +61,21 @@
 </ng-template>
 
 <ng-template #welcomeTemplate let-username="username">
-  <div class="bg-light-blue">Welcome {{ username }}, let's play!</div>
+  <div class="toast-body">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-check-circle-fill text-success me-2"></i>
+      Welcome {{ username }}, let's play!
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #errorTemplate let-message="message">
   <div class="toast-body">
-    {{ message }}
+    <div class="d-flex align-items-center">
+      <i class="bi bi-x-circle-fill text-danger me-2"></i>
+      {{ message }}
+    </div>
   </div>
-</ng-template>
-
-<ng-template #logoutSuccessTemplate let-username="username" let-message="message">
-  <div>Goodbye, {{ username }}! {{ message }}</div>
 </ng-template>
 
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark" [class.sticky-top]="isNavbarSticky">

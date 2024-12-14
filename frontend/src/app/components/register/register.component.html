@@ -79,8 +79,19 @@
 </section>
 
 <ng-template #successTemplate>
-  <div>Registration successful</div>
+  <div class="toast-body">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-check-circle-fill text-success me-2"></i>
+      Registration successful
+    </div>
+  </div>
 </ng-template>
+
 <ng-template #errorTemplate>
-  <div>Registration failed</div>
+  <div class="toast-body">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-x-circle-fill text-danger me-2"></i>
+      Registration failed
+    </div>
+  </div>
 </ng-template>

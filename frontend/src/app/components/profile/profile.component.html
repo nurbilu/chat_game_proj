@@ -5,10 +5,13 @@
         <h2 class="text-center my-4">Profile</h2>
         <div *ngIf="!isSuperuser">
             <div class="card">
-                <div class="rounded-top text-white d-flex flex-row" style="background-image: linear-gradient(45deg, #064441, #a3f5b5); height:200px; border: none;">
+                <div class="rounded-top text-white d-flex flex-row"
+                    style="background-image: linear-gradient(45deg, #064441, #a3f5b5); height:200px; border: none;">
                     <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-                        <img [src]="profilePictureUrl" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1" alt="Profile Picture">
-                        <button type="button" (click)="toggleEditProfile()" class="btn-cls" style="z-index: 1;">Edit Profile</button>
+                        <img [src]="profilePictureUrl" class="img-fluid img-thumbnail mt-4 mb-2"
+                            style="width: 150px; z-index: 1" alt="Profile Picture">
+                        <button type="button" (click)="toggleEditProfile()" class="btn-cls" style="z-index: 1;">Edit
+                            Profile</button>
                     </div>
                     <div class="ms-3" style="margin-top: 130px;">
                         <h5>{{ userProfile?.username }}</h5>
@@ -17,7 +20,8 @@
                 </div>
                 <div class="p-4 text-black bg-body-tertiary">
                     <div class="d-flex justify-content-end text-center py-1 text-body">
-                            <a routerLink="/chat" class="chat-icon" ngbTooltip="Go To Chatbot" triggers="mouseenter:mouseleave"></a>
+                        <a routerLink="/chat" class="chat-icon" ngbTooltip="Go To Chatbot"
+                            triggers="mouseenter:mouseleave"></a>
                     </div>
                 </div>
                 <div class="card-body p-4 text-black">
@@ -36,20 +40,20 @@
                     <div class="character-selection-container">
                         <div class="character-selection-controls">
                             <div ngbDropdown class="character-dropdown">
-                                <button type="button" class="btn btn-primary dropdown-toggle" id="characterDropdown" ngbDropdownToggle>
-                                    {{ selectedCharacter ? 'Character #' + (selectedCharacterIndex + 1) : 'Select Character' }}
+                                <button type="button" class="btn btn-primary dropdown-toggle" id="characterDropdown"
+                                    ngbDropdownToggle>
+                                    {{ selectedCharacter ? 'Character #' + (selectedCharacterIndex + 1) : 'Select
+                                    Character' }}
                                 </button>
                                 <div ngbDropdownMenu aria-labelledby="characterDropdown">
-                                    <button ngbDropdownItem *ngFor="let prompt of characterPrompts; let i = index" 
-                                            (click)="selectCharacter(prompt, i)">
+                                    <button ngbDropdownItem *ngFor="let prompt of characterPrompts; let i = index"
+                                        (click)="selectCharacter(prompt, i)">
                                         Character #{{i + 1}}
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" 
-                                    class="btn-reset" 
-                                    (click)="resetCharacterSelection()"
-                                    [disabled]="!selectedCharacter">
+                            <button type="button" class="btn-reset" (click)="resetCharacterSelection()"
+                                [disabled]="!selectedCharacter">
                                 Reset Selection
                             </button>
                         </div>
@@ -65,7 +69,8 @@
                                         <tbody>
                                             <tr>
                                                 <td><strong>Character Name:</strong></td>
-                                                <td>{{extractField(selectedCharacter.characterPrompt, 'Character Name')}}</td>
+                                                <td>{{extractField(selectedCharacter.characterPrompt, 'Character
+                                                    Name')}}</td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Race:</strong></td>
@@ -87,51 +92,29 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="navigation-card">
+                                <p>For elaborated character prompt information click to navigate to <span
+                                        class="text-link" (click)="navigateToCharacterCreation()">character creation</span> or <span
+                                        class="text-link" (click)="navigateToChat()">chat</span> page</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="edit-profile-overlay" [class.show-overlay]="showEditProfile">
-        <app-edit-profile 
-            (profileUpdated)="onProfileUpdated()" 
-            (closeEdit)="hideEditProfile()">
+        <app-edit-profile (profileUpdated)="onProfileUpdated()" (closeEdit)="hideEditProfile()">
         </app-edit-profile>
     </div>
 </div>
 
 <ng-template #successTemplate>
-  <div>Operation successful</div>
+    <div>Operation successful</div>
 </ng-template>
 <ng-template #errorTemplate>
-  <div>Operation failed</div>
+    <div>Operation failed</div>
 </ng-template>
 
 <!-- Template for uncategorized equipment -->
-<ng-template #uncategorizedEquipment let-equipment>
-    <table class="equipment-table">
-        <tbody>
-            <tr>
-                <td>{{equipment}}</td>
-            </tr>
-        </tbody>
-    </table>
-</ng-template>
-
-<!-- Template for categorized equipment -->
-<ng-template #categorizedEquipment let-equipment>
-    <div class="equipment-categories">
-        <div *ngFor="let category of getEquipmentEntries(equipment)" class="equipment-category">
-            <h6 class="category-title">{{category.key}}</h6>
-            <table class="equipment-table">
-                <tbody>
-                    <tr *ngFor="let item of category.value">
-                        <td>{{item}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</ng-template>

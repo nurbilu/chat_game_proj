@@ -100,20 +100,20 @@ export class AuthService {
             const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
             if (expirationDate) {
                 const expiresIn = expirationDate.getTime() - Date.now();
+                const decodedToken = this.jwtHelper.decodeToken(token);
+                const username = decodedToken.username;
+                
                 this.tokenExpirationTimer = setTimeout(() => {
                     this.tokenExpirationSubject.next();
                     this.refreshToken().subscribe({
-                        next: () => {
-                        },
+                        next: () => {},
                         error: () => {
                             this.clearLocalStorage();
-                            this.toastService.show({
-                                template: this.toastService.errorTemplate,
-                                classname: 'bg-danger text-light',
-                                delay: 15000,
-                                context: { message: 'Your session has expired. Please log in again.' }
-                            });
+                            sessionStorage.removeItem('lastNavLink');
+                            localStorage.removeItem('rememberMe');
+                            this.toastService.purple(`Hello ${username}, you've been logged out. Goodbye!`);
                             this.router.navigate(['/homepage']);
+                            this._isLoggedIn.next(false);
                         }
                     });
                 }, expiresIn);
@@ -125,18 +125,17 @@ export class AuthService {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
             const decodedToken = this.jwtHelper.decodeToken(refreshToken);
-            const expirationDate = new Date(decodedToken.exp * 1000); // Convert to milliseconds
+            const expirationDate = new Date(decodedToken.exp * 1000);
             const expiresIn = expirationDate.getTime() - Date.now();
+            const username = decodedToken.username;
+            
             this.refreshTokenExpirationTimer = setTimeout(() => {
                 this.clearLocalStorage();
-                this.toastService.show({
-                    template: this.toastService.errorTemplate,
-                    classname: 'bg-danger text-light',
-                    delay: 15000,
-                    context: { message: 'Your session has expired. Please log in again.' }
-                });
+                sessionStorage.removeItem('lastNavLink');
+                localStorage.removeItem('rememberMe');
+                this.toastService.purple(`Hello ${username}, you've been logged out. Goodbye!`);
                 this.router.navigate(['/homepage']);
-            
+                this._isLoggedIn.next(false);
             }, expiresIn);
         }
     }
@@ -334,7 +333,8 @@ export class AuthService {
             confirm_new_password: data.confirmPassword
         };
         return this.http.put(`${this.baseUrl}change-password/`, payload, { headers }).pipe(
-            catchError(error => throwError(() => new Error('Error changing password: ' + error.message)))
+            catchError(error => throwError(() => new Error('Error changing password: ' + error.message))),
+            tap(() => this.toastService.success('Password changed successfully'))
         );
     }
 
@@ -377,7 +377,7 @@ export class AuthService {
     logout(): Observable<any> {
         return of(null).pipe(
             tap(() => {
-                const username = this.username.getValue(); // Get the current username
+                const username = this.username.getValue(); 
                 this.clearLocalStorage();
                 sessionStorage.removeItem('lastNavLink');
                 localStorage.removeItem('rememberMe');
@@ -389,7 +389,8 @@ export class AuthService {
                 if (this.tokenExpirationTimer) {
                     clearTimeout(this.tokenExpirationTimer);
                 }
-                this.logoutEvent.emit(username); // Emit the username with the logout event
+                this.logoutEvent.emit(username); 
+                this.toastService.info(`Goodbye ${username}, hope to see you soon!`);
             })
         );
     }
@@ -424,6 +425,7 @@ export class AuthService {
             tap(() => {
                 // Clean up the temporary token
                 this.removeItem('temp_reset_token');
+                this.toastService.success('Password reset successful');
             }),
             catchError(error => {
                 this.removeItem('temp_reset_token');

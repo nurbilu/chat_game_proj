@@ -5,32 +5,90 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class ToastService {
-  private toasts: any[] = [];  // Array to store toast messages
-
-  errorTemplate!: TemplateRef<any>;  // Ensure this is initialized
-  successTemplate: TemplateRef<any> | undefined;
+  private toasts: any[] = [];
+  errorTemplate!: TemplateRef<any>;
+  successTemplate!: TemplateRef<any>;
+  warningTemplate!: TemplateRef<any>;
+  infoTemplate!: TemplateRef<any>;
 
   constructor(private toastr: ToastrService) {}
 
-  success(message: string) {
-    this.toasts.push({ classname: 'bg-success text-light', delay: 5000, message });
+  success(message: string, title: string = 'Success') {
+    this.toastr.success(message, title, {
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      progressBar: true,
+      enableHtml: true,
+      toastClass: 'ngx-toastr toast-success animate slideDown',
+      titleClass: 'toast-title',
+      messageClass: 'toast-message'
+    });
   }
 
-  error(message: string) {
-    this.toasts.push({ classname: 'bg-danger text-light', delay: 5000, message });
+  error(message: string, title: string = 'Error') {
+    this.toastr.error(message, title, {
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      progressBar: true,
+      enableHtml: true,
+      toastClass: 'ngx-toastr toast-error animate slideDown',
+      titleClass: 'toast-title',
+      messageClass: 'toast-message'
+    });
   }
 
-  warning(message: string) {
-    this.toasts.push({ classname: 'bg-warning text-dark', delay: 5000, message });
+  warning(message: string, title: string = 'Warning') {
+    this.toastr.warning(message, title, {
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      progressBar: true,
+      enableHtml: true,
+      toastClass: 'ngx-toastr toast-warning animate slideDown',
+      titleClass: 'toast-title',
+      messageClass: 'toast-message'
+    });
+  }
+
+  info(message: string, title: string = 'Info') {
+    this.toastr.info(message, title, {
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      progressBar: true,
+      enableHtml: true,
+      toastClass: 'ngx-toastr toast-info animate slideDown',
+      titleClass: 'toast-title',
+      messageClass: 'toast-message'
+    });
+  }
+
+  purple(message: string, title: string = 'Session Expired') {
+    this.toastr.show(message, title, {
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      progressBar: true,
+      enableHtml: true,
+      toastClass: 'ngx-toastr toast-purple animate slideDown',
+      titleClass: 'toast-title',
+      messageClass: 'toast-message'
+    });
   }
 
   show(toast: { template?: TemplateRef<any>, classname?: string, delay?: number, context?: any }) {
-    this.toasts.push(toast);
-
-    if (toast.context && toast.context.username) {
-      console.log(`Showing toast for username: ${toast.context.username}`);
-    } else {
-      console.log('Showing toast without username');
+    if (toast.template) {
+      // Handle template-based toasts
+      this.toasts.push(toast);
+    } else if (toast.context?.message) {
+      // Handle message-based toasts using toastr
+      const type = toast.classname?.includes('success') ? 'success' :
+                   toast.classname?.includes('danger') ? 'error' :
+                   toast.classname?.includes('warning') ? 'warning' : 'info';
+      
+      this[type](toast.context.message);
     }
   }
 
@@ -40,5 +98,17 @@ export class ToastService {
 
   getToasts() {
     return this.toasts;
+  }
+
+  setTemplates(templates: {
+    error?: TemplateRef<any>,
+    success?: TemplateRef<any>,
+    warning?: TemplateRef<any>,
+    info?: TemplateRef<any>
+  }) {
+    if (templates.error) this.errorTemplate = templates.error;
+    if (templates.success) this.successTemplate = templates.success;
+    if (templates.warning) this.warningTemplate = templates.warning;
+    if (templates.info) this.infoTemplate = templates.info;
   }
 }

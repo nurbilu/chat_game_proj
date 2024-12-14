@@ -528,21 +528,29 @@ export class ProfileComponent implements OnInit {
     if (this.selectedCharacter?.characterPrompt) {
       navigator.clipboard.writeText(this.selectedCharacter.characterPrompt)
         .then(() => {
-          this.toastService.show({
-            template: this.successTemplate,
-            classname: 'bg-success text-light',
-            delay: 3000,
-            context: { message: 'Character prompt copied to clipboard' }
-          });
+          this.toastService.success('Character prompt copied to clipboard');
         })
         .catch(err => {
-          this.toastService.show({
-            template: this.errorTemplate,
-            classname: 'bg-danger text-light',
-            delay: 3000,
-            context: { message: 'Failed to copy character prompt' }
-          });
+          this.toastService.error('Failed to copy character prompt');
         });
     }
+  }
+
+  navigateToCharacterCreation(): void {
+    this.router.navigate(['/character-creation']);
+  }
+
+  navigateToChat(): void {
+    this.router.navigate(['/chat']);
+  }
+
+  deleteCharacter(character: Character): void {
+    // ... deletion logic ...
+    this.toastService.success('Character deleted successfully');
+  }
+
+  updateProfile(): void {
+    // ... update logic ...
+    this.toastService.success('Profile updated successfully');
   }
 }

@@ -1,15 +1,62 @@
 .toast-container {
   position: fixed;
-  top: 75px;
+  top: 80px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1200;
-  width: 100%;
-  max-width: 500px;
-  padding: 1rem;
+  width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+:host ::ng-deep .ngb-toast {
+  margin-bottom: 10px;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:host ::ng-deep .bg-success {
+  background-color: #28a745 !important;
+  color: white;
+}
+
+:host ::ng-deep .bg-danger {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+:host ::ng-deep .bg-warning {
+  background-color: #ffc107 !important;
+  color: black;
+}
+
+:host ::ng-deep .bg-info {
+  background-color: #17a2b8 !important;
+  color: white;
+}
+
+:host ::ng-deep .bg-purple {
+  background-color: #8a2be2 !important;
+  color: white;
+}
+
+:host ::ng-deep .toast-header {
+  background-color: transparent;
+  border-bottom: none;
+  padding: 0 0 8px 0;
+}
+
+:host ::ng-deep .toast-body {
+  padding: 0;
 }
 
 
