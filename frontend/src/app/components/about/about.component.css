@@ -1,14 +1,13 @@
 .about-container {
     position: relative;
     max-width: 100%;
-    padding: 100px 50px;
+    padding: 97px 57px;
     margin: 0 auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     color: #f5f4f8;
     text-align: center;
     overflow: hidden;
     animation: fadeIn 1.5s ease-in-out;
-    /* Add this line */
 }
 
 .about-container::before {
@@ -27,30 +26,38 @@
 .text-container {
     z-index: 1;
     font-size: 17px;
-    max-width: 1000px;
+    max-width: 1600px;
+    width: 95%;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.5;
     background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    padding: 15px 50px;
     border-radius: 10px;
 }
 
 h1 {
     font-size: 36px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: #ffcc00;
 }
 
 p {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .image-gallery-menu {
-    margin-top: 50px;
+    margin-top: 40px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
+    width: 100%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .image-gallery-menu img {

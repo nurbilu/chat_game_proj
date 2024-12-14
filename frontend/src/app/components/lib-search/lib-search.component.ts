@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { SearchService } from '../../services/search.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-lib-search',
@@ -18,7 +19,7 @@ export class LibSearchComponent {
   showHoverCard: boolean = false;
   selectedEntry: any = null;
 
-  constructor(private searchService: SearchService, private renderer: Renderer2) {}
+  constructor(private searchService: SearchService, private renderer: Renderer2, private toastService: ToastService) {}
 
   onSearch(): void {
     console.log('LibSearchComponent onSearch triggered with query:', this.searchQuery);
@@ -32,13 +33,16 @@ export class LibSearchComponent {
             this.noResultsFound = false;
             this.isLoading = false;
             this.searchCompleted.emit(this.searchResult);
+            this.toastService.success('Results are found indeed!', 'Search Success');
           },
           error: (error) => {
             if (error.status === 404) {
               console.error('No results found:', error);
               this.noResultsFound = true;
+              this.toastService.warning('Keywords do not match! Please search again - look for spelling mistakes or misstypes.');
             } else {
               console.error('Search error:', error);
+              this.toastService.error('An error occurred while searching. Please try again.');
             }
             this.searchResult = [];
             this.showSearchResults = false;

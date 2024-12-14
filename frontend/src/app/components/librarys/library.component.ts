@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CleanTextPipe } from '../../clean-text.pipe';
 import { SearchService } from '../../services/search.service';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../../services/toast.service';
 
 interface Collection {
   [key: string]: any[];
@@ -46,7 +47,7 @@ export class LibraryComponent implements OnInit {
   scrollDeltaY: number = 0;
   scrollDeltaX: number = 0;
 
-  constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService) { }
+  constructor(private libraryService: LibraryService, private router: Router, private cleanTextPipe: CleanTextPipe, private searchService: SearchService, private toastService: ToastService) { }
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -210,28 +211,42 @@ export class LibraryComponent implements OnInit {
   }
 
   onSearch(): void {
-    console.log('LibraryComponent onSearch triggered with query:', this.searchQuery);
-    if (this.searchQuery) {
-      this.isLoading = true;
-      this.searchService.searchItemByName(this.searchQuery)
-        .subscribe({
-          next: (results: { [key: string]: any }) => {
-            this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
-            this.showSearchResults = true;
-            this.isLoading = false;
-          },
-          error: (error) => {
-            console.error('Search error:', error);
-            this.searchResult = [];
-            this.showSearchResults = false;
-            this.isLoading = false;
-          }
-        });
-    } else {
-      console.log('Search query is empty');
-      this.searchResult = [];
-      this.showSearchResults = false;
+    if (!this.searchQuery) {
+      this.toastService.warning('Please enter a search term before searching.');
+      return;
     }
+
+    if (!/^[a-zA-Z0-9\s-]+$/.test(this.searchQuery)) {
+      this.toastService.error('Invalid search format. Please use only letters, numbers, spaces, and hyphens.');
+      return;
+    }
+
+    this.isLoading = true;
+    this.searchService.searchItemByName(this.searchQuery)
+      .subscribe({
+        next: (results: { [key: string]: any }) => {
+          this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
+          if (this.searchResult.length === 0) {
+            this.toastService.warning('No results found for "' + this.searchQuery + '". Try different keywords.');
+            this.showSearchResults = false;
+          } else {
+            this.showSearchResults = true;
+            this.toastService.success('Results are found indeed!', 'Search Success');
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Search error:', error);
+          if (error.status === 404) {
+            this.toastService.warning(`No results found for "${this.searchQuery}". Please check spelling and try again.`);
+          } else {
+            this.toastService.error('Search failed. Please try again with different keywords.');
+          }
+          this.searchResult = [];
+          this.showSearchResults = false;
+          this.isLoading = false;
+        }
+      });
   }
 
   formatArray(value: any[]): string {
@@ -317,46 +332,54 @@ export class LibraryComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    this.checkScrollPosition();
+    if (typeof window !== 'undefined') {
+      this.checkScrollPosition();
+    }
   }
 
   checkScrollPosition() {
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    const container = document.querySelector('.scrollspy-example');
-    const horizontalScrollPosition = container ? container.scrollLeft : 0;
-    
-    this.scrollDeltaY = scrollPosition;
-    this.scrollDeltaX = horizontalScrollPosition;
-    
-    this.showHoverCard = this.scrollDeltaY > 300 || this.scrollDeltaX > 200;
-    
-    if (this.scrollDeltaX > 200 && this.scrollDeltaY === 0) {
-      this.showBackToLeft = true;
-      this.showBackToTop = false;
-    } else if (this.scrollDeltaY > 300 && this.scrollDeltaX === 0) {
-      this.showBackToTop = true;
-      this.showBackToLeft = false;
-    } else if (this.scrollDeltaX > 200 && this.scrollDeltaY > 300) {
-      this.showBackToTop = true;
-      this.showBackToLeft = true;
-    } else {
-      this.showBackToTop = false;
-      this.showBackToLeft = false;
+    if (typeof window !== 'undefined') {
+      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const container = document.querySelector('.scrollspy-example');
+      const horizontalScrollPosition = container ? container.scrollLeft : 0;
+      
+      this.scrollDeltaY = scrollPosition;
+      this.scrollDeltaX = horizontalScrollPosition;
+      
+      this.showHoverCard = this.scrollDeltaY > 300 || this.scrollDeltaX > 200;
+      
+      if (this.scrollDeltaX > 200 && this.scrollDeltaY === 0) {
+        this.showBackToLeft = true;
+        this.showBackToTop = false;
+      } else if (this.scrollDeltaY > 300 && this.scrollDeltaX === 0) {
+        this.showBackToTop = true;
+        this.showBackToLeft = false;
+      } else if (this.scrollDeltaX > 200 && this.scrollDeltaY > 300) {
+        this.showBackToTop = true;
+        this.showBackToLeft = true;
+      } else {
+        this.showBackToTop = false;
+        this.showBackToLeft = false;
+      }
     }
   }
 
   scrollToLeft() {
-    const container = document.querySelector('.scrollspy-example');
-    if (container) {
-      container.scrollTo({
-        left: 0,
-        behavior: 'smooth'
-      });
+    if (typeof window !== 'undefined') {
+      const container = document.querySelector('.scrollspy-example');
+      if (container) {
+        container.scrollTo({
+          left: 0,
+          behavior: 'smooth'
+        });
+      }
     }
   }
 
   scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   shouldShowHoverCard(): boolean {
@@ -392,16 +415,29 @@ export class LibraryComponent implements OnInit {
 
   @HostListener('window:resize')
   onResize() {
-    this.checkScrollPosition();
+    if (typeof window !== 'undefined') {
+      this.checkScrollPosition();
+    }
   }
 
   @HostListener('scroll', ['$event'])
   onScroll(event: Event) {
-    if (event.target instanceof Element) {
+    if (typeof window !== 'undefined' && event.target instanceof Element) {
       const container = event.target;
       this.scrollDeltaX = container.scrollLeft;
       this.scrollDeltaY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
       this.checkScrollPosition();
+    }
+  }
+
+  onSearchCompleted(results: any[]): void {
+    if (results && results.length > 0) {
+      this.searchResult = results;
+      this.showSearchResults = true;
+      this.toastService.success('Results are found indeed!', 'Search Success');
+    } else {
+      this.showSearchResults = false;
+      this.toastService.warning('Keywords do not match! Please search again - look for spelling mistakes or misstypes.');
     }
   }
 }

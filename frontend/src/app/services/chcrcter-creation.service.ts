@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
@@ -127,7 +127,7 @@ export class ChcrcterCreationService {
     return this.http.get<Character[]>(`${this.apiUrl}/character_prompts/${username}`).pipe(
       catchError(error => {
         console.error('Failed to fetch all character prompts:', error);
-        return throwError(() => new Error('Error fetching character prompts: ' + error.message));
+        return of([]);
       })
     );
   }

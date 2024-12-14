@@ -114,10 +114,18 @@
       <div class="editor-buttons">
         <button (click)="sendMessage()" ngbTooltip="Click to save your prompt to the chat"
           triggers="mouseenter:mouseleave" tooltipTitle="Send">Send</button>
-        <button (click)="saveDraft()" ngbTooltip="Click to save draft not as a prompt" triggers="mouseenter:mouseleave"
-          tooltipTitle="Save Draft">Save Draft</button>
-        <button (click)="pasteDraft()" ngbTooltip="Click to paste your draft" triggers="mouseenter:mouseleave"
-          tooltipTitle="Paste Draft">Paste Draft</button>
+        <button (click)="saveDraft()" 
+          [disabled]="!(isLoggedIn$ | async)"
+          [ngbTooltip]="(isLoggedIn$ | async) ? 'Save your current progress' : 'Please log in to save drafts'"
+          triggers="mouseenter:mouseleave">
+          Save Draft
+        </button>
+        <button (click)="loadDraft()"
+          [disabled]="!(isLoggedIn$ | async)"
+          [ngbTooltip]="(isLoggedIn$ | async) ? 'Load your saved draft' : 'Please log in to load drafts'"
+          triggers="mouseenter:mouseleave">
+          Load Draft
+        </button>
         
         <!-- Add template selection -->
         <select #templateSelect class="template-select" (change)="loadTemplate($event)">

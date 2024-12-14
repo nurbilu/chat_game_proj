@@ -9,6 +9,7 @@ import { EditorConfig } from 'ngx-simple-text-editor';
 import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search.service';
 import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 
 interface ChatbotResponse {
@@ -155,6 +156,8 @@ user: any;
     barbarian: 'assets/deflt-chrcter-prompts/barbarian.txt'
   };
 
+  isLoggedIn$ = this.authService.isLoggedIn();
+
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
@@ -187,100 +190,137 @@ user: any;
   }
 
   saveDraft() {
-    this.authService.getUsername().subscribe((username: string) => {
-      const draft = {
-        username: username,
-        prompt: this.characterPrompt
-      };
-      this.chcrcterCreationService.saveDraft(draft).subscribe({
-        next: () => {
-          this.toastService.show({
-            template: this.successToast,
-            classname: 'bg-success text-light',
-            delay: 3000,
-            context: { message: 'Draft saved successfully' }
-          });
+    this.authService.isLoggedIn().pipe(
+        switchMap((isLoggedIn: boolean) => {
+            if (!isLoggedIn) return of(null);
+            return this.authService.getUsername();
+        }),
+        switchMap((username: string | null) => {
+            if (!username) return of(null);
+            return this.chcrcterCreationService.saveDraft({
+                username: username,
+                prompt: this.characterPrompt
+            });
+        })
+    ).subscribe({
+        next: (response) => {
+            if (!response) return;
+            this.showToastIfAuthenticated({
+                template: this.successToast,
+                classname: 'bg-success text-light',
+                delay: 3000,
+                context: { message: 'Draft saved successfully' }
+            });
         },
-        error: (error: any) => {
-          this.toastService.show({
-            template: this.errorToast,
-            classname: 'bg-danger text-light',
-            delay: 3000,
-            context: { message: 'Failed to save draft' }
-          });
+        error: (error) => {
+            console.error('Failed to save draft:', error);
+            this.showToastIfAuthenticated({
+                template: this.errorToast,
+                classname: 'bg-danger text-light',
+                delay: 3000,
+                context: { message: 'Failed to save draft' }
+            });
         }
-      });
     });
   }
 
   loadDraft() {
-    this.authService.getUsername().subscribe((username: string) => {
-      this.chcrcterCreationService.getDraft(username).subscribe({
+    // Check if user is logged in before proceeding
+    this.authService.isLoggedIn().pipe(
+        switchMap((isLoggedIn: boolean) => {
+            if (!isLoggedIn) {
+                this.characterPrompt = this.getDefaultPromptTemplate();
+                return of(null);
+            }
+            return this.authService.getUsername();
+        }),
+        switchMap((username: string | null) => {
+            if (!username) return of(null);
+            return this.chcrcterCreationService.getDraft(username);
+        })
+    ).subscribe({
         next: (response) => {
-          if (response.prompt && response.prompt.trim()) {
-            this.characterPrompt = response.prompt;
-            this.toastService.show({
-              template: this.successToast,
-              classname: 'bg-success text-light',
-              delay: 3000,
-              context: { message: 'Draft loaded successfully' }
-            });
-          } else {
-            this.characterPrompt = this.getDefaultPromptTemplate();
-            this.toastService.show({
-              template: this.errorToast,
-              classname: 'bg-warning text-dark',
-              delay: 3000,
-              context: { message: 'No saved draft found, using default template' }
-            });
-          }
+            if (!response) return;
+            
+            if (response.prompt && response.prompt.trim()) {
+                this.characterPrompt = response.prompt;
+                // Toast will only show if user is logged in
+                this.authService.isLoggedIn().subscribe(isLoggedIn => {
+                    if (isLoggedIn) {
+                        this.toastService.show({
+                            template: this.successToast,
+                            classname: 'bg-success text-light',
+                            delay: 3000,
+                            context: { message: 'Draft loaded successfully' }
+                        });
+                    }
+                });
+            } else {
+                this.characterPrompt = this.getDefaultPromptTemplate();
+            }
         },
         error: (error) => {
-          console.error('Failed to load draft:', error);
-          this.characterPrompt = this.getDefaultPromptTemplate();
-          this.toastService.show({
-            template: this.errorToast,
-            classname: 'bg-danger text-light',
-            delay: 3000,
-            context: { message: 'Failed to load draft' }
-          });
+            console.error('Failed to load draft:', error);
+            this.characterPrompt = this.getDefaultPromptTemplate();
+            // Only show error toast if user is logged in
+            this.authService.isLoggedIn().subscribe(isLoggedIn => {
+                if (isLoggedIn) {
+                    this.toastService.show({
+                        template: this.errorToast,
+                        classname: 'bg-danger text-light',
+                        delay: 3000,
+                        context: { message: 'Failed to load draft' }
+                    });
+                }
+            });
         }
-      });
     });
   }
 
   pasteDraft() {
-    this.authService.getUsername().subscribe((username: string) => {
-      this.chcrcterCreationService.getDraft(username).subscribe({
-        next: (response) => {
-          if (response.prompt && response.prompt.trim()) {
-            this.characterPrompt = response.prompt;
-            this.toastService.show({
-              template: this.successToast,
-              classname: 'bg-success text-light',
-              delay: 3000,
-              context: { message: 'Draft pasted successfully' }
-            });
-          } else {
+    this.authService.isLoggedIn().subscribe((isLoggedIn: boolean) => {
+      if (!isLoggedIn) {
+        this.toastService.show({
+          template: this.errorToast,
+          classname: 'bg-warning text-dark',
+          delay: 3000,
+          context: { message: 'Please log in to load drafts' }
+        });
+        return;
+      }
+
+      this.authService.getUsername().subscribe((username: string) => {
+        this.chcrcterCreationService.getDraft(username).subscribe({
+          next: (response) => {
+            if (response.prompt && response.prompt.trim()) {
+              this.characterPrompt = response.prompt;
+              this.toastService.show({
+                template: this.successToast,
+                classname: 'bg-success text-light',
+                delay: 3000,
+                context: { message: 'Draft pasted successfully' }
+              });
+            } else {
+              this.characterPrompt = this.getDefaultPromptTemplate();
+              this.toastService.show({
+                template: this.errorToast,
+                classname: 'bg-warning text-dark',
+                delay: 3000,
+                context: { message: 'No saved draft found, using default template' }
+              });
+            }
+          },
+          error: (error) => {
+            console.error('Error loading draft:', error);
             this.characterPrompt = this.getDefaultPromptTemplate();
             this.toastService.show({
               template: this.errorToast,
-              classname: 'bg-warning text-dark',
+              classname: 'bg-danger text-light',
               delay: 3000,
-              context: { message: 'No saved draft found, using default template' }
+              context: { message: 'Failed to load draft' }
             });
           }
-        },
-        error: (error) => {
-          console.error('Error loading draft:', error);
-          this.characterPrompt = this.getDefaultPromptTemplate();
-          this.toastService.show({
-            template: this.errorToast,
-            classname: 'bg-danger text-light',
-            delay: 3000,
-            context: { message: 'Failed to load draft' }
-          });
-        }
+        });
       });
     });
   }
@@ -357,9 +397,11 @@ user: any;
 
 
   handleSearchResults(results: any[]): void {
-    console.log('Handling search results:', results);
     this.searchResult = results;
     this.showSearchResults = true;
+    if (results.length > 0) {
+      this.toastService.success('Results are found indeed!', 'Search Success');
+    }
   }
 
   clearSearchResults(): void {
@@ -408,69 +450,88 @@ user: any;
   }
 
   sendMessage() {
-    this.authService.getUsername().subscribe((username: string) => {
-      const characterData = {
-        username: username,
-        characterPrompt: this.characterPrompt
-      };
-
-      this.chcrcterCreationService.saveNewCharacterPrompt(characterData).subscribe({
-        next: () => {
-          this.loadCharacterPrompts(); // Reload the character list
-          this.toastService.show({
-            template: this.successToast,
-            classname: 'bg-success text-light',
-            delay: 3000,
-            context: { message: 'Character prompt saved successfully' }
-          });
-          // Reset the prompt to default template
-          this.characterPrompt = this.getDefaultPromptTemplate();
-        },
-        error: (error) => {
-          console.error('Failed to save character prompt:', error);
-          this.toastService.show({
+    if (!this.characterPrompt.trim()) {
+        this.toastService.show({
             template: this.errorToast,
-            classname: 'bg-danger text-light',
+            classname: 'bg-warning text-dark',
             delay: 3000,
-            context: { message: 'Failed to save character prompt' }
-          });
-        }
-      });
+            context: { message: 'Please enter a character prompt' }
+        });
+        return;
+    }
+
+    this.authService.getUsername().subscribe((username: string) => {
+        const characterData = {
+            username: username,
+            characterPrompt: this.characterPrompt
+        };
+
+        this.chcrcterCreationService.saveNewCharacterPrompt(characterData).subscribe({
+            next: () => {
+                this.toastService.show({
+                    template: this.successToast,
+                    classname: 'bg-success text-light',
+                    delay: 3000,
+                    context: { message: 'Character prompt saved successfully' }
+                });
+                // Reset the prompt to default template
+                this.characterPrompt = this.getDefaultPromptTemplate();
+                // Reload the character prompts
+                this.loadCharacterPrompts();
+            },
+            error: (error) => {
+                let errorMessage = 'Failed to save character prompt';
+                if (error.error?.error === 'Maximum number of characters (4) reached') {
+                    errorMessage = 'Maximum number of characters (4) reached';
+                }
+                this.toastService.show({
+                    template: this.errorToast,
+                    classname: 'bg-danger text-light',
+                    delay: 3000,
+                    context: { message: errorMessage }
+                });
+            }
+        });
     });
   }
 
   onSearch(): void {
-    console.log('CharacterCreationComponent onSearch triggered with query:', this.searchQuery);
-    if (this.searchQuery) {
-      this.isSearching = true; // Use isSearching instead of isLoading
-      this.searchService.searchItemByName(this.searchQuery)
-        .subscribe({
-          next: (results: { [key: string]: any }) => {
-            this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
-            this.showSearchResults = true;
-            this.noResultsFound = false;
-            this.isSearching = false; // Set isSearching to false when done
-            this.searchCompleted.emit(this.searchResult);
-          },
-          error: (error) => {
-            if (error.status === 404) {
-              console.error('No results found:', error);
-              this.noResultsFound = true;
-            } else {
-              console.error('Search error:', error);
-            }
-            this.searchResult = [];
-            this.showSearchResults = false;
-            this.isSearching = false; // Set isSearching to false on error
-            this.searchCleared.emit();
-          }
-        });
-    } else {
-      this.showSearchResults = false;
-      this.noResultsFound = false;
-      this.isSearching = false;
-      this.searchCleared.emit();
+    if (!this.searchQuery) {
+      this.toastService.warning('Please enter a search term before searching.');
+      return;
     }
+
+    if (!/^[a-zA-Z0-9\s-]+$/.test(this.searchQuery)) {
+      this.toastService.error('Invalid search format. Please use only letters, numbers, spaces, and hyphens.');
+      return;
+    }
+
+    this.isSearching = true;
+    this.searchService.searchItemByName(this.searchQuery)
+      .subscribe({
+        next: (results: { [key: string]: any }) => {
+          this.searchResult = Object.entries(results).map(([key, value]) => ({ key, value }));
+          if (this.searchResult.length === 0) {
+            this.toastService.warning('No results found for "' + this.searchQuery + '". Try different keywords.');
+            this.showSearchResults = false;
+          } else {
+            this.showSearchResults = true;
+            this.toastService.success('Results are found indeed!', 'Search Success');
+          }
+          this.isSearching = false;
+        },
+        error: (error) => {
+          console.error('Search error:', error);
+          if (error.status === 404) {
+            this.toastService.warning(`No results found for "${this.searchQuery}". Please check spelling and try again.`);
+          } else {
+            this.toastService.error('Search failed. Please try again with different keywords.');
+          }
+          this.searchResult = [];
+          this.showSearchResults = false;
+          this.isSearching = false;
+        }
+      });
   }
 
   formatItem(item: any): string {
@@ -657,27 +718,23 @@ user: any;
 
   loadCharacterPrompts() {
     this.authService.getUsername().subscribe((username: string) => {
-      this.chcrcterCreationService.getAllCharacterPrompts(username).subscribe({
-        next: (prompts) => {
-          this.characterPrompts = prompts.map((prompt: any, index: number) => ({
-            _id: prompt._id.$oid || prompt._id,
-            username: prompt.username,
-            characterPrompt: prompt.characterPrompt,
-            index: index + 1,
-            character: prompt.character || { name: '', prompt: '' }
-          }));
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Failed to load character prompts:', error);
-          this.toastService.show({
-            template: this.errorToast,
-            classname: 'bg-danger text-light',
-            delay: 3000,
-            context: { message: 'Failed to load character prompts' }
-          });
-        }
-      });
+        this.chcrcterCreationService.getAllCharacterPrompts(username).subscribe({
+            next: (prompts) => {
+                this.characterPrompts = prompts.map((prompt: any, index: number) => ({
+                    _id: prompt._id.$oid || prompt._id,
+                    username: prompt.username,
+                    characterPrompt: prompt.characterPrompt,
+                    index: index + 1,
+                    character: prompt.character || { name: '', prompt: '' }
+                }));
+                this.cdr.detectChanges();
+            },
+            error: (error) => {
+                console.error('Failed to load character prompts:', error);
+                this.characterPrompts = [];
+                this.cdr.detectChanges();
+            }
+        });
     });
   }
 
@@ -1076,5 +1133,13 @@ user: any;
     return text.length > previewLength 
       ? text.substring(0, previewLength) + '... (click to expand)'
       : text;
+  }
+
+  private showToastIfAuthenticated(toastConfig: any) {
+    this.authService.shouldShowDraftToast().subscribe(shouldShow => {
+        if (shouldShow) {
+            this.toastService.show(toastConfig);
+        }
+    });
   }
 }

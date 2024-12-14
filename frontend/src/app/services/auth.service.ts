@@ -1,7 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID, NgZone, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpBackend } from '@angular/common/http';
-import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
-import { tap, catchError, switchMap, map } from 'rxjs/operators';
+import { Observable, throwError, of, BehaviorSubject, combineLatest, map } from 'rxjs';
+import { tap, catchError, switchMap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
@@ -24,6 +24,8 @@ export class AuthService {
     tokenExpiration$ = this.tokenExpirationSubject.asObservable();
 
     logoutEvent = new EventEmitter<string>();
+
+    private draftToastEnabled = new BehaviorSubject<boolean>(false);
 
     constructor(
         private http: HttpClient,
@@ -48,8 +50,6 @@ export class AuthService {
             }
         }
     }
-
-
 
     // Method to retrieve the token
     getToken(): string | null {
@@ -169,6 +169,7 @@ export class AuthService {
                 this._isLoggedIn.next(true);
                 this.username.next(decodedToken.username);
                 this.startTokenExpirationTimer();
+                this.enableDraftToasts();
 
                 // Get saved nav link from session storage
                 const savedNavLink = sessionStorage.getItem('lastNavLink');
@@ -243,6 +244,7 @@ export class AuthService {
                 this._isLoggedIn.next(true);
                 this.username.next(decodedToken.username);
                 this.startTokenExpirationTimer();
+                this.enableDraftToasts();
 
                 // Get saved nav link from session storage
                 const savedNavLink = sessionStorage.getItem('lastNavLink');
@@ -391,6 +393,7 @@ export class AuthService {
                 }
                 this.logoutEvent.emit(username); 
                 this.toastService.info(`Goodbye ${username}, hope to see you soon!`);
+                this.disableDraftToasts();
             })
         );
     }
@@ -596,6 +599,29 @@ Cantrips: ${spells.join(', ')}`;
         );
     }
 
+    // Add getter for draft toast state
+    getDraftToastState(): Observable<boolean> {
+        return this.draftToastEnabled.asObservable();
+    }
 
+    // Method to enable draft toasts
+    enableDraftToasts(): void {
+        this.draftToastEnabled.next(true);
+    }
+
+    // Method to disable draft toasts
+    disableDraftToasts(): void {
+        this.draftToastEnabled.next(false);
+    }
+
+    // Method to check if draft toasts should be shown
+    shouldShowDraftToast(): Observable<boolean> {
+        return combineLatest([
+            this.isLoggedIn(),
+            this.getDraftToastState()
+        ]).pipe(
+            map(([isLoggedIn, draftToastEnabled]) => isLoggedIn && draftToastEnabled)
+        );
+    }
 
 }

@@ -152,7 +152,7 @@ def create_app():
     # Add request preprocessor for ObjectId
     @app.before_request
     def handle_object_id():
-        if 'prompt_id' in request.view_args:
+        if request.view_args and 'prompt_id' in request.view_args:
             try:
                 raw_id = request.view_args['prompt_id']
                 request.view_args['prompt_id'] = CustomJSONEncoder.decode_object_id(raw_id)
@@ -366,14 +366,19 @@ def save_character_prompt():
         if existing_prompts >= 4:
             return jsonify({'error': 'Maximum number of characters (4) reached'}), 400
 
-        # Save character prompt to MongoDB
+        # Save character prompt to MongoDB with timestamp
         result = db.characters.insert_one({
             "username": username,
             "characterPrompt": character_prompt,
-            "created_at": datetime.utcnow()
+            "created_at": datetime.utcnow(),
+            "active": True  # Add active flag
         })
         
-        return jsonify({'message': 'Character prompt saved successfully', 'id': str(result.inserted_id)}), 200
+        return jsonify({
+            'message': 'Character prompt saved successfully',
+            'id': str(result.inserted_id)
+        }), 200
+
     except Exception as e:
         app.logger.error(f"Failed to save character prompt: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
