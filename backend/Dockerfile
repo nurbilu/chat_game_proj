@@ -33,6 +33,7 @@ EXPOSE 8000
 
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import mysql.connector; mysql.connector.connect(host='mysql-demomo', user='root', password='MYSQLnur1996##', database='dnd', port=3307)"
+    CMD python -c "import mysql.connector; mysql.connector.connect(host='mysql-demomo', user='root', password='***********', database='dnd', port=3307)" 
+# change password .
 
 CMD ["/app/entrypoint.sh"]
