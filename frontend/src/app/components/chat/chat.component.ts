@@ -224,12 +224,12 @@ export class ChatComponent implements OnInit {
         let templateMessage = '';
         switch (this.selectedTemplate) {
             case 'template1':
-                templateMessage = `Hello, my name is ${this.username}. I'll send a Character prompt of a DnD character - create an ongoing "One-Shot" DnD campaign for this character. Please respond. After Character prompt is sent - start the campaign, thank you.`;
+                templateMessage = `Hello, my name is ${this.username}. I'll send a Character prompt of a DnD character - create an ongoing "One-Shot" DnD campaign for this character. Please respond.`;
                 break;
             case 'template2':
                 this.chatService.getCharacterPrompt(this.username).subscribe({
                     next: (response) => {
-                        this.message = `Character Prompt: ${response.characterPrompt}`;
+                        this.message = `Character Prompt: ${response.characterPrompt} `;
                     },
                     error: (error) => {
                         console.error('Error fetching character prompt:', error);
@@ -238,7 +238,16 @@ export class ChatComponent implements OnInit {
                 });
                 return;
             case 'template3':
-                templateMessage = 'If this prompt is sent - reset / clear chat';
+                templateMessage = "'I walk in the woods and suddenly I see a monster in the distance, I take a step forward and ... ' continue from that to start a DnD one shot-campaign , based on the character prompt i send you earlier.";
+                break;
+            case 'template5':
+                templateMessage = "'I find myself in the vast desert, the sun blazing overhead and the sand stretching endlessly around me. I take a step forward and ... ' continue from that to start a DnD one shot-campaign , based on the character prompt i send you earlier.";
+                break;
+            case 'template6':
+                templateMessage = "'I enter the bustling city, the sounds of people and traffic filling the air. I navigate through the crowded streets and ... ' continue from that to start a DnD one shot-campaign , based on the character prompt i send you earlier.";
+                break;
+            case 'template7':
+                templateMessage = "'I descend into the dark cave, the air growing colder and the light fading. I light a torch and ... ' continue from that to start a DnD one shot-campaign , based on the character prompt i send you earlier.";
                 break;
             case 'template4':
                 templateMessage = `Please display last prompt for User ${this.username}, for ${this.username} to know what next prompt to write .`;
@@ -626,7 +635,7 @@ export class ChatComponent implements OnInit {
             const firstName = fullName.split(' ')[0]; // Get first word of the name
             
             // Format the character prompt with only the first name
-            const formattedPrompt = `Here are the details of ${firstName}:\n\n${prompt.characterPrompt}`;
+            const formattedPrompt = `Here are the details of ${firstName}:\n\n${prompt.characterPrompt}\n\nBased on the character prompt create a DnD one shot-campaign and improvise to create a prompt. each prompt end in a 3 options to choose to continue the campaign to the next prompt and ${this.username} sending the next prompt as a choice for you to know which new prompt to create.`;
             this.message = formattedPrompt;
             
             // Close the character dropup after selection

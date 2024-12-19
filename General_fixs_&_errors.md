@@ -61,7 +61,7 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
 7.c. add to django logger - clr after ctrl + c ()
 
 8.a. check / implement questionable tasks ()
-8.b. implement docker-compose.yml file to run all flask apps in one command / docker-compose up --build ()
+8.b. implement docker-compose.yml file to run all flask apps in one command / docker-compose up --build () - complete and fix all errors - 3 - 6 hours then hand over project to to eyal and john bryce ()
 8.c. clean all comments to a better git displayment ()
 8.d. final QA ()
 

@@ -1,0 +1,123 @@
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+log.log
+app.log
+chrcter_creation.log
+backend/log.log
+model/app.log
+
+# Build outputs
+/dist
+/tmp
+/out-tsc
+/bazel-out
+frontend/dist/
+backend/dist/
+model/dist/
+
+# IDE specific files
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+*.sublime-workspace
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+# Testing
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# Angular specific
+.angular/
+.sass-cache/
+connect.lock/
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Model specific
+chatbot_model.py
+model/chatbot_model.py
+
+# Cache
+*.cache
+.pytest_cache/
+.mypy_cache/
+
+# Database
+*.sqlite3
+*.db
+
+# Compiled Python files
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# Backup files
+*.bak
+*.swp
+*.swo
+*~
+
+# Local development
+local_settings.py
+db.sqlite3
+media/
+
+# Deployment scripts
+*.bat
+*.sh
+!requirements.txt
+
+# Documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Miscellaneous
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar

@@ -1,37 +1,64 @@
-version: '3.8' 
+version: '3.8'
 
 services:
+  frontend:
+    image: demomo/frontend:latest
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+      - model
+
   backend:
-    build: ./backend
-    volumes:
-      - ./backend:/app
+    image: demomo/backend:latest
     ports:
       - "8000:8000"
-    command: python manage.py runserver 0.0.0.0:8000
-  
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=django-insecure-s&49kpnt!ms0^9xg!1h3zovejldw!h9cic#@3ozg@^nly!msz(
+      - DB_NAME=dnd
+      - DB_USER=root
+      - DB_PASSWORD=MYSQLnur1996##
+      - DB_HOST=mysql-demomo
+      - DB_PORT=3307
+    depends_on:
+      - mysql
+      
   model:
-    build: ./model
-    volumes:
-      - ./model:/app
+    image: demomo/model:latest
     ports:
       - "5000:5000"
       - "6500:6500"
       - "7652:7652"
-    command: >
-      sh -c "python gen_txt_chat_srvr.py & python chrcter_creation.py & python lib_srvr.py"
-    
-  frontend:
-    build: ./frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    ports:
-      - "4200:4200"
     environment:
-      - API_URL=http://backend:8000
-      - API_URL1=http://model:5000
-      - API_URL2=http://model:6500
-      - API_URL3=http://model:7652
+      - MONGODB_URI=mongodb+srv://nurb1111:BILUmongdb1996@cluster0.luomlfx.mongodb.net/
+    depends_on:
+      - mongodb
+
+  mysql:
+    image: demomo/mysql:latest
+    container_name: mysql-demomo
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQLnur1996##
+      MYSQL_DATABASE: dnd
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  mongodb:
+    image: demomo/mongodb:latest
+    container_name: mongodb-demomo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mysql_data:
+  mongodb_data:
 
 networks:
   default:
