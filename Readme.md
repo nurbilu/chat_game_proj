@@ -19,6 +19,9 @@
    python -m virtualenv env
    env\Scripts\activate # On Linux use source env/bin/activate
    ```
+   **Note:**
+   create one virtual environment for backend folder and one for model folder.
+
    To deactivate the virtual environment when done, simply run:
    ```sh
    env\Scripts\deactivate # On Linux use deactivate
@@ -30,10 +33,14 @@
    pip install -r requirements.txt
    ```
 
-4. **Start Docker Containers:**
-   Use Docker Compose to start the necessary containers. This will set up the environment for the backend services.
+4. **install angular**
+   install angular.
    ```sh
-   docker-compose up -d
+   npm install -g @angular/cli
+   ```
+   or install all the packages.
+   ```sh
+   npm install
    ```
 
 5. **Launch the Django Server:**
