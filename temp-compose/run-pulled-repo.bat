@@ -24,11 +24,26 @@ docker network rm demomo-network 2>nul
 echo [%YELLOW%Creating docker network...%NC%]
 docker network create demomo-network
 
-:: Initialize MongoDB Atlas connection if env file exists
-if exist "model\init-mongo.sh" (
+:: Check if MongoDB initialization is needed
+if exist "model\.env" (
     echo [%YELLOW%Initializing MongoDB Atlas connection...%NC%]
-    call model\init-mongo.sh
+    bash model/init-mongo-pulled.sh
+    if %ERRORLEVEL% NEQ 0 (
+        echo [%RED%MongoDB initialization failed%NC%]
+        exit /b 1
+    )
+) else (
+    echo [%YELLOW%Skipping MongoDB initialization (.env file not found)%NC%]
 )
+
+:: Pull images before starting
+echo [%YELLOW%Pulling required images...%NC%]
+docker pull nuriz1996/demomo:frontend-%TAG%
+docker pull nuriz1996/demomo:backend-%TAG%
+docker pull nuriz1996/demomo:text-gen-%TAG%
+docker pull nuriz1996/demomo:char-create-%TAG%
+docker pull nuriz1996/demomo:library-%TAG%
+docker pull mysql:8.0
 
 :: Start all containers using docker-compose with TAG environment variable
 echo [%YELLOW%Starting all services with docker-compose...%NC%]
