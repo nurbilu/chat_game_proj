@@ -64,7 +64,7 @@ services:
       - demomo-network
 
   mysql:
-    image: mysql:8.0
+    image: nuriz1996/demomo:mysql-${TAG:-go}
     container_name: demomo-mysql
     environment:
       MYSQL_ROOT_PASSWORD: MYSQLnur1996##

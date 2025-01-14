@@ -43,7 +43,7 @@ docker pull nuriz1996/demomo:backend-%TAG%
 docker pull nuriz1996/demomo:text-gen-%TAG%
 docker pull nuriz1996/demomo:char-create-%TAG%
 docker pull nuriz1996/demomo:library-%TAG%
-docker pull mysql:8.0
+docker pull nuriz1996/demomo:mysql-%TAG%
 
 :: Start all containers using docker-compose with TAG environment variable
 echo [%YELLOW%Starting all services with docker-compose...%NC%]
