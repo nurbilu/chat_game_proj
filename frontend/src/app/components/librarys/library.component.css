@@ -278,7 +278,7 @@ figure img {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: url('/assets/imgs/icons/srch-icon.png') no-repeat center center;
+  background: url('/assets/imgs/icons/srchi-icon.png') no-repeat center center;
   border: none;
   outline: none;
 }
@@ -289,7 +289,7 @@ figure img {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: url('/assets/imgs/icons/clear-srch.png') no-repeat center center;
+  background: url('/assets/imgs/icons/clear-srchi.png') no-repeat center center;
   border: none;
   outline: none;
 }
@@ -300,7 +300,7 @@ figure img {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: url('/assets/imgs/icons/back-to-lib.png') no-repeat center center;
+  background: url('/assets/imgs/icons/back-to-libr.png') no-repeat center center;
   border: none;
   outline: none;
 }
@@ -312,7 +312,7 @@ figure img {
   transform: translateY(-50%);
   width: 32px;
   height: 32px;
-  background: url('/assets/imgs/icons/sreach-cllpse.png') no-repeat center center;
+  background: url('/assets/imgs/icons/sreach-cllpsey.png') no-repeat center center;
   border: none;
   outline: none;
   cursor: pointer;

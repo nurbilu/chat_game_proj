@@ -17,19 +17,29 @@ check_mongosh() {
         
         # Install MongoDB Shell based on OS
         if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-            curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
-            gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
-            --dearmor
-            echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg] http://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | \
-            tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-            apt-get update && apt-get install -y mongodb-mongosh
+            wget -qO - https://www.mongodb.org/static/pgp/server-8.0.asc | \
+            gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/mongodb-8.0.gpg > /dev/null
+            echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/8.0 multiverse" | \
+            sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+            sudo apt-get update
+            sudo apt-get install -y mongodb-mongosh
         elif [[ "$OSTYPE" == "darwin"* ]]; then
             brew install mongosh
-        elif [[ "$OSTYPE" == "msys"* ]] || [[ "$OSTYPE" == "win32" ]]; then
-            echo -e "${YELLOW}Please install MongoDB Shell manually on Windows${NC}"
-            echo -e "${YELLOW}Download from: https://www.mongodb.com/try/download/shell${NC}"
-            exit 1
         fi
+    fi
+}
+
+# Function to test MongoDB Atlas connection
+test_atlas_connection() {
+    local uri=$1
+    echo -e "${YELLOW}Testing MongoDB Atlas connection...${NC}"
+    
+    if mongosh "$uri" --eval "db.adminCommand('ping')" &>/dev/null; then
+        echo -e "${GREEN}Successfully connected to MongoDB Atlas${NC}"
+        return 0
+    else
+        echo -e "${RED}Failed to connect to MongoDB Atlas${NC}"
+        return 1
     fi
 }
 
@@ -39,10 +49,16 @@ main() {
     check_mongosh
 
     # Load environment variables
-    if [ -f model/.env ]; then
-        export $(cat model/.env | grep -v '^#' | xargs)
+    if [ -f .env ]; then
+        export $(cat .env | grep -v '^#' | xargs)
     else
-        echo -e "${RED}Error: .env file not found in model/.env${NC}"
+        echo -e "${RED}Error: .env file not found${NC}"
+        exit 1
+    fi
+
+    # Test connection
+    if ! test_atlas_connection "$MONGO_ATLAS"; then
+        echo -e "${RED}Connection test failed. Please check your credentials and network connection.${NC}"
         exit 1
     fi
 
@@ -66,7 +82,7 @@ main() {
         // Verify collections
         print('Collections in database:');
         db.getCollectionNames().forEach(function(collection) {
-            print(' - ' + collection + ': ' + db[collection].countDocuments() + ' documents');
+            print(collection + ': ' + db[collection].countDocuments() + ' documents');
         });
     "
 
@@ -74,4 +90,4 @@ main() {
 }
 
 # Execute main function
-main 
+main

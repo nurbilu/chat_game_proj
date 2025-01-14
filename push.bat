@@ -7,40 +7,53 @@ set "GREEN=[32m"
 set "YELLOW=[33m"
 set "NC=[0m"
 
-:: Get tag from command line or use 'latest' as default
+:: Get tag name from command line argument
 set "TAG=%1"
-if "%TAG%"=="" set "TAG=latest"
-
-echo [%YELLOW%Pushing DeMe images to Docker Hub with tag: %TAG%...%NC%]
-
-:: Login to Docker Hub
-echo [%YELLOW%Please login to Docker Hub:%NC%]
-docker login
-if %ERRORLEVEL% NEQ 0 (
-    echo [%RED%Failed%NC%] Docker Hub login failed
+if "%TAG%"=="" (
+    echo [%RED%Error: Please provide a tag name%NC%]
+    echo Usage: push.bat tag-name
     exit /b 1
 )
 
-:: Tag and push images
-for %%s in (frontend backend model mysql mongodb) do (
-    echo [%YELLOW%Processing %%s...%NC%]
-    
-    :: Only tag if not using 'latest'
-    if not "%TAG%"=="latest" (
-        docker tag demomo/%%s:latest demomo/%%s:%TAG%
-        if %ERRORLEVEL% NEQ 0 (
-            echo [%RED%Failed%NC%] Tagging %%s failed
-            exit /b 1
-        )
-    )
-    
-    docker push demomo/%%s:%TAG%
-    if %ERRORLEVEL% NEQ 0 (
-        echo [%RED%Failed%NC%] Pushing %%s failed
-        exit /b 1
-    )
-    echo [%GREEN%Success%NC%] %%s pushed to Docker Hub
+echo [%YELLOW%Logging into Docker Hub...%NC%]
+docker login
+
+if %ERRORLEVEL% NEQ 0 (
+    echo [%RED%Login failed. Please try again.%NC%]
+    exit /b 1
 )
 
-echo [%GREEN%All images pushed successfully to demomo repository%NC%]
-exit /b 0 
+echo [%YELLOW%Tagging and pushing services with tag: %TAG%%NC%]
+
+:: Tag services with provided tag
+docker tag demomo/frontend:latest nuriz1996/demomo:frontend-%TAG%
+docker tag demomo/backend:latest nuriz1996/demomo:backend-%TAG%
+docker tag demomo/model-text-generation:latest nuriz1996/demomo:text-gen-%TAG%
+docker tag demomo/model-character-creation:latest nuriz1996/demomo:char-create-%TAG%
+docker tag demomo/model-library-service:latest nuriz1996/demomo:library-%TAG%
+docker tag demomo/mysql:latest nuriz1996/demomo:mysql-%TAG%
+
+:: Push individual tags
+docker push nuriz1996/demomo:frontend-%TAG%
+docker push nuriz1996/demomo:backend-%TAG%
+docker push nuriz1996/demomo:text-gen-%TAG%
+docker push nuriz1996/demomo:char-create-%TAG%
+docker push nuriz1996/demomo:library-%TAG%
+docker push nuriz1996/demomo:mysql-%TAG%
+
+if %ERRORLEVEL% EQU 0 (
+    echo [%GREEN%Successfully pushed all services to Docker Hub%NC%]
+) else (
+    echo [%RED%Failed to push one or more services%NC%]
+    exit /b 1
+)
+
+echo [%GREEN%All services have been pushed to nuriz1996/demomo with tag: %TAG%%NC%]
+echo [%YELLOW%Available services:%NC%]
+echo   - nuriz1996/demomo:frontend-%TAG%
+echo   - nuriz1996/demomo:backend-%TAG%
+echo   - nuriz1996/demomo:text-gen-%TAG%
+echo   - nuriz1996/demomo:char-create-%TAG%
+echo   - nuriz1996/demomo:library-%TAG%
+echo   - nuriz1996/demomo:mysql-%TAG%
+exit /b 0

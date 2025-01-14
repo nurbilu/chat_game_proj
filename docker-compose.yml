@@ -1,16 +1,20 @@
-version: '3.8'
-
 services:
   frontend:
-    image: demomo/frontend:latest
+    image: ${DEMOMO_REGISTRY:-demomo}/frontend:${TAG:-latest}
+    container_name: demomo-frontend
     ports:
       - "4200:4200"
+    networks:
+      - demomo-network
     depends_on:
       - backend
-      - model
+      - model-text-generation
+      - model-character-creation
+      - model-library-service
 
   backend:
-    image: demomo/backend:latest
+    image: ${DEMOMO_REGISTRY:-demomo}/backend:${TAG:-latest}
+    container_name: demomo-backend
     ports:
       - "8000:8000"
     environment:
@@ -19,47 +23,80 @@ services:
       - DB_NAME=dnd
       - DB_USER=root
       - DB_PASSWORD=MYSQLnur1996##
-      - DB_HOST=mysql-demomo
-      - DB_PORT=3307
+      - DB_HOST=mysql
+      - DB_PORT=3306
+    networks:
+      - demomo-network
     depends_on:
-      - mysql
-      
-  model:
-    image: demomo/model:latest
+      mysql:
+        condition: service_healthy
+
+  model-text-generation:
+    image: ${DEMOMO_REGISTRY:-demomo}/model-text-generation:${TAG:-latest}
+    container_name: demomo-model-text-generation
     ports:
       - "5000:5000"
-      - "6500:6500"
-      - "7652:7652"
     environment:
-      - MONGODB_URI=mongodb+srv://nurb1111:BILUmongdb1996@cluster0.luomlfx.mongodb.net/
-    depends_on:
-      - mongodb
+      - MONGO_ATLAS=${MONGO_ATLAS}
+      - DB_NAME_MONGO=${DB_NAME_MONGO}
+      - GEMINI_API_KEY1=${GEMINI_API_KEY1}
+    volumes:
+      - ./model/.env:/app/.env
+    networks:
+      - demomo-network
+
+  model-character-creation:
+    image: ${DEMOMO_REGISTRY:-demomo}/model-character-creation:${TAG:-latest}
+    container_name: demomo-model-character-creation
+    ports:
+      - "6500:6500"
+    environment:
+      - MONGO_ATLAS=${MONGO_ATLAS}
+      - DB_NAME_MONGO=${DB_NAME_MONGO}
+    networks:
+      - demomo-network
+
+  model-library-service:
+    image: ${DEMOMO_REGISTRY:-demomo}/model-library-service:${TAG:-latest}
+    container_name: demomo-model-library-service
+    ports:
+      - "7625:7625"
+    environment:
+      - MONGO_ATLAS=${MONGO_ATLAS}
+      - DB_NAME_MONGO=${DB_NAME_MONGO}
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - demomo-network
 
   mysql:
-    image: demomo/mysql:latest
-    container_name: mysql-demomo
+    image: ${DEMOMO_REGISTRY:-demomo}/mysql:${TAG:-latest}
+    container_name: demomo-mysql
     environment:
       MYSQL_ROOT_PASSWORD: MYSQLnur1996##
       MYSQL_DATABASE: dnd
       MYSQL_ROOT_HOST: '%'
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
-
-  mongodb:
-    image: demomo/mongodb:latest
-    container_name: mongodb-demomo
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
+    networks:
+      - demomo-network
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-pMYSQLnur1996##", "-e", "SELECT 1;"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 volumes:
   mysql_data:
-  mongodb_data:
+    name: demomo-mysql-data
 
 networks:
-  default:
-    driver: bridge
+  demomo-network:
+    external: true

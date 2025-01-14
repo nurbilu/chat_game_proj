@@ -1,2 +1,5 @@
 /.env
-chatbot_model.py
+/chatbot_model.py
+/app.log
+/chrcter_creation.log
+/library.log

@@ -17,4 +17,4 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo [%GREEN%Frontend built successfully!%NC%]
-exit /b 0 
+exit /b 0
