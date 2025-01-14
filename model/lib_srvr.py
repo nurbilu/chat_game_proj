@@ -28,6 +28,9 @@ DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
 client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
 db = client[DB_NAME_MONGO]
 
+# Create a logger instance at module level
+logger = logging.getLogger(__name__)
+
 class FilterRemoveDateFromWerkzeugLogs(Filter):
     # Regex pattern to remove the date/time from Werkzeug logs
     pattern = re.compile(r' - - \[.+?\] ')
@@ -112,11 +115,11 @@ def fetch_data_from_db(collection_name):
             formatted_item = {key: item.get(key, 'None') for key in all_keys}
             formatted_data.append(formatted_item)
 
-        app.logger.info(f"Fetched {collection_name}")
-        return jsonify(formatted_data)  # Directly jsonify the list
+        logger.info(f"Fetched {collection_name}")
+        return jsonify(formatted_data)
 
     except Exception as e:
-        app.logger.error(f"Error in fetch_{collection_name}", exc_info=True)
+        logger.error(f"Error in fetch_{collection_name}", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
 @lib_srvr.route('/fetch_races', methods=['GET'])
@@ -175,14 +178,18 @@ def search_item_by_name(name):
 def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}})
-    app.register_blueprint(lib_srvr, url_prefix='/api')
     
     # Configure logging
-    app.logger = configure_logging()
-    app.logger.handlers = []
-    # Redirect stdout and stderr to the log file
-    sys.stdout = open('library.log', 'a')
-    sys.stderr = open('library.log', 'a')
+    configure_logging()
+    
+    # Register blueprint
+    app.register_blueprint(lib_srvr, url_prefix='/api')
+    
+    # Error handler for 500 errors
+    @app.errorhandler(500)
+    def handle_500_error(e):
+        logger.error(f"Internal Server Error: {str(e)}")
+        return jsonify({"error": "Internal Server Error", "message": str(e)}), 500
     
     return app
 
@@ -191,3 +198,8 @@ if __name__ == '__main__':
     app = create_app()
     signal.signal(signal.SIGINT, handle_exit)
     app.run(host='127.0.0.1', port=7625, debug=False, use_reloader=False)
+    
+    
+    
+    # not a as the perfect logger that in the commit version " Update Dockerfile - backend " or/and " docker build + run + push in the prccss" 
+    # but it's working good for a correct build.bat and run.bat and docker-compose.yml to run the app correctly - might need to fix some more . 

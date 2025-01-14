@@ -1,7 +1,5 @@
 __pycache__
 *.pyc
-.env
-*.log
 .git
 .gitignore
 chatbot_model.py 

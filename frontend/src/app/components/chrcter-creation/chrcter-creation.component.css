@@ -147,7 +147,7 @@ button {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: url('/assets/imgs/icons/srch-icon.png') no-repeat center center;
+  background: url('/assets/imgs/icons/srchi-icon.png') no-repeat center center;
   border: none;
   outline: none;
 }
@@ -157,7 +157,7 @@ button {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: url('/assets/imgs/icons/clear-srch.png') no-repeat center center;
+  background: url('/assets/imgs/icons/clear-srchi.png') no-repeat center center;
   border: none;
   outline: none;
 }

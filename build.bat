@@ -9,11 +9,18 @@ set "NC=[0m"
 
 echo [%YELLOW%Starting complete build process...%NC%]
 
-:: Build frameworks (Backend and Model)
-echo [%YELLOW%Building frameworks...%NC%]
-call build-frameworks.bat
+:: Build Backend and Model frameworks
+echo [%YELLOW%Building Backend framework...%NC%]
+call build-Dj-back.bat
 if %ERRORLEVEL% NEQ 0 (
-    echo [%RED%Framework build failed%NC%]
+    echo [%RED%Backend framework build failed%NC%]
+    exit /b 1
+)
+
+echo [%YELLOW%Building Model framework...%NC%]
+call build-model.bat
+if %ERRORLEVEL% NEQ 0 (
+    echo [%RED%Model framework build failed%NC%]
     exit /b 1
 )
 
@@ -25,16 +32,13 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-:: Build and tag database images
+:: Build and tag MySQL image
 echo [%YELLOW%Building database images...%NC%]
-
-:: MySQL
 docker pull mysql:8.0
 docker tag mysql:8.0 demomo/mysql:latest
 
-:: MongoDB
-docker pull mongo:latest
-docker tag mongo:latest demomo/mongodb:latest
+:: Build Docker images
+docker-compose build
 
 echo [%GREEN%All builds completed successfully!%NC%]
 exit /b 0 

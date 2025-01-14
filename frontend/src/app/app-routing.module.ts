@@ -26,7 +26,7 @@ const routes: Routes = [
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'about', component: AboutComponent },
     { path: 'library', component: LibraryComponent },
-    { path: '', redirectTo: '/homepage', pathMatch: 'full' },
+    { path: '', redirectTo: 'homepage', pathMatch: 'full' },
     { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
     { path: 'character-creation', component: ChrcterCreationComponent, canActivate: [AuthGuard] },
     { path: 'super-profile', component: SuperProfileComponent, canActivate: [AuthGuard] },
