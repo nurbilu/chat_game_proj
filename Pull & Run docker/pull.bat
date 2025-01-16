@@ -41,4 +41,4 @@ if %ERRORLEVEL% EQU 0 (
 )
 
 echo [%GREEN%All services have been pulled and tagged for local use%NC%]
-exit /b 0 
+exit /b 0

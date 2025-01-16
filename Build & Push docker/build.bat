@@ -11,14 +11,14 @@ echo [%YELLOW%Starting complete build process...%NC%]
 
 :: Build Backend and Model frameworks
 echo [%YELLOW%Building Backend framework...%NC%]
-call build-Dj-back.bat
+call TheBuilds\build-Dj-back.bat
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Backend framework build failed%NC%]
     exit /b 1
 )
 
 echo [%YELLOW%Building Model framework...%NC%]
-call build-model.bat
+call TheBuilds\build-model.bat
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Model framework build failed%NC%]
     exit /b 1
@@ -26,7 +26,7 @@ if %ERRORLEVEL% NEQ 0 (
 
 :: Build frontend
 echo [%YELLOW%Building frontend...%NC%]
-call build-frontend.bat
+call TheBuilds\build-frontend.bat
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Frontend build failed%NC%]
     exit /b 1

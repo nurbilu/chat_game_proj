@@ -20,7 +20,7 @@ docker network create demomo-network
 
 :: Initialize MongoDB Atlas connection
 echo [%YELLOW%Initializing MongoDB Atlas connection...%NC%]
-call model\init-mongo.sh
+call ..\model\init-mongo.sh
 
 :: Start all containers using docker-compose
 echo [%YELLOW%Starting all services with docker-compose...%NC%]

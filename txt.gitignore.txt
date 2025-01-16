@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+vvenv/
 
 # Environment files
 .env
@@ -55,7 +56,6 @@ testem.log
 connect.lock/
 
 # Docker
-.docker/
 docker-compose.override.yml
 
 # System Files
@@ -103,9 +103,10 @@ db.sqlite3
 media/
 
 # Deployment scripts
-*.bat
-*.sh
+!.bat
+!.sh
 !requirements.txt
+
 
 # Documentation
 docs/_build/
