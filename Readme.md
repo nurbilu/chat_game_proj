@@ -8,6 +8,12 @@
    git clone <repository_url>
    cd <project_directory>
    ```
+### using the docker : 
+   tag-name : v1.1
+   cd Pull & Run docker
+   pull.bat tag-name 
+   run.bat 
+   cleanup.bat (optional - to remove all containers and images from docker desktop)
 
 2. **Set Up a Virtual Environment:**
    It's crucial to create a virtual environment to manage dependencies separately for this project. First, ensure you have `virtualenv` installed:
@@ -27,6 +33,8 @@
    env\Scripts\deactivate # On Linux use deactivate
    ```
 
+
+### using the code files : 
 3. **Install Dependencies:**
    With the virtual environment active, install all required packages using the `requirements.txt` file. This ensures your environment is set up with the correct versions of each package.
    ```sh
