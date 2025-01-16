@@ -10,7 +10,7 @@ set "NC=[0m"
 echo [%YELLOW%Building Frontend...%NC%]
 
 :: Build Frontend
-docker build -t demomo/frontend:latest -f frontend/Dockerfile ./frontend
+docker build -t demomo/frontend:latest -f ..\frontend\Dockerfile ..\frontend
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Frontend build failed%NC%]
     exit /b 1

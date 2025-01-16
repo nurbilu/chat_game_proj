@@ -65,7 +65,6 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
 8.c. clean all comments to a better git displayment ()
 8.d. final QA ()
 
-**++ lets try to deliver the project by the date 15/11/2024 , if not possible - deliver as soon as possible. ++**
 
 questionable tasks: 
    6.b. clean data in DB collections - remove all url strings from the data , to make it more human understandable and not full of links (maybe undoable in short term - necessary ?)

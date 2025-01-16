@@ -11,7 +11,7 @@ echo [%YELLOW%Building Model services...%NC%]
 
 :: Build Text Generation Service
 echo [%YELLOW%Building Text Generation Service...%NC%]
-docker build -t demomo/model-text-generation:latest -f model/text-generation.Dockerfile ./model
+docker build -t demomo/model-text-generation:latest -f ..\model\text-generation.Dockerfile ..\model
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Text Generation Service build failed%NC%]
     exit /b 1
@@ -19,7 +19,7 @@ if %ERRORLEVEL% NEQ 0 (
 
 :: Build Character Creation Service
 echo [%YELLOW%Building Character Creation Service...%NC%]
-docker build -t demomo/model-character-creation:latest -f model/character-creation.Dockerfile ./model
+docker build -t demomo/model-character-creation:latest -f ..\model\character-creation.Dockerfile ..\model
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Character Creation Service build failed%NC%]
     exit /b 1
@@ -27,7 +27,7 @@ if %ERRORLEVEL% NEQ 0 (
 
 :: Build Library Service
 echo [%YELLOW%Building Library Service...%NC%]
-docker build -t demomo/model-library-service:latest -f model/library-service.Dockerfile ./model
+docker build -t demomo/model-library-service:latest -f ..\model\library-service.Dockerfile ..\model
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Library Service build failed%NC%]
     exit /b 1

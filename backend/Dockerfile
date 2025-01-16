@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
     default-mysql-client \
     build-essential \
+    dos2unix \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
@@ -21,9 +22,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application
 COPY . .
 
-# Make init script executable
+# Fix line endings and make init script executable
 COPY init.sh .
-RUN chmod +x init.sh
+RUN dos2unix init.sh && \
+    chmod +x init.sh
 
 EXPOSE 8000
 

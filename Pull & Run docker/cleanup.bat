@@ -10,7 +10,7 @@ set "NC=[0m"
 echo [%YELLOW%Cleaning up containers and images...%NC%]
 
 :: Stop and remove containers
-docker-compose down
+docker-compose -f docker-compose.yml down
 
 :: Remove old images
 for /f "tokens=*" %%i in ('docker images -q') do docker rmi -f %%i
