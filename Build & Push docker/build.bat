@@ -7,6 +7,23 @@ set "GREEN=[32m"
 set "YELLOW=[33m"
 set "NC=[0m"
 
+:: Check if deploy-config.bat exists
+if not exist "deploy-config.bat" (
+    echo [%RED%Error: deploy-config.bat not found%NC%]
+    echo Please copy deploy-config.template.bat to deploy-config.bat and set your password
+    exit /b 1
+)
+
+:: Load deployment configuration
+call deploy-config.bat
+
+:: Password Protection
+set /p "INPUT_PASSWORD=Enter deployment password: "
+if not "%INPUT_PASSWORD%"=="%DEPLOY_PASSWORD%" (
+    echo [%RED%Invalid password. Build aborted.%NC%]
+    exit /b 1
+)
+
 echo [%YELLOW%Starting complete build process...%NC%]
 
 :: Build Backend and Model frameworks
@@ -32,10 +49,13 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-:: Build and tag MySQL image
-echo [%YELLOW%Building database images...%NC%]
+:: Pull and tag MySQL image
+echo [%YELLOW%Pulling MySQL image...%NC%]
 docker pull mysql:8.0
-docker tag mysql:8.0 demomo/mysql:latest
+if %ERRORLEVEL% NEQ 0 (
+    echo [%RED%MySQL image pull failed%NC%]
+    exit /b 1
+)
 
 :: Build Docker images
 docker-compose build

@@ -19,10 +19,10 @@ services:
       - "8000:8000"
     environment:
       - DEBUG=0
-      - SECRET_KEY=django-insecure-s&49kpnt!ms0^9xg!1h3zovejldw!h9cic#@3ozg@^nly!msz(
-      - DB_NAME=dnd
-      - DB_USER=root
-      - DB_PASSWORD=MYSQLnur1996##
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=mysql
       - DB_PORT=3306
     networks:
@@ -73,8 +73,8 @@ services:
     image: ${DEMOMO_REGISTRY:-demomo}/mysql:${TAG:-latest}
     container_name: demomo-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: MYSQLnur1996##
-      MYSQL_DATABASE: dnd
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_ROOT_HOST: '%'
     ports:
       - "3306:3306"
@@ -87,7 +87,7 @@ services:
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-pMYSQLnur1996##", "-e", "SELECT 1;"]
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}", "-e", "SELECT 1;"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -99,4 +99,10 @@ volumes:
 
 networks:
   demomo-network:
+    external: true
+
+secrets:
+  db_password:
+    external: true
+  django_secret:
     external: true

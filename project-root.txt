@@ -1,7 +1,7 @@
 
-recommendetion by chtGPT :
+ 
 
-/project-root
+  recommendetion-by-chtGPT-project-root/
   ├── backend
   │   ├── Dockerfile
   │   └── (other backend files and folders)
@@ -12,3 +12,35 @@ recommendetion by chtGPT :
   │   ├── Dockerfile
   │   └── (TensorFlow scripts and model files)
   └── docker-compose.yml
+
+
+current-project-root/
+├── backend/
+│   ├── .dockerignore
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── Build & Push docker/
+│   ├── deploy-config.bat
+│   ├── setup.bat
+│   └── TheBuilds/
+│       ├── build-frontend.bat
+│       ├── build-model.bat
+│       └── build-backend.bat
+│
+├── frontend/
+│   ├── .dockerignore
+│   └── Dockerfile
+│
+├── model/
+│   ├── .dockerignore
+│   ├── Dockerfile
+│   ├── character-creation.Dockerfile
+│   ├── library-service.Dockerfile
+│   ├── text-generation.Dockerfile
+│   └── requirements.txt
+│
+└── Pull & Run docker/
+    ├── cleanup.bat
+    ├── pull.bat
+    └── run.bat
