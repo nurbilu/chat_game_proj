@@ -29,4 +29,13 @@ RUN dos2unix init.sh && \
 
 EXPOSE 8000
 
+<<<<<<< HEAD
 CMD ["./init.sh"]
+=======
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import mysql.connector; mysql.connector.connect(host='mysql-demomo', user='root', password='***********', database='dnd', port=3307)" 
+# change password .
+
+CMD ["/app/entrypoint.sh"]
+>>>>>>> 0b6c76ea1d2197bc021f7ccc20224ef9b993e2ea
