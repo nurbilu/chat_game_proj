@@ -7,10 +7,6 @@ __pycache__/
 *.pyd
 vvenv/
 
-# Environment files
-.env
-.env.*
-!.env.example
 
 # Logs
 *.log
@@ -122,3 +118,12 @@ docs/_templates/
 *.zip
 *.tar.gz
 *.rar
+
+# Deployment configuration
+deploy-config.bat
+.env
+*.env
+
+
+
+

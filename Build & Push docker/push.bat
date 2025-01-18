@@ -7,6 +7,23 @@ set "GREEN=[32m"
 set "YELLOW=[33m"
 set "NC=[0m"
 
+:: Check if deploy-config.bat exists
+if not exist "deploy-config.bat" (
+    echo [%RED%Error: deploy-config.bat not found%NC%]
+    echo Please copy deploy-config.template.bat to deploy-config.bat and set your password
+    exit /b 1
+)
+
+:: Load deployment configuration
+call deploy-config.bat
+
+:: Password Protection
+set /p "INPUT_PASSWORD=Enter deployment password: "
+if not "%INPUT_PASSWORD%"=="%DEPLOY_PASSWORD%" (
+    echo [%RED%Invalid password. Deployment aborted.%NC%]
+    exit /b 1
+)
+
 :: Get tag name from command line argument
 set "TAG=%1"
 if "%TAG%"=="" (
@@ -31,7 +48,7 @@ docker tag demomo/backend:latest nuriz1996/demomo:backend-%TAG%
 docker tag demomo/model-text-generation:latest nuriz1996/demomo:text-gen-%TAG%
 docker tag demomo/model-character-creation:latest nuriz1996/demomo:char-create-%TAG%
 docker tag demomo/model-library-service:latest nuriz1996/demomo:library-%TAG%
-docker tag demomo/mysql:latest nuriz1996/demomo:mysql-%TAG%
+docker tag mysql:8.0 nuriz1996/demomo:mysql-%TAG%
 
 :: Push individual tags
 docker push nuriz1996/demomo:frontend-%TAG%
