@@ -40,8 +40,9 @@ services:
       - MONGO_ATLAS=${MONGO_ATLAS}
       - DB_NAME_MONGO=${DB_NAME_MONGO}
       - GEMINI_API_KEY1=${GEMINI_API_KEY1}
-    volumes:
-      - ./model/.env:/app/.env
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_API_KEY_USE=${OPENAI_API_KEY_USE}
+      - GEMINI_URL=${GEMINI_URL}
     networks:
       - demomo-network
 
