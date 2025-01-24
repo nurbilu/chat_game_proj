@@ -14,19 +14,37 @@ RUN apt-get update && apt-get install -y \
     curl \
     gpg \
     wget \
+    gnupg \
     apt-transport-https \
     && rm -rf /var/lib/apt/lists/*
 
 # Install MongoDB Shell
-RUN wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/mongodb-7.0.gpg && \
-    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list && \
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | \
+    gpg --dearmor | \
+    tee /usr/share/keyrings/mongodb-server-6.0.gpg > /dev/null && \
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | \
+    tee /etc/apt/sources.list.d/mongodb-org-6.0.list && \
     apt-get update && \
     apt-get install -y mongodb-mongosh && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Upgrade pip and install pymongo with dependencies
+# Create necessary directories
+RUN mkdir -p /app/logs /app/data
+
+# Copy initialization scripts
+COPY init-mongo.sh /app/
+COPY init-mongo-cli.sh /app/
+RUN chmod +x /app/init-mongo.sh /app/init-mongo-cli.sh
+
+# Copy .env file
+COPY .env /app/.env
+
+# Create MongoDB initialization verification file
+RUN touch /app/data/.mongodb_initialized
+
+# Upgrade pip and install dependencies
 RUN python3.9 -m pip install --upgrade pip && \
     python3.9 -m pip install --no-cache-dir "pymongo[srv]>=4.6.0,<4.7.0" && \
     python3.9 -m pip install --no-cache-dir "dnspython>=2.4.0" && \
@@ -51,15 +69,6 @@ COPY chatbot/__init__.py /app/chatbot/
 COPY lib_srvr.py .
 RUN echo 'from lib_srvr import create_app\napp = create_app()\napp.config["APPLICATION_ROOT"] = "/api"' > wsgi.py
 
-# Create data directory and ensure it exists
-RUN mkdir -p /app/data
-
-# Create log directory and file
-RUN mkdir -p /app/logs && \
-    touch /app/logs/library.log && \
-    chmod 666 /app/logs/library.log
-
-# Update environment variables
 ENV PYTHONUNBUFFERED="1" \
     PYTHONPATH="/app" \
     FLASK_APP="lib_srvr.py" \
@@ -72,4 +81,34 @@ ENV PYTHONUNBUFFERED="1" \
 
 EXPOSE 7625
 
+# Create a more robust entrypoint script
+RUN echo '#!/bin/bash\n\
+if [ ! -f /app/data/.mongodb_initialized ]; then\n\
+    echo "Initializing MongoDB for the first time..."\n\
+    /app/init-mongo-cli.sh\n\
+    if [ $? -eq 0 ]; then\n\
+        touch /app/data/.mongodb_initialized\n\
+        echo "MongoDB initialization completed successfully"\n\
+    else\n\
+        echo "MongoDB initialization failed"\n\
+        exit 1\n\
+    fi\n\
+else\n\
+    echo "MongoDB already initialized, skipping..."\n\
+fi\n\
+\n\
+# Verify MongoDB connection\n\
+mongosh "$MONGO_ATLAS" --eval "db.adminCommand({ping:1})" || {\n\
+    echo "Failed to connect to MongoDB"\n\
+    exit 1\n\
+}\n\
+\n\
+exec "$@"' > /app/docker-entrypoint.sh && \
+    chmod +x /app/docker-entrypoint.sh
+
+# Add MongoDB health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD mongosh "$MONGO_ATLAS" --eval "db.adminCommand({ping:1})" || exit 1
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["gunicorn", "--workers", "1", "--bind", "0.0.0.0:7625", "--log-file", "/app/logs/library.log", "--log-level", "info", "--forwarded-allow-ips", "*", "wsgi:app"] 
