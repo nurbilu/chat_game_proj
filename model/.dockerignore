@@ -1,5 +1,26 @@
-__pycache__
-*.pyc
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Environment directories
+.env.local
+.env.*.local
+
+# Keep .env file
+!.env
+
+# Git files
 .git
 .gitignore
-chatbot_model.py 
+
+# IDE files
+.vscode/
+.idea/
+
+# Test files
+tests/
+test_*.py
