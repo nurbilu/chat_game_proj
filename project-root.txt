@@ -19,7 +19,7 @@ current-project-root/
 │   ├── .dockerignore
 │   ├── Dockerfile
 │   └── requirements.txt
-│
+│   └── .env
 ├── Build & Push docker/
 │   ├── deploy-config.bat
 │   ├── setup.bat
@@ -27,6 +27,12 @@ current-project-root/
 │       ├── build-frontend.bat
 │       ├── build-model.bat
 │       └── build-backend.bat
+│   └── theENVdock/
+│       ├── .ENV
+│       └── .gitignore
+│   └── build.bat
+│   └── push.bat
+│   └── setup.bat
 │
 ├── frontend/
 │   ├── .dockerignore
@@ -39,8 +45,13 @@ current-project-root/
 │   ├── library-service.Dockerfile
 │   ├── text-generation.Dockerfile
 │   └── requirements.txt
+│   └── init-env-volume.sh
+│   └── init-mongo.sh
+│   └── init-mongo-cli.sh
+│   └── .env
 │
 └── Pull & Run docker/
     ├── cleanup.bat
     ├── pull.bat
     └── run.bat
+    └── init-secrets.bat
