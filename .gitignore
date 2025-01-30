@@ -9,7 +9,7 @@ vvenv/
 
 # Deployment configuration
 deploy-config.bat
-.env
+
 
 # Logs
 *.log
@@ -121,6 +121,26 @@ docs/_templates/
 *.zip
 *.tar.gz
 *.rar
+
+# Secrets
+
+**/myproj/.env
+**/model/.env
+
+# Environment Configuration
+env-config.bat
+deploy-config.bat
+
+
+# Configuration
+config.env
+**/config.env
+
+# Sensitive data
+.env
+secrets/
+
+
 
 
 

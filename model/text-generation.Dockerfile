@@ -118,14 +118,14 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["gunicorn", \
-     "--config", "gunicorn.conf.py", \
-     "--bind", "0.0.0.0:5000", \
-     "--log-level", "debug", \
-     "--timeout", "300", \
-     "--graceful-timeout", "300", \
-     "--keep-alive", "120", \
-     "--worker-class", "eventlet", \
-     "--workers", "1", \
-     "--threads", "4", \
-     "--forwarded-allow-ips", "*", \
-     "wsgi:app"]
+    "--config", "gunicorn.conf.py", \
+    "--bind", "0.0.0.0:5000", \
+    "--log-level", "debug", \
+    "--timeout", "300", \
+    "--graceful-timeout", "300", \
+    "--keep-alive", "120", \
+    "--worker-class", "eventlet", \
+    "--workers", "1", \
+    "--threads", "4", \
+    "--forwarded-allow-ips", "*", \
+    "wsgi:app"]

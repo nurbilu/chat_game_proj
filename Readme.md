@@ -9,11 +9,14 @@
    cd <project_directory>
    ```
 ### using the docker : 
-   tag-name : v1.1
-   cd Pull & Run docker
-   pull.bat tag-name 
-   run.bat 
-   cleanup.bat (optional - to remove all containers and images from docker desktop)
+   - tag-name : Vv1.1
+   - navigate to Pull & Run docker folder by using ```cd Pull & Run docker```
+   - then run the following commands : 
+      - ```pull.bat tag-name``` 
+      - ```run.bat``` - run twice if it the first time after pulling the images 
+      - ```cleanup.bat``` (optional - to remove all containers and images from docker desktop)
+
+## if you want to want to run the project without docker, you can continue with the following steps : 
 
 2. **Set Up a Virtual Environment:**
    It's crucial to create a virtual environment to manage dependencies separately for this project. First, ensure you have `virtualenv` installed:
