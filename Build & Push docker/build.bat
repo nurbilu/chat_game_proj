@@ -7,6 +7,14 @@ set "GREEN=[32m"
 set "YELLOW=[33m"
 set "NC=[0m"
 
+:: Run build tests first
+echo [%YELLOW%Running build tests...%NC%]
+call ..\Tests\test-build.bat
+if %ERRORLEVEL% NEQ 0 (
+    echo [%RED%Build tests failed. Aborting build process.%NC%]
+    exit /b 1
+)
+
 :: Check if deploy-config.bat exists
 if not exist "deploy-config.bat" (
     echo [%RED%Error: deploy-config.bat not found%NC%]
@@ -25,6 +33,17 @@ if not "%INPUT_PASSWORD%"=="%DEPLOY_PASSWORD%" (
 )
 
 echo [%YELLOW%Starting complete build process...%NC%]
+
+:: Build Environment Image first
+echo [%YELLOW%Building Environment Image...%NC%]
+cd ..\env-docker
+call env-docker.bat
+if %ERRORLEVEL% NEQ 0 (
+    echo [%RED%Environment image build failed%NC%]
+    cd ..\Build ^& Push docker
+    exit /b 1
+)
+cd "..\Build & Push docker"
 
 :: Build Backend and Model frameworks
 echo [%YELLOW%Building Backend framework...%NC%]

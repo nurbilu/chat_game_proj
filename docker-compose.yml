@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ${DEMOMO_REGISTRY:-demomo}/frontend:${TAG:-latest}
+    image: ${DEMOMO_REGISTRY}:frontend-${DEMOMO_TAG}
     container_name: demomo-frontend
     ports:
       - "4200:4200"
@@ -13,18 +13,20 @@ services:
       - model-library-service
 
   backend:
-    image: ${DEMOMO_REGISTRY:-demomo}/backend:${TAG:-latest}
+    image: ${DEMOMO_REGISTRY}:backend-${DEMOMO_TAG}
     container_name: demomo-backend
     ports:
       - "8000:8000"
     environment:
-      - DEBUG=0
       - SECRET_KEY=${SECRET_KEY}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=mysql
-      - DB_PORT=3306
+      - DB_PORT=${DB_PORT}
+      - MONGO_ATLAS=${MONGO_ATLAS}
+      - DB_NAME_MONGO=${DB_NAME_MONGO}
+      - GEMINI_API_KEY1=${GEMINI_API_KEY1}
     networks:
       - demomo-network
     depends_on:
@@ -32,7 +34,7 @@ services:
         condition: service_healthy
 
   model-text-generation:
-    image: ${DEMOMO_REGISTRY:-demomo}/model-text-generation:${TAG:-latest}
+    image: ${DEMOMO_REGISTRY}:text-gen-${DEMOMO_TAG}
     container_name: demomo-model-text-generation
     ports:
       - "5000:5000"
@@ -44,7 +46,7 @@ services:
       - demomo-network
 
   model-character-creation:
-    image: ${DEMOMO_REGISTRY:-demomo}/model-character-creation:${TAG:-latest}
+    image: ${DEMOMO_REGISTRY}:char-create-${DEMOMO_TAG}
     container_name: demomo-model-character-creation
     ports:
       - "6500:6500"
@@ -55,7 +57,7 @@ services:
       - demomo-network
 
   model-library-service:
-    image: ${DEMOMO_REGISTRY:-demomo}/model-library-service:${TAG:-latest}
+    image: ${DEMOMO_REGISTRY}:library-${DEMOMO_TAG}
     container_name: demomo-model-library-service
     ports:
       - "7625:7625"
@@ -68,39 +70,26 @@ services:
       - demomo-network
 
   mysql:
-    image: ${DEMOMO_REGISTRY:-demomo}/mysql:${TAG:-latest}
+    image: ${DEMOMO_REGISTRY}:mysql-${DEMOMO_TAG}
     container_name: demomo-mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_ROOT_HOST: '%'
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "${DB_PORT}:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - demomo-mysql:/var/lib/mysql
     networks:
       - demomo-network
-    command: >
-      --default-authentication-plugin=mysql_native_password
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}", "-e", "SELECT 1;"]
-      interval: 10s
+      test: mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD
+      interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 10
 
 volumes:
-  mysql_data:
-    name: demomo-mysql-data
+  demomo-mysql:
 
 networks:
   demomo-network:
-    external: true
-
-secrets:
-  db_password:
-    external: true
-  django_secret:
     external: true
