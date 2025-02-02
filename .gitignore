@@ -140,6 +140,9 @@ config.env
 .env
 secrets/
 
+# Environment files
+.env.backup
+
 
 
 

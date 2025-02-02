@@ -15,6 +15,10 @@
       - ```pull.bat tag-name``` 
       - ```run.bat``` - run twice if it the first time after pulling the images 
       - ```cleanup.bat``` (optional - to remove all containers and images from docker desktop)
+   #### comments and additions : 
+      run.bat VplzV3000    # Uses specified tag
+      run.bat              # Uses "latest" tag
+
 
 ## if you want to want to run the project without docker, you can continue with the following steps : 
 
