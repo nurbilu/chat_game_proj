@@ -1,25 +1,12 @@
+## project docker root : 
 
- 
-
-  recommendetion-by-chtGPT-project-root/
-  ├── backend
-  │   ├── Dockerfile
-  │   └── (other backend files and folders)
-  ├── frontend
-  │   ├── Dockerfile
-  │   └── (other frontend files and folders)
-  ├── tensorflow
-  │   ├── Dockerfile
-  │   └── (TensorFlow scripts and model files)
-  └── docker-compose.yml
-
-
-current-project-root/
+AIDM1.02/
 ├── backend/
 │   ├── .dockerignore
 │   ├── Dockerfile
 │   └── requirements.txt
 │   └── .env
+│
 ├── Build & Push docker/
 │   ├── deploy-config.bat
 │   ├── setup.bat
@@ -33,6 +20,13 @@ current-project-root/
 │   └── build.bat
 │   └── push.bat
 │   └── setup.bat
+│   └── init-secrets.bat 
+│
+│
+├── env-docker
+│   ├── env-docker.bat
+│   └── env.Dockerfile
+│   └── .ENV
 │
 ├── frontend/
 │   ├── .dockerignore

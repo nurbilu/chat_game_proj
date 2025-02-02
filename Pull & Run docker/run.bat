@@ -1,5 +1,5 @@
 @echo off
-setlocal EnableDelayedExpansion
+setlocal enabledelayedexpansion
 
 :: Colors
 set "RED=[31m"
@@ -9,130 +9,70 @@ set "NC=[0m"
 
 echo [%YELLOW%Starting multi-container deployment...%NC%]
 
-:: Remove existing containers and networks
-echo [%YELLOW%Cleaning up existing containers and networks...%NC%]
-docker-compose down -v
-docker network rm demomo-network 2>nul
+:: Set the default tag if not specified
+set TAG=latest
+if not "%1"=="" set TAG=%1
 
-:: Create network if it doesn't exist
-echo [%YELLOW%Creating docker network...%NC%]
-docker network create demomo-network || (
-    echo [%RED%Failed to create network%NC%]
-    exit /b 1
-)
-
-:: Initialize environment variables from existing files
-echo [%YELLOW%Loading environment configuration...%NC%]
-set "ENV_FILE=..\Build & Push docker\theENVdock\.ENV"
-
-if not exist "%ENV_FILE%" (
-    echo [%RED%Environment file not found at: %ENV_FILE%%NC%]
-    echo [%RED%Please run init-env-volume.sh first%NC%]
-    exit /b 1
-)
-
-:: Load and verify environment variables
-for /f "usebackq tokens=1,* delims==" %%a in ("%ENV_FILE%") do (
-    set "key=%%a"
-    set "value=%%b"
-    
-    :: Remove quotes and spaces
-    set "key=!key:'=!"
-    set "key=!key: =!"
-    set "value=!value:'=!"
-    set "value=!value: =!"
-    
-    :: Set environment variable
-    set "!key!=!value!"
-)
-
-:: Verify critical environment variables
-call :verify_env DB_NAME || exit /b 1
-call :verify_env DB_USER || exit /b 1
-call :verify_env DB_PASSWORD || exit /b 1
-call :verify_env MONGO_ATLAS || exit /b 1
-call :verify_env DB_NAME_MONGO || exit /b 1
-call :verify_env SECRET_KEY || exit /b 1
-call :verify_env GEMINI_API_KEY1 || exit /b 1
-
-:: Export variables for docker-compose
-set "COMPOSE_ENV_FILE=%ENV_FILE%"
-
-:: Initialize secrets if not already done
-if not exist "secrets" (
-    echo [%YELLOW%Initializing secrets...%NC%]
-    call init-secrets.bat
+:: Verify images exist locally
+echo [%YELLOW%Verifying required images...%NC%]
+for %%s in (frontend backend text-gen char-create library mysql) do (
+    docker image inspect nuriz1996/demomo:%%s-%TAG% >nul 2>&1
     if !ERRORLEVEL! NEQ 0 (
-        echo [%RED%Failed to initialize secrets%NC%]
+        echo [%RED%Error: Image nuriz1996/demomo:%%s-%TAG% not found. Please run pull.bat first%NC%]
         exit /b 1
     )
 )
 
-:: Initialize MongoDB Atlas connection
-echo [%YELLOW%Initializing MongoDB Atlas connection...%NC%]
-call ..\model\init-mongo.sh
+:: Create docker network if it doesn't exist
+docker network inspect demomo-network >nul 2>&1 || (
+    echo [%YELLOW%Creating docker network...%NC%]
+    docker network create demomo-network
+)
 
-:: Check and handle MySQL port
-echo [%YELLOW%Checking MySQL port availability...%NC%]
-set "MYSQL_PORT=3306"
-set "MAX_PORT=3316"
+:: Create temporary environment file
+echo [%YELLOW%Creating docker-compose environment file...%NC%]
+(
+    echo DEMOMO_TAG=%TAG%
+    echo DEMOMO_REGISTRY=nuriz1996/demomo
+) > temp.env
 
-:check_port_loop
-netstat -ano | find ":%MYSQL_PORT% " >nul
-if %ERRORLEVEL% EQU 0 (
-    if %MYSQL_PORT% LSS %MAX_PORT% (
-        set /a MYSQL_PORT+=1
-        goto check_port_loop
-    ) else (
-        echo [%RED%No available ports in range 3306-3316. Stopping all MySQL processes...%NC%]
-        taskkill /F /IM mysqld.exe >nul 2>&1
-        taskkill /F /IM mysql.exe >nul 2>&1
-        timeout /t 5 /nobreak >nul
-        set "MYSQL_PORT=3306"
+:: Add variables from .env.backup first as base
+if exist ".env.backup" (
+    for /f "usebackq tokens=1,* delims==" %%a in (".env.backup") do (
+        echo %%a=%%~b>> temp.env
     )
 )
 
-echo [%GREEN%Using MySQL port: %MYSQL_PORT%%NC%]
-set "DB_PORT=%MYSQL_PORT%"
-
-:: Start containers with environment file
-docker-compose --env-file "%COMPOSE_ENV_FILE%" up -d
-
-:: Wait for services to be healthy
-echo [%YELLOW%Waiting for services to be healthy...%NC%]
-:healthcheck_loop
-set "all_healthy=true"
-for /f "tokens=*" %%a in ('docker-compose ps --format "{{.Name}}"') do (
-    docker inspect --format="{{.State.Health.Status}}" %%a 2>nul | findstr /i "healthy" >nul
-    if %ERRORLEVEL% NEQ 0 (
-        set "all_healthy=false"
+:: Override with .env if it exists and has non-empty values
+if exist ".env" (
+    for /f "usebackq tokens=1,* delims==" %%a in (".env") do (
+        set "key=%%a"
+        set "value=%%~b"
+        if not "!value!"=="" (
+            echo !key!=!value!>> temp.env
+        )
     )
 )
-if "%all_healthy%"=="false" (
-    echo [%YELLOW%Waiting for containers to be healthy...%NC%]
-    timeout /t 5 /nobreak >nul
-    goto healthcheck_loop
+
+:: Replace .env with the new file
+move /y temp.env .env >nul
+
+:: Start services with docker-compose
+echo [%YELLOW%Starting containers...%NC%]
+docker-compose up -d
+
+:: Check container health
+echo [%YELLOW%Checking container health...%NC%]
+timeout /t 10 /nobreak >nul
+
+:: Verify all containers are running
+for %%s in (frontend backend model-text-generation model-character-creation model-library-service mysql) do (
+    docker ps --filter "name=demomo-%%s" --format "{{.Status}}" | findstr "Up" >nul
+    if !ERRORLEVEL! NEQ 0 (
+        echo [%RED%Container demomo-%%s failed to start properly%NC%]
+        exit /b 1
+    )
 )
 
-:: Check container status
-echo [%YELLOW%Checking container status...%NC%]
-docker-compose ps
-
-echo [%GREEN%Multi-container deployment completed!%NC%]
-echo [%YELLOW%Services are accessible at:%NC%]
-echo [%YELLOW%Frontend: http://localhost:4200%NC%]
-echo [%YELLOW%Backend: http://localhost:8000%NC%]
-echo [%YELLOW%Model Services:%NC%]
-echo [%YELLOW%- Text Generation: http://localhost:5000%NC%]
-echo [%YELLOW%- Character Creation: http://localhost:6500%NC%]
-echo [%YELLOW%- Library Service: http://localhost:7625%NC%]
-echo [%YELLOW%MySQL Database: localhost:%DB_PORT%%NC%]
-exit /b 0
-
-:verify_env
-if not defined %1 (
-    echo [%RED%Error: %1 is not set in environment file%NC%]
-    exit /b 1
-)
-echo [%GREEN%Verified: %1 is set%NC%]
+echo [%GREEN%All containers started successfully!%NC%]
 exit /b 0
