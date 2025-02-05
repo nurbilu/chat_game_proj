@@ -15,7 +15,7 @@ if not "%1"=="" set TAG=%1
 
 :: Verify images exist locally
 echo [%YELLOW%Verifying required images...%NC%]
-for %%s in (frontend backend text-gen char-create library mysql) do (
+for %%s in (env frontend backend text-gen char-create library mysql) do (
     docker image inspect nuriz1996/demomo:%%s-%TAG% >nul 2>&1
     if !ERRORLEVEL! NEQ 0 (
         echo [%RED%Error: Image nuriz1996/demomo:%%s-%TAG% not found. Please run pull.bat first%NC%]
@@ -29,37 +29,37 @@ docker network inspect demomo-network >nul 2>&1 || (
     docker network create demomo-network
 )
 
-:: Create temporary environment file
-echo [%YELLOW%Creating docker-compose environment file...%NC%]
-(
-    echo DEMOMO_TAG=%TAG%
-    echo DEMOMO_REGISTRY=nuriz1996/demomo
-) > temp.env
+:: Remove existing env container if it exists
+echo [%YELLOW%Checking for existing environment container...%NC%]
+docker rm -f demomo-env >nul 2>&1
 
-:: Add variables from .env.backup first as base
-if exist ".env.backup" (
-    for /f "usebackq tokens=1,* delims==" %%a in (".env.backup") do (
-        echo %%a=%%~b>> temp.env
-    )
+:: Start env container first
+echo [%YELLOW%Starting environment container...%NC%]
+docker run -d --name demomo-env --network demomo-network nuriz1996/demomo:env-%TAG%
+if !ERRORLEVEL! NEQ 0 (
+    echo [%RED%Failed to start environment container%NC%]
+    exit /b 1
 )
 
-:: Override with .env if it exists and has non-empty values
-if exist ".env" (
-    for /f "usebackq tokens=1,* delims==" %%a in (".env") do (
-        set "key=%%a"
-        set "value=%%~b"
-        if not "!value!"=="" (
-            echo !key!=!value!>> temp.env
-        )
-    )
+:: Wait for env container to be ready
+echo [%YELLOW%Waiting for environment container...%NC%]
+timeout /t 5 /nobreak >nul
+
+:: Copy environment from container
+echo [%YELLOW%Loading environment from container...%NC%]
+docker cp demomo-env:/app/env/.env .env
+if !ERRORLEVEL! NEQ 0 (
+    echo [%RED%Failed to load environment from container%NC%]
+    exit /b 1
 )
 
-:: Replace .env with the new file
-move /y temp.env .env >nul
+:: Set registry and tag for docker-compose
+set "DEMOMO_REGISTRY=nuriz1996/demomo"
+set "DEMOMO_TAG=%TAG%"
 
 :: Start services with docker-compose
-echo [%YELLOW%Starting containers...%NC%]
-docker-compose up -d
+echo [%YELLOW%Starting remaining containers...%NC%]
+docker-compose --env-file .env up -d
 
 :: Check container health
 echo [%YELLOW%Checking container health...%NC%]
