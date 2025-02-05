@@ -144,9 +144,6 @@ secrets/
 # Environment files
 .env.backup
 
-# Init scripts
-init-env-volume.sh
-
 
 
 

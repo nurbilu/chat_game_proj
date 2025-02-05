@@ -29,6 +29,7 @@ docker network inspect demomo-network >nul 2>&1 || (
     docker network create demomo-network
 )
 
+<<<<<<< HEAD
 :: Remove existing env container if it exists
 echo [%YELLOW%Checking for existing environment container...%NC%]
 docker rm -f demomo-env >nul 2>&1
@@ -60,6 +61,32 @@ set "DEMOMO_TAG=%TAG%"
 :: Start services with docker-compose
 echo [%YELLOW%Starting remaining containers...%NC%]
 docker-compose --env-file .env up -d
+=======
+:: Check if .env exists and has required variables
+if not exist ".env" (
+    echo [%RED%Error: .env file not found%NC%]
+    exit /b 1
+)
+
+:: Update only the tag in the existing .env file
+echo [%YELLOW%Updating environment variables...%NC%]
+powershell -Command "(Get-Content .env) -replace '^DEMOMO_TAG=.*$', 'DEMOMO_TAG=%TAG%' | Set-Content .env"
+
+:: Start env container first
+echo [%YELLOW%Starting environment container...%NC%]
+docker run -d --name demomo-env --network demomo-network nuriz1996/demomo:env-%TAG%
+if !ERRORLEVEL! NEQ 0 (
+    echo [%RED%Failed to start environment container%NC%]
+    exit /b 1
+)
+
+:: Wait for env container to be ready
+timeout /t 5 /nobreak >nul
+
+:: Start services with docker-compose
+echo [%YELLOW%Starting remaining containers...%NC%]
+docker-compose up -d
+>>>>>>> d46151541e4c17cd72c226b08451daee00816e8d
 
 :: Check container health
 echo [%YELLOW%Checking container health...%NC%]
