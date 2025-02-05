@@ -130,6 +130,7 @@ docs/_templates/
 # Environment Configuration
 env-config.bat
 deploy-config.bat
+init-secrets.bat
 
 
 # Configuration
@@ -142,6 +143,9 @@ secrets/
 
 # Environment files
 .env.backup
+
+# Init scripts
+init-env-volume.sh
 
 
 
