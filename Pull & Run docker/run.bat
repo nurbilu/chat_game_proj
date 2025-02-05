@@ -15,7 +15,7 @@ if not "%1"=="" set TAG=%1
 
 :: Verify images exist locally
 echo [%YELLOW%Verifying required images...%NC%]
-for %%s in (frontend backend text-gen char-create library mysql) do (
+for %%s in (env frontend backend text-gen char-create library mysql) do (
     docker image inspect nuriz1996/demomo:%%s-%TAG% >nul 2>&1
     if !ERRORLEVEL! NEQ 0 (
         echo [%RED%Error: Image nuriz1996/demomo:%%s-%TAG% not found. Please run pull.bat first%NC%]
@@ -39,8 +39,19 @@ if not exist ".env" (
 echo [%YELLOW%Updating environment variables...%NC%]
 powershell -Command "(Get-Content .env) -replace '^DEMOMO_TAG=.*$', 'DEMOMO_TAG=%TAG%' | Set-Content .env"
 
+:: Start env container first
+echo [%YELLOW%Starting environment container...%NC%]
+docker run -d --name demomo-env --network demomo-network nuriz1996/demomo:env-%TAG%
+if !ERRORLEVEL! NEQ 0 (
+    echo [%RED%Failed to start environment container%NC%]
+    exit /b 1
+)
+
+:: Wait for env container to be ready
+timeout /t 5 /nobreak >nul
+
 :: Start services with docker-compose
-echo [%YELLOW%Starting containers...%NC%]
+echo [%YELLOW%Starting remaining containers...%NC%]
 docker-compose up -d
 
 :: Check container health
@@ -56,4 +67,5 @@ for %%s in (frontend backend model-text-generation model-character-creation mode
     )
 )
 
-echo [%GREEN%All
+echo [%GREEN%All containers started successfully!%NC%]
+exit /b 0
