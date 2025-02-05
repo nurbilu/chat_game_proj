@@ -29,33 +29,15 @@ docker network inspect demomo-network >nul 2>&1 || (
     docker network create demomo-network
 )
 
-:: Create temporary environment file
-echo [%YELLOW%Creating docker-compose environment file...%NC%]
-(
-    echo DEMOMO_TAG=%TAG%
-    echo DEMOMO_REGISTRY=nuriz1996/demomo
-) > temp.env
-
-:: Add variables from .env.backup first as base
-if exist ".env.backup" (
-    for /f "usebackq tokens=1,* delims==" %%a in (".env.backup") do (
-        echo %%a=%%~b>> temp.env
-    )
+:: Check if .env exists and has required variables
+if not exist ".env" (
+    echo [%RED%Error: .env file not found%NC%]
+    exit /b 1
 )
 
-:: Override with .env if it exists and has non-empty values
-if exist ".env" (
-    for /f "usebackq tokens=1,* delims==" %%a in (".env") do (
-        set "key=%%a"
-        set "value=%%~b"
-        if not "!value!"=="" (
-            echo !key!=!value!>> temp.env
-        )
-    )
-)
-
-:: Replace .env with the new file
-move /y temp.env .env >nul
+:: Update only the tag in the existing .env file
+echo [%YELLOW%Updating environment variables...%NC%]
+powershell -Command "(Get-Content .env) -replace '^DEMOMO_TAG=.*$', 'DEMOMO_TAG=%TAG%' | Set-Content .env"
 
 :: Start services with docker-compose
 echo [%YELLOW%Starting containers...%NC%]
@@ -74,5 +56,4 @@ for %%s in (frontend backend model-text-generation model-character-creation mode
     )
 )
 
-echo [%GREEN%All containers started successfully!%NC%]
-exit /b 0
+echo [%GREEN%All
