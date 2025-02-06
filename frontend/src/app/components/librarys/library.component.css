@@ -89,8 +89,8 @@ body {
 }
 
 .table th, .table td {
-  padding: 3px; /* Reduced padding */
-  font-size: 0.8em; /* Smaller font size */
+  padding: 3px;
+  font-size: 0.8em;
   
 }
 
@@ -145,13 +145,11 @@ tbody tr:hover {
   margin: 0 auto;
 }
 
-/* Table collection pagination */
 .table-collection .pagination {
   top: 30px;
-  background: transparent; /* Remove background color */
+  background: transparent;
 }
 
-/* Card collection pagination */
 .card-collection .pagination {
   position: absolute;
   top: 1px;
@@ -218,7 +216,6 @@ tbody tr:hover {
 }
 
 
-/* Add this new style for the static state */
 .flip-card-inner.static {
   transform: rotateY(180deg);
 }
@@ -263,13 +260,13 @@ figure {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%; /* Adjust height to fit the table size */
+  height: 100%;
 }
 
 figure img {
-  width: 100%; /* Adjust width as needed */
-  height: 100%; /* Adjust height as needed */
-  object-fit: cover; /* Ensure the image covers the entire figure */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .search-icon{
@@ -321,7 +318,7 @@ figure img {
 
 .card-table {
   width: 100%;
-  font-size: 0.85em; /* Decrease base font size */
+  font-size: 0.85em;
 }
 
 .card-table tr {
@@ -339,7 +336,7 @@ figure img {
   text-align: left;
   word-break: break-word;
   white-space: normal;
-  font-size: 0.9em; /* Slightly smaller font for table cells */
+  font-size: 0.9em;
 }
 
 .card-table thead th {
@@ -472,15 +469,13 @@ app-lib-search {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Add responsive table container */
 .table-container {
   width: 100%;
-  height: calc(100% - 60px); /* Subtract space for title */
+  height: calc(100% - 60px);
   overflow-y: auto;
   padding: 10px;
 }
 
-/* Update flip card back side to handle table better */
 .flip-card-back {
   background-color: #0000007c;
   color: black;
@@ -491,7 +486,6 @@ app-lib-search {
   overflow: hidden;
 }
 
-/* Add styles for table rows and cells */
 .card-table tr {
   display: flex;
   flex-wrap: wrap;
@@ -509,7 +503,6 @@ app-lib-search {
   white-space: normal;
 }
 
-/* Add media queries for different screen sizes */
 @media screen and (max-width: 768px) {
   .flip-card {
     height: 600px;
@@ -534,7 +527,6 @@ app-lib-search {
   }
 }
 
-/* Update the collapse button container positioning */
 .collapse-all-container {
   position: absolute;
   top: 4px;
@@ -559,7 +551,6 @@ app-lib-search {
   background: linear-gradient(45deg, #a3b2f5, #3880eb);
 }
 
-/* Add specific styling for single card scenario */
 .articles {
   display: flex;
   flex-wrap: wrap;
@@ -568,7 +559,6 @@ app-lib-search {
   width: 100%;
 }
 
-/* Add responsive styles for hover card */
 @media screen and (max-width: 768px) {
   .hover-card-move {
     bottom: 10px;

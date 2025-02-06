@@ -32,7 +32,6 @@ export class ForgetPwdComponent implements OnInit {
     if (this.forgetPwdForm.valid) {
       this.authService.validateUser(this.forgetPwdForm.value).subscribe({
         next: (response) => {
-          // Navigate to reset password with token and credentials
           this.router.navigate(['/reset-password'], {
             queryParams: { 
               token: response.token,

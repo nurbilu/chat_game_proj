@@ -14,10 +14,9 @@ import { of } from 'rxjs';
 
 interface ChatbotResponse {
   reply: string;
-  characterPrompt?: string; // Add this line to define the characterPrompt property
+  characterPrompt?: string; 
 }
 
-// First, add an interface to define the structure of the prompt data item
 interface PromptDataItem {
   field: string;
   value: string;
@@ -225,7 +224,6 @@ user: any;
   }
 
   loadDraft() {
-    // Check if user is logged in before proceeding
     this.authService.isLoggedIn().pipe(
         switchMap((isLoggedIn: boolean) => {
             if (!isLoggedIn) {
@@ -244,10 +242,10 @@ user: any;
             
             if (response.prompt && response.prompt.trim()) {
                 this.characterPrompt = response.prompt;
-                // Toast will only show if user is logged in
                 this.authService.isLoggedIn().subscribe(isLoggedIn => {
                     if (isLoggedIn) {
                         this.toastService.show({
+
                             template: this.successToast,
                             classname: 'bg-success text-light',
                             delay: 3000,
@@ -262,7 +260,6 @@ user: any;
         error: (error) => {
             console.error('Failed to load draft:', error);
             this.characterPrompt = this.getDefaultPromptTemplate();
-            // Only show error toast if user is logged in
             this.authService.isLoggedIn().subscribe(isLoggedIn => {
                 if (isLoggedIn) {
                     this.toastService.show({
@@ -346,8 +343,9 @@ user: any;
     this.classes.forEach(classItem => {
         this.chcrcterCreationService.fetchSpellsByClass(classItem.name).subscribe((spells: any[]) => {
           this.isLoading = true;
-            classItem.spells = spells.map(spell => spell.name); // Extract only the spell names
-            this.cdr.detectChanges(); // Manually trigger change detection
+            classItem.spells = spells.map(spell => spell.name);
+            this.cdr.detectChanges();
+
         }, error => {
             console.error(`Error fetching spells for class ${classItem.name}:`, error);
         });
@@ -368,7 +366,6 @@ user: any;
       slots: levels[+level].length ? levels[+level].join(', ') : "0"
     }));
 
-    // Ensure unique spell slot levels
     return slots.filter((slot, index, self) =>
       index === self.findIndex((s) => (
         s.level === slot.level && s.slots === slot.slots
@@ -383,15 +380,16 @@ user: any;
   fetchRaces(): void {
     this.chcrcterCreationService.fetchRaces().subscribe((races: any[]) => {
       this.races = races;
-      this.cdr.detectChanges(); // Manually trigger change detection
+      this.cdr.detectChanges(); 
     });
 }
   onClassChange(className: string) {
     this.chcrcterCreationService.fetchSpellsByClass(className).subscribe((spells: any[]) => {
-        this.spells = spells.map(spell => spell.name); // Extract only the spell names
-        console.log('Spells fetched:', this.spells); // Debugging line
-        this.cdr.detectChanges(); // Manually trigger change detection
+        this.spells = spells.map(spell => spell.name);
+        console.log('Spells fetched:', this.spells);
+        this.cdr.detectChanges();
     });
+
   }
 
 
@@ -474,10 +472,9 @@ user: any;
                     delay: 3000,
                     context: { message: 'Character prompt saved successfully' }
                 });
-                // Reset the prompt to default template
                 this.characterPrompt = this.getDefaultPromptTemplate();
-                // Reload the character prompts
                 this.loadCharacterPrompts();
+
             },
             error: (error) => {
                 let errorMessage = 'Failed to save character prompt';
@@ -605,16 +602,14 @@ user: any;
     });
   }
 
-  // Add this method to parse and format spell levels or class abilities
   parseSpellsOrAbilities(promptText: string): { type: string, content: string[] }[] {
     const sections: { type: string, content: string[] }[] = [];
     
-    // Check for spells section
+
     const spellsMatch = promptText.match(/Spells:([^]*?)(?=Equipment:|$)/i);
     if (spellsMatch) {
       const spellContent = spellsMatch[1].trim();
       
-      // Parse spell levels
       const spellLevels = spellContent.split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0);
@@ -627,7 +622,6 @@ user: any;
       }
     }
 
-    // Check for class abilities/features
     const featureMatches = promptText.match(/(\w+\s*Features?:)([^]*?)(?=Equipment:|Spells:|$)/gi);
     if (featureMatches) {
       featureMatches.forEach(match => {
@@ -648,12 +642,10 @@ user: any;
     return sections;
   }
 
-  // Update the parsePromptToTableData method
   private parsePromptToTableData(promptText: string): Array<{field: string, value: string, isExpandable?: boolean, expanded?: boolean}> {
     const basicFields = ['character name', 'race', 'class', 'subclass', 'level'];
     const result = [];
     
-    // Handle basic fields
     for (const field of basicFields) {
       const regex = new RegExp(`${field}:\\s*([^\\n]+)`, 'i');
       const match = promptText.match(regex);
@@ -664,7 +656,6 @@ user: any;
       });
     }
 
-    // Parse spells and abilities
     const sections = this.parseSpellsOrAbilities(promptText);
     sections.forEach(section => {
       result.push({
@@ -675,7 +666,6 @@ user: any;
       });
     });
 
-    // Handle equipment section
     const equipmentMatch = promptText.match(/Equipment:([^]*?)(?=\n\w+:|$)/i);
     if (equipmentMatch) {
       result.push({
@@ -691,12 +681,10 @@ user: any;
 
   copyCharacterPrompt(): void {
     if (this.selectedEntry?.promptData) {
-      // Add type annotation for the map callback parameter
       const promptText = this.selectedEntry.promptData
         .map((item: PromptDataItem) => `${item.field}: ${item.value}`)
         .join('\n');
 
-      // Copy to clipboard
       navigator.clipboard.writeText(promptText).then(() => {
         this.toastService.show({
           template: this.successToast,
@@ -774,7 +762,6 @@ user: any;
     this.characterPrompt = prompt.characterPrompt || '';
     this.currentPrompt = prompt;
     
-    // Scroll to the editor
     const editorElement = document.querySelector('.text-editor-container');
     if (editorElement) {
       editorElement.scrollIntoView({ behavior: 'smooth' });
@@ -795,10 +782,8 @@ user: any;
     this.authService.getUsername().subscribe((username: string) => {
         this.chcrcterCreationService.deleteCharacterPrompt(username, prompt).subscribe({
             next: () => {
-                // Remove the deleted prompt from the local array
                 this.characterPrompts = this.characterPrompts.filter(p => p._id !== prompt._id);
                 
-                // Show success message
                 this.toastService.show({
                     template: this.successToast,
                     classname: 'bg-success text-light',
@@ -806,7 +791,6 @@ user: any;
                     context: { message: 'Character deleted successfully' }
                 });
                 
-                // Reload the character prompts to ensure sync with server
                 this.loadCharacterPrompts();
             },
             error: (error) => {
@@ -943,19 +927,17 @@ user: any;
 
   formatCharacterPrompt(promptText: string): string {
     try {
-      // Try to parse as JSON first
       const jsonData = JSON.parse(promptText);
       return this.formatJsonPrompt(jsonData);
     } catch (e) {
-      // Fallback to text format if JSON parsing fails
       return this.formatTextPrompt(promptText);
     }
+
   }
 
   private formatJsonPrompt(jsonData: any): string {
     let formattedContent = '<div style="text-align: left; padding: 10px;">';
 
-    // Format basic fields
     const basicFields = ['Character Name', 'Race', 'Class', 'Subclass', 'Level'];
     basicFields.forEach(field => {
       if (jsonData[field] !== undefined && jsonData[field] !== null) {
@@ -967,7 +949,6 @@ user: any;
       }
     });
 
-    // Format Spells section
     if (jsonData.Spells) {
       formattedContent += `
         <div style="margin-bottom: 15px;">
@@ -989,7 +970,6 @@ user: any;
       formattedContent += '</div></div>';
     }
 
-    // Format Equipment section
     if (jsonData.Equipment) {
       formattedContent += `
         <div style="margin-bottom: 15px;">
@@ -1016,7 +996,6 @@ user: any;
   }
 
   private formatTextPrompt(promptText: string): string {
-    // Keep existing text format logic as fallback
     return `
       <div style="text-align: left; padding: 10px;">
         <div style="margin-bottom: 15px;">
@@ -1035,29 +1014,28 @@ user: any;
   }
 
   toggleSpellList(event: Event): void {
-    event.stopPropagation(); // Prevent event bubbling
+    event.stopPropagation(); 
     const target = event.target as HTMLElement;
     const optionsDiv = target.nextElementSibling as HTMLElement;
     
-    // Close any other open spell options
     document.querySelectorAll('.spell-options').forEach(el => {
       if (el !== optionsDiv) {
         (el as HTMLElement).style.display = 'none';
       }
     });
 
-    // Toggle this spell options
     if (optionsDiv) {
       optionsDiv.style.display = optionsDiv.style.display === 'none' ? 'block' : 'none';
     }
   }
 
   selectSpellOption(option: string, event: Event): void {
-    event.stopPropagation(); // Prevent event bubbling
+    event.stopPropagation(); 
     const target = event.target as HTMLElement;
     const optionsDiv = target.parentElement as HTMLElement;
     const spellToggle = optionsDiv.previousElementSibling as HTMLElement;
     const spellList = optionsDiv.nextElementSibling as HTMLElement;
+
 
     if (option === 'yes') {
       spellToggle.textContent = 'Available';
@@ -1069,7 +1047,6 @@ user: any;
     optionsDiv.style.display = 'none';
   }
 
-  // Add click handler to close spell options when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     // Don't close if clicking inside the spell options
@@ -1080,7 +1057,6 @@ user: any;
     }
   }
 
-  // Add a method to toggle expansion
   toggleExpansion(item: any): void {
     if (item.isExpandable) {
       item.expanded = !item.expanded;
@@ -1098,15 +1074,15 @@ user: any;
     this.http.get(templatePath, { responseType: 'text' }).subscribe({
       next: (content) => {
         try {
-          // Try to parse as JSON
           const jsonData = JSON.parse(content);
           this.characterPrompt = this.formatJsonPrompt(jsonData);
         } catch (e) {
-          // Fallback to text format if JSON parsing fails
+
           this.characterPrompt = content
             .replace(/^\*/gm, '•')
             .replace(/^\-/gm, '•')
             .replace(/\*\*(.*?)\*\*/g, '$1');
+
         }
         
         this.toastService.show({

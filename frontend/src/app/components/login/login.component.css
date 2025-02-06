@@ -1,20 +1,20 @@
 button {
-  background-color: #63239e; /* Bootstrap secondary color */
+  background-color: #63239e;
   color: white;
   border: none;
-  padding: 10px 200px; /* Adjusted padding for larger size */
+  padding: 10px 200px;
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Garamond', serif;
 }
 
 button:hover {
-  background-color: #5a6268; /* Darker shade for hover */
+  background-color: #5a6268;
 }
 
 .card {
   max-width: 100%;
-  width: 400px; /* Default width */
+  width: 400px;
   margin: 0 auto;
   max-height: 80vh;
   overflow-y: auto;
@@ -26,7 +26,7 @@ button:hover {
 
 @media (max-width: 576px) {
   .card {
-    width: 90%; /* Adjust width for smaller screens */
+    width: 90%;
     max-width: 350px;
   }
 }
@@ -68,18 +68,16 @@ input[type="password"] {
     font-family: 'Garamond', serif;
     text-align: center;
     line-height: 1.1;
-    background-color: #393F44; /* Mid-dark gray background */
-    color: #FFFFFF; /* White text */
-    border: 1px solid #85888C; /* Optional: adds a subtle border */
+    background-color: #393F44;
+    color: #FFFFFF;
+    border: 1px solid #85888C;
 }
 
-/* Change placeholder color to be more visible on dark background */
 input[type="text"]::placeholder,
 input[type="password"]::placeholder {
     color: #CCCCCC;
 }
 
-/* Style for autofill */
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
@@ -89,7 +87,7 @@ input:-webkit-autofill:active {
 }
 
 .submit-link:hover {
-  color: #5a6268; /* Darker shade for hover */
+  color: #5a6268;
   
 }
 
@@ -181,12 +179,10 @@ input[type="password"] {
   line-height: 1;
 }
 
-/* Remove any background from the icon */
 .btn-reveal-password i::before {
   background: none;
 }
 
-/* Adjust the padding of password inputs to prevent overlap with the button */
 .password-input-wrapper input {
   padding-right: 40px;
 }

@@ -11,7 +11,6 @@ class Command(BaseCommand):
         self.stdout.write('Running migrations...')
         call_command('migrate')
 
-        # Create superuser if it doesn't exist
         if not User.objects.filter(username='haga').exists():
             self.stdout.write('Creating superuser...')
             User.objects.create_superuser(

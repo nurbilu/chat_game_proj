@@ -1,7 +1,5 @@
-<!-- profile.component.html -->
 <div class="profile-container container slide-in-left">
     <div class="profile-content">
-        <!-- Existing profile content -->
         <h2 class="text-center my-4">Profile</h2>
         <div *ngIf="!isSuperuser">
             <div class="card">
@@ -58,7 +56,6 @@
                             </button>
                         </div>
 
-                        <!-- Character Information Section -->
                         <div class="character-table-container" *ngIf="selectedCharacter">
                             <div class="card character-info-card mb-4">
                                 <div class="card-header">
@@ -116,5 +113,3 @@
 <ng-template #errorTemplate>
     <div>Operation failed</div>
 </ng-template>
-
-<!-- Template for uncategorized equipment -->

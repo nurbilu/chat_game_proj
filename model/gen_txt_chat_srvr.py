@@ -23,7 +23,7 @@ import google.generativeai as genai
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+
 load_dotenv()
 MONGO_ATLAS = os.getenv("MONGO_ATLAS")
 DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
@@ -31,44 +31,37 @@ DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
 def configure_logging():
     log_file = 'app.log'
     
-    # Create a logger
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     
-    # Remove existing handlers
     for handler in logger.handlers[:]:
         logger.removeHandler(handler)
     
-    # Create a FileHandler
     if not os.path.exists(log_file):
         open(log_file, 'w').close()
     file_handler = FileHandler(log_file)
+
     file_handler.setLevel(logging.DEBUG)
     
-    # Create a formatter
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
     
-    # Add the handler to the logger
     logger.addHandler(file_handler)
     
-    # Configure Werkzeug logger
     werkzeug_logger = logging.getLogger('werkzeug')
     werkzeug_logger.handlers = []
     
-    # Add a StreamHandler for initial startup messages
     startup_handler = logging.StreamHandler()
     startup_handler.setLevel(logging.INFO)
     startup_handler.setFormatter(logging.Formatter('%(message)s'))
     werkzeug_logger.addHandler(startup_handler)
     
-    # Add a FileHandler for all other messages
     werkzeug_logger.addHandler(file_handler)
     
-    # Filter to keep only startup messages in the console
     class WerkzeugFilter(logging.Filter):
         def filter(self, record):
             return 'Running on' in record.msg or 'Press CTRL+C to quit' in record.msg
+
 
     startup_handler.addFilter(WerkzeugFilter())
     
@@ -82,7 +75,6 @@ def handle_exit(signum, frame):
     clear_log_file('app.log')
     os._exit(0)
 
-# Define the MongoDB cache class
 class MongoDBCache(BaseCache):
     def __init__(self, default_timeout=300, host=None, port=None, db_name=None, collection='cache'):
         self.default_timeout = default_timeout
@@ -111,10 +103,8 @@ def create_app():
     CORS(app)
     socketio = SocketIO(app, cors_allowed_origins="http://localhost:4200")
 
-    # Configure logging
     app.logger = configure_logging()
 
-    # Register blueprints
     app.register_blueprint(handle_data_blueprint)
     app.register_blueprint(game_mchnics_blueprint)
     app.register_blueprint(logout_user_blueprint)
@@ -127,7 +117,6 @@ def create_app():
         app.logger.error(f"Failed to connect to MongoDB: {str(e)}")
         raise e
 
-    # Configure Flask to use the custom MongoDB cache
     app.config['CACHE_TYPE'] = __name__ + '.MongoDBCache'
     cache = Cache(app)
 
@@ -141,11 +130,9 @@ def create_app():
             player_name = data.get('username', 'Anonymous')
             user_input = data.get('prompt', '').strip()
 
-            # Assuming a simplified session handling and response generation
             session_data = db.sessions.find_one({"username": player_name}) or {}
             enriched_prompt = f"{user_input}\n\nSession Data:\n{json.dumps(session_data, cls=JSONEncoder)}"
 
-            # Generate response using genai
             response_text = generate_gemini_response(enriched_prompt, db)
 
             emit('response', {'text': response_text, 'username': player_name})
@@ -171,7 +158,6 @@ def create_app():
             character = db.characters.find_one({"username": username})
             if character:
                 raw_prompt = character.get("characterPrompt", "")
-                # Clean the HTML to plain text
                 soup = BeautifulSoup(raw_prompt, "html.parser")
                 cleaned_prompt = soup.get_text(separator="\n").strip()
                 return jsonify({"characterPrompt": cleaned_prompt}), 200

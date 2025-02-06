@@ -110,7 +110,6 @@ export class ChatComponent implements OnInit {
                     }
                 });
                 this.responses = [{ text: `Welcome back, ${this.username}! Continue your adventure.`, from: 'bot' }];
-                // Load session data
                 this.chatService.sendMessage('', this.username).subscribe({
                     next: (response) => {
                         if (response.last_prompt) {
@@ -125,29 +124,25 @@ export class ChatComponent implements OnInit {
             this.loadCharacterPrompts();
         });
 
-        // Add resize event listeners
         const chatInput = document.querySelector('.chat-input') as HTMLTextAreaElement;
         
         chatInput?.addEventListener('mousedown', (e: MouseEvent) => {
             const rect = chatInput.getBoundingClientRect();
-            const isInResizeZone = e.clientY - rect.top <= 8; // Increased zone to 8px
+            const isInResizeZone = e.clientY - rect.top <= 8; 
             
             if (isInResizeZone) {
                 this.isResizing = true;
                 this.startY = e.clientY;
                 this.startHeight = chatInput.offsetHeight;
                 
-                // Add resizing class
                 chatInput.classList.add('resizing');
                 
-                // Add temporary mousemove and mouseup listeners
                 const onMouseMove = (moveEvent: MouseEvent) => {
                     if (!this.isResizing) return;
                     
                     const deltaY = this.startY - moveEvent.clientY;
                     const newHeight = Math.max(50, this.startHeight + deltaY);
                     
-                    // Use requestAnimationFrame for smoother updates
                     requestAnimationFrame(() => {
                         chatInput.style.height = `${newHeight}px`;
                     });
@@ -158,17 +153,14 @@ export class ChatComponent implements OnInit {
                         this.isResizing = false;
                         chatInput.classList.remove('resizing');
                         
-                        // Remove temporary listeners
                         document.removeEventListener('mousemove', onMouseMove);
                         document.removeEventListener('mouseup', onMouseUp);
                     }
                 };
                 
-                // Add temporary listeners
                 document.addEventListener('mousemove', onMouseMove);
                 document.addEventListener('mouseup', onMouseUp);
                 
-                // Prevent text selection
                 e.preventDefault();
             }
         });
@@ -204,10 +196,8 @@ export class ChatComponent implements OnInit {
     onEnter(event: KeyboardEvent): void {
         if (event.key === 'Enter') {
             if (event.shiftKey) {
-                // Allow default behavior (new line) when Shift+Enter is pressed
                 return;
             } else {
-                // Prevent default behavior and send message when only Enter is pressed
                 event.preventDefault();
                 this.sendMessage();
             }
@@ -312,7 +302,7 @@ export class ChatComponent implements OnInit {
         this.isDropupOpen = false;
         this.isCharacterDropupOpen = false;
 
-        // Check if the option is a character prompt
+
         if (option.startsWith('character_')) {
             const promptId = option.split('_')[1];
             const selectedPrompt = this.characterPrompts.find(prompt => 
@@ -320,27 +310,24 @@ export class ChatComponent implements OnInit {
             );
 
             if (selectedPrompt?.characterPrompt) {
-                // Clean and format the prompt text if needed
                 const cleanPrompt = this.formatCharacterPrompt(selectedPrompt.characterPrompt);
                 this.message = cleanPrompt;
             }
         } else {
-            // Handle other template options
             this.pasteTemplate();
         }
     }
 
     private formatCharacterPrompt(promptText: string): string {
         try {
-            // Remove HTML tags if present
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = promptText;
             const cleanText = tempDiv.textContent || tempDiv.innerText;
 
-            // Format the text for chat input
             return cleanText.trim()
-                .replace(/\n{3,}/g, '\n\n') // Replace multiple newlines with double newline
-                .replace(/^\s+/gm, ''); // Remove leading whitespace from each line
+                .replace(/\n{3,}/g, '\n\n')
+                .replace(/^\s+/gm, '');
+
         } catch (e) {
             console.error('Error formatting character prompt:', e);
             return promptText;
@@ -360,7 +347,6 @@ export class ChatComponent implements OnInit {
         const selectedText = this.message.substring(start, end);
 
         if (start === end) {
-            // Toggle format state even without selection
             this.toggleFormat(command, value);
             return;
         }
@@ -394,10 +380,8 @@ export class ChatComponent implements OnInit {
                 break;
         }
 
-        // Replace the selected text with the formatted text
         this.message = this.message.substring(0, start) + formattedText + this.message.substring(end);
         
-        // Restore cursor position
         setTimeout(() => {
             textarea.focus();
             textarea.setSelectionRange(start, start + formattedText.length);
@@ -409,23 +393,19 @@ export class ChatComponent implements OnInit {
         if (this.activeFormats.has(formatKey)) {
             this.activeFormats.delete(formatKey);
         } else {
-            // For alignment, remove other alignment options first
             if (format === 'align') {
                 ['align-left', 'align-center', 'align-right'].forEach(f => this.activeFormats.delete(f));
             }
-            // For lists, remove other list options first
             if (format === 'list') {
                 ['list-bullet', 'list-number'].forEach(f => this.activeFormats.delete(f));
             }
             this.activeFormats.add(formatKey);
         }
         
-        // Apply formatting after toggling
         this.applyFormatting();
     }
 
     showCharacterPromptHover(): void {
-        // Reset selection when opening
         this.selectedCharacterPrompt = null;
         this.selectedEntry = null;
         this.showStaticHoverCard = true;
@@ -442,17 +422,14 @@ export class ChatComponent implements OnInit {
         return this.displayFields.map(field => {
             let regex;
             let searchField = field;
-            
-            // Handle variations of Class Abilities field name
+
             if (field === 'Class Abilities') {
                 searchField = '(?:Class (?:Abilities|Features)|Features)';
             }
             
             if (field === 'Equipment' || field === 'Class Abilities' || field === 'Spells') {
-                // Use a more inclusive regex pattern for these fields
                 regex = new RegExp(`${searchField}:\\s*([\\s\\S]*?)(?=\\n(?:${this.displayFields.join('|')}):|\$)`, 'i');
             } else {
-                // Use the standard regex for other fields
                 regex = new RegExp(`${searchField}:\\s*([^\\n]+(?:\\n(?!\\w+:)[^\\n]+)*)`, 'i');
             }
             
@@ -462,19 +439,19 @@ export class ChatComponent implements OnInit {
                 value: match ? match[1].trim() : '',
                 expanded: false
             };
-        }).filter(item => item.value !== ''); // Only show fields that have values
+        }).filter(item => item.value !== ''); 
     }
 
-    // Add this method to apply formatting to the input text
+
     private applyFormatting(): void {
         const textarea = document.querySelector('.chat-input') as HTMLTextAreaElement;
         if (!textarea) return;
 
-        // Create a temporary div to hold the formatted text
+
         const tempDiv = document.createElement('div');
         let formattedText = this.message;
 
-        // Apply active formats
+
         this.activeFormats.forEach(format => {
             switch (format) {
                 case 'bold':
@@ -498,7 +475,7 @@ export class ChatComponent implements OnInit {
             }
         });
 
-        // Update the textarea's content
+
         tempDiv.innerHTML = formattedText;
         textarea.style.fontWeight = this.activeFormats.has('bold') ? 'bold' : 'normal';
         textarea.style.fontStyle = this.activeFormats.has('italic') ? 'italic' : 'normal';
@@ -509,26 +486,24 @@ export class ChatComponent implements OnInit {
             'left';
     }
 
-    // Add this to handle input changes
+
     onInputChange(): void {
         this.applyFormatting();
     }
 
-    // Add this method to reset all formatting
+
     resetFormatting(): void {
         this.activeFormats.clear();
         this.applyFormatting();
     }
 
     isSuperUser(): boolean {
-        // Implement logic to determine if the current user is a superuser
-        // This could be based on a user role or a specific property
-        return this.authService.isSuperUser(); // Example using AuthService
+        return this.authService.isSuperUser();
     }
+
 
     toggleCharacterDropup() {
         this.isCharacterDropupOpen = !this.isCharacterDropupOpen;
-        // Close other dropup if open
         if (this.isCharacterDropupOpen) {
             this.isDropupOpen = false;
         }
@@ -571,7 +546,6 @@ export class ChatComponent implements OnInit {
         const selectedIndex = parseInt(select.value);
         
         if (isNaN(selectedIndex) || selectedIndex < 0) {
-            // Reset selection to show placeholder
             this.selectedEntry = null;
             this.selectedCharacterPrompt = null;
             this.selectedCharacterPromptdata = null;
@@ -630,15 +604,12 @@ export class ChatComponent implements OnInit {
 
     selectCharacterPromptForChat(prompt: any): void {
         if (prompt && prompt.characterPrompt) {
-            // Get the character name and extract first name
             const fullName = this.getCharacterName(prompt);
-            const firstName = fullName.split(' ')[0]; // Get first word of the name
+            const firstName = fullName.split(' ')[0];
             
-            // Format the character prompt with only the first name
             const formattedPrompt = `Here are the details of ${firstName}:\n\n${prompt.characterPrompt}\n\nBased on the character prompt create a DnD one shot-campaign and improvise to create a prompt. each prompt end in a 3 options to choose to continue the campaign to the next prompt and ${this.username} sending the next prompt as a choice for you to know which new prompt to create.`;
             this.message = formattedPrompt;
             
-            // Close the character dropup after selection
             this.isCharacterDropupOpen = false;
         }
     }

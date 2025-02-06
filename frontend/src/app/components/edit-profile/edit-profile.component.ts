@@ -10,7 +10,7 @@ import { ProfileComponent } from '../profile/profile.component';
   styleUrls: ['./edit-profile.component.css']
 })
 export class EditProfileComponent implements OnInit {
-  @Output() profileUpdated = new EventEmitter<void>();  // Ensure this line is present
+  @Output() profileUpdated = new EventEmitter<void>();
   @Output() closeEdit = new EventEmitter<void>();
 
   profileForm: FormGroup;
@@ -26,8 +26,8 @@ export class EditProfileComponent implements OnInit {
     private toastService: ToastService
   ) {
     this.profileForm = this.formBuilder.group({
-      first_name: ['', Validators.required],  // Ensure keys match backend
-      last_name: ['', Validators.required],   // Ensure keys match backend
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       address: [''],
       birthdate: [''],
@@ -70,7 +70,6 @@ export class EditProfileComponent implements OnInit {
         formData.append(key, this.profileForm.value[key]);
       });
 
-      // Append the profile picture separately if it exists
       const profilePicture = this.profileForm.get('profilePicture')!.value;
       if (profilePicture) {
         formData.append('profile_picture', profilePicture);
@@ -79,8 +78,8 @@ export class EditProfileComponent implements OnInit {
       this.authService.updateUserProfile(formData).subscribe(
         (data) => {
           this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
-          this.profileUpdated.emit();  // Emit the event here
-          this.loadUserProfile();  // Reload the user profile after successful update
+          this.profileUpdated.emit();
+          this.loadUserProfile();
         },
         (error) => {
           this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });

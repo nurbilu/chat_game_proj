@@ -34,7 +34,6 @@ export class LoginComponent {
         private route: ActivatedRoute,
         private toastService: ToastService
     ) {
-        // Get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 

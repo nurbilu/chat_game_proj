@@ -29,12 +29,10 @@ export class AuthGuard implements CanActivate {
 
   private checkLogin(url: string): Observable<boolean> {
     if (isPlatformBrowser(this.platformId)) {
-      // Check if user is logged in
       if (this.authService.isLoggedIn()) {
         return this.authService.getCurrentUser().pipe(
           map(user => {
             if (user && user.is_blocked) {
-              // Blocked users can only access login and homepage
               if (this.blockedUserRoutes.includes(url)) {
                 return true;
               }
@@ -42,7 +40,6 @@ export class AuthGuard implements CanActivate {
               return false;
             }
             
-            // Check for saved navigation link
             const savedNavLink = sessionStorage.getItem('lastNavLink');
             if (savedNavLink) {
               this.router.navigate([savedNavLink]);
@@ -53,13 +50,11 @@ export class AuthGuard implements CanActivate {
           })
         );
       } else {
-        // No user logged in
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
           return this.authService.refreshToken().pipe(
             switchMap(() => of(true)),
             catchError(() => {
-              // If public route, allow access
               if (this.publicRoutes.includes(url)) {
                 return of(true);
               }
@@ -68,7 +63,6 @@ export class AuthGuard implements CanActivate {
             })
           );
         } else {
-          // If public route, allow access
           if (this.publicRoutes.includes(url)) {
             return of(true);
           }

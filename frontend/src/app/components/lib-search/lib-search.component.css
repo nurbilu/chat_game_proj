@@ -55,7 +55,7 @@ input[type="text"]::placeholder {
     border: 1px solid var(--border-color);
     border-radius: 5px;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.3); /* Changed to black with 30% opacity */
+    background: rgba(0, 0, 0, 0.3); 
 }
 
 .horizontal-card-content {
@@ -63,7 +63,7 @@ input[type="text"]::placeholder {
 }
 
 .horizontal-card-title {
-    color: white; /* Changed to white for better contrast */
+    color: white; 
     margin-bottom: 10px;
     font-weight: bold;
 }
@@ -75,17 +75,17 @@ input[type="text"]::placeholder {
 }
 
 .subcard {
-    background-color: rgba(0, 0, 0, 0.3); /* Changed to black with 30% opacity */
+    background-color: rgba(0, 0, 0, 0.3); 
     border-radius: 5px;
     padding: 10px;
     transition: background-color 0.3s ease;
 }
 
 .subcard:hover {
-    background-color: rgba(0, 0, 0, 0.4); /* Slightly darker on hover */
+    background-color: rgba(0, 0, 0, 0.4); 
 }
 
-/* New styles for single subcard */
+
 .single-subcard .subcard-grid {
     display: block;
 }
@@ -95,7 +95,7 @@ input[type="text"]::placeholder {
     height: 100%;
 }
 
-/* Adjustments for multiple subcards */
+
 .multiple-subcards .subcard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -167,7 +167,7 @@ input[type="text"]::placeholder {
     -webkit-line-clamp: unset;
 }
 
-/* Media query for larger screens */
+
 @media (min-width: 992px) {
     .adjustable-text {
         font-size: 16px;
@@ -233,7 +233,7 @@ input[type="text"]::placeholder {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.95); /* More dense color */
+  background-color: rgba(0, 0, 0, 0.95); 
   color: white;
   border-radius: 5px;
   padding: 20px;

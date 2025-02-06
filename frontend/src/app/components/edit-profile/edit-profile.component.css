@@ -1,8 +1,7 @@
-/* Container for the form */
 form {
     display: grid;
-    grid-template-columns: 150px 1fr;  /* First column for labels, second for inputs */
-    gap: 20px;  /* Consistent spacing between rows */
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
     max-width: 600px;
     margin: 0 auto;
     padding: 30px;
@@ -14,7 +13,6 @@ form {
     border-bottom: 5px solid #3c3fe7;
   }
   
-  /* Style for form labels */
   form label {
     text-align: left;
     padding-top: 10px;
@@ -24,7 +22,6 @@ form {
     padding-bottom: 10px;
   }
   
-  /* Style for form inputs */
   form input[type="text"],
   form input[type="email"],
   form input[type="date"],
@@ -39,16 +36,14 @@ form {
     font-size: 16px;
   }
   
-  /* Style for error messages */
   form small {
-    grid-column: 2 / 3;  /* Start at column 2, end at 3 */
+    grid-column: 2 / 3;
     color: #3c80e7;
     margin-top: -15px;
   }
   
-  /* Style for the submit button */
   form button[type="submit"] {
-    grid-column: 1 / -1;  /* Span all columns */
+    grid-column: 1 / -1;
     justify-self: center;
     width: 200px;
     margin-top: 20px;
@@ -72,7 +67,6 @@ form {
     cursor: not-allowed;
   }
   
-  /* Style for success and error messages */
   div[ng-template] {
     text-align: center;
     padding: 10px;
@@ -116,11 +110,11 @@ form {
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  max-width: 600px; /* Increased from 90% to a fixed width */
+  max-width: 600px;
   width: 100%;
   max-height: 90%;
   overflow-y: auto;
-  margin: 0 auto; /* Center the form */
+  margin: 0 auto;
 }
 
 .edit-profile-header {
@@ -136,7 +130,6 @@ form {
   margin: 0;
 }
 
-/* Make each form field div span both columns */
 form > div {
   grid-column: 1 / -1;
   display: grid;

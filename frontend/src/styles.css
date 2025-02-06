@@ -29,22 +29,23 @@ a:hover {
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker blue for hover */
+    background-color: #0056b3; 
   }
   
   .logout-button {
-    background-color: #dc3545; /* Bootstrap 'danger' color */
+    background-color: #dc3545; 
   }
   
   .logout-button:hover {
-    background-color: #c82333; /* Darker red for hover */
+    background-color: #c82333; 
   }
 .input {
-    width: 100%; /* Full width */
-    padding: 12px 20px; /* Increased padding */
-    border: 1px solid #ccc; /* Standard border */
-    border-radius: 4px; /* Rounded borders */
-    box-sizing: border-box; /* Border and padding included in width */
+    width: 100%; 
+    padding: 12px 20px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+
   }
   
 .popover {
@@ -83,10 +84,10 @@ button:hover {
   background: linear-gradient(to right, #28a745, #17a2b8) !important;
 }
 
-/* Existing toast styles */
+
 .toast-container {
   position: fixed;
-  top: 65px; /* Position below navbar */
+  top: 65px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
@@ -115,8 +116,8 @@ button:hover {
 }
 
 .bg-light-blue {
-  background-color: #8bc7ff; /* Light blue background */
-  border: 1px solid #3533c5; /* Dark blue border */
+  background-color: #8bc7ff;
+  border: 1px solid #3533c5;
 }
 
 .text-white {
@@ -124,10 +125,10 @@ button:hover {
 }
 
 .text-dark-blue {
-  color: #3533c5; /* Dark blue text */
+  color: #3533c5;
 }
 
-/* Enhanced Global scrollbar styles */
+
 ::-webkit-scrollbar {
   width: 16px;
   height: 16px;
@@ -149,7 +150,7 @@ button:hover {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Scrollbar Button Styles */
+
 ::-webkit-scrollbar-button:single-button {
   background-color: #949494;
   display: block;
@@ -158,7 +159,7 @@ button:hover {
   background-repeat: no-repeat;
 }
 
-/* Up Arrow */
+
 ::-webkit-scrollbar-button:single-button:vertical:decrement {
   height: 16px;
   width: 16px;
@@ -177,7 +178,7 @@ button:hover {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(51, 55, 64)'><polygon points='50,00 0,50 100,50'/></svg>");
 }
 
-/* Down Arrow */
+
 ::-webkit-scrollbar-button:single-button:vertical:increment {
   height: 16px;
   width: 16px;
@@ -200,7 +201,7 @@ button:hover {
   background-color: #f0f0f0;
 }
 
-/* Universal Close Button Styles */
+
 .close-btn {
   position: relative;
   width: 32px;
@@ -219,7 +220,7 @@ button:hover {
   z-index: 1000;
 }
 
-/* X symbol using pseudo-elements */
+
 .close-btn::before,
 .close-btn::after {
   content: '';
@@ -239,7 +240,7 @@ button:hover {
   transform: rotate(-45deg);
 }
 
-/* Hover state */
+
 .close-btn:hover {
   transform: scale(1.1);
   border-color: #c9a66b;
@@ -250,12 +251,12 @@ button:hover {
   background-color: #c9a66b;
 }
 
-/* Active/pressed state */
+
 .close-btn:active {
   transform: scale(0.95);
 }
 
-/* Position variants */
+
 .static-hover-card .close-btn {
   position: absolute;
   top: 15px;
@@ -267,12 +268,12 @@ button:hover {
   margin-left: auto;
 }
 
-/* Hide default content */
+
 .close-btn span {
   display: none;
 }
 
-/* Add these new positioning classes */
+
 .static-hover-card .close-btn {
   position: absolute;
   top: 10px;
@@ -284,7 +285,7 @@ button:hover {
   margin-left: auto;
 }
 
-/* Toast Styles */
+
 .toast-container {
   position: fixed;
   top: 20px;
@@ -335,7 +336,7 @@ button:hover {
   opacity: 1;
 }
 
-/* Toast Icons */
+
 .toast-body i {
   font-size: 1.2rem;
   margin-right: 8px;
@@ -351,7 +352,7 @@ button:hover {
 
 .toast-container {
   position: fixed;
-  bottom: 20px;  /* Changed from top to bottom */
+  bottom: 20px;  
   right: 20px;
   z-index: 999999;
 }

@@ -25,20 +25,20 @@ export class ProfileComponent implements OnInit {
   @ViewChild('errorTemplate', { static: true }) errorTemplate!: TemplateRef<any>;
   @ViewChild('logoutTemplate', { static: true }) logoutTemplate!: TemplateRef<any>;
 
-  userProfile: any = {};  // Initialize to an empty object or suitable defaults
+  userProfile: any = {};
   isSuperuser: boolean = false;
   showUpdateForm: boolean = false;
   showUserData: boolean = true;
-  characters: Character[] = []; // Use Character type
-  profilePictureUrl: string = '';  // Initialize to an empty string
+  characters: Character[] = [];
+  profilePictureUrl: string = '';
   selectedCharacter: Character | null = null;
   selectedCharacterIndex: number = -1;
-  characterPrompts: Character[] = []; // Change type to Character[]
-  characterPrompt: string = ''; // Store the character prompt
+  characterPrompts: Character[] = [];
+  characterPrompt: string = '';
   showEditProfile: boolean = false;
   isPromptVisible: boolean = false;
   isPromptLocked: boolean = false;
-  promptNumber: number = 1; // Add this property
+  promptNumber: number = 1;
   showStaticHoverCard: boolean = false;
   expandedFields: { [key: string]: boolean } = {};
 
@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
       if (this.isSuperuser) {
         this.router.navigate(['/super-profile']);
       } else {
-        this.loadCharacterPrompts(decodedToken.username); // Load character prompts
+        this.loadCharacterPrompts(decodedToken.username);
       }
     }).catch(error => console.error('Error decoding token:', error));
   }
@@ -71,7 +71,7 @@ export class ProfileComponent implements OnInit {
     this.authService.getUserProfile().subscribe(
       (data) => {
         this.userProfile = data;
-        this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/images/default-profile-pic/no_profile_pic.png';  // Use default image if profile picture is not set
+        this.profilePictureUrl = data.profile_picture ? `http://127.0.0.1:8000${data.profile_picture}` : 'assets/images/default-profile-pic/no_profile_pic.png';
       },
       (error) => {
         this.toastService.show({ template: this.errorTemplate, classname: 'bg-danger text-light', delay: 15000 });
@@ -126,7 +126,7 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    const username = localStorage.getItem('username'); // Pull username from local storage
+    const username = localStorage.getItem('username');
     this.toastService.show({ template: this.successTemplate, classname: 'bg-success text-light', delay: 10000 });
     this.toastService.show({ template: this.logoutTemplate, classname: 'bg-success text-light', delay: 10000, context: { username } });
     this.authService.logout().subscribe(() => {
@@ -141,7 +141,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onProfileUpdated(): void {
-    this.loadUserProfile();  // Reload the profile data
+    this.loadUserProfile();
   }
 
   toggleEditProfile(): void {
@@ -169,11 +169,9 @@ export class ProfileComponent implements OnInit {
     if (!character?.characterPrompt) return '';
     
     try {
-      // Try parsing as JSON first
       const jsonData = JSON.parse(character.characterPrompt);
       return jsonData['Character Name'] || 'Unnamed Character';
     } catch (e) {
-      // Fallback to text parsing
       const match = character.characterPrompt.match(/Character Name:\s*([^\n]+)/i);
       return match ? match[1].trim() : 'Unnamed Character';
     }
@@ -188,12 +186,10 @@ export class ProfileComponent implements OnInit {
     if (!prompt) return '';
     
     try {
-        // Try parsing as JSON first
         const jsonData = JSON.parse(prompt);
         return jsonData[field]?.toString() || '';
     } catch (e) {
-        // Fallback to text parsing
-        const regex = new RegExp(`${field}:\\s*([^\\n]+)`, 'i');
+        const regex = new RegExp(`${field}:\s*([^\n]+)`, 'i');
         const match = prompt.match(regex);
         return match ? match[1].trim() : '';
     }
@@ -203,13 +199,11 @@ export class ProfileComponent implements OnInit {
     if (!prompt) return {};
     
     try {
-        // Look for Equipment section
         const equipmentMatch = prompt.match(/Equipment:?([\s\S]*?)(?=\n(?:[A-Z][a-z]+:)|$)/i);
         if (!equipmentMatch) return {};
 
         const equipmentText = equipmentMatch[1].trim();
         
-        // Check if the equipment is categorized
         const hasCategories = /[A-Z][a-z]+:/.test(equipmentText);
         
         if (hasCategories) {
@@ -227,7 +221,6 @@ export class ProfileComponent implements OnInit {
             }
             return categories;
         } else {
-            // Handle uncategorized equipment
             return {
                 'Equipment': equipmentText
                     .split(/[,\n]/)
@@ -251,14 +244,12 @@ export class ProfileComponent implements OnInit {
       'Tools',
       'Miscellaneous Gear',
       'Potions',
-      'Equipment' // For uncategorized items
+      'Equipment'
     ];
 
-    // Check if equipment has any of the predefined categories
     const hasOrderedCategories = Object.keys(equipment).some(key => categoryOrder.includes(key));
 
     if (!hasOrderedCategories) {
-      // Return as a single uncategorized list with proper type casting
       const allItems = Object.values(equipment)
         .flat()
         .filter((item): item is string => typeof item === 'string');
@@ -269,12 +260,10 @@ export class ProfileComponent implements OnInit {
       }];
     }
 
-    // Sort and organize by categories
     return Object.entries(equipment)
       .sort(([keyA], [keyB]) => {
         const indexA = categoryOrder.indexOf(keyA);
         const indexB = categoryOrder.indexOf(keyB);
-        // If category not in order list, put it at the end
         if (indexA === -1) return 1;
         if (indexB === -1) return -1;
         return indexA - indexB;
@@ -306,14 +295,12 @@ export class ProfileComponent implements OnInit {
     if (!prompt) return {};
     
     try {
-        // First try to find a "Spells:" section
         const spellsMatch = prompt.match(/Spells?:?([\s\S]*?)(?=\n(?:[A-Z][a-z]+:)|$)/i);
         if (!spellsMatch) return {};
 
         const spellsText = spellsMatch[1].trim();
         const spellsByLevel: { [key: string]: string[] } = {};
         
-        // Split into level sections and handle various formats
         const levelSections = spellsText.split(/\n(?=(?:Cantrips|[0-9](?:st|nd|rd|th) Level):)/i);
         
         levelSections.forEach(section => {
@@ -321,7 +308,7 @@ export class ProfileComponent implements OnInit {
             if (levelMatch) {
                 const level = levelMatch[1].trim();
                 const spells = levelMatch[2]
-                    .split(/[,\n]/) // Split by comma or newline
+                    .split(/[,\n]/) 
                     .map(spell => spell.trim())
                     .filter(spell => spell.length > 0 && !spell.match(/^(?:Cantrips|[0-9](?:st|nd|rd|th) Level):?/i));
                 
@@ -342,7 +329,6 @@ export class ProfileComponent implements OnInit {
     if (!prompt) return {};
     
     try {
-        // Look for Class Features, Class Abilities, or Features sections
         const abilitiesMatch = prompt.match(/(?:Class Features|Class Abilities|Features):?([\s\S]*?)(?=\n(?:[A-Z][a-z]+:)|$)/i);
         if (!abilitiesMatch) return {};
 
@@ -351,7 +337,6 @@ export class ProfileComponent implements OnInit {
             'Class Features': []
         };
         
-        // Split by bullet points, dashes, or numbered lists
         const abilityList = abilitiesText
             .split(/(?:\n\s*[•\-\*]|\n\s*\d+\.|\n\n)/)
             .map(ability => ability.trim())
@@ -413,9 +398,8 @@ export class ProfileComponent implements OnInit {
         '9th Level'
     ];
 
-    // Filter out empty spell levels and only include available ones
     return Object.entries(spells)
-        .filter(([_, value]) => value && value.length > 0) // Only include non-empty spell lists
+        .filter(([_, value]) => value && value.length > 0)
         .sort(([keyA], [keyB]) => {
             const indexA = spellOrder.indexOf(keyA);
             const indexB = spellOrder.indexOf(keyB);
@@ -448,10 +432,8 @@ export class ProfileComponent implements OnInit {
     const basicFields = ['Character Name', 'Race', 'Class', 'Subclass', 'Level'];
     
     try {
-      // Try parsing as JSON first
       const jsonData = JSON.parse(promptText);
       
-      // Add basic fields
       basicFields.forEach(field => {
         result.push({
           field,
@@ -460,7 +442,6 @@ export class ProfileComponent implements OnInit {
         });
       });
 
-      // Add expandable sections
       if (jsonData.Equipment) {
         result.push({
           field: 'Equipment',
@@ -485,7 +466,6 @@ export class ProfileComponent implements OnInit {
         });
       }
     } catch (e) {
-      // Fallback to text parsing if JSON parsing fails
       basicFields.forEach(field => {
         const value = this.extractField(promptText, field);
         if (value) {
@@ -497,7 +477,6 @@ export class ProfileComponent implements OnInit {
         }
       });
 
-      // Add expandable sections from text
       const equipment = this.extractEquipment(promptText);
       if (Object.keys(equipment).length > 0) {
         result.push({
@@ -545,12 +524,10 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteCharacter(character: Character): void {
-    // ... deletion logic ...
     this.toastService.success('Character deleted successfully');
   }
 
   updateProfile(): void {
-    // ... update logic ...
     this.toastService.success('Profile updated successfully');
   }
 }

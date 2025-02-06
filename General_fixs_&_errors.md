@@ -56,12 +56,12 @@ sub-task : remove Super Profile or Profile and keep the other one {} (done)
       - add visual effects to super profile page (done)
       - add visual effects to user chat page (done)
 
-7.a. fix angular errors {optional()}
-7.b. make logger simillarty to all flask apps ()
-7.c. add to django logger - clr after ctrl + c ()
+7.a. fix angular errors {optional(?done?)}
+7.b. make logger simillarty to all flask apps (X)
+7.c. add to django logger - clr after ctrl + c (X)
 
 8.a. check / implement questionable tasks ()
-8.b. implement docker-compose.yml file to run all flask apps in one command / docker-compose up --build () - complete and fix all errors - 3 - 6 hours then hand over project to to eyal and john bryce ()
+8.b. implement docker-compose.yml file to run all flask apps in one command / docker-compose up --build ( done ) - complete and fix all errors - 3 - 6 hours then hand over project to to eyal and john bryce ()
 8.c. clean all comments to a better git displayment ()
 8.d. final QA ()
 

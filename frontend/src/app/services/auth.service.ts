@@ -51,7 +51,6 @@ export class AuthService {
         }
     }
 
-    // Method to retrieve the token
     getToken(): string | null {
         if (isPlatformBrowser(this.platformId)) {
             return localStorage.getItem('token') || null;
@@ -74,7 +73,6 @@ export class AuthService {
             try {
                 localStorage.removeItem(key);
             } catch (e) {
-                // Handle error if localStorage is not available
             }
         }
     }
@@ -158,8 +156,6 @@ export class AuthService {
                 if (!decodedToken || !decodedToken.username) {
                     throw new Error('Username not provided in token');
                 }
-
-                // Handle token storage and state updates
                 this.setItem('token', response.access);
                 if (rememberMe) {
                     this.setItem('refresh_token', response.refresh);
@@ -171,13 +167,11 @@ export class AuthService {
                 this.startTokenExpirationTimer();
                 this.enableDraftToasts();
 
-                // Get saved nav link from session storage
                 const savedNavLink = sessionStorage.getItem('lastNavLink');
                 const targetRoute = savedNavLink && this.requiresAuth(savedNavLink) 
                     ? savedNavLink 
                     : this.isSuperUser() ? '/super-profile' : '/chat';
                 
-                // Navigate first, then remove the session storage item
                 await this.router.navigate([targetRoute]);
                 if (savedNavLink) {
                     sessionStorage.removeItem('lastNavLink');
@@ -190,7 +184,6 @@ export class AuthService {
         );
     }
 
-    // Add helper method to check if route requires authentication
     private requiresAuth(route: string): boolean {
         const protectedRoutes = [
             '/chat',
@@ -215,7 +208,7 @@ export class AuthService {
                 }
                 this.setItem('token', response.access);
                 this.startTokenExpirationTimer();
-                this.startRefreshTokenExpirationTimer(); // Restart refresh token timer as well
+                this.startRefreshTokenExpirationTimer();
             }),
             catchError(error => {
                 console.error('Token refresh failed', error);
@@ -246,13 +239,11 @@ export class AuthService {
                 this.startTokenExpirationTimer();
                 this.enableDraftToasts();
 
-                // Get saved nav link from session storage
                 const savedNavLink = sessionStorage.getItem('lastNavLink');
                 const targetRoute = savedNavLink && this.requiresAuth(savedNavLink) 
                     ? savedNavLink 
                     : this.isSuperUser() ? '/super-profile' : '/chat';
-                
-                // Clear the saved nav link
+            
                 sessionStorage.removeItem('lastNavLink');
                 
                 this.router.navigate([targetRoute]);
@@ -409,7 +400,6 @@ export class AuthService {
         confirmPassword: string;
 
     }): Observable<any> {
-        // Store the token temporarily for this request
         this.setItem('temp_reset_token', token);
         
         const headers = new HttpHeaders({
@@ -426,7 +416,6 @@ export class AuthService {
             headers 
         }).pipe(
             tap(() => {
-                // Clean up the temporary token
                 this.removeItem('temp_reset_token');
                 this.toastService.success('Password reset successful');
             }),
@@ -467,19 +456,16 @@ export class AuthService {
         return this.http.get(`http://127.0.0.1:6500/api/character_prompts/${username}`, { headers })
             .pipe(
                 map(response => {
-                    // Format the response to ensure consistent structure
                     if (Array.isArray(response)) {
                         return response.map(character => {
                             const prompt = character.characterPrompt || character.prompt;
                             
-                            // Format Equipment section
                             if (prompt && prompt.includes('Equipment:')) {
                                 const equipmentSection = this.extractSection(prompt, 'Equipment');
                                 const formattedEquipment = this.formatEquipmentSection(equipmentSection);
                                 prompt.replace(equipmentSection, formattedEquipment);
                             }
 
-                            // Format Spells section
                             if (prompt && prompt.includes('Spells:')) {
                                 const spellsSection = this.extractSection(prompt, 'Spells');
                                 const formattedSpells = this.formatSpellsSection(spellsSection);
@@ -524,7 +510,6 @@ export class AuthService {
 
         const lines = section.split('\n').map(line => line.trim());
         if (!lines.some(line => line.includes('•'))) {
-            // Convert simple list to categorized format
             return `Equipment:
 • Weapons
 • Armor
@@ -556,7 +541,6 @@ export class AuthService {
 
         const lines = section.split('\n');
         if (!lines.some(line => spellLevels.some(level => line.includes(level)))) {
-            // Convert simple list to leveled format
             const spells = lines
                 .filter(line => line.trim() && !line.startsWith('Spells:'))
                 .map(line => line.trim());
@@ -599,22 +583,18 @@ Cantrips: ${spells.join(', ')}`;
         );
     }
 
-    // Add getter for draft toast state
     getDraftToastState(): Observable<boolean> {
         return this.draftToastEnabled.asObservable();
     }
 
-    // Method to enable draft toasts
     enableDraftToasts(): void {
         this.draftToastEnabled.next(true);
     }
 
-    // Method to disable draft toasts
     disableDraftToasts(): void {
         this.draftToastEnabled.next(false);
     }
 
-    // Method to check if draft toasts should be shown
     shouldShowDraftToast(): Observable<boolean> {
         return combineLatest([
             this.isLoggedIn(),

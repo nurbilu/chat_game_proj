@@ -80,10 +80,9 @@ export class ToastService {
 
   show(toast: { template?: TemplateRef<any>, classname?: string, delay?: number, context?: any }) {
     if (toast.template) {
-      // Handle template-based toasts
       this.toasts.push(toast);
     } else if (toast.context?.message) {
-      // Handle message-based toasts using toastr
+
       const type = toast.classname?.includes('success') ? 'success' :
                    toast.classname?.includes('danger') ? 'error' :
                    toast.classname?.includes('warning') ? 'warning' : 'info';

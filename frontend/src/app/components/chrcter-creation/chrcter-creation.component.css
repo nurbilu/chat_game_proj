@@ -22,7 +22,7 @@
   grid-column: span 2;
 }
 
-/* ... existing code ... */
+
 button {
   margin: 5px;
   padding: 10px 20px;
@@ -41,7 +41,7 @@ button {
   color: white;
 }
 .ngbAccordionBody .accordion-body {
-  color: black; /* Set accordion body text color to black */
+  color: black;
 }
 
 .text-frame li{
@@ -54,7 +54,6 @@ button {
   color: white;
 }
 
-/* Add this new class for consistency */
 .text-frame .table-responsive {
   margin-top: 20px;
 }
@@ -95,9 +94,7 @@ button {
   background-repeat: no-repeat;
   background-position: center;
   border: none;
-  /* Ensure no border is applied */
   background-color: transparent;
-  /* Ensure background is transparent */
 }
 
 .no-spells {
@@ -173,7 +170,6 @@ button {
   outline: none;
 }
 
-/* Apply the same styles to Classes Description */
 .classes-description {
   margin-bottom: 20px;
   padding: 20px;
@@ -215,7 +211,6 @@ button {
   color: rgb(250, 250, 250);
 }
 
-/* Add these styles to your existing CSS file */
 
 .progress-container {
   position: fixed;
@@ -283,7 +278,6 @@ button {
   }
 }
 
-/* Add this at the end of the file */
 @keyframes fadeIn {
 from {
   opacity: 0;
@@ -306,7 +300,6 @@ opacity: 0;
 animation: fadeIn 1.5s ease-in-out forwards;
 }
 
-/* Add this to your existing styles */
 .spinner {
 display: flex;
 justify-content: center;
@@ -314,7 +307,6 @@ align-items: center;
 height: 100px;
 }
 
-/* Add these styles to your existing CSS file */
 
 .spinner-container {
 display: flex;
@@ -387,7 +379,6 @@ padding-left: 20px;
 margin-bottom: 5px;
 }
 
-/* Add this new rule at the end of the file */
 
 .paste-icon {
   display: flex;
@@ -427,23 +418,19 @@ opacity: 1;
 background-color: #0056b3;
 }
 
-/* Change popover title color to black */
 .popover-header {
 color: black !important;
 }
 
-/* Ensure the popover body text is also black */
 .popover-body {
 color: black !important;
 }
 
-/* If you want to change the background color of the popover title as well */
 .popover-header {
-background-color: #f7f7f7 !important; /* Light gray background */
+background-color: #f7f7f7 !important; 
 color: black !important;
 }
 
-/* Add these styles at the end of the file */
 
 .static-hover-card-overlay {
 position: fixed;
@@ -492,13 +479,13 @@ body.modal-open {
 overflow: hidden;
 }
 
-/* Add or update these styles */
 .backdrop {
 position: fixed;
 top: 0;
 left: 0;
 width: 100%;
 height: 100%;
+
 background-color: rgba(0, 0, 0, 0.5);
 z-index: 9998;
 }
@@ -563,12 +550,12 @@ transform: scale(1.1);
 border-radius: 10px;
 }
 
-/* Add to your existing static hover card styles */
 .static-hover-card.prompt-card {
 width: 95%;
 max-width: 1200px;
 height: auto;
 background-color: rgba(0, 0, 0, 0.95);
+
 padding: 25px;
 display: flex;
 flex-direction: column;
@@ -659,10 +646,10 @@ border-radius: 4px;
   border-radius: 5px;
 }
 
-/* Add these styles for the character prompts grid */
 .character-prompts-container {
 margin-top: 20px;
 }
+
 
 .prompts-header {
 display: flex;
@@ -891,12 +878,12 @@ color: #000000;
 list-style-type: none;
 }
 
-/* Add these styles */
 .spell-toggle {
 cursor: pointer;
 color: #4a90e2;
 text-decoration: underline;
 position: relative;
+
 display: inline-block;
 margin-left: 5px;
 user-select: none;
@@ -941,17 +928,17 @@ color: #000000;
 list-style-type: none;
 }
 
-/* Make sure the spell options are above other content */
 .text-editor-container {
 position: relative;
 }
 
-/* Add these styles for expandable content */
+
 .expandable-content {
 cursor: pointer;
 position: relative;
 padding-left: 20px;
 }
+
 
 .expandable-content::before {
 content: '►';
@@ -980,10 +967,10 @@ padding-left: 20px;
 margin: 5px 0;
 }
 
-/* Update the prompt table styles */
 .prompt-table td.expandable-cell {
 padding: 0;
 }
+
 
 .expandable-cell .expandable-content {
 padding: 12px;
@@ -1044,7 +1031,6 @@ max-height: 100px;
 max-height: none;
 }
 
-/* Add to existing prompt-table styles */
 .prompt-table td {
 vertical-align: top;
 }
