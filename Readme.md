@@ -8,7 +8,7 @@
    git clone <repository_url>
    cd <project_directory>
    ```
-### using the docker : 
+### using the Docker Desktop: 
    - tag-name : Vtry11.1
    - navigate to Pull & Run docker folder by using ```cd Pull & Run docker```
    - then run the following commands : 
