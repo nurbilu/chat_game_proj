@@ -19,20 +19,16 @@ import traceback
 from dotenv import load_dotenv
 from fuzzywuzzy import process
 
-# Load environment variables from .env file
 load_dotenv()
 MONGO_ATLAS = os.getenv("MONGO_ATLAS")
 DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
 
-# Initialize MongoDB client
 client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
 db = client[DB_NAME_MONGO]
 
-# Create a logger instance at module level
 logger = logging.getLogger(__name__)
 
 class FilterRemoveDateFromWerkzeugLogs(Filter):
-    # Regex pattern to remove the date/time from Werkzeug logs
     pattern = re.compile(r' - - \[.+?\] ')
 
     def filter(self, record):
@@ -40,43 +36,34 @@ class FilterRemoveDateFromWerkzeugLogs(Filter):
             record.msg = self.pattern.sub(' - ', record.msg)
         return True
 
-# Initialize logger
 def configure_logging():
     log_file = 'library.log'
     
-    # Create a logger
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     
-    # Remove existing handlers
     for handler in logger.handlers[:]:
         logger.removeHandler(handler)
     
-    # Create a FileHandler
     if not os.path.exists(log_file):
         open(log_file, 'w').close()
     file_handler = FileHandler(log_file)
     file_handler.setLevel(logging.DEBUG)
     
-    # Create a formatter
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
     
-    # Add the handler to the logger
     logger.addHandler(file_handler)
     
-    # Configure Werkzeug logger
     werkzeug_logger = logging.getLogger('werkzeug')
     werkzeug_logger.handlers = []
     werkzeug_logger.addFilter(FilterRemoveDateFromWerkzeugLogs())
     
-    # Add a StreamHandler for initial startup messages
     startup_handler = logging.StreamHandler(sys.stdout)
     startup_handler.setLevel(logging.INFO)
     startup_handler.setFormatter(logging.Formatter('%(message)s'))
     werkzeug_logger.addHandler(startup_handler)
     
-    # Add a FileHandler for all other messages
     werkzeug_logger.addHandler(file_handler)
     
     return logger
@@ -85,7 +72,6 @@ def log_uncaught_exceptions(exctype, value, tb):
     logger = logging.getLogger()
     logger.error("Uncaught exception", exc_info=(exctype, value, tb))
 
-# Set the custom exception hook
 sys.excepthook = log_uncaught_exceptions
 
 def clear_log_file(log_file):
@@ -96,7 +82,6 @@ def handle_exit(signum, frame):
     clear_log_file('library.log')
     os._exit(0)
 
-# Define the blueprint
 lib_srvr = Blueprint('lib_srvr', __name__)
 
 def fetch_data_from_db(collection_name):
@@ -105,11 +90,9 @@ def fetch_data_from_db(collection_name):
         formatted_data = []
         all_keys = set()
 
-        # First pass to collect all keys
         for item in data:
             all_keys.update(item.keys())
 
-        # Second pass to format data
         data = db[collection_name].find({}, {'_id': 0, 'index': 0})
         for item in data:
             formatted_item = {key: item.get(key, 'None') for key in all_keys}
@@ -145,7 +128,7 @@ def fetch_spells():
 @lib_srvr.route('/search/<name>', methods=['GET'])
 def search_item_by_name(name):
     projection = {'_id': 0, 'index': 0}
-    regex = re.compile(f'^{re.escape(name)}$', re.IGNORECASE)  # Exact match, case-insensitive
+    regex = re.compile(f'^{re.escape(name)}$', re.IGNORECASE)
     results = {}
     exact_match_found = False
 
@@ -156,13 +139,12 @@ def search_item_by_name(name):
             exact_match_found = True
 
     if not exact_match_found:
-        # Perform fuzzy search if exact match is not found
         for collection in ['Spells', 'Classes', 'Races', 'Monsters', 'Equipment']:
             data = db[collection].find({}, projection)
             items = list(data)
             matches = process.extract(name, [item['name'] for item in items], limit=10)
             for match in matches:
-                if 85 <= match[1] <= 100:  # Filter matches with a ratio 
+                if 85 <= match[1] <= 100:  
                     for item in items:
                         if item['name'] == match[0]:
                             if collection not in results:
@@ -178,14 +160,8 @@ def search_item_by_name(name):
 def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}})
-    
-    # Configure logging
     configure_logging()
-    
-    # Register blueprint
     app.register_blueprint(lib_srvr, url_prefix='/api')
-    
-    # Error handler for 500 errors
     @app.errorhandler(500)
     def handle_500_error(e):
         logger.error(f"Internal Server Error: {str(e)}")
@@ -193,7 +169,6 @@ def create_app():
     
     return app
 
-# Define the main entry point
 if __name__ == '__main__':
     app = create_app()
     signal.signal(signal.SIGINT, handle_exit)
@@ -201,5 +176,3 @@ if __name__ == '__main__':
     
     
     
-    # not a as the perfect logger that in the commit version " Update Dockerfile - backend " or/and " docker build + run + push in the prccss" 
-    # but it's working good for a correct build.bat and run.bat and docker-compose.yml to run the app correctly - might need to fix some more . 

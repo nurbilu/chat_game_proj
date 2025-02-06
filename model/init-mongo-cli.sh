@@ -1,32 +1,27 @@
 #!/bin/bash
 set -e
 
-# Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m' 
 
 echo -e "${YELLOW}Installing MongoDB Shell...${NC}"
 
-# Install gnupg and curl if not present
+
 apt-get update && apt-get install -y gnupg curl
 
-# Add MongoDB public GPG key
 curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
    gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
    --dearmor
 
-# Add MongoDB repository
 echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg] http://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | \
    tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
-# Install mongosh
 apt-get update && apt-get install -y mongodb-mongosh
 
 echo -e "${YELLOW}MongoDB Atlas Connection Setup${NC}"
 
-# Source environment variables
 if [ -f /app/.env ]; then
     source /app/.env
 else
@@ -34,10 +29,10 @@ else
     exit 1
 fi
 
-# Function to URL encode string
 urlencode() {
     local string="${1}"
     local strlen=${#string}
+
     local encoded=""
     local pos c o
 
@@ -52,18 +47,18 @@ urlencode() {
     echo "${encoded}"
 }
 
-# Extract and encode credentials from MONGO_ATLAS
 MONGO_URI="${MONGO_ATLAS}"
 echo -e "${YELLOW}Connecting to MongoDB Atlas...${NC}"
 
-# Test connection
+
 echo -e "${YELLOW}Testing connection...${NC}"
 if mongosh "${MONGO_URI}" --eval "db.adminCommand('ping')" > /dev/null; then
+
     echo -e "${GREEN}Successfully connected to MongoDB Atlas${NC}"
-    
-    # Initialize database
+
     echo -e "${YELLOW}Initializing database...${NC}"
     mongosh "${MONGO_URI}" --eval "
+
         db = db.getSiblingDB('${DB_NAME_MONGO}');
         
         // Create application user if doesn't exist

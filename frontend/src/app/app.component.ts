@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
   }
 
   confirmLogout() {
-    const currentUsername = this.username; // Store the current username before logout
+    const currentUsername = this.username; 
     this.authService.logout().subscribe(() => {
       console.log('User logged out');
       this.isLoggedIn = false;
@@ -121,7 +121,7 @@ export class AppComponent implements OnInit {
       this.isSuperUser = false;
       this.router.navigate(['/homepage']);
       
-      // Close the logout modal
+
       if (this.modalRef) {
         this.modalRef.close();
       }
@@ -211,7 +211,7 @@ export class AppComponent implements OnInit {
   closeOffcanvas() {
     if (this.offcanvasRef) {
       this.offcanvasRef.dismiss();
-      this.offcanvasRef = null; // Reset the reference
+      this.offcanvasRef = null; 
     }
   }
 
@@ -240,7 +240,6 @@ export class AppComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.router.navigate([route]);
     } else {
-      // Save the route in session storage
       sessionStorage.setItem('intendedRoute', route);
       this.router.navigate(['/login']);
     }
@@ -293,13 +292,11 @@ export class AppComponent implements OnInit {
       }
 
       if (isDragging) {
-        // Update icon position to follow cursor
         toggleElement.style.left = `${moveEvent.clientX}px`;
         toggleElement.style.top = `${moveEvent.clientY}px`;
 
-        // Determine position based on the largest movement axis
         if (Math.abs(dx) > Math.abs(dy)) {
-          // Horizontal movement
+
           if (dx > 0) {
             this.currentOffcanvasPosition = 'end';
             toggleElement.className = 'toggle-offcanvas-icon dragging end';
@@ -308,7 +305,6 @@ export class AppComponent implements OnInit {
             toggleElement.className = 'toggle-offcanvas-icon dragging start';
           }
         } else {
-          // Vertical movement
           if (dy > 0) {
             this.currentOffcanvasPosition = 'bottom';
             toggleElement.className = 'toggle-offcanvas-icon dragging bottom';
@@ -354,15 +350,13 @@ export class AppComponent implements OnInit {
     
     this.clickTimer = setTimeout(() => {
       if (this.clickCount === 2) {
-        // Double click detected - reset position
         this.currentOffcanvasPosition = this.defaultPosition;
         this.openOffcanvas();
       } else if (this.clickCount === 1) {
-        // Single click - just open offcanvas
         this.openOffcanvas();
       }
       this.clickCount = 0;
-    }, 250); // Adjust timing as needed
+    }, 250); 
   }
 
   toggleModalPasswordVisibility(): void {
@@ -407,7 +401,6 @@ export class AppComponent implements OnInit {
     
     this.profileClickTimer = setTimeout(() => {
       if (this.profileClickCount === 2) {
-        // Double click - conditional navigation
         if (this.currentRoute === '/character-creation') {
           this.router.navigate(['/profile']);
         }
@@ -418,7 +411,6 @@ export class AppComponent implements OnInit {
           this.router.navigate(['/character-creation']);
         }
       } else if (this.profileClickCount === 1) {
-        // Single click - navigate to chat
         this.router.navigate(['/chat']);
       }
       this.profileClickCount = 0;
@@ -434,7 +426,7 @@ export class AppComponent implements OnInit {
     else if (this.currentRoute === '/character-creation') {
       this.router.navigate(['/library']);
     } 
-     else {
+    else {
       this.router.navigate(['/profile']);
     }
   }

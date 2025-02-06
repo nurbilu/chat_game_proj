@@ -12,7 +12,7 @@
 .super-profile-container {
     max-width: 100%;
     min-height: 94vh;
-    padding: 50px; /* Adjusted padding */
+    padding: 50px;
     background: rgba(110, 0, 96, 0.8) url('/assets/imgs/ornge-lndscpe.jpg') no-repeat center center;
     background-size: cover;
     display: flex;
@@ -36,13 +36,13 @@
 .dropdown-menu {
     width: 100%;
     max-width: 400px;
-    max-height: 400px; /* Set maximum height */
-    overflow-y: auto; /* Enable vertical scrolling if needed */
+    max-height: 400px;
+    overflow-y: auto;
     padding: 10px;
 }
 
 .dropdown-item {
-    white-space: normal; /* Allow text to wrap */
+    white-space: normal;
     padding: 8px 15px;
     cursor: pointer;
 }
@@ -51,7 +51,6 @@
     background-color: #f8f9fa;
 }
 
-/* Custom scrollbar styling */
 .dropdown-menu::-webkit-scrollbar {
     width: 8px;
 }
@@ -71,8 +70,8 @@
 }
 
 .dropend-form {
-    width: 300px; /* Increased width */
-    height: auto; /* Reduced height */
+    width: 300px;
+    height: auto;
     padding: 20px;
 }
 

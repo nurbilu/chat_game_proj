@@ -1,7 +1,7 @@
-# Use an official Python runtime as a parent image
+
 FROM python:3.9-slim-bullseye
 
-# Install system dependencies
+
 RUN apt-get update && apt-get install -y \
     pkg-config \
     build-essential \
@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https \
     && rm -rf /var/lib/apt/lists/*
 
-# Add these lines after the initial apt-get install
 RUN curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
     gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
     --dearmor && \
@@ -24,27 +23,25 @@ RUN curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
     apt-get install -y mongodb-database-tools mongodb-mongosh && \
     rm -rf /var/lib/apt/lists/*
 
-# Create necessary directories
 RUN mkdir -p /etc/supervisor/conf.d/ && \
     mkdir -p /docker-entrypoint-initdb.d/ && \
     mkdir -p /scripts/mongo/init
 
-# Set the working directory
 WORKDIR /app
 
-# Copy requirements first
+
 COPY requirements.txt .
 
-# Install Python dependencies
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create supervisor directory
+
 RUN mkdir -p /etc/supervisor/conf.d/
 
-# Copy application files including chatbot directory
+
 COPY . .
 
-# Create supervisor config file with corrected paths
+
 RUN echo '[supervisord]\n\
 nodaemon=true\n\
 logfile=/var/log/supervisor/supervisord.log\n\
@@ -74,7 +71,7 @@ autorestart=true\n\
 stderr_logfile=/var/log/supervisor/library_service.err.log\n\
 stdout_logfile=/var/log/supervisor/library_service.out.log' > /etc/supervisor/conf.d/supervisord.conf
 
-# Setup logging
+
 RUN mkdir -p /var/log/supervisor && \
     touch /var/log/supervisor/supervisord.log && \
     touch /var/log/supervisor/text_generation.err.log && \
@@ -90,11 +87,11 @@ EXPOSE 5000 6500 7652
 ENV PYTHONUNBUFFERED="1" \
     PYTHONPATH="/app"
 
-# Set environment variables for MongoDB
+
 ENV MONGO_ATLAS=mongodb+srv://nurb1111:BILUmongdb1996@cluster0.luomlfx.mongodb.net/?authSource=147.235.199.101%2F32&authMechanism=SCRAM-SHA-1
 ENV DB_NAME_MONGO=DnD_AI_DB
 
-# Copy and make init script executable
+
 COPY init-mongo.sh /docker-entrypoint-initdb.d/
 RUN chmod +x /docker-entrypoint-initdb.d/init-mongo.sh
 

@@ -56,7 +56,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
     LibraryComponent, 
     CleanTextPipe, 
     LibSearchComponent,
-    EditProfileComponent, // Ensure EditProfileComponent is declared here
+    EditProfileComponent, 
     PwdResetUnrealComponent
   ],
   imports: [

@@ -17,12 +17,11 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from bson import ObjectId
 
-# Load environment variables from .env file
 load_dotenv()
 MONGO_ATLAS = os.getenv("MONGO_ATLAS")
 DB_NAME_MONGO = os.getenv("DB_NAME_MONGO")
 
-# Initialize MongoDB client
+
 client = MongoClient(MONGO_ATLAS, server_api=ServerApi('1'))
 db = client[DB_NAME_MONGO]
 
@@ -68,44 +67,40 @@ class ChrcterPrmptEncoder_id(json.JSONEncoder):
 def configure_logging():
     log_file = 'chrcter_creation.log'
     
-    # Create a logger
+
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     
-    # Remove existing handlers
+
     for handler in logger.handlers[:]:
         logger.removeHandler(handler)
     
-    # Create a FileHandler
+
     if not os.path.exists(log_file):
         open(log_file, 'w').close()
     file_handler = FileHandler(log_file)
     file_handler.setLevel(logging.DEBUG)
     
-    # Create a formatter
+
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
     
-    # Add the handler to the logger
     logger.addHandler(file_handler)
     
-    # Configure Werkzeug logger
     werkzeug_logger = logging.getLogger('werkzeug')
     werkzeug_logger.handlers = []
     
-    # Add a StreamHandler for initial startup messages
     startup_handler = logging.StreamHandler()
     startup_handler.setLevel(logging.INFO)
     startup_handler.setFormatter(logging.Formatter('%(message)s'))
     werkzeug_logger.addHandler(startup_handler)
     
-    # Add a FileHandler for all other messages
     werkzeug_logger.addHandler(file_handler)
     
-    # Filter to keep only startup messages in the console
     class WerkzeugFilter(logging.Filter):
         def filter(self, record):
             return 'Running on' in record.msg or 'Press CTRL+C to quit' in record.msg
+
 
     startup_handler.addFilter(WerkzeugFilter())
     
@@ -122,20 +117,19 @@ def handle_exit(signum, frame):
 def fix_spell_classes(app):
     spells_collection = db['Spells']
 
-    # Find all spells where `classes` is stored as a string
     spells = spells_collection.find({"classes": {"$type": "string"}})
+
 
     for spell in spells:
         classes_str = spell['classes']
         if classes_str:  # Check if the string is not empty
             try:
-                # Convert the string to a list of dictionaries
                 classes_list = json.loads(classes_str)
-                # Update the document with the correct structure
                 spells_collection.update_one(
                     {"_id": spell["_id"]},
                     {"$set": {"classes": classes_list}}
                 )
+
             except json.JSONDecodeError:
                 app.logger.error(f"Invalid JSON in 'classes' field for spell: {spell['name']}")
         else:
@@ -148,10 +142,10 @@ def create_app():
     app.url_map.strict_slashes = False
     app.json_encoder = CustomJSONEncoder
     CORS(app, resources={r"/*": {"origins": "*"}})
-    
-    # Add request preprocessor for ObjectId
+
     @app.before_request
     def handle_object_id():
+
         if request.view_args and 'prompt_id' in request.view_args:
             try:
                 raw_id = request.view_args['prompt_id']
@@ -160,14 +154,14 @@ def create_app():
                 app.logger.error(f"Failed to decode ObjectId: {str(e)}")
     
     app.register_blueprint(character_blueprint, url_prefix='/api')
-    
-    # Configure logging
+
     app.logger = configure_logging()
     app.logger.handlers = []
     
-    # Fix spell classes
+
     fix_spell_classes(app)
     
+
     return app
 
 character_blueprint = Blueprint('character', __name__)
@@ -179,7 +173,6 @@ def get_races():
         return build_cors_preflight_response()
     elif request.method == 'GET':
         try:
-            # Project only the required fields
             projection = {
                 '_id': 0,
                 'name': 1,
@@ -202,12 +195,12 @@ def save_draft():
         if not username:
             return jsonify({'error': 'Username is required'}), 400
 
-        # Save draft data into MongoDB
         db.character_drafts.update_one(
             {"username": username},
             {"$set": {"prompt": draft_data.get('prompt')}},
             upsert=True
         )
+
         return jsonify({'message': 'Draft saved successfully'}), 200
     except Exception as e:
         app.logger.error(f"Failed to save draft: {str(e)}")
@@ -221,9 +214,9 @@ def paste_draft():
         if not username:
             return jsonify({'error': 'Username is required'}), 400
 
-        # Get draft data from MongoDB
         draft = db.character_drafts.find_one({"username": username})
         if draft:
+
             return jsonify(json.loads(json_util.dumps(draft))), 200
         else:
             return jsonify({'error': 'Draft not found'}), 404
@@ -238,7 +231,7 @@ def get_draft(username):
         if draft:
             return jsonify(json.loads(json_util.dumps(draft))), 200
         else:
-            return jsonify({'prompt': ''}), 200  # Return an empty prompt if no draft is found
+            return jsonify({'prompt': ''}), 200 
     except Exception as e:
         app.logger.error(f"Failed to get draft: {str(e)}")
         return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
@@ -253,12 +246,12 @@ def save_character():
         if not username or not character_prompt:
             return jsonify({'error': 'Username and character prompt are required'}), 400
 
-        # Save character prompt to MongoDB as a key-value pair
         db.characters.update_one(
             {"username": username},
             {"$set": {"characterPrompt": character_prompt}},
             upsert=True
         )
+
         return jsonify({'message': 'Character prompt saved successfully'}), 200
     except Exception as e:
         app.logger.error(f"Failed to save character prompt: {str(e)}")
@@ -267,12 +260,10 @@ def save_character():
 @character_blueprint.route('/spells/<class_name>', methods=['GET'])
 def fetch_spells_by_class(class_name):
     try:
-        # Project only the 'name' and 'classes' fields
         projection = {'_id': 0, 'name': 1, 'classes': 1}
         spells = spells_collection.find({}, projection)
         spell_list = list(spells)
         
-        # Filter and format the data
         filtered_spells = []
         for spell in spell_list:
             if class_name in spell['classes']:
@@ -294,10 +285,10 @@ def get_character_prompt(username):
         character = db.characters.find_one({"username": username})
         if character:
             raw_prompt = character.get("characterPrompt", "")
-            # Clean the HTML to plain text
             soup = BeautifulSoup(raw_prompt, "html.parser")
             cleaned_prompt = soup.get_text(separator="\n").strip()
             return jsonify({"characterPrompt": cleaned_prompt}), 200
+
         else:
             return jsonify({'error': 'Character not found'}), 404
     except Exception as e:
@@ -338,9 +329,9 @@ def get_all_character_prompts(username):
         prompts_list = list(prompts)
         
         if prompts_list:
-            # Clean HTML from all prompts
             for prompt in prompts_list:
                 if 'characterPrompt' in prompt:
+
                     soup = BeautifulSoup(prompt['characterPrompt'], "html.parser")
                     prompt['characterPrompt'] = soup.get_text(separator="\n").strip()
             
@@ -361,18 +352,19 @@ def save_character_prompt():
         if not username or not character_prompt:
             return jsonify({'error': 'Username and character prompt are required'}), 400
 
-        # Check if user already has 4 characters
         existing_prompts = db.characters.count_documents({"username": username})
         if existing_prompts >= 4:
             return jsonify({'error': 'Maximum number of characters (4) reached'}), 400
 
-        # Save character prompt to MongoDB with timestamp
+
         result = db.characters.insert_one({
             "username": username,
             "characterPrompt": character_prompt,
             "created_at": datetime.utcnow(),
-            "active": True  # Add active flag
+            "active": True 
         })
+
+
         
         return jsonify({
             'message': 'Character prompt saved successfully',

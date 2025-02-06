@@ -129,9 +129,9 @@ export class SuperProfileComponent implements OnInit {
     this.authService.blockUser(user.username).subscribe({
       next: () => {
         if (this.selectedProfile && this.selectedProfile.username === user.username) {
-          this.selectedProfile.is_blocked = true;  // Update local state
+          this.selectedProfile.is_blocked = true;
         }
-        user.is_blocked = true;  // Update in the profiles list
+        user.is_blocked = true;
         this.toastService.success(`User ${user.username} has been blocked`);
       },
       error: (error) => {
@@ -145,9 +145,9 @@ export class SuperProfileComponent implements OnInit {
     this.authService.unblockUser(user.username).subscribe({
       next: () => {
         if (this.selectedProfile && this.selectedProfile.username === user.username) {
-          this.selectedProfile.is_blocked = false;  // Update local state
+          this.selectedProfile.is_blocked = false;
         }
-        user.is_blocked = false;  // Update in the profiles list
+        user.is_blocked = false;
         this.toastService.success(`User ${user.username} has been unblocked`);
       },
       error: (error) => {
@@ -190,16 +190,13 @@ export class SuperProfileComponent implements OnInit {
   deleteUser(user: UserProfile): void {
     this.authService.deleteUser(user.username).subscribe({
       next: (response) => {
-        // Remove user from both lists immediately
         this.userProfiles = this.userProfiles.filter(p => p.username !== user.username);
         this.filteredProfiles = this.filteredProfiles.filter(p => p.username !== user.username);
         
-        // Clear selected profile if it's the deleted user
         if (this.selectedProfile && this.selectedProfile.username === user.username) {
           this.selectedProfile = null;
         }
         
-        // Show success message
         this.toastService.show({
           template: this.toastService.successTemplate,
           classname: 'bg-success text-light',
@@ -207,7 +204,6 @@ export class SuperProfileComponent implements OnInit {
           context: { message: `User ${user.username} has been permanently deleted` }
         });
         
-        // Reset search if the filtered list is empty
         if (this.filteredProfiles.length === 0 && this.searchTerm) {
           this.searchTerm = '';
           this.filteredProfiles = [...this.userProfiles];

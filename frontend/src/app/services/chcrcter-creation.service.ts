@@ -30,7 +30,7 @@ export interface Spell {
   providedIn: 'root'
 })
 export class ChcrcterCreationService {
-  private apiUrl = 'http://127.0.0.1:6500/api'; // Updated URL to match the new server location
+  private apiUrl = 'http://127.0.0.1:6500/api'; 
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -146,12 +146,10 @@ export class ChcrcterCreationService {
   }
 
   deleteCharacterPrompt(username: string, prompt: Character): Observable<any> {
-    // Ensure we have a valid ID
     if (!prompt?._id) {
         return throwError(() => new Error('Invalid prompt: missing _id'));
     }
 
-    // Handle different ObjectId formats
     let promptId: string;
     if (typeof prompt._id === 'object' && '$oid' in prompt._id) {
         promptId = prompt._id.$oid as string;

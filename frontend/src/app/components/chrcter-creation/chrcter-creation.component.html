@@ -27,28 +27,30 @@
       <br>
       For more information, visit the provided links to RPGBot for comprehensive guides on spells, classes, and races.
     </p>
-    <div class="profile-picture-container" ></div>
+    <div class="profile-picture-container"></div>
   </div>
-  
+
 
   <div class="text-frame-lib-search fade-in-delay" [class.fade-in-active]="!isLoading">
     <h3 class="LibrarySearch" ngbTooltip="Click to search for spells, classes, and races"
       triggers="mouseenter:mouseleave" tooltipTitle="Library Search">Library Search</h3>
     <div class="input-group">
-      <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control" (keyup.enter)="onSearch()">
-      <button (click)="onSearch()" class="search-icon" alt="Search" ngbTooltip="Click to search" triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
-      <button (click)="clearSearchQuery()" class="clear-icon" alt="Clear" ngbTooltip="Clear search query" triggers="mouseenter:mouseleave" tooltipTitle="Clear"></button>
-      <button (click)="pasteText()" class="paste-icon" alt="Paste" ngbTooltip="Paste from clipboard" triggers="mouseenter:mouseleave" tooltipTitle="Paste"></button>
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." class="form-control"
+        (keyup.enter)="onSearch()">
+      <button (click)="onSearch()" class="search-icon" alt="Search" ngbTooltip="Click to search"
+        triggers="mouseenter:mouseleave" tooltipTitle="Search"></button>
+      <button (click)="clearSearchQuery()" class="clear-icon" alt="Clear" ngbTooltip="Clear search query"
+        triggers="mouseenter:mouseleave" tooltipTitle="Clear"></button>
+      <button (click)="pasteText()" class="paste-icon" alt="Paste" ngbTooltip="Paste from clipboard"
+        triggers="mouseenter:mouseleave" tooltipTitle="Paste"></button>
       <button class="clear-results" (click)="clearSearchResults()" alt="clear-results" ngbTooltip="Clear search results"
         triggers="mouseenter:mouseleave" tooltipTitle="Clear Results"></button>
     </div>
     <div *ngIf="isSearching" class="spinner-container">
-        <img src="assets/imgs/icons/Load-srch-icon.gif" alt="Loading..." class="loading-gif">
+      <img src="assets/imgs/icons/Load-srch-icon.gif" alt="Loading..." class="loading-gif">
     </div>
     <div *ngIf="showSearchResults && !isSearching" class="search-results">
-      <app-lib-search 
-        [searchResult]="searchResult" 
-        (searchCompleted)="handleSearchResults($event)"
+      <app-lib-search [searchResult]="searchResult" (searchCompleted)="handleSearchResults($event)"
         (searchCleared)="clearSearchResults()">
       </app-lib-search>
     </div>
@@ -58,15 +60,13 @@
   <div class="text-frame-character-display fade-in-delay" [class.fade-in-active]="!isLoading">
     <div class="title-row">
       <h3>Saved Characters ({{characterPrompts.length}}/4)</h3>
-      <button class="prompt-icon" 
-              (click)="toggleCharacterDisplay()" 
-              ngbTooltip="Toggle character display" 
-              triggers="mouseenter:mouseleave">
+      <button class="prompt-icon" (click)="toggleCharacterDisplay()" ngbTooltip="Toggle character display"
+        triggers="mouseenter:mouseleave">
         <img src="/assets/imgs/icons/Advtre-Poem.png" alt="Character Display">
       </button>
     </div>
 
-    <!-- Character display content -->
+
     <div class="character-table-container" *ngIf="!isCharacterDisplayCollapsed">
       <table class="character-table">
         <thead>
@@ -81,10 +81,12 @@
             <td>{{ i + 1 }}</td>
             <td class="prompt-preview">{{ getPromptPreview(prompt.characterPrompt) }}</td>
             <td class="action-buttons">
-              <button class="view-btn" (click)="viewPrompt(prompt)" [disabled]="!prompt._id" ngbTooltip="Click to view your prompt" triggers="mouseenter:mouseleave" tooltipTitle="View">
+              <button class="view-btn" (click)="viewPrompt(prompt)" [disabled]="!prompt._id"
+                ngbTooltip="Click to view your prompt" triggers="mouseenter:mouseleave" tooltipTitle="View">
                 <img src="/assets/imgs/icons/View-chr-prmpt.png" alt="View">
               </button>
-              <button class="edit-btn" (click)="editPrompt(prompt)" [disabled]="!prompt._id" ngbTooltip="Click to edit your prompt" triggers="mouseenter:mouseleave" tooltipTitle="Edit">
+              <button class="edit-btn" (click)="editPrompt(prompt)" [disabled]="!prompt._id"
+                ngbTooltip="Click to edit your prompt" triggers="mouseenter:mouseleave" tooltipTitle="Edit">
                 <img src="/assets/imgs/icons/Edit-chr-prmpt.png" alt="Edit">
               </button>
               <button class="delete-btn" (click)="deletePrompt(prompt)">
@@ -101,10 +103,8 @@
       <div class="title-row">
         <h3 class="CharacterCreationPrompt" ngbPopover="Click to edit your character creation prompt"
           triggers="mouseenter:mouseleave" popoverTitle="Character Creation Prompt">Character Creation Prompt</h3>
-        <button class="prompt-icon" 
-                (click)="showCharacterPromptHover()" 
-                ngbTooltip="View saved character prompt" 
-                triggers="mouseenter:mouseleave">
+        <button class="prompt-icon" (click)="showCharacterPromptHover()" ngbTooltip="View saved character prompt"
+          triggers="mouseenter:mouseleave">
           <!-- <img src="/assets/imgs/icons/Advtre-Poem.png" alt="Character Prompt"> -->
         </button>
       </div>
@@ -114,20 +114,17 @@
       <div class="editor-buttons">
         <button (click)="sendMessage()" ngbTooltip="Click to save your prompt to the chat"
           triggers="mouseenter:mouseleave" tooltipTitle="Send">Send</button>
-        <button (click)="saveDraft()" 
-          [disabled]="!(isLoggedIn$ | async)"
+        <button (click)="saveDraft()" [disabled]="!(isLoggedIn$ | async)"
           [ngbTooltip]="(isLoggedIn$ | async) ? 'Save your current progress' : 'Please log in to save drafts'"
           triggers="mouseenter:mouseleave">
           Save Draft
         </button>
-        <button (click)="loadDraft()"
-          [disabled]="!(isLoggedIn$ | async)"
+        <button (click)="loadDraft()" [disabled]="!(isLoggedIn$ | async)"
           [ngbTooltip]="(isLoggedIn$ | async) ? 'Load your saved draft' : 'Please log in to load drafts'"
           triggers="mouseenter:mouseleave">
           Load Draft
         </button>
-        
-        <!-- Add template selection -->
+
         <select #templateSelect class="template-select" (change)="loadTemplate($event)">
           <option value="">Select Template</option>
           <option value="cleric">Cleric Template</option>
@@ -247,54 +244,46 @@
     </div>
   </div>
 
-  <!-- Add this just before the closing </div> of the chrcter-creation-container -->
   <div *ngIf="showStaticHoverCard" class="backdrop" (click)="closeStaticHoverCard()"></div>
   <div *ngIf="showStaticHoverCard" class="static-hover-card prompt-card">
     <div class="card-header">
-        <h5>{{ selectedEntry?.name }}</h5>
-        <button class="copy-prompt-btn" 
-                (click)="copyCharacterPrompt()" 
-                ngbTooltip="Copy character prompt" 
-                triggers="mouseenter:mouseleave">
-            <img src="/assets/imgs/icons/copy.png" alt="Copy prompt">
-        </button>
-        <button class="close-btn" 
-                (click)="closeStaticHoverCard()" 
-                aria-label="Close" 
-                ngbTooltip="Click to close" 
-                triggers="mouseenter:mouseleave">
-            <span class="visually-hidden">Close</span>
-        </button>
+      <h5>{{ selectedEntry?.name }}</h5>
+      <button class="copy-prompt-btn" (click)="copyCharacterPrompt()" ngbTooltip="Copy character prompt"
+        triggers="mouseenter:mouseleave">
+        <img src="/assets/imgs/icons/copy.png" alt="Copy prompt">
+      </button>
+      <button class="close-btn" (click)="closeStaticHoverCard()" aria-label="Close" ngbTooltip="Click to close"
+        triggers="mouseenter:mouseleave">
+        <span class="visually-hidden">Close</span>
+      </button>
     </div>
-    
+
     <table class="prompt-table" *ngIf="selectedEntry?.promptData">
-        <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of selectedEntry.promptData">
-                <td>{{ item.field }}</td>
-                <td [ngClass]="{'expandable-cell': item.field === 'Spells' || item.field === 'Equipment'}">
-                    <div *ngIf="item.field === 'Spells' || item.field === 'Equipment'"
-                         class="expandable-content"
-                         [class.expanded]="item.expanded"
-                         (click)="toggleExpansion(item)">
-                        {{ item.expanded ? item.value : getPreviewText(item.value) }}
-                    </div>
-                    <div *ngIf="item.field !== 'Spells' && item.field !== 'Equipment'">
-                        {{ item.value }}
-                    </div>
-                </td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of selectedEntry.promptData">
+          <td>{{ item.field }}</td>
+          <td [ngClass]="{'expandable-cell': item.field === 'Spells' || item.field === 'Equipment'}">
+            <div *ngIf="item.field === 'Spells' || item.field === 'Equipment'" class="expandable-content"
+              [class.expanded]="item.expanded" (click)="toggleExpansion(item)">
+              {{ item.expanded ? item.value : getPreviewText(item.value) }}
+            </div>
+            <div *ngIf="item.field !== 'Spells' && item.field !== 'Equipment'">
+              {{ item.value }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>
 
-<!-- Add these toast templates at the top of your component template -->
+
 <ng-template #successToast let-message="message">
   <div class="d-flex">
     <div class="toast-body">
@@ -315,21 +304,15 @@
   Back up top?
 </button>
 
-<!-- Add this dialog for class selection -->
 <div *ngIf="showClassSelection" class="class-selection-dialog">
   <div class="dialog-content">
     <h3>Select Character Class</h3>
     <div class="class-buttons">
-      <button *ngFor="let class of classes" 
-              (click)="onClassSelect(class.name)"
-              [ngClass]="{'spellcaster': !['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(class.name)}">
+      <button *ngFor="let class of classes" (click)="onClassSelect(class.name)"
+        [ngClass]="{'spellcaster': !['Barbarian', 'Fighter', 'Monk', 'Rogue'].includes(class.name)}">
         {{ class.name }}
       </button>
     </div>
     <button class="cancel-btn" (click)="showClassSelection = false">Cancel</button>
   </div>
 </div>
-
-
-  
-

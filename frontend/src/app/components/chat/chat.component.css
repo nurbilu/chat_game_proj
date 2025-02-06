@@ -356,7 +356,6 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Add scrollbar styling for the dropdown */
 .options::-webkit-scrollbar {
   width: 6px;
 }
@@ -433,7 +432,7 @@
     min-height: 50px;
 }
 
-/* Add a pseudo-element for the resize handle */
+
 .chat-input::before {
     content: '';
     position: absolute;
@@ -446,12 +445,12 @@
     z-index: 10;
 }
 
-/* Optional: Show a subtle visual indicator on hover */
+
 .chat-input:hover::before {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Keep the cursor during resize operation */
+
 .chat-input.resizing {
     transition: none;
     user-select: none;
@@ -506,12 +505,12 @@
     font-size: 1.2rem;
 }
 
-/* Position send button to the right */
+
 .send-button {
     margin-left: auto;
 }
 
-/* Update dropdown styling */
+
 .custom-select {
     position: relative;
     display: inline-block;
@@ -545,12 +544,12 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Hide the text area from st-editor */
+
 :host ::ng-deep .st-area {
     display: none !important;
 }
 
-/* Add near your other modal/overlay styles */
+
 .static-hover-card.prompt-card {
   position: fixed;
   top: 50%;
@@ -600,7 +599,7 @@
   z-index: 1050;
 }
 
-/* Ensure the textarea can display rich text formatting */
+
 .chat-input[style*="bold"] {
     font-weight: bold;
 }
@@ -626,7 +625,6 @@
 }
 
 .btn-icon {
-    /* ... existing styles ... */
     color: white;
     transition: color 0.3s ease;
 }
@@ -664,18 +662,18 @@
     align-self: center;
 }
 
-/* Add styles for when resizing is active */
+
 .chat-input.resizing {
     transition: none;
     user-select: none;
 }
 
-/* Add styles for the resize handle hover state */
+
 .chat-input:hover::before {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Ensure resize cursor stays during the entire resize operation */
+
 .chat-input.resizing,
 .chat-input.resizing::before {
     cursor: row-resize !important;
@@ -701,7 +699,7 @@
     color: #2c3e50;
 }
 
-/* Add these styles for the character prompt select */
+
 .custom-select select {
     background-color: transparent;
     color: white;
@@ -742,7 +740,7 @@
   color: white;
 }
 
-/* Add these styles for the character prompt display */
+
 .character-prompt-table {
   padding: 20px;
   color: white;
@@ -793,7 +791,7 @@
   word-break: break-word;
 }
 
-/* Update the static hover card styles */
+
 .static-hover-card.prompt-card {
   background: rgba(0, 0, 0, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -815,7 +813,7 @@
   color: #dc3545;
 }
 
-/* Scrollbar styles for expanded content */
+
 .prompt-content.expanded::-webkit-scrollbar {
   width: 6px;
 }
