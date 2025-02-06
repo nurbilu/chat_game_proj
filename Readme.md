@@ -13,11 +13,12 @@
    - navigate to Pull & Run docker folder by using ```cd Pull & Run docker```
    - then run the following commands : 
       - ```pull.bat tag-name``` 
-      - ```run.bat``` - run twice if it the first time after pulling the images 
-      - ```cleanup.bat``` (optional - to remove all containers and images from docker desktop)
+      - ```run.bat``` - better run ```run.bat``` with the tag-name 
+      - ```cleanup.bat```  - to stop the containers and remove them also the docker images and containers and volumes and networks
    #### comments and additions : 
       run.bat VplzV3000    # Uses specified tag
       run.bat              # Uses "latest" tag
+
 
 
 ## if you want to want to run the project without docker, you can continue with the following steps : 
