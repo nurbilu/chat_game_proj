@@ -62,7 +62,7 @@ echo [%YELLOW%Starting remaining containers...%NC%]
 docker-compose --env-file .env up -d
 
 :: Check container health
-echo [%YELLOW%Checking container health...%NC%]
+echo [%YELLOW%Checking container health...%NC%] 
 timeout /t 10 /nobreak >nul
 
 :: Verify all containers are running
@@ -75,4 +75,33 @@ for %%s in (frontend backend model-text-generation model-character-creation mode
 )
 
 echo [%GREEN%All containers started successfully!%NC%]
-exit /b 0
+
+:: Clear instructions for stopping
+echo [%YELLOW%Press 'q' and Enter to quit from Demo Web Site Docker and stop all containers%NC%]
+
+:loop
+set /p "input="
+if /i "%input%"=="q" (
+    :: Stop all containers with names starting with demomo-
+    echo [%YELLOW%Stopping all containers...%NC%]
+    for /f "tokens=*" %%c in ('docker ps --filter "name=demomo-" -q') do (
+        echo Stopping container: %%c
+        docker stop %%c
+    )
+    
+    :: Wait for containers to stop
+    timeout /t 5 /nobreak >nul
+    
+    :: Remove the environment file
+    echo [%YELLOW%Removing environment file...%NC%]
+    if exist ".env" (
+        del /f /q ".env"
+        echo [%GREEN%Environment file removed successfully%NC%]
+    ) else (
+        echo [%YELLOW%No environment file found to remove%NC%]
+    )
+    
+    echo [%GREEN%All containers stopped and cleanup completed!%NC%]
+    exit /b 0
+)
+goto :loop
