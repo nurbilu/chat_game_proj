@@ -1,5 +1,5 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal EnableDelayedExpansion
 
 :: Colors
 set "RED=[31m"
@@ -9,26 +9,77 @@ set "NC=[0m"
 
 echo [%YELLOW%Starting multi-container deployment...%NC%]
 
-:: Set the default tag if not specified
-set TAG=latest
-if not "%1"=="" set TAG=%1
+:: Remove existing containers and networks
+echo [%YELLOW%Cleaning up existing containers and networks...%NC%]
+docker-compose down -v
+docker network rm demomo-network 2>nul
 
+<<<<<<< HEAD
 :: Verify images exist locally
 echo [%YELLOW%Verifying required images...%NC%]
 for %%s in (env frontend backend text-gen char-create library mysql) do (
     docker image inspect nuriz1996/demomo:%%s-%TAG% >nul 2>&1
+=======
+:: Create network if it doesn't exist
+echo [%YELLOW%Creating docker network...%NC%]
+docker network create demomo-network || (
+    echo [%RED%Failed to create network%NC%]
+    exit /b 1
+)
+
+:: Initialize environment variables from existing files
+echo [%YELLOW%Loading environment configuration...%NC%]
+set "ENV_FILE=..\Build & Push docker\theENVdock\.ENV"
+
+if not exist "%ENV_FILE%" (
+    echo [%RED%Environment file not found at: %ENV_FILE%%NC%]
+    echo [%RED%Please run init-env-volume.sh first%NC%]
+    exit /b 1
+)
+
+:: Load and verify environment variables
+for /f "usebackq tokens=1,* delims==" %%a in ("%ENV_FILE%") do (
+    set "key=%%a"
+    set "value=%%b"
+    
+    :: Remove quotes and spaces
+    set "key=!key:'=!"
+    set "key=!key: =!"
+    set "value=!value:'=!"
+    set "value=!value: =!"
+    
+    :: Set environment variable
+    set "!key!=!value!"
+)
+
+:: Verify critical environment variables
+call :verify_env DB_NAME || exit /b 1
+call :verify_env DB_USER || exit /b 1
+call :verify_env DB_PASSWORD || exit /b 1
+call :verify_env MONGO_ATLAS || exit /b 1
+call :verify_env DB_NAME_MONGO || exit /b 1
+call :verify_env SECRET_KEY || exit /b 1
+call :verify_env GEMINI_API_KEY1 || exit /b 1
+
+:: Export variables for docker-compose
+set "COMPOSE_ENV_FILE=%ENV_FILE%"
+
+:: Initialize secrets if not already done
+if not exist "secrets" (
+    echo [%YELLOW%Initializing secrets...%NC%]
+    call init-secrets.bat
+>>>>>>> parent of 9663423 (test and might it the pull+run will work already lol)
     if !ERRORLEVEL! NEQ 0 (
-        echo [%RED%Error: Image nuriz1996/demomo:%%s-%TAG% not found. Please run pull.bat first%NC%]
+        echo [%RED%Failed to initialize secrets%NC%]
         exit /b 1
     )
 )
 
-:: Create docker network if it doesn't exist
-docker network inspect demomo-network >nul 2>&1 || (
-    echo [%YELLOW%Creating docker network...%NC%]
-    docker network create demomo-network
-)
+:: Initialize MongoDB Atlas connection
+echo [%YELLOW%Initializing MongoDB Atlas connection...%NC%]
+call ..\model\init-mongo.sh
 
+<<<<<<< HEAD
 :: Remove existing env container if it exists
 echo [%YELLOW%Checking for existing environment container...%NC%]
 docker rm -f demomo-env >nul 2>&1
@@ -105,3 +156,69 @@ if /i "%input%"=="q" (
     exit /b 0
 )
 goto :loop
+=======
+:: Check and handle MySQL port
+echo [%YELLOW%Checking MySQL port availability...%NC%]
+set "MYSQL_PORT=3306"
+set "MAX_PORT=3316"
+
+:check_port_loop
+netstat -ano | find ":%MYSQL_PORT% " >nul
+if %ERRORLEVEL% EQU 0 (
+    if %MYSQL_PORT% LSS %MAX_PORT% (
+        set /a MYSQL_PORT+=1
+        goto check_port_loop
+    ) else (
+        echo [%RED%No available ports in range 3306-3316. Stopping all MySQL processes...%NC%]
+        taskkill /F /IM mysqld.exe >nul 2>&1
+        taskkill /F /IM mysql.exe >nul 2>&1
+        timeout /t 5 /nobreak >nul
+        set "MYSQL_PORT=3306"
+    )
+)
+
+echo [%GREEN%Using MySQL port: %MYSQL_PORT%%NC%]
+set "DB_PORT=%MYSQL_PORT%"
+
+:: Start containers with environment file
+docker-compose --env-file "%COMPOSE_ENV_FILE%" up -d
+
+:: Wait for services to be healthy
+echo [%YELLOW%Waiting for services to be healthy...%NC%]
+:healthcheck_loop
+set "all_healthy=true"
+for /f "tokens=*" %%a in ('docker-compose ps --format "{{.Name}}"') do (
+    docker inspect --format="{{.State.Health.Status}}" %%a 2>nul | findstr /i "healthy" >nul
+    if %ERRORLEVEL% NEQ 0 (
+        set "all_healthy=false"
+    )
+)
+if "%all_healthy%"=="false" (
+    echo [%YELLOW%Waiting for containers to be healthy...%NC%]
+    timeout /t 5 /nobreak >nul
+    goto healthcheck_loop
+)
+
+:: Check container status
+echo [%YELLOW%Checking container status...%NC%]
+docker-compose ps
+
+echo [%GREEN%Multi-container deployment completed!%NC%]
+echo [%YELLOW%Services are accessible at:%NC%]
+echo [%YELLOW%Frontend: http://localhost:4200%NC%]
+echo [%YELLOW%Backend: http://localhost:8000%NC%]
+echo [%YELLOW%Model Services:%NC%]
+echo [%YELLOW%- Text Generation: http://localhost:5000%NC%]
+echo [%YELLOW%- Character Creation: http://localhost:6500%NC%]
+echo [%YELLOW%- Library Service: http://localhost:7625%NC%]
+echo [%YELLOW%MySQL Database: localhost:%DB_PORT%%NC%]
+exit /b 0
+
+:verify_env
+if not defined %1 (
+    echo [%RED%Error: %1 is not set in environment file%NC%]
+    exit /b 1
+)
+echo [%GREEN%Verified: %1 is set%NC%]
+exit /b 0
+>>>>>>> parent of 9663423 (test and might it the pull+run will work already lol)

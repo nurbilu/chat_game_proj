@@ -7,58 +7,38 @@ set "GREEN=[32m"
 set "YELLOW=[33m"
 set "NC=[0m"
 
-echo [%YELLOW%Starting complete Docker cleanup...%NC%]
+echo [%YELLOW%Cleaning up containers and images...%NC%]
 
-:: Stop all running containers
+:: Stop all running containers first
 echo [%YELLOW%Stopping all running containers...%NC%]
-for /f "tokens=*" %%c in ('docker ps -q') do (
-    docker stop %%c
-)
+docker stop $(docker ps -a -q)
 
-:: Remove all containers
-echo [%YELLOW%Removing all containers...%NC%]
-for /f "tokens=*" %%c in ('docker ps -aq') do (
-    docker rm -f %%c
-)
+:: Stop and remove containers using docker-compose
+echo [%YELLOW%Stopping docker-compose services...%NC%]
+docker-compose -f ..\docker-compose.yml down
 
-:: Remove all images
-echo [%YELLOW%Removing all images...%NC%]
-for /f "tokens=*" %%i in ('docker images -q') do (
-    docker rmi -f %%i
-)
+:: Remove containers
+echo [%YELLOW%Removing containers...%NC%]
+docker rm -f $(docker ps -a -q) 2>nul
 
-:: Remove all volumes
-echo [%YELLOW%Removing all volumes...%NC%]
-for /f "tokens=*" %%v in ('docker volume ls -q') do (
-    docker volume rm -f %%v
-)
+:: Remove old images
+echo [%YELLOW%Removing images...%NC%]
+for /f "tokens=*" %%i in ('docker images -q') do docker rmi -f %%i 2>nul
 
-:: Remove all networks except default ones
-echo [%YELLOW%Removing all custom networks...%NC%]
-for /f "tokens=*" %%n in ('docker network ls --filter "type=custom" -q') do (
-    docker network rm %%n
-)
+:: Remove volumes
+echo [%YELLOW%Removing volumes...%NC%]
+for /f "tokens=*" %%i in ('docker volume ls -q') do docker volume rm -f %%i 2>nul
+
+:: Remove build records
+echo [%YELLOW%Cleaning build cache...%NC%]
+docker builder prune -f
 
 :: Clean up system
-echo [%YELLOW%Performing deep system cleanup...%NC%]
-docker system prune -af --volumes
+echo [%YELLOW%Performing system cleanup...%NC%]
+docker system prune -f
+docker container prune -f
+docker image prune -f
+docker volume prune -f
+docker network prune -f
 
-:: Remove build cache
-echo [%YELLOW%Removing build cache...%NC%]
-docker builder prune -af
-
-:: Remove environment files
-echo [%YELLOW%Removing environment files...%NC%]
-if exist ".env" del /f /q ".env"
-if exist ".env.backup" del /f /q ".env.backup"
-
-:: Verify cleanup
-echo [%YELLOW%Verifying cleanup...%NC%]
-docker ps -a
-docker images
-docker volume ls
-docker network ls
-
-echo [%GREEN%Complete Docker cleanup finished!%NC%]
-echo [%YELLOW%System is now clean and ready for fresh deployment%NC%]
-exit /b 0 
+echo [%GREEN%Cleanup completed%NC%] 
