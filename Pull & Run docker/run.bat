@@ -33,6 +33,7 @@ docker network inspect demomo-network >nul 2>&1 || (
 echo [%YELLOW%Checking for existing environment container...%NC%]
 docker rm -f demomo-env >nul 2>&1
 
+
 :: Start env container first
 echo [%YELLOW%Starting environment container...%NC%]
 docker run -d --name demomo-env --network demomo-network nuriz1996/demomo:env-%TAG%
@@ -57,15 +58,16 @@ if !ERRORLEVEL! NEQ 0 (
 set "DEMOMO_REGISTRY=nuriz1996/demomo"
 set "DEMOMO_TAG=%TAG%"
 
+echo [%YELLOW%Wait please for all messages to be displayed before pressing any keys, thank you%NC%]
+
 :: Start services with docker-compose
 echo [%YELLOW%Starting remaining containers...%NC%]
 docker-compose --env-file .env up -d
 
 :: Check container health
 echo [%YELLOW%Checking container health...%NC%] 
+echo [%YELLOW%Wait please for all messages to be displayed before pressing any keys, thank you%NC%]
 timeout /t 10 /nobreak >nul
-
-echo [%YELLOW%Wait please for all messages to be displayed%NC%]
 
 :: Verify all containers are running
 for %%s in (frontend backend model-text-generation model-character-creation model-library-service mysql) do (
@@ -79,44 +81,32 @@ for %%s in (frontend backend model-text-generation model-character-creation mode
 echo [%GREEN%All containers started successfully!%NC%]
 
 :: Clear instructions for stopping
-echo [%YELLOW%Press 'q' Enter to quit from Demo Web Site Docker and stop all containers OR CTRL+C to do the same%NC%]
-
-:: Handle CTRL+C
-CALL :SETUPCTRLC
+echo [%YELLOW%Press 'q' Enter to quit from Demo Web Site Docker and stop all containers%NC%]
 
 :loop
 set /p "input="
-if /i "%input%"=="q" CALL :CLEANUP
+if /i "%input%"=="q" (
+
+    :: Stop all containers with names starting with demomo-
+    echo [%YELLOW%Stopping all containers...%NC%]
+    for /f "tokens=*" %%c in ('docker ps --filter "name=demomo-" -q') do (
+        echo Stopping container: %%c
+        docker stop %%c
+    )
+    
+    :: Wait for containers to stop
+    timeout /t 5 /nobreak >nul
+    
+    :: Remove the environment file
+    echo [%YELLOW%Removing environment file...%NC%]
+    if exist ".env" (
+        del /f /q ".env"
+        echo [%GREEN%Environment file removed successfully%NC%]
+    ) else (
+        echo [%YELLOW%No environment file found to remove%NC%]
+    )
+    
+    echo [%GREEN%All containers stopped and cleanup completed!%NC%]
+    exit /b 0
+)
 goto :loop
-
-:: Cleanup subroutine
-:CLEANUP
-:: Stop all containers with names starting with demomo-
-echo [%YELLOW%Stopping all containers...%NC%]
-for /f "tokens=*" %%c in ('docker ps --filter "name=demomo-" -q') do (
-    echo Stopping container: %%c
-    docker stop %%c
-)
-
-:: Wait for containers to stop
-timeout /t 5 /nobreak >nul
-
-:: Remove the environment file
-echo [%YELLOW%Removing environment file...%NC%]
-if exist ".env" (
-    del /f /q ".env"
-    echo [%GREEN%Environment file removed successfully%NC%]
-) else (
-    echo [%YELLOW%No environment file found to remove%NC%]
-)
-
-echo [%GREEN%All containers stopped and cleanup completed!%NC%]
-exit /b 0
-
-:: Setup CTRL+C handler
-:SETUPCTRLC
-IF "%CTRL_C_HANDLED%"=="" (
-    SET CTRL_C_HANDLED=1
-    CALL :CLEANUP
-)
-GOTO :EOF
