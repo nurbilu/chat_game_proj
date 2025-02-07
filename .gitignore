@@ -55,18 +55,9 @@ testem.log
 connect.lock/
 
 # Docker
-docker-compose.override.yml
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-docker/init-secrets.bat
-=======
 **/init-secrets.bat
 **/secrets/
 *.txt
-
->>>>>>> Stashed changes
-=======
->>>>>>> parent of 7af91e0 (Update all files except secrets)
 
 # System Files
 .DS_Store
@@ -141,7 +132,8 @@ docs/_templates/
 # Environment Configuration
 env-config.bat
 deploy-config.bat
-init-secrets.bat
+**/init-secrets.bat
+
 
 
 # Configuration
@@ -152,8 +144,8 @@ config.env
 .env
 secrets/
 
-# Environment files
-.env.backup
+# New additions
+*.txt
 
 
 
