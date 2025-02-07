@@ -34,4 +34,4 @@ if exist ".env.backup" (
 )
 
 echo [%GREEN%Environment cleanup completed successfully!%NC%]
-exit /b 0 
+exit /b 0

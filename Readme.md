@@ -13,7 +13,6 @@
    - navigate to Pull & Run docker folder by using ```cd Pull & Run docker```
    - then run the following commands : 
       - ```pull.bat tag-name``` 
-<<<<<<< HEAD
       - ```run.bat``` - better run ```run.bat``` with the tag-name (like the example in comments **)
       - ```cleanup.bat```  - to stop the containers and remove them also the docker images and containers and volumes and networks
    #### comments and additions : 
@@ -21,10 +20,6 @@
          run.bat              # Uses "latest" tag
       *** if you have an MySQL server - stop the MySQL server on services.msc - to do so : ``` win+r ```- services.msc - find MySQL80 or any other MySQL server vareition - right click - stop .
 
-=======
-      - ```run.bat``` - run twice if it the first time after pulling the images 
-      - ```cleanup.bat``` (optional - to remove all containers and images from docker desktop)
->>>>>>> parent of 9663423 (test and might it the pull+run will work already lol)
 
 ## if you want to want to run the project without docker, you can continue with the following steps : 
 
