@@ -56,7 +56,14 @@ connect.lock/
 
 # Docker
 docker-compose.override.yml
+<<<<<<< Updated upstream
 docker/init-secrets.bat
+=======
+**/init-secrets.bat
+**/secrets/
+*.txt
+
+>>>>>>> Stashed changes
 
 # System Files
 .DS_Store
