@@ -7,6 +7,8 @@ set "YELLOW=[33m"
 set "NC=[0m"
 
 
+
+
 set "TAG=%~1"
 
 if "%TAG%"=="" (
@@ -46,6 +48,7 @@ if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Login failed. Please try again.%NC%]
     exit /b 1
 )
+
 
 echo [%YELLOW%Verifying local images...%NC%]
 
@@ -88,6 +91,5 @@ echo   - %DOCKER_REGISTRY%/demomo:text-gen-%TAG%
 echo   - %DOCKER_REGISTRY%/demomo:char-create-%TAG%
 echo   - %DOCKER_REGISTRY%/demomo:library-%TAG%
 echo   - %DOCKER_REGISTRY%/demomo:mysql-%TAG%
-
 
 exit /b 0

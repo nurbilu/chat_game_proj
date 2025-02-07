@@ -7,6 +7,7 @@ set "YELLOW=[33m"
 set "NC=[0m"
 
 
+
 echo [%YELLOW%Running build tests...%NC%]
 call ..\Tests\test-build.bat
 
@@ -37,6 +38,7 @@ echo [%YELLOW%Starting complete build process...%NC%]
 echo [%YELLOW%Building Environment Image...%NC%]
 cd ..\env-docker
 call env-docker.bat
+
 
 if %ERRORLEVEL% NEQ 0 (
     echo [%RED%Environment image build failed%NC%]

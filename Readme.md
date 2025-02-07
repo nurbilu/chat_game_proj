@@ -20,7 +20,6 @@
          run.bat              # Uses "latest" tag
       *** if you have an MySQL server - stop the MySQL server on services.msc - to do so : ``` win+r ```- services.msc - find MySQL80 or any other MySQL server vareition - right click - stop .
 
-
 ## if you want to want to run the project without docker, you can continue with the following steps : 
 
 2. **Set Up a Virtual Environment:**
