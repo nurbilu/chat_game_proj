@@ -56,6 +56,7 @@ connect.lock/
 
 # Docker
 docker-compose.override.yml
+docker/init-secrets.bat
 
 # System Files
 .DS_Store
@@ -130,7 +131,8 @@ docs/_templates/
 # Environment Configuration
 env-config.bat
 deploy-config.bat
-init-secrets.bat
+**/init-secrets.bat
+
 
 
 # Configuration
@@ -141,8 +143,8 @@ config.env
 .env
 secrets/
 
-# Environment files
-.env.backup
+# New additions
+*.txt
 
 
 

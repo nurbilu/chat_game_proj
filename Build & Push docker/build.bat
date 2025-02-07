@@ -6,6 +6,7 @@ set "GREEN=[32m"
 set "YELLOW=[33m"
 set "NC=[0m"
 
+<<<<<<< HEAD
 
 echo [%YELLOW%Running build tests...%NC%]
 call ..\Tests\test-build.bat
@@ -15,6 +16,9 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
+=======
+:: Check if deploy-config.bat exists
+>>>>>>> parent of 9663423 (test and might it the pull+run will work already lol)
 if not exist "deploy-config.bat" (
     echo [%RED%Error: deploy-config.bat not found%NC%]
 
@@ -34,6 +38,7 @@ if not "%INPUT_PASSWORD%"=="%DEPLOY_PASSWORD%" (
 
 echo [%YELLOW%Starting complete build process...%NC%]
 
+<<<<<<< HEAD
 echo [%YELLOW%Building Environment Image...%NC%]
 cd ..\env-docker
 call env-docker.bat
@@ -45,6 +50,9 @@ if %ERRORLEVEL% NEQ 0 (
 )
 cd "..\Build & Push docker"
 
+=======
+:: Build Backend and Model frameworks
+>>>>>>> parent of 9663423 (test and might it the pull+run will work already lol)
 echo [%YELLOW%Building Backend framework...%NC%]
 call TheBuilds\build-Dj-back.bat
 
