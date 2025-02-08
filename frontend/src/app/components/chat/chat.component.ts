@@ -49,6 +49,7 @@ export class ChatComponent implements OnInit {
     promptData: PromptDataItem[] = [];
     selectedCharacterPrompt: Character | null = null;
     selectedCharacterPromptdata: any = null;
+    isCollapsed = true;
 
     editorConfig = {
         menubar: false,

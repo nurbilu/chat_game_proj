@@ -84,9 +84,10 @@ echo [%YELLOW%Wait please for all messages to be displayed before pressing any k
 
 :: Clear instructions for all commands
 echo [%YELLOW%Available commands:%NC%]
-echo [%YELLOW%- Press 'q' or CTRL+C to stop all containers and cleanup%NC%]
+echo [%YELLOW%- Press 'q'  to stop all containers and cleanup%NC%]
 echo [%YELLOW%- Press 'o' or type 'open' to open the Web-Site in your browser%NC%]
-echo [%RED%- Press 'cD' to clear ALL Docker images and containers (WARNING: This will remove ALL Docker items)%NC%]
+echo [%RED%- Press 'c' to clear ALL Docker images and containers (WARNING: This will remove ALL Docker items)%NC%]
+echo [%YELLOW%- Press 'd' to cancel%NC%]
 
 :loop
 choice /c qocd /n /m "Enter command (Q=Quit, O=Open website, C=Clear Docker, D=Cancel): "
