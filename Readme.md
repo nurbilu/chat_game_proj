@@ -9,7 +9,7 @@
    cd <project_directory>
    ```
 ### using the Docker Desktop: 
-   - tag-name : Vtry11.1
+   - tag-name : Vtry11.1 , Vtry42.24
    - navigate to Pull & Run docker folder by using ```cd Pull & Run docker```
    - then run the following commands : 
       - ```pull.bat tag-name``` 
