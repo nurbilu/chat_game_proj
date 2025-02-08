@@ -34,6 +34,7 @@ echo [%YELLOW%Checking for existing environment container...%NC%]
 docker rm -f demomo-env >nul 2>&1
 
 
+echo [%YELLOW%Wait please for all messages to be displayed before pressing any keys, thank you%NC%]
 :: Start env container first
 echo [%YELLOW%Starting environment container...%NC%]
 docker run -d --name demomo-env --network demomo-network nuriz1996/demomo:env-%TAG%
@@ -79,34 +80,51 @@ for %%s in (frontend backend model-text-generation model-character-creation mode
 )
 
 echo [%GREEN%All containers started successfully!%NC%]
+echo [%YELLOW%Wait please for all messages to be displayed before pressing any keys, thank you%NC%]
 
-:: Clear instructions for stopping
-echo [%YELLOW%Press 'q' Enter to quit from Demo Web Site Docker and stop all containers%NC%]
+:: Clear instructions for all commands
+echo [%YELLOW%Available commands:%NC%]
+echo [%YELLOW%- Press 'q' or CTRL+C to stop all containers and cleanup%NC%]
+echo [%YELLOW%- Press 'o' or type 'open' to open the Web-Site in your browser%NC%]
+echo [%RED%- Press 'cD' to clear ALL Docker images and containers (WARNING: This will remove ALL Docker items)%NC%]
 
 :loop
-set /p "input="
-if /i "%input%"=="q" (
-
-    :: Stop all containers with names starting with demomo-
-    echo [%YELLOW%Stopping all containers...%NC%]
-    for /f "tokens=*" %%c in ('docker ps --filter "name=demomo-" -q') do (
-        echo Stopping container: %%c
-        docker stop %%c
+choice /c qocd /n /m "Enter command (Q=Quit, O=Open website, C=Clear Docker, D=Cancel): "
+if errorlevel 4 goto :loop
+if errorlevel 3 (
+    echo [%RED%WARNING: This will remove ALL Docker images and containers!%NC%]
+    choice /c yn /n /m "Are you sure? (Y/N): "
+    if errorlevel 2 goto :loop
+    if errorlevel 1 (
+        echo [%YELLOW%Starting complete Docker cleanup...%NC%]
+        call cleanup.bat
+        exit /b 0
     )
-    
-    :: Wait for containers to stop
-    timeout /t 5 /nobreak >nul
-    
-    :: Remove the environment file
-    echo [%YELLOW%Removing environment file...%NC%]
-    if exist ".env" (
-        del /f /q ".env"
-        echo [%GREEN%Environment file removed successfully%NC%]
-    ) else (
-        echo [%YELLOW%No environment file found to remove%NC%]
-    )
-    
-    echo [%GREEN%All containers stopped and cleanup completed!%NC%]
-    exit /b 0
 )
-goto :loop
+if errorlevel 2 (
+    echo [%YELLOW%Opening website...%NC%]
+    call open-web.bat
+    goto :loop
+)
+if errorlevel 1 (
+    echo [%YELLOW%Stopping containers and cleaning up...%NC%]
+    call :CLEANUP
+)
+
+:CLEANUP
+:: Stop all containers with names starting with demomo-
+echo [%YELLOW%Stopping all containers...%NC%]
+for /f "tokens=*" %%c in ('docker ps --filter "name=demomo-" -q') do (
+    echo Stopping container: %%c
+    docker stop %%c
+)
+
+:: Wait for containers to stop
+timeout /t 5 /nobreak >nul
+
+:: Call rmv-env.bat to clean up environment files
+echo [%YELLOW%Cleaning up environment files...%NC%]
+call rmv-env.bat
+
+echo [%GREEN%All containers stopped and cleanup completed!%NC%]
+exit /b 0
