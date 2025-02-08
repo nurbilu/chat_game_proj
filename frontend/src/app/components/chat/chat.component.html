@@ -3,7 +3,14 @@
     <div class="col-md-8">
       <div class="card chat-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h2 class="mb-0">D&D Adventure Chat</h2>
+          <h2 class="mb-0 cursor-pointer" 
+              (click)="isCollapsed = !isCollapsed"
+              [attr.aria-expanded]="!isCollapsed"
+              aria-controls="featureGuide"
+              ngbTooltip="Click to view Chat Features Guide" 
+              triggers="mouseenter:mouseleave">
+            D&D Adventure Chat
+          </h2>
           <img 
               [src]="isSuperUser() ? superUserImageUrl : (profilePictureUrl  || defaultProfilePicture)" 
               [alt]="username"
@@ -12,6 +19,55 @@
               ngbTooltip="Go to Profile" 
               triggers="mouseenter:mouseleave"
           >
+        </div>
+        <div id="featureGuide" [ngbCollapse]="isCollapsed">
+          <div class="card bg-dark text-light">
+            <div class="card-body">
+              <h5 class="card-title">Welcome to the D&D Adventure Chat Demo!</h5>
+              <hr>
+              <h6 class="mb-3">Features Overview:</h6>
+              
+              <p><strong>Chat Interface:</strong></p>
+              <ul>
+                <li>This is a demo chat interface for D&D adventures</li>
+                <li>Messages are displayed in a scrollable window with user messages in blue and bot responses in white</li>
+              </ul>
+
+              <p><strong>Text Editor Features:</strong></p>
+              <ul>
+                <li>Format text using bold, italic, and underline options</li>
+                <li>Align text left, center, or right</li>
+                <li>Create bullet points and numbered lists</li>
+                <li>Reset all formatting with a single click</li>
+                <li>Resize the input box by dragging the top edge</li>
+              </ul>
+
+              <p><strong>Template Selection:</strong></p>
+              <ul>
+                <li>Choose from various adventure templates (woods, desert, city, cave)</li>
+                <li>Quick-start options for beginning new adventures</li>
+                <li>View your last prompt to continue previous adventures</li>
+              </ul>
+
+              <p><strong>Character Management:</strong></p>
+              <ul>
+                <li>Select and view saved character prompts</li>
+                <li>Display detailed character information including stats, abilities, and equipment</li>
+                <li>Use character details in your adventure prompts</li>
+              </ul>
+
+              <p><strong>Dice Roller Features:</strong></p>
+              <ul>
+                <li>Roll multiple dice types (d4, d6, d8, d10, d12, d20, d100)</li>
+                <li>Add modifiers to your rolls</li>
+                <li>View individual roll results and totals</li>
+                <li>Add multiple dice sets for complex rolls</li>
+                <li>Clear results or reset the dice roller</li>
+              </ul>
+
+              <p class="mt-3 text-warning"><small>Note: This is a demo version. Messages and responses are not 100% accurate or sticking to a plot, it is for demonstration purposes.</small></p>
+            </div>
+          </div>
         </div>
         <div class="card-body chat-window">
           <div *ngFor="let response of responses"
