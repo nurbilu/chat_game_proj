@@ -1,4 +1,4 @@
-<div class=" chat-container">
+<div class="chat-container">
   <div class="row">
     <div class="col-md-8">
       <div class="card chat-card">
@@ -22,7 +22,7 @@
         </div>
         <div id="featureGuide" [ngbCollapse]="isCollapsed">
           <div class="card bg-dark text-light">
-            <div class="card-body">
+            <div class="card-body cursor-pointer" (click)="isCollapsed = !isCollapsed">
               <h5 class="card-title">Welcome to the D&D Adventure Chat Demo!</h5>
               <hr>
               <h6 class="mb-3">Features Overview:</h6>
@@ -46,14 +46,14 @@
               <ul>
                 <li>Choose from various adventure templates (woods, desert, city, cave)</li>
                 <li>Quick-start options for beginning new adventures</li>
-                <li>View your last prompt to continue previous adventures</li>
+                <li>View your last prompt to continue previous adventures (not working - not guaranteed to work) </li>
               </ul>
 
               <p><strong>Character Management:</strong></p>
               <ul>
                 <li>Select and view saved character prompts</li>
                 <li>Display detailed character information including stats, abilities, and equipment</li>
-                <li>Use character details in your adventure prompts</li>
+                <li>Use character details in your adventure prompts </li>
               </ul>
 
               <p><strong>Dice Roller Features:</strong></p>
@@ -69,7 +69,7 @@
             </div>
           </div>
         </div>
-        <div class="card-body chat-window">
+        <div class="card-body chat-window" data-bs-spy="scroll" data-bs-target="#featureGuide" data-bs-offset="0" tabindex="0">
           <div *ngFor="let response of responses"
             [ngClass]="{'user-message': response.from === 'user', 'bot-response': response.from === 'bot'}">
             <p>{{ response.text }}</p>
