@@ -9,19 +9,20 @@
    cd <project_directory>
    ```
 ### using the Docker Desktop: 
-   - tag-name : FverV2.74 , (* you can check the erlier tags in the comments below )
-   - navigate to Pull & Run docker folder by using ```cd Pull & Run docker```
+   - open the Docker Desktop app.
+   - make sure that the MySQL server is stopped - in case you have a MySQL on your computer. **
+   - navigate to "Pull & Run docker" folder by using ```cd Pull & Run docker```
+   - tag-name : FvV2.73 , (* you can check the erlier tags in the comments below for any reason if the new tag version is not working )
    - then run the following commands : 
+
       - ```pull.bat tag-name``` 
-      - ```run.bat``` - better run ```run.bat``` with the tag-name (like the example in comments **)
+      - ```run.bat tag-name```
       - ```cleanup.bat```  - to stop the containers and remove them also the docker images and containers and volumes and networks
    #### comments and additions : 
-      *  vibeV2.75 .  
-      ** run.bat VplzV3000    # Uses specified tag - an example tag not used in the project.
-         run.bat              # Uses "latest" tag
+      *  old version tag name == "vibeV2.75" .  
 
+      ** if you have an MySQL server active - stop the MySQL server on services.msc - to do so : ``` win+r ```- services.msc - find MySQL80 or any other MySQL server vareition - right click - stop .
 
-      ***if you have an MySQL server - stop the MySQL server on services.msc - to do so : ``` win+r ```- services.msc - find MySQL80 or any other MySQL server vareition - right click - stop .
 
 ## if you want to want to run the project without docker, you can continue with the following steps : 
 
