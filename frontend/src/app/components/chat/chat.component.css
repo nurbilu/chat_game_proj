@@ -43,6 +43,8 @@
   height: 500px;
   overflow-y: scroll;
   padding: 15px;
+  position: relative;
+  scroll-behavior: smooth;
 }
 
 .input-container {
@@ -877,5 +879,109 @@
 .cursor-pointer:hover {
   color: #007bff;
   transition: color 0.3s ease;
+}
+
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 221, 87, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.dropdown-item {
+    color: #ffffffcc;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 221, 87, 0.2);
+    color: #ffdd57;
+}
+
+.dropdown-item:active {
+    background-color: rgba(255, 221, 87, 0.4);
+    color: #000;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#featureGuide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+}
+
+#featureGuide .card {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(5px);
+  border: none;
+  border-radius: 0;
+}
+
+#featureGuide .card-body {
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Add smooth scrolling for the feature guide content */
+#featureGuide .card-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+#featureGuide .card-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+#featureGuide .card-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+#featureGuide .card-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Adjust the chat-card position to accommodate the feature guide */
+.chat-card {
+  position: relative;
+}
+
+/* Ensure proper z-indexing */
+.chat-window {
+  position: relative;
+  z-index: 1;
+}
+
+#featureGuide {
+  z-index: 2;
+}
+
+.scrollspy-section {
+  padding-top: 60px;
+  margin-top: -60px;
+}
+
+[data-bs-spy="scroll"] {
+  position: relative;
+  overflow-y: auto;
 }
 

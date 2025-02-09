@@ -9,16 +9,19 @@
    cd <project_directory>
    ```
 ### using the Docker Desktop: 
-   - tag-name : Vtry11.1 , Vtry42.24
+   - tag-name : FverV2.74 , (* you can check the erlier tags in the comments below )
    - navigate to Pull & Run docker folder by using ```cd Pull & Run docker```
    - then run the following commands : 
       - ```pull.bat tag-name``` 
       - ```run.bat``` - better run ```run.bat``` with the tag-name (like the example in comments **)
       - ```cleanup.bat```  - to stop the containers and remove them also the docker images and containers and volumes and networks
    #### comments and additions : 
-      ** run.bat VplzV3000    # Uses specified tag
+      *  vibeV2.75 .  
+      ** run.bat VplzV3000    # Uses specified tag - an example tag not used in the project.
          run.bat              # Uses "latest" tag
-      *** if you have an MySQL server - stop the MySQL server on services.msc - to do so : ``` win+r ```- services.msc - find MySQL80 or any other MySQL server vareition - right click - stop .
+
+
+      ***if you have an MySQL server - stop the MySQL server on services.msc - to do so : ``` win+r ```- services.msc - find MySQL80 or any other MySQL server vareition - right click - stop .
 
 ## if you want to want to run the project without docker, you can continue with the following steps : 
 
