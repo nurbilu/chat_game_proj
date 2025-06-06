@@ -124,37 +124,21 @@ docs/_templates/
 *.tar.gz
 *.rar
 
-# SECURITY: Environment files and secrets - NEVER COMMIT THESE
-*.env
-*.ENV
-**/.env
-**/.ENV
-.env.*
-.ENV.*
-**/.env.*
-**/.ENV.*
-**/config.env
-**/config.ENV
-config.env
-config.ENV
+# Secrets
 
-# SECURITY: Secret initialization files
-init-secrets.bat
-**/init-secrets.bat
-Init-secrets.bat
-**/Init-secrets.bat
-INIT-SECRETS.BAT
-**/INIT-SECRETS.BAT
+**/myproj/.env
+**/model/.env
 
 # Environment Configuration
 env-config.bat
 deploy-config.bat
+**/init-secrets.bat
 
-# Configuration directories that may contain secrets
-secrets/
-**/secrets/
-.secrets/
-**/.secrets/
+
+
+# Configuration
+config.env
+**/config.env
 
 # Sensitive data
 .env
